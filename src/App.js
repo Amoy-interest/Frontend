@@ -9,6 +9,7 @@ import HomeView from "./views/HomeView";
 import PersonalInfoView from "./views/PersonalInfoView";
 import RegisterView from "./views/RegisterView";
 import NotFoundView from "./views/NotFoundView";
+import Footer from "./components/basic/Footer";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -44,6 +45,7 @@ function App() {
                         <Route path='*' component={NotFoundView} />
                     </Switch>
                 </main>
+                <Footer/>
             </Router>
         </div>
     );
