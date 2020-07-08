@@ -7,12 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import CameraIcon from '@material-ui/icons/Camera';
-
-
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -78,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function HeaderBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
