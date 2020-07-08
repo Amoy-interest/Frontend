@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
 )
 
 
-export default function Footer () {
+export default function FooterBar () {
     const classes = useStyles()
 
     return (
@@ -36,10 +36,10 @@ export default function Footer () {
                 <a
                     className={classes.footerText}
                     href='https://github.com/Amoy-interest'
-                    rel='github url'
+                    rel='noopener noreferrer'
                     target='_blank'
                 >
-                    Designed by group 10
+                    Designed by Group 10
                 </a>
             </Typography>
         </footer>

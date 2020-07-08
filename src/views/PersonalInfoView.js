@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 
 class PersonalInfoView extends Component{
-    //
-    // handleGoHome(){
-    //     this.props.history.push('/home');
-    // }
 
     render() {
         console.log(this.props)
