@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) =>
             flexGrow: 1,
             padding: theme.spacing(3),
         },
+        container:{
+            //backgroundColor: '#cfe8fc',
+            minHeight: '80vh',
+        },
         scrollTop: {
             zIndex: theme.zIndex.drawer + 2,
             position: 'fixed',
@@ -44,11 +48,7 @@ function App() {
                         <HeaderBar/>
                     </Header>
                     <Content>
-                        <Container maxWidth="lg"
-                                   style={{
-                                       //backgroundColor: '#cfe8fc',
-                                       minHeight: '80vh',
-                                       margin: '2vh 5vw' }}>
+                        <Container className={classes.container} maxWidth="lg">
                             <main className={classes.content}>
                                 <Switch>
                                     <Route exact path='/' component={HomePreLoginView} />
