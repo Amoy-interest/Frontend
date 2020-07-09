@@ -46,7 +46,7 @@ function App() {
                     <Content>
                         <Container maxWidth="lg"
                                    style={{
-                                       backgroundColor: '#cfe8fc',
+                                       //backgroundColor: '#cfe8fc',
                                        minHeight: '80vh',
                                        margin: '2vh 5vw' }}>
                             <main className={classes.content}>

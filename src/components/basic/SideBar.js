@@ -27,6 +27,34 @@ export default function SideBar() {
 
     return (
         <div className={classes.root}>
+            {/*<Tabs*/}
+            {/*    orientation="vertical"*/}
+            {/*    variant="scrollable"*/}
+            {/*    value={value}*/}
+            {/*    onChange={handleChange}*/}
+            {/*    aria-label="Vertical tabs example"*/}
+            {/*    className={classes.tabs}*/}
+            {/*>*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="热门" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="社会" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="明星" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="搞笑" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="电影" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="读书" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="摄影"  />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="体育" />*/}
+            {/*    <Divider/>*/}
+            {/*    <Tab label="动漫" />*/}
+            {/*    <Divider/>*/}
+            {/*</Tabs>*/}
             <Tabs
                 orientation="vertical"
                 variant="scrollable"
@@ -35,25 +63,14 @@ export default function SideBar() {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Divider/>
                 <Tab label="热门" />
-                <Divider/>
                 <Tab label="社会" />
-                <Divider/>
                 <Tab label="明星" />
-                <Divider/>
                 <Tab label="搞笑" />
-                <Divider/>
-                <Tab label="电影" />
-                <Divider/>
                 <Tab label="读书" />
-                <Divider/>
                 <Tab label="摄影"  />
-                <Divider/>
                 <Tab label="体育" />
-                <Divider/>
                 <Tab label="动漫" />
-                <Divider/>
             </Tabs>
         </div>
     );
