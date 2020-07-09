@@ -7,9 +7,9 @@ import {Divider} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        marginTop:theme.spacing(3),
+        //marginTop:theme.spacing(3),
         backgroundColor: theme.palette.background.paper,
-        // display: 'flex',
+        display: 'flex',
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
