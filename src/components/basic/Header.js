@@ -13,6 +13,13 @@ import CameraIcon from '@material-ui/icons/Camera';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
+        width:'100%',
+        flexGrow: 1,
+        position: 'absolute',
+        zIndex:1,
+        opacity: 0.85
+    },
+    blank:{
         flexGrow: 1,
     },
     menuButton: {
@@ -135,7 +142,7 @@ export default function HeaderBar() {
                         />
                     </div>
 
-                    <div className={classes.grow} />
+                    <div className={classes.blank} />
                     <div className={classes.sectionDesktop}>
                         <IconButton
                             edge="end"

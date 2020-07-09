@@ -5,9 +5,8 @@ import React from 'react'
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            zIndex: theme.zIndex.drawer + 1,
             textAlign: 'center',
-            position: 'fixed',
+            position: 'absolute',
             width: '100%',
             bottom: 0,
             paddingTop: theme.spacing(),
