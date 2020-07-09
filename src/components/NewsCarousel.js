@@ -6,6 +6,7 @@ import ChildrenImage from '../assets/children.png';
 import AnimalImage from '../assets/animal.png';
 import FunImage from  '../assets/fun.png';
 import YummyImage from '../assets/yummy.png';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) =>
             paddingTop: theme.spacing(),
             paddingBottom: theme.spacing(),
             backgroundColor: theme.palette.primary.main,
-            opacity: 0.85
+            opacity: 0.7
         },
         footerText: {
             color: 'grey',

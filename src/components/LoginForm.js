@@ -8,22 +8,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
-import { Formik, Form, Field } from 'formik';
-// import { LinearProgress } from '@material-ui/core';
+import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField, AICheckField, AIPickerField} from "./basic/AIField";
-
+import {AITextField} from "./basic/AIField";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: theme.spacing(6)
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        padding: theme.spacing(2),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -31,11 +25,6 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
-    commentText: {
-        color: 'black',
-        fontSize: 'small',
-        textDecoration: 'none'
     }
 }));
 
@@ -52,19 +41,10 @@ export default function SignUp(props){
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Paper elevation={3} className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    注册账号
-                </Typography>
                 <Formik
                     initialValues={{
-                        lastName: '',
-                        firstName: '',
                         email: '',
                         password: '',
-                        check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
@@ -77,11 +57,8 @@ export default function SignUp(props){
                     {({ submitForm, isSubmitting }) => (
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
-                                <AITextField sm={6} name="lastName" label="姓"/>
-                                <AITextField sm={6} name="firstName" label="名"/>
                                 <AITextField sm={12} name="email" label="邮箱"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
-                                <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
                             </Grid>
                             <Button
                                 variant="contained"
