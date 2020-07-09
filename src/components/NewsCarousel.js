@@ -1,21 +1,28 @@
-import React from "react";
-import { Carousel } from 'antd';
-import '../css/NewsCarousel.css';
-export default function NewsCarousel() {
-    return(
+import React from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import TravelImage from '../assets/travel.png';
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+    },
+    details: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    content: {
+        flex: '1 0 auto',
+    },
+    cover: {
+        width: '100%',
+    },
+}));
 
-    <Carousel autoplay>
-        <div>
-            <h3>1</h3>
-        </div>
-        <div>
-            <h3>2</h3>
-        </div>
-        <div>
-            <h3>3</h3>
-        </div>
-        <div>
-            <h3>4</h3>
-        </div>
-    </Carousel>);
+export default function NewsCarousel() {
+    const classes = useStyles();
+    const theme = useTheme();
+
+    return (
+        <img className={classes.cover} src={TravelImage} alt={'旅行'} />
+    );
 }
+

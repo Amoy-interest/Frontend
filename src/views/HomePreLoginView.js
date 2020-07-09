@@ -1,28 +1,50 @@
 import React, {Component} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import SideBar from "../components/basic/SideBar";
-import { Row, Col } from 'antd';
 import NewsCarousel from "../components/NewsCarousel";
-import {Layout} from "antd";
-const {Sider,Content}=Layout;
+import HotSearchList from "../components/HotSearchList";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        //paddingTop: theme.spacing(3),
+    },
+    paper: {
+        //padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
+
+function HomeLayout() {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs={2}>
+                    <SideBar/>
+                </Grid>
+                <Grid item xs={7}>
+                    <Paper className={classes.paper}><NewsCarousel/></Paper>
+                </Grid>
+                <Grid item xs>
+                    <Paper className={classes.paper}><HotSearchList/></Paper>
+                </Grid>
+            </Grid>
+        </div>
+    );
+}
 class HomePreLoginView extends Component{
 
     render() {
         return (
-            <div className="home-content">
-                <Layout>
-                    <Sider><SideBar/></Sider>
-                    <Content style={{backgroundColor:"#FF5722"}}>
-                        <div>
-                            <Row span={6}>
-                                <Col span={6}><NewsCarousel/></Col>
-                                <Col span={6}>col-8</Col>
-                            </Row>
-                        </div>
-                    </Content>
-                </Layout>
-            </div>
+            <HomeLayout/>
         );
     }
 }
 
 export default HomePreLoginView;
+
