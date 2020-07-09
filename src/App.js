@@ -11,6 +11,7 @@ import NotFoundView from "./views/NotFoundView";
 import FooterBar from "./components/basic/Footer";
 import HeaderBar from "./components/basic/Header";
 import {Layout} from "antd";
+import Container from "@material-ui/core/Container";
 const { Content, Header, Footer } = Layout;
 
 const useStyles = makeStyles((theme) =>
@@ -43,15 +44,17 @@ function App() {
                         <HeaderBar/>
                     </Header>
                     <Content>
-                        <main className={classes.content}>
-                            <Switch>
-                                <Route exact path='/' component={HomePreLoginView} />
-                                <Route path='/home' component={HomeView} />
-                                <Route path='/personal-info' component={PersonalInfoView} />
-                                <Route path='/register' component={RegisterView} />
-                                <Route path='*' component={NotFoundView} />
-                            </Switch>
-                        </main>
+                        <Container maxWidth="lg">
+                            <main className={classes.content}>
+                                <Switch>
+                                    <Route exact path='/' component={HomePreLoginView} />
+                                    <Route path='/home' component={HomeView} />
+                                    <Route path='/personal-info' component={PersonalInfoView} />
+                                    <Route path='/register' component={RegisterView} />
+                                    <Route path='*' component={NotFoundView} />
+                                </Switch>
+                            </main>
+                        </Container>
                     </Content>
                     <Footer>
                         <FooterBar/>

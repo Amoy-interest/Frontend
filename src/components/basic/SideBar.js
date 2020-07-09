@@ -1,71 +1,62 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
-const drawerWidth = 240;
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import {Divider} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        paddingTop:'10px',
+        flexGrow: 1,
+        marginTop:theme.spacing(3),
+        backgroundColor: theme.palette.background.paper,
+        // display: 'flex',
     },
-    drawer: {
-        position:'absolute',
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    drawerContainer: {
-        overflow: 'auto',
+    tabs: {
+        borderRight: `1px solid ${theme.palette.divider}`,
+        fontSize:'24px'
     },
 }));
 
 export default function SideBar() {
     const classes = useStyles();
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     return (
         <div className={classes.root}>
-            {/*<CssBaseline />*/}
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
+            <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={value}
+                onChange={handleChange}
+                aria-label="Vertical tabs example"
+                className={classes.tabs}
             >
-                <Toolbar />
-                <div className={classes.drawerContainer}>
-                    <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </div>
-            </Drawer>
+                <Divider/>
+                <Tab label="热门" />
+                <Divider/>
+                <Tab label="社会" />
+                <Divider/>
+                <Tab label="明星" />
+                <Divider/>
+                <Tab label="搞笑" />
+                <Divider/>
+                <Tab label="电影" />
+                <Divider/>
+                <Tab label="读书" />
+                <Divider/>
+                <Tab label="摄影"  />
+                <Divider/>
+                <Tab label="体育" />
+                <Divider/>
+                <Tab label="动漫" />
+                <Divider/>
+            </Tabs>
         </div>
     );
 }
+
 
