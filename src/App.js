@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3)
+            padding: theme.spacing(3),
         },
         scrollTop: {
             zIndex: theme.zIndex.drawer + 2,
@@ -44,7 +44,11 @@ function App() {
                         <HeaderBar/>
                     </Header>
                     <Content>
-                        <Container maxWidth="lg">
+                        <Container maxWidth="lg"
+                                   style={{
+                                       // backgroundColor: '#cfe8fc',
+                                       minHeight: '80vh',
+                                       margin: '2vh 5vw' }}>
                             <main className={classes.content}>
                                 <Switch>
                                     <Route exact path='/' component={HomePreLoginView} />

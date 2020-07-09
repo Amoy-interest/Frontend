@@ -10,14 +10,15 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import CameraIcon from '@material-ui/icons/Camera';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     grow: {
         width:'100%',
         flexGrow: 1,
-        position: 'absolute',
+        // position: 'fixed',
         zIndex:1,
-        opacity: 0.85
+        opacity: 0.70,
     },
     blank:{
         flexGrow: 1,
@@ -85,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 export default function HeaderBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
-
+    const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
 
     const handleProfileMenuOpen = (event) => {
@@ -95,6 +96,16 @@ export default function HeaderBar() {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+    const handleSignUp = () => {
+        handleMenuClose();
+        history.replace('/register');
+    }
+
+    const handleSignIn = () => {
+        handleMenuClose();
+        history.replace('/');
+    }
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -107,15 +118,15 @@ export default function HeaderBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>注册</MenuItem>
-            <MenuItem onClick={handleMenuClose}>登陆</MenuItem>
+            <MenuItem onClick={handleSignUp}>注册</MenuItem>
+            <MenuItem onClick={handleSignIn}>登陆</MenuItem>
         </Menu>
     );
 
     return (
         <div className={classes.grow}>
             <AppBar position="static">
-                <Toolbar variant="dense">
+                <Toolbar >
                     <IconButton
                         edge="start"
                         className={classes.menuButton}
