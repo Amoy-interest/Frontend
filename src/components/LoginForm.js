@@ -30,17 +30,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props){
     const classes = useStyles();
+    const history = useHistory();
+
+    const submit = () => {
+        console.log(props.props)
+        history.replace('/home');
+    }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Paper elevation={3} className={classes.paper}>
-                {/*<Avatar className={classes.avatar}>*/}
-                {/*    <LockOutlinedIcon />*/}
-                {/*</Avatar>*/}
-                {/*<Typography component="h1" variant="h5">*/}
-                {/*    注册账号*/}
-                {/*</Typography>*/}
                 <Formik
                     initialValues={{
                         email: '',
@@ -50,6 +50,7 @@ export default function SignUp(props){
                         setTimeout(() => {
                             setSubmitting(false);
                             alert(JSON.stringify(values, null, 2));
+                            submit();
                         }, 500);
                     }}
                 >
@@ -63,8 +64,8 @@ export default function SignUp(props){
                                 variant="contained"
                                 color="primary"
                                 disabled={isSubmitting}
-                                onClick={submitForm}
                                 fullWidth
+                                onClick={submitForm}
                                 className={classes.submit}
                             >
                                 提交信息

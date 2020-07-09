@@ -48,9 +48,6 @@ export default function SignUp(props){
         history.replace('/home');
     }
 
-    const num = 5;
-
-    const array = [1, 2, 3, 4];
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -73,6 +70,7 @@ export default function SignUp(props){
                         setTimeout(() => {
                             setSubmitting(false);
                             alert(JSON.stringify(values, null, 2));
+                            submit();
                         }, 500);
                     }}
                 >
@@ -84,19 +82,17 @@ export default function SignUp(props){
                                 <AITextField sm={12} name="email" label="邮箱"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
                                 <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
-                                {/*<AIPickerField sm={12} array={array} name="picker" label="label"/>*/}
                             </Grid>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 disabled={isSubmitting}
-                                onClick={submitForm}
                                 fullWidth
+                                onClick={submitForm}
                                 className={classes.submit}
                             >
                                 提交信息
                             </Button>
-
                         </Form>
                     )}
                 </Formik>
