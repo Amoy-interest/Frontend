@@ -10,13 +10,16 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.4.1",
+    "formik": "^2.1.4",
     "formik-material-fields": "^0.0.6",
     "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-material-formutil": "^0.0.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "reactjs-swiper": "^0.1.0",
+    "swiper": "^6.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
