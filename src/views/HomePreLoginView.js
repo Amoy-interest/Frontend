@@ -9,10 +9,10 @@ import HotSearchList from "../components/HotSearchList";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        paddingTop: theme.spacing(3),
+        //paddingTop: theme.spacing(3),
     },
     paper: {
-        padding: theme.spacing(1),
+        //padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
