@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             textAlign: 'center',
-            position: 'absolute',
+            // position: 'fixed',
             width: '100%',
             bottom: 0,
             paddingTop: theme.spacing(),
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
             opacity: 0.85
         },
         footerText: {
-            color: 'white',
+            color: 'grey',
             fontSize: 'small',
             textDecoration: 'none'
         }
