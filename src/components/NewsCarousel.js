@@ -29,23 +29,23 @@ export default function NewsCarousel() {
         const items = [{
             image: FunImage,
             title: '娱乐',
-            link: 'http://jd.com'
+            link: 'https://github.com/Amoy-interest'
         }, {
             image: ChildrenImage,
             title: '自然',
-            link:'http://jd.com'
+            link:'https://github.com/Amoy-interest'
         }, {
             image: AnimalImage,
             title: '动物',
-            link: 'http://jd.com'
+            link: 'https://github.com/Amoy-interest'
         }, {
             image: YummyImage,
             title: '美食',
-            link: 'http://jd.com'
+            link: 'https://github.com/Amoy-interest'
         },{
             image: TravelImage,
             title: '旅行',
-            link: 'http://jd.com'
+            link: 'https://github.com/Amoy-interest'
         }
         ];
 
@@ -60,4 +60,3 @@ export default function NewsCarousel() {
         );
 
 }
-// <img className={classes.cover} src={TravelImage} alt={'旅行'} />

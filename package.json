@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@material-ui/icons": "^4.9.1"
+    "@material-ui/icons": "^4.9.1",
+    "react-window": "^1.8.5"
   }
 }
