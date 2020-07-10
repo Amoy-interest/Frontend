@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -16,15 +15,18 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+        marginLeft:theme.spacing(2)
     },
     text:{
         minWidth:300,
-        marginLeft:theme.spacing(1)
     },
     submit:{
         width: 90,
-        height:50,
+        height:54,
         marginLeft:theme.spacing(1)
+    },
+    command:{
+        marginTop:theme.spacing(1)
     },
     inline: {
         display: 'inline',
@@ -80,7 +82,7 @@ export default function CommentList() {
             <Button className={classes.submit} variant="contained" color="primary">
                 提交评论
             </Button>
-            <FixedSizeList height={300} width={400} itemSize={100} itemCount={10}>
+            <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100} itemCount={10}>
                 {renderRow}
             </FixedSizeList>
         </div>

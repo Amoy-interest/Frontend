@@ -27,7 +27,7 @@ import EditIcon from '@material-ui/icons/Edit';
 const useStyles = makeStyles((theme) => ({
     root: {
         //marginLeft: theme.spacing(1),
-        width:485
+        width:460
     },
     media: {
         height: 0,
