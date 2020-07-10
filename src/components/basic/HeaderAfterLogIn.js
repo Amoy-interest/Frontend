@@ -115,6 +115,8 @@ export default function HeaderAfterLogIn() {
 
     const handleLogout = () => {
         handleMenuClose();
+        var log=0;
+        localStorage.setItem('logged',log.toString());
         history.replace('/');
     };
 

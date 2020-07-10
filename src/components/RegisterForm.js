@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField, AICheckField} from "./basic/AIField";
 
@@ -43,7 +43,9 @@ export default function SignUp(props){
     const history = useHistory();
 
     const submit = () => {
-        console.log(props)
+        console.log(props);
+        var log=1;
+        localStorage.setItem('logged',log.toString());
         history.replace('/home');
     }
 
