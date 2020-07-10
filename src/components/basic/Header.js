@@ -9,11 +9,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import CameraIcon from '@material-ui/icons/Camera';
+import RedditIcon from '@material-ui/icons/Reddit';
 import { useHistory } from 'react-router-dom'
 import Modal from '@material-ui/core/Modal';
 import LoginForm from "../LoginForm";
-import RedditIcon from '@material-ui/icons/Reddit';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function getModalStyle() {
     const top = 50;

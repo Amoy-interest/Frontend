@@ -8,7 +8,9 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField} from "./basic/AIField";
+import {AIPickerField, AITextField} from "./basic/AIField";
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LoginForm(props){
     const classes = useStyles();
     const history = useHistory();
+    const ages = [1, 2, 3, 6, 10];
 
     const submit = () => {
         console.log(props.props);
@@ -69,6 +72,7 @@ export default function LoginForm(props){
                             <Grid container spacing={2}>
                                 <AITextField sm={12} name="email" label="邮箱"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
+                                <AIPickerField sm={6} name="name" array={ages} label="label"/>
                             </Grid>
                             <Button
                                 variant="contained"
