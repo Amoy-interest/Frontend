@@ -6,14 +6,15 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
-import { Formik, Form } from 'formik';
+import {Formik, Form, Field} from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "./basic/AIField";
+import {TextField} from "formik-material-ui";
+import Uploader from "./basic/Uploader";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
-        width:350,
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(2),
@@ -24,33 +25,22 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
+    }
 }));
 
-export default function LoginForm(props){
+export default function PostCardForm(props){
     const classes = useStyles();
     const history = useHistory();
 
     const submit = () => {
-        console.log(props.props);
-        props.move();
-        history.replace('/home');
+        console.log(props.props)
+        history.replace('/post');
     }
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Paper elevation={3} className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Log In
-                </Typography>
                 <Formik
                     initialValues={{
                         email: '',
@@ -67,8 +57,10 @@ export default function LoginForm(props){
                     {({ submitForm, isSubmitting }) => (
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
-                                <AITextField sm={12} name="email" label="邮箱"/>
-                                <AITextField sm={12} name="password" label="密码" type="password"/>
+                                <AITextField sm={12} name="content" label="博文内容" multiline/>
+                                <Grid item xs={12} sm={12}>
+                                    <Uploader/>
+                                </Grid>
                             </Grid>
                             <Button
                                 variant="contained"
@@ -78,7 +70,7 @@ export default function LoginForm(props){
                                 onClick={submitForm}
                                 className={classes.submit}
                             >
-                                登陆
+                                确定发布
                             </Button>
                         </Form>
                     )}
@@ -86,8 +78,6 @@ export default function LoginForm(props){
             </Paper>
         </Container>
     );
-
-
 }
 
 

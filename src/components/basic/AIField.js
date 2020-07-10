@@ -1,4 +1,4 @@
-import {Field, Form} from "formik";
+import {Field} from "formik";
 import {TextField} from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
@@ -35,6 +35,7 @@ export function AITextField (props) {
                 label={props.label?props.label:null}
                 type={props.type?props.type:null}
                 variant="outlined"
+                multiline={!!props.multiline}
                 required
                 fullWidth
                 autoFocus

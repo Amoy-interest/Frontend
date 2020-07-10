@@ -6,11 +6,7 @@ class RegisterView extends Component{
     render() {
         return (
             <div className="home-content">
-                {/*<div className={"foot-wrapper"}>*/}
-                {/*    Register page!*/}
-                {/*</div>*/}
-                <RegisterForm props={this.props}/>
-                {/*<RegisterForm/>*/}
+                <RegisterForm/>
             </div>
         );
     }
