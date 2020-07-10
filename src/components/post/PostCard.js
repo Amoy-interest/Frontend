@@ -16,7 +16,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PostImage1 from '../../assets/post1.png';
-import InsertCommentIcon from '@material-ui/icons/InsertComment';
+// import InsertCommentIcon from '@material-ui/icons/InsertComment';
 
 const useStyles = makeStyles((theme) => ({
     root: {

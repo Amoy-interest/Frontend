@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {Divider} from "@material-ui/core";
+// import {Divider} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
