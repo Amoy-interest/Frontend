@@ -14,6 +14,7 @@ import Avatar1 from "../../assets/commentavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import RedditIcon from "@material-ui/icons/Reddit";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -176,35 +177,42 @@ export default function HeaderAfterLogIn() {
                     </div>
 
                     <div className={classes.blank} />
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={openPostsView}
-                    >
-                        <ExploreIcon/>
-                    </IconButton>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={openHomeView}
-                    >
-                        <CameraIcon/>
-                    </IconButton>
-                    <div className={classes.sectionDesktop}>
+                    <Tooltip title="发现">
                         <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
+                            edge="start"
+                            className={classes.menuButton}
                             color="inherit"
+                            aria-label="open drawer"
+                            onClick={openPostsView}
                         >
-                            <Avatar className={classes.avatar} src={Avatar1}/>
+                            <ExploreIcon/>
                         </IconButton>
+                    </Tooltip>
+                    <Tooltip title="主页">
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={openHomeView}
+                        >
+                            <CameraIcon/>
+                        </IconButton>
+                    </Tooltip>
+
+                    <div className={classes.sectionDesktop}>
+                        <Tooltip title="个人">
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <Avatar className={classes.avatar} src={Avatar1}/>
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </Toolbar>
             </AppBar>
