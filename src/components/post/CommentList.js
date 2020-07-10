@@ -42,7 +42,7 @@ function renderRow(props) {
                 <Avatar alt="Binnie" src={Avatar1} />
             </ListItemAvatar>
             <ListItemText
-                primary="毕业快乐"
+                primary="Binnie"
                 secondary={
                     <React.Fragment>
                         <Typography

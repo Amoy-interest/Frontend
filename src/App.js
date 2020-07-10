@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) =>
 
 function App() {
     const classes = useStyles();
-    const logged=true;
+    const logged=1;
+    //localStorage.setItem('logged',logged.toString());
     return (
         <div className="App">
             <Router>

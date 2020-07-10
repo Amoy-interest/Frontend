@@ -3,26 +3,19 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
-import { Formik, Form, Field } from 'formik';
+import {Formik, Form, Field} from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField, AICheckField} from "./basic/AIField";
-
+import {AITextField} from "./basic/AIField";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: theme.spacing(6)
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        padding: theme.spacing(2),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -30,42 +23,27 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
-    commentText: {
-        color: 'black',
-        fontSize: 'small',
-        textDecoration: 'none'
+        marginLeft: theme.spacing(100)
     }
 }));
 
-export default function SignUp(props){
+export default function PostCardForm(props){
     const classes = useStyles();
     const history = useHistory();
 
     const submit = () => {
-        console.log(props);
-        var log=1;
-        localStorage.setItem('logged',log.toString());
-        history.replace('/home');
+        console.log(props.props)
+        history.replace('/post');
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <Paper elevation={3} className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    注册账号
-                </Typography>
                 <Formik
                     initialValues={{
-                        lastName: '',
-                        firstName: '',
                         email: '',
                         password: '',
-                        check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
@@ -78,21 +56,20 @@ export default function SignUp(props){
                     {({ submitForm, isSubmitting }) => (
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
-                                <AITextField sm={6} name="lastName" label="姓"/>
-                                <AITextField sm={6} name="firstName" label="名"/>
-                                <AITextField sm={12} name="email" label="邮箱"/>
-                                <AITextField sm={12} name="password" label="密码" type="password"/>
-                                <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
+                                <AITextField sm={12} name="content" label="博文内容" multiline/>
+                                <Grid item xs={12} sm={12}>
+                                    {/*<Uploader/>*/}
+                                </Grid>
                             </Grid>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 disabled={isSubmitting}
-                                fullWidth
+                                //fullWidth
                                 onClick={submitForm}
                                 className={classes.submit}
                             >
-                                提交信息
+                                确定发布
                             </Button>
                         </Form>
                     )}
@@ -100,8 +77,6 @@ export default function SignUp(props){
             </Paper>
         </Container>
     );
-
-
 }
 
 

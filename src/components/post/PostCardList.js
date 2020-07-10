@@ -11,10 +11,10 @@ import PostCardPersonal from "./PostCardPersonal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop:theme.spacing(1),
+        //marginTop:theme.spacing(1),
         width: '100%',
         maxWidth: 460,
-        backgroundColor: theme.palette.background.paper,
+        //backgroundColor: theme.palette.background.paper,
     },
 }));
 

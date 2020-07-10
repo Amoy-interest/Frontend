@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../components/basic/SideBar";
 import PostCardList from "../components/post/PostCardList";
+import {AITextField} from "../components/basic/AIField";
+import PostCardForm from "../components/PostCardForm";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,10 +26,15 @@ function PostsLayout() {
                     <SideBar/>
                 </Grid>
                 <Grid item xs>
-                    <PostCardList/>
-                </Grid>
-                <Grid item xs>
-                    <PostCardList/>
+                    <PostCardForm/>
+                    <Grid container spacing={1}>
+                        <Grid item xs>
+                            <PostCardList/>
+                        </Grid>
+                        <Grid item xs>
+                            <PostCardList/>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>

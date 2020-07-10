@@ -40,6 +40,8 @@ export default function LoginForm(props){
     const submit = () => {
         console.log(props.props);
         props.move();
+        var log=1;
+        localStorage.setItem('logged',log.toString());
         history.replace('/home');
     }
 
