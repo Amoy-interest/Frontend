@@ -8,22 +8,12 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import CameraIcon from '@material-ui/icons/Camera';
 import { useHistory } from 'react-router-dom'
-import Modal from '@material-ui/core/Modal';
-import LoginForm from "../LoginForm";
-import RedditIcon from '@material-ui/icons/Reddit';
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50 ;
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import Avatar1 from "../../assets/commentavatar.jpeg";
+import Avatar from "@material-ui/core/Avatar";
+import ExploreIcon from '@material-ui/icons/Explore';
+import RedditIcon from "@material-ui/icons/Reddit";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -103,27 +93,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeaderBar() {
+export default function HeaderAfterLogIn() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const body = (
-        <div style={modalStyle} className={classes.paper}>
-            <LoginForm move={handleClose}/>
-        </div>
-    );
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -132,16 +107,24 @@ export default function HeaderBar() {
         setAnchorEl(null);
     };
 
-    const handleSignUp = () => {
+    const handleProfile = () => {
         handleMenuClose();
-        history.replace('/register');
+        history.replace('/personal-info');
     }
 
-    const handleSignIn = () => {
+    const handleLogout = () => {
         handleMenuClose();
-        handleOpen();
+        history.replace('/');
     }
 
+    const openPostsView=()=>{
+        handleMenuClose();
+        history.replace('/posts');
+    }
+    const openHomeView=()=>{
+        handleMenuClose();
+        history.replace('/home');
+    }
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
@@ -153,8 +136,8 @@ export default function HeaderBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleSignUp}>注册</MenuItem>
-            <MenuItem onClick={handleSignIn}>登陆</MenuItem>
+            <MenuItem onClick={handleProfile}>个人资料</MenuItem>
+            <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
         </Menu>
     );
 
@@ -189,29 +172,39 @@ export default function HeaderBar() {
                     </div>
 
                     <div className={classes.blank} />
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={openPostsView}
+                    >
+                        <ExploreIcon/>
+                    </IconButton>
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={openHomeView}
+                    >
+                        <CameraIcon/>
+                    </IconButton>
                     <div className={classes.sectionDesktop}>
                         <IconButton
-                        edge="end"
-                        aria-label="account of current user"
-                        aria-controls={menuId}
-                        aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                    </IconButton>
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                            color="inherit"
+                        >
+                            <Avatar className={classes.avatar} src={Avatar1}/>
+                        </IconButton>
                     </div>
                 </Toolbar>
             </AppBar>
             {renderMenu}
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
         </div>
     );
 }

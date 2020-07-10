@@ -14,18 +14,19 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PostImage1 from '../../assets/post1.png';
+import PostImage2 from '../../assets/post2.png';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
-import Avatar2 from'../../assets/postavatar.jpeg';
+import Avatar1 from'../../assets/commentavatar.jpeg';
 import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        // marginLeft: theme.spacing(1),
+        //marginLeft: theme.spacing(1),
         width:485
     },
     media: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PostCard() {
+export default function PostCardPersonal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +73,8 @@ export default function PostCard() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem ><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+            <MenuItem ><EditIcon/>编辑</MenuItem>
+            <MenuItem ><DeleteIcon/>删除</MenuItem>
         </Menu>
     );
     const handleExpandClick = () => {
@@ -84,24 +86,24 @@ export default function PostCard() {
             <Card className={classes.root}>
                 <CardHeader
                     avatar={
-                        <Avatar className={classes.avatar} src={Avatar2}/>
+                        <Avatar className={classes.avatar} src={Avatar1}/>
                     }
                     action={
                         <IconButton onClick={handleMoreInfoClick} aria-label="settings">
                             <MoreVertIcon />
                         </IconButton>
                     }
-                    title="路路西法儿"
-                    subheader="July 9th, 2020"
+                    title="Binnie"
+                    subheader="July 10th, 2020"
                 />
                 <CardMedia
                     className={classes.media}
-                    image={PostImage1}
-                    title="沙滩"
+                    image={PostImage2}
+                    title="聚会"
                 />
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        毕业啦！来一场说走就走就的旅行
+                        周末好友聚会！
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>

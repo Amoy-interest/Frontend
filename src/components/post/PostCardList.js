@@ -7,10 +7,11 @@ import List from '@material-ui/core/List';
 import { FixedSizeList } from 'react-window';
 import PostCard from "./PostCard";
 import {Divider} from "@material-ui/core";
+import PostCardPersonal from "./PostCardPersonal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop:theme.spacing(3),
+        marginTop:theme.spacing(1),
         width: '100%',
         maxWidth: 485,
         backgroundColor: theme.palette.background.paper,
@@ -28,7 +29,7 @@ export default function PostCardList() {
                     <Divider/>
                 </ListItem>
                 <ListItem button>
-                    <PostCard/>
+                    <PostCardPersonal/>
                     <Divider/>
                 </ListItem>
                 <ListItem button>
