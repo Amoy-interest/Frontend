@@ -12,6 +12,8 @@ import FooterBar from "./components/basic/Footer";
 import HeaderBar from "./components/basic/Header";
 import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
+import HeaderAfterLogIn from "./components/basic/HeaderAfterLogIn";
+import PostsView from "./views/PostsView";
 const { Content, Header, Footer } = Layout;
 
 const useStyles = makeStyles((theme) =>
@@ -39,13 +41,13 @@ const useStyles = makeStyles((theme) =>
 
 function App() {
     const classes = useStyles();
-
+    const logged=true;
     return (
         <div className="App">
             <Router>
                 <Layout>
                     <Header>
-                        <HeaderBar/>
+                        {logged?<HeaderAfterLogIn/>:<HeaderBar/>}
                     </Header>
                     <Content>
                         <Container className={classes.container} maxWidth="lg">
@@ -55,6 +57,7 @@ function App() {
                                     <Route path='/home' component={HomeView} />
                                     <Route path='/personal-info' component={PersonalInfoView} />
                                     <Route path='/register' component={RegisterView} />
+                                    <Route path='/posts' component={PostsView} />
                                     <Route path='*' component={NotFoundView} />
                                 </Switch>
                             </main>

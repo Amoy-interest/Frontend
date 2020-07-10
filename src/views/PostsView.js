@@ -22,19 +22,9 @@ function HomeLayout() {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={3}>
-                <Grid item xs={2}>
-                    <SideBar/>
-                </Grid>
-                <Grid item xs={7}>
-                    <Paper className={classes.paper}><NewsCarousel/></Paper>
-                </Grid>
-                <Grid item xs>
-                    <Paper className={classes.paper}><HotSearchList/></Paper>
-                </Grid>
-            </Grid>
             <Grid container spacing={1}>
                 <Grid item xs={2}>
+                    <SideBar/>
                 </Grid>
                 <Grid item xs>
                     <PostCardList/>
@@ -46,9 +36,10 @@ function HomeLayout() {
         </div>
     );
 }
-class HomeView extends Component{
+class PostsView extends Component{
 
     render() {
+        console.log(this.props)
         return (
             <div>
                 <HomeLayout/>
@@ -57,4 +48,4 @@ class HomeView extends Component{
     }
 }
 
-export default HomeView;
+export default PostsView;
