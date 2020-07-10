@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CameraIcon from '@material-ui/icons/Camera';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 import Avatar1 from "../../assets/commentavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
@@ -110,21 +110,23 @@ export default function HeaderAfterLogIn() {
     const handleProfile = () => {
         handleMenuClose();
         history.replace('/personal-info');
-    }
+    };
 
     const handleLogout = () => {
         handleMenuClose();
         history.replace('/');
-    }
+    };
 
     const openPostsView=()=>{
         handleMenuClose();
         history.replace('/posts');
-    }
+    };
+
     const openHomeView=()=>{
         handleMenuClose();
         history.replace('/home');
-    }
+    };
+
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu

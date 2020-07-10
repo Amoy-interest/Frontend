@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../components/basic/SideBar";
-import NewsCarousel from "../components/NewsCarousel";
-import HotSearchList from "../components/HotSearchList";
 import PostCardList from "../components/post/PostCardList";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function HomeLayout() {
+function PostsLayout() {
     const classes = useStyles();
 
     return (
@@ -42,7 +39,7 @@ class PostsView extends Component{
         console.log(this.props)
         return (
             <div>
-                <HomeLayout/>
+                <PostsLayout/>
             </div>
         );
     }

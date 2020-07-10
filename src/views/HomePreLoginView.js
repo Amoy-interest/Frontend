@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../components/basic/SideBar";
 import NewsCarousel from "../components/NewsCarousel";
-import HotSearchList from "../components/HotSearchList";
+import HotSearchList from "../components/hot/HotSearchList";
 import PostCardList from "../components/post/PostCardList";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,13 +24,12 @@ function HomeLayout() {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
                 <Grid item xs={2}>
                     <SideBar/>
                 </Grid>
                 <Grid item xs={7}>
                     <Paper className={classes.paper}><NewsCarousel/></Paper>
-                    {/*<PostCardList/>*/}
                 </Grid>
                 <Grid item xs>
                     <Paper className={classes.paper}><HotSearchList/></Paper>
@@ -38,7 +37,6 @@ function HomeLayout() {
             </Grid>
             <Grid container spacing={1}>
                 <Grid item xs={2}>
-                    {/*<PostCardList/>*/}
                 </Grid>
                 <Grid item xs>
                     <PostCardList/>

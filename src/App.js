@@ -14,6 +14,7 @@ import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
 import HeaderAfterLogIn from "./components/basic/HeaderAfterLogIn";
 import PostsView from "./views/PostsView";
+import TopicDiscussionView from "./views/TopicDiscussionView";
 const { Content, Header, Footer } = Layout;
 
 const useStyles = makeStyles((theme) =>
@@ -58,6 +59,7 @@ function App() {
                                     <Route path='/personal-info' component={PersonalInfoView} />
                                     <Route path='/register' component={RegisterView} />
                                     <Route path='/posts' component={PostsView} />
+                                    <Route path='/topic-discussion' component={TopicDiscussionView} />
                                     <Route path='*' component={NotFoundView} />
                                 </Switch>
                             </main>
