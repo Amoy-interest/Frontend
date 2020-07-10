@@ -76,6 +76,15 @@ export default function HotSearchList() {
                     <ListItemText primary="德普" />
                     <ListItemText secondary="78880"/>
                 </ListItem>
+                <Divider/>
+                <ListItem button>
+                    <ListItemIcon>
+                        <StarIcon color={"secondary"}/>
+                    </ListItemIcon>
+                    <ListItemText primary="7"/>
+                    <ListItemText primary="伊朗肺炎" />
+                    <ListItemText secondary="60000"/>
+                </ListItem>
             </List>
         </div>
     );

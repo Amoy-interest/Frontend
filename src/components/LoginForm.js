@@ -13,6 +13,7 @@ import {AITextField} from "./basic/AIField";
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
+        width:350,
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(2),
@@ -23,15 +24,20 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    }
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
 }));
 
-export default function SignUp(props){
+export default function LoginForm(props){
     const classes = useStyles();
     const history = useHistory();
 
     const submit = () => {
-        console.log(props.props)
+        console.log(props.props);
+        props.move();
         history.replace('/home');
     }
 
@@ -39,6 +45,12 @@ export default function SignUp(props){
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Paper elevation={3} className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Log In
+                </Typography>
                 <Formik
                     initialValues={{
                         email: '',
@@ -66,7 +78,7 @@ export default function SignUp(props){
                                 onClick={submitForm}
                                 className={classes.submit}
                             >
-                                提交信息
+                                登陆
                             </Button>
                         </Form>
                     )}
