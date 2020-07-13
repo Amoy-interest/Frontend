@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import HomePreLoginView from "./views/HomePreLoginView";
 import HomeView from "./views/HomeView";
-import PersonalInfoView from "./views/PersonalInfoView";
+import ProfileView from "./views/ProfileView";
 import RegisterView from "./views/RegisterView";
 import NotFoundView from "./views/NotFoundView";
 import FooterBar from "./components/basic/Footer";
@@ -57,7 +57,7 @@ function App() {
                                 <Switch>
                                     <Route exact path='/' component={HomePreLoginView} />
                                     <Route path='/home' component={HomeView} />
-                                    <Route path='/personal-info' component={PersonalInfoView} />
+                                    <Route path='/personal-info' component={ProfileView} />
                                     <Route path='/register' component={RegisterView} />
                                     <Route path='/posts' component={PostsView} />
                                     <Route path='/topic-discussion' component={TopicDiscussionView} />
