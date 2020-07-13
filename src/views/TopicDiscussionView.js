@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../components/basic/SideBar";
 import PostCardList from "../components/post/PostCardList";
+import PostCardForm from "../components/PostCardForm";
+import TopicHeader from "../components/topic_discussion/TopicHeader";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,10 +26,15 @@ function TopicDiscussionLayout() {
                     <SideBar/>
                 </Grid>
                 <Grid item xs>
-                    <PostCardList/>
-                </Grid>
-                <Grid item xs>
-                    <PostCardList/>
+                    <TopicHeader/>
+                    <Grid container spacing={1}>
+                        <Grid item xs>
+                            <PostCardList/>
+                        </Grid>
+                        <Grid item xs>
+                            <PostCardList/>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>
