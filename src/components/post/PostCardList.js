@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+// import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
-import { FixedSizeList } from 'react-window';
+// import { FixedSizeList } from 'react-window';
 import PostCard from "./PostCard";
 import {Divider} from "@material-ui/core";
 import PostCardPersonal from "./PostCardPersonal";

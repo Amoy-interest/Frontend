@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField, AICheckField} from "./basic/AIField";
 

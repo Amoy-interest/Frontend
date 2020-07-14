@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "./basic/AIField";
-import Uploader from "./basic/Uploader";
+// import Uploader from "./basic/Uploader";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

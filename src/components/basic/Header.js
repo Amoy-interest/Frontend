@@ -13,7 +13,7 @@ import RedditIcon from '@material-ui/icons/Reddit';
 import { useHistory } from 'react-router-dom'
 import Modal from '@material-ui/core/Modal';
 import LoginForm from "../LoginForm";
-import Tooltip from '@material-ui/core/Tooltip';
+// import Tooltip from '@material-ui/core/Tooltip';
 
 function getModalStyle() {
     const top = 50;
