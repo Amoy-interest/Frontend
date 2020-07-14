@@ -6,23 +6,18 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Avatar1 from "../../assets/commentavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {amber, red} from '@material-ui/core/colors';
 import Background from '../../assets/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
-import PostCardForm from "../PostCardForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Button from '@material-ui/core/Button';
 import CardHeader from "@material-ui/core/CardHeader";
-import Avatar2 from "../../assets/postavatar.jpeg";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,14 +86,14 @@ export default function ProfileHeader() {
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             id={menuId}
             keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleEdit}><CreateIcon color='primary' />编辑</MenuItem>
+            <MenuItem  onClick={handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
         </Menu>
     );
     return (
@@ -108,7 +103,7 @@ export default function ProfileHeader() {
                 <CardHeader
                     action={
                         <IconButton onClick={handleProfileMenuOpen} aria-label="settings">
-                            <MoreVertIcon />
+                            <MoreVertIcon/>
                         </IconButton>
                     }
                 />
@@ -129,9 +124,9 @@ export default function ProfileHeader() {
                         粉丝：3000 | 关注：4000
                     </Typography>
                     <div style={{marginTop: '10px'}}>
-                    <Typography variant="body1" color="textPrimary" component="p" align='center'>
-                        简介:淘兴趣首席排版大师
-                    </Typography>
+                        <Typography variant="body1" color="textPrimary" component="p" align='center'>
+                            简介:淘兴趣首席排版大师
+                        </Typography>
                     </div>
                     <div style={{marginTop: '20px'}}>
                         <Grid container spacing={2}>
