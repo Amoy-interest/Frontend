@@ -28,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     content:{
-        paddingTop:20
+        paddingTop:40,
     },
     media: {
-        height: 70,
-        width:120,
+        height: 80,
+        width:140,
+        marginLeft:20
         //paddingTop: '56.25%', // 16:9
     },
     expand: {
@@ -74,15 +75,12 @@ export default function TopicHeader() {
                     {/*            <MoreVertIcon />*/}
                     {/*        </IconButton>*/}
                     {/*    }*/}
-                    {/*    title="#高考结束#"*/}
-                    {/*    subheader="September 14, 2016"*/}
+                    {/*    // title="#高考结束#"*/}
+                    {/*    // subheader="September 14, 2016"*/}
                     {/*>*/}
-                    {/*    <Avatar aria-label="recipe" className={classes.avatar}>*/}
-                    {/*    R*/}
-                    {/*    </Avatar>*/}
                     {/*</CardHeader>*/}
                     <CardContent className={classes.content}>
-                        <Grid container spacing={1}>
+                        <Grid container spacing={10}>
                             <Grid item xs={2}>
                                 <CardMedia
                                     className={classes.media}
@@ -90,9 +88,10 @@ export default function TopicHeader() {
                                     title="沙滩"
                                 />
                             </Grid>
-                            <Grid item xs={10}>
-                                <Typography variant="h4" color="textPrimary" component="p" align='left'>
-                                    #高考结束#
+                            <Grid item xs>
+                                <div style={{marginTop:'10px'}}>
+                                <Typography variant="h5" color="textPrimary" component="p" align='left'>
+                                    #全国各地高考结束，2020届准大学生来袭#
                                     <Chip
                                         size={"large"}
                                         icon={<FaceIcon />}
@@ -105,11 +104,12 @@ export default function TopicHeader() {
                                 <Typography variant="body2" color="textSecondary" component="p" align='left'>
                                    点击量：3亿 关注人数：3000
                                 </Typography>
+                                </div>
                             </Grid>
                         </Grid>
                     </CardContent>
                     <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
+                        <IconButton aria-label="add to favorites" style={{marginLeft:'10px'}}>
                             <FavoriteIcon />
                         </IconButton>
                         <IconButton aria-label="share">
