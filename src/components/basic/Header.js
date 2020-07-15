@@ -134,7 +134,7 @@ export default function HeaderBar() {
 
     const handleSignUp = () => {
         handleMenuClose();
-        history.replace('/register');
+        history.push('/register');
     }
 
     const handleSignIn = () => {
