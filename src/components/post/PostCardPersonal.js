@@ -18,7 +18,7 @@ import PostImage2 from '../../assets/post2.png';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
 import Avatar1 from'../../assets/commentavatar.jpeg';
-import {useHistory} from "react-router-dom";
+// import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -52,7 +52,6 @@ export default function PostCardPersonal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
 
     const handleMoreInfoClick = (event) => {

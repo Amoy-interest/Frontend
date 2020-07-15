@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
-import StarIcon from '@material-ui/icons/Star';
+// import StarIcon from '@material-ui/icons/Star';
 import { FixedSizeList } from 'react-window';
 import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";

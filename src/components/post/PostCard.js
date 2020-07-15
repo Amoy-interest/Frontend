@@ -18,7 +18,7 @@ import PostImage1 from '../../assets/post1.png';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
 import Avatar2 from'../../assets/postavatar.jpeg';
-import {useHistory} from "react-router-dom";
+// import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -51,7 +51,7 @@ export default function PostCard() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
+    // const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
 
     const handleMoreInfoClick = (event) => {
