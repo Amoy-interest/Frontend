@@ -1,8 +1,8 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+// import VisibilityIcon from '@material-ui/icons/Visibility';
 import Avatar1 from "../../assets/commentavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
@@ -15,7 +15,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import Button from '@material-ui/core/Button';
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {useHistory} from "react-router-dom";
+// import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -60,14 +60,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileHeader() {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    // const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
+    // const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+    // const handleExpandClick = () => {
+    //     setExpanded(!expanded);
+    // };
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };

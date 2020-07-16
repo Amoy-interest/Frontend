@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
+import {Route, Redirect} from 'react-router-dom'
 import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
 import FooterBar from "./components/basic/Footer";

@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Switch} from 'react-router-dom'
 import './App.css';
 import HomePreLoginView from "./views/HomePreLoginView";
 import HomeView from "./views/HomeView";
@@ -10,6 +10,7 @@ import PostsView from "./views/PostsView";
 import TopicDiscussionView from "./views/TopicDiscussionView";
 import PrivateRoute from "./PrivateRouter";
 import PublicRoute from "./PublicRouter";
+import TestView from "./views/TestView";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <PublicRoute exact path='/' component={HomePreLoginView}/>
                     <PublicRoute path='/register' component={RegisterView}/>
                     <PrivateRoute path='/home' component={HomeView}/>
+                    <PrivateRoute path='/test' component={TestView}/>
                     <PrivateRoute path='/personal-info' component={ProfileView}/>
                     <PrivateRoute path='/posts' component={PostsView}/>
                     <PrivateRoute path='/topic-discussion' component={TopicDiscussionView}/>
