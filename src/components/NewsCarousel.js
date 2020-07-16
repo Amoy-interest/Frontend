@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ReactSwiper from 'reactjs-swiper';
 import TravelImage from '../assets/travel.png';
 import ChildrenImage from '../assets/children.png';
@@ -7,25 +7,25 @@ import AnimalImage from '../assets/animal.png';
 import FunImage from  '../assets/fun.png';
 import YummyImage from '../assets/yummy.png';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    details: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    content: {
-        flex: '1 0 auto',
-    },
-    cover: {
-        width: '100%',
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         display: 'flex',
+//     },
+//     details: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//     },
+//     content: {
+//         flex: '1 0 auto',
+//     },
+//     cover: {
+//         width: '100%',
+//     },
+// }));
 
 export default function NewsCarousel() {
-    const classes = useStyles();
-    const theme = useTheme();
+    // const classes = useStyles();
+    // const theme = useTheme();
         const items = [{
             image: FunImage,
             title: '娱乐',

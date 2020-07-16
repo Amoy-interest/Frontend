@@ -56,6 +56,10 @@ function HomeLayout() {
 }
 class HomeView extends Component{
 
+    componentWillMount(){
+
+    }
+
     render() {
         return (
             <div>

@@ -49,6 +49,7 @@ class ProfileView extends Component{
         return (
             <div>
                 <ProfileLayout/>
+                {/*<Button variant="contained" color="primary">go to home</Button>*/}
             </div>
         );
     }
