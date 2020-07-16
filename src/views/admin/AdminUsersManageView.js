@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import SideBarForAdmin from "../../components/admin/SideBarForAdmin";
-import PostsList from "../../components/admin/PostsList";
+import AdminSideBar from "../../components/admin/AdminSideBar";
+import AdminUsersList from "../../components/admin/AdminUsersList";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,19 +26,17 @@ function PostsLayout() {
             <Paper elevation={1} className={classes.root}>
             <Grid container spacing={1}>
                 <Grid item xs={2}>
-                    <SideBarForAdmin index={1}/>
+                    <AdminSideBar index={0}/>
                 </Grid>
                 <Grid item xs>
-
-                        <PostsList/>
-
+                    <AdminUsersList/>
                 </Grid>
             </Grid>
             </Paper>
         </div>
     );
 }
-class PostsManageView extends Component{
+class AdminUsersManageView extends Component{
 
     render() {
         console.log(this.props)
@@ -50,4 +48,4 @@ class PostsManageView extends Component{
     }
 }
 
-export default PostsManageView;
+export default AdminUsersManageView;

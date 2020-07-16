@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SideBarForAdmin(props) {
+export default function AdminSideBar(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(props.index);
     const history = useHistory();

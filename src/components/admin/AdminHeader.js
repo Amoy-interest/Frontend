@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeaderForAdmin() {
+export default function AdminHeader() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
@@ -110,10 +110,10 @@ export default function HeaderForAdmin() {
         setAnchorEl(null);
     };
 
-    const handleProfile = () => {
-        handleMenuClose();
-        history.replace('/personal-info');
-    };
+    // const handleProfile = () => {
+    //     handleMenuClose();
+    //     history.replace('/personal-info');
+    // };
 
     const handleLogout = () => {
         handleMenuClose();

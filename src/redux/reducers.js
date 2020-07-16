@@ -1,8 +1,5 @@
 import { combineReducers } from 'redux'
-import {
-  SET_USER,
-  REMOVE_USER
-} from './actions'
+import {ActionType} from "../utils/constants";
 
 function userReducer(
     state = {
@@ -10,12 +7,12 @@ function userReducer(
         user: null
     }, action) {
   switch (action.type) {
-    case SET_USER:
+    case ActionType.SET_USER:
       return Object.assign({}, state, {
         loginState: true,
         user: action.user
       })
-    case REMOVE_USER:
+    case ActionType.REMOVE_USER:
       return Object.assign({}, state, {
         loginState: false,
         user: null

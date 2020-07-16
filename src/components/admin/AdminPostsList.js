@@ -13,7 +13,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from "@material-ui/core/Button";
 import PostImage1 from "../../assets/post1.png";
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import BlockIcon from '@material-ui/icons/Block';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PostsList() {
+export default function AdminPostsList() {
     const classes = useStyles();
     const [checked, setChecked] = React.useState([0]);
 

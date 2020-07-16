@@ -8,13 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import MicOffIcon from '@material-ui/icons/MicOff';
-import BlockIcon from '@material-ui/icons/Block';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import Avatar1 from "../../assets/commentavatar.jpeg";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import PostImage1 from "../../assets/post1.png";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UsersList() {
+export default function AdminTopicsList() {
     const classes = useStyles();
     const [checked, setChecked] = React.useState([0]);
 
@@ -50,10 +49,10 @@ export default function UsersList() {
         <div>
             <div style={{marginTop:'30px',marginBottom:'30px'}}>
                 <Button variant="contained" color="secondary">
-                    禁言所选用户
+                    删除所选话题
                 </Button>
                 <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                    封号所选用户
+                    调整话题位置
                 </Button>
             </div>
             <List className={classes.root}>
@@ -75,21 +74,21 @@ export default function UsersList() {
                             <ListItemAvatar>
                                 <Avatar
                                     alt={`Avatar n°${value + 1}`}
-                                    src={Avatar1}
+                                    src={PostImage1}
                                 />
                             </ListItemAvatar>
-                            <ListItemText id={labelId} primary={`用户 ${value + 1}`}/>
-                            <ListItemText id={labelId} primary={`被举报次数 ${100 - value + 1}`}/>
-                            <ListItemText id={labelId} primary={`涉及敏感词次数 ${100 - value + 1}`}/>
+                            <ListItemText id={labelId} primary={`#话题 ${value + 1}#`}/>
+                            <ListItemText id={labelId} primary={`话题热度 ${10000 - value + 1}`}/>
+                            <ListItemText id={labelId} primary={`点击量  ${100 - value + 1}`}/>
                             <ListItemSecondaryAction>
-                                <Tooltip title={"禁言"}>
+                                <Tooltip title={"删除"}>
                                     <IconButton edge="end" aria-label="micoff">
-                                        <MicOffIcon/>
+                                        <DeleteIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title={"封号"}>
+                                <Tooltip title={"编辑"}>
                                     <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                        <BlockIcon/>
+                                        <EditIcon/>
                                     </IconButton>
                                 </Tooltip>
                             </ListItemSecondaryAction>

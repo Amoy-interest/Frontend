@@ -27,7 +27,7 @@ let postRequest_form = (url, data, callback) => {
         });
 };
 
-// user json
+// use json data
 let postRequest_json = (url, json, callback) => {
 
     let opts = {
@@ -51,4 +51,4 @@ let postRequest_json = (url, json, callback) => {
         });
 };
 
-export {postRequest_form,postRequest_json};
+export {postRequest_form, postRequest_json};

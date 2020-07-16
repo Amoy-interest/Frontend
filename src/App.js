@@ -11,9 +11,9 @@ import TopicDiscussionView from "./views/user/TopicDiscussionView";
 import PrivateRoute from "./routers/PrivateRouter";
 import PublicRoute from "./routers/PublicRouter";
 import AdminRoute from "./routers/AdminRouter";
-import UsersManageView from "./views/admin/UsersManageView";
-import PostsManageView from "./views/admin/PostsManageView";
-import TopicsManageView from "./views/admin/TopicsManageView";
+import AdminUsersManageView from "./views/admin/AdminUsersManageView";
+import AdminPostsManageView from "./views/admin/AdminPostsManageView";
+import AdminTopicsManageView from "./views/admin/AdminTopicsManageView";
 import TestView from "./views/TestView";
 
 
@@ -30,9 +30,9 @@ function App() {
                     <PrivateRoute path='/posts' component={PostsView}/>
                     <PrivateRoute path='/topic-discussion' component={TopicDiscussionView}/>
                     <AdminRoute path='/admin-home' component={HomeView}/>
-                    <AdminRoute path='/users-manage' component={UsersManageView}/>
-                    <AdminRoute path='/posts-manage' component={PostsManageView}/>
-                    <AdminRoute path='/topics-manage' component={TopicsManageView}/>
+                    <AdminRoute path='/users-manage' component={AdminUsersManageView}/>
+                    <AdminRoute path='/posts-manage' component={AdminPostsManageView}/>
+                    <AdminRoute path='/topics-manage' component={AdminTopicsManageView}/>
                     <PublicRoute path='*' component={NotFoundView}/>
                 </Switch>
             </Router>

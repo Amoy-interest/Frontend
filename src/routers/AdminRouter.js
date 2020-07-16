@@ -1,12 +1,12 @@
 import React from 'react';
-import {Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
+import {Route, Redirect} from 'react-router-dom'
 import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
 import FooterBar from "../components/basic/Footer";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
-import HeaderAfterLogIn from "../components/basic/HeaderAfterLogIn";
-import HeaderForAdmin from "../components/admin/HeaderForAdmin";
-import {blue,indigo,amber} from "@material-ui/core/colors";
+// import HeaderAfterLogIn from "../components/basic/HeaderAfterLogIn";
+import AdminHeader from "../components/admin/AdminHeader";
+import {blue,indigo} from "@material-ui/core/colors";
 import {ThemeProvider} from "@material-ui/styles";
 
 const theme = createMuiTheme({
@@ -74,7 +74,7 @@ export default function AdminRoute(props) {
                 <div className="AdminRouter">
                     <Layout>
                         <Header>
-                            <HeaderForAdmin/>、
+                            <AdminHeader/>、
                         </Header>
                         <Content>
                             <Container className={classes.container} maxWidth="lg">
