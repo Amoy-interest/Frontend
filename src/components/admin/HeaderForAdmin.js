@@ -8,21 +8,14 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import RedditIcon from '@material-ui/icons/Reddit';
-import { useHistory } from 'react-router-dom'
-import Modal from '@material-ui/core/Modal';
-import LoginForm from "../LoginForm";
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50 ;
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import CameraIcon from '@material-ui/icons/Camera';
+import { useHistory } from 'react-router-dom';
+import Avatar1 from "../../assets/postavatar.jpeg";
+import Avatar from "@material-ui/core/Avatar";
+import RedditIcon from "@material-ui/icons/Reddit";
+import Tooltip from '@material-ui/core/Tooltip';
+import TrackChangesIcon from '@material-ui/icons/TrackChanges';
+import {blue} from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -30,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         zIndex:1,
         opacity: 0.70,
+        backgroundColor:blue[100]
     },
     blank:{
         flexGrow: 1,
@@ -102,27 +96,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeaderBar() {
+export default function HeaderForAdmin() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const body = (
-        <div style={modalStyle} className={classes.paper}>
-            <LoginForm move={handleClose}/>
-        </div>
-    );
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -131,15 +110,27 @@ export default function HeaderBar() {
         setAnchorEl(null);
     };
 
-    const handleSignUp = () => {
+    const handleProfile = () => {
         handleMenuClose();
-        history.push('/register');
-    }
+        history.replace('/personal-info');
+    };
 
-    const handleSignIn = () => {
+    const handleLogout = () => {
         handleMenuClose();
-        handleOpen();
-    }
+        var log=0;
+        localStorage.setItem('logged',log.toString());
+        history.replace('/');
+    };
+
+    const openUsersManageView=()=>{
+        handleMenuClose();
+        history.replace('/users-manage');
+    };
+
+    const openHomeView=()=>{
+        handleMenuClose();
+        history.replace('/admin-home');
+    };
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -152,14 +143,14 @@ export default function HeaderBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleSignUp}>注册</MenuItem>
-            <MenuItem onClick={handleSignIn}>登陆</MenuItem>
+            {/*<MenuItem onClick={handleProfile}>个人资料</MenuItem>*/}
+            <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
         </Menu>
     );
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" >
                 <Toolbar >
                     <IconButton
                         edge="start"
@@ -170,14 +161,14 @@ export default function HeaderBar() {
                         <RedditIcon/>
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
-                        Amoy Interest
+                        Amoy Interest Management
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
                         </div>
                         <InputBase
-                            placeholder="发现更精彩的世界"
+                            placeholder="请输入关键词"
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -188,29 +179,46 @@ export default function HeaderBar() {
                     </div>
 
                     <div className={classes.blank} />
-                    <div className={classes.sectionDesktop}>
+                    <Tooltip title="管理">
                         <IconButton
-                        edge="end"
-                        aria-label="account of current user"
-                        aria-controls={menuId}
-                        aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                    </IconButton>
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={openUsersManageView}
+                        >
+                            <TrackChangesIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="主页">
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={openHomeView}
+                        >
+                            <CameraIcon/>
+                        </IconButton>
+                    </Tooltip>
+
+                    <div className={classes.sectionDesktop}>
+                        <Tooltip title="个人">
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <Avatar className={classes.avatar} src={Avatar1}/>
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </Toolbar>
             </AppBar>
             {renderMenu}
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
         </div>
     );
 }

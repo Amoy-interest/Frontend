@@ -34,7 +34,7 @@ export default function HotSearchList() {
     return (
         <div>
             <Typography className={classes.title} variant="h6">热搜榜</Typography>
-            <FixedSizeList height={370} width={289} itemSize={50} itemCount={60}>
+            <FixedSizeList height={357} width={273} itemSize={50} itemCount={60}>
                 {renderRow}
             </FixedSizeList>
         </div>

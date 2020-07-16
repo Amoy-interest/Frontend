@@ -1,15 +1,19 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
-import HomePreLoginView from "./views/HomePreLoginView";
-import HomeView from "./views/HomeView";
-import ProfileView from "./views/ProfileView";
-import RegisterView from "./views/RegisterView";
-import NotFoundView from "./views/NotFoundView";
-import PostsView from "./views/PostsView";
-import TopicDiscussionView from "./views/TopicDiscussionView";
-import PrivateRoute from "./PrivateRouter";
-import PublicRoute from "./PublicRouter";
+import HomePreLoginView from "./views/public/HomePreLoginView";
+import HomeView from "./views/user/HomeView";
+import ProfileView from "./views/user/ProfileView";
+import RegisterView from "./views/public/RegisterView";
+import NotFoundView from "./views/public/NotFoundView";
+import PostsView from "./views/user/PostsView";
+import TopicDiscussionView from "./views/user/TopicDiscussionView";
+import PrivateRoute from "./routers/PrivateRouter";
+import PublicRoute from "./routers/PublicRouter";
+import AdminRoute from "./routers/AdminRouter";
+import UsersManageView from "./views/admin/UsersManageView";
+import PostsManageView from "./views/admin/PostsManageView";
+import TopicsManageView from "./views/admin/TopicsManageView";
 
 
 function App() {
@@ -23,6 +27,10 @@ function App() {
                     <PrivateRoute path='/personal-info' component={ProfileView}/>
                     <PrivateRoute path='/posts' component={PostsView}/>
                     <PrivateRoute path='/topic-discussion' component={TopicDiscussionView}/>
+                    <AdminRoute path='/admin-home' component={HomeView}/>
+                    <AdminRoute path='/users-manage' component={UsersManageView}/>
+                    <AdminRoute path='/posts-manage' component={PostsManageView}/>
+                    <AdminRoute path='/topics-manage' component={TopicsManageView}/>
                     <PublicRoute path='*' component={NotFoundView}/>
                 </Switch>
             </Router>
