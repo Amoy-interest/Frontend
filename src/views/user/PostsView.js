@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBar from "../components/basic/SideBar";
-import PostCardList from "../components/post/PostCardList";
-import ProfileHeader from "../components/profile/ProfileHeader";
+import SideBar from "../../components/basic/SideBar";
+import PostCardList from "../../components/post/PostCardList";
+import PostCardForm from "../../components/PostCardForm";
+import Paper from "@material-ui/core/Paper";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        marginBottom:theme.spacing(1)
     },
     paper: {
         textAlign: 'center',
@@ -14,17 +17,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProfileLayout() {
+
+function PostsLayout() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div >
+            <Paper elevation={1} className={classes.root}>
             <Grid container spacing={1}>
                 <Grid item xs={2}>
                     <SideBar/>
                 </Grid>
                 <Grid item xs>
-                    <ProfileHeader/>
+                    <PostCardForm/>
                     <Grid container spacing={1}>
                         <Grid item xs>
                             <PostCardList/>
@@ -35,19 +40,20 @@ function ProfileLayout() {
                     </Grid>
                 </Grid>
             </Grid>
+                </Paper>
         </div>
     );
 }
-class ProfileView extends Component{
+class PostsView extends Component{
 
     render() {
         console.log(this.props)
         return (
             <div>
-                <ProfileLayout/>
+                <PostsLayout/>
             </div>
         );
     }
 }
 
-export default ProfileView;
+export default PostsView;
