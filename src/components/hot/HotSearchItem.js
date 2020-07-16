@@ -43,7 +43,7 @@ export default function HotSearchItem(props) {
                 {/*    <StarIcon color={"secondary"}/>*/}
                 {/*</ListItemIcon>*/}
                 <ListItemText className={classes.number} primary={`${props.index + 1}`} />
-                <ListItemText className={classes.text} primary="高考结束" />
+                <ListItemText className={classes.text} primary="高考" />
                 <ListItemText className={classes.secondaryText} secondary="232400"/>
                 <Chip
                     size={"small"}
