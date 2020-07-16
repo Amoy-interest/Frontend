@@ -20,12 +20,21 @@ class TestView extends Component{
         login(data);
     }
 
+    handleLogin_3(){
+        let data = {
+            username: 'a'
+        }
+
+        login(data);
+    }
+
     render() {
         return (
             <div>
                 TestView page!
                 <button onClick={this.handleLogin}>login</button>
                 <button onClick={this.handleLogin_wrong}>login wrong</button>
+                <button onClick={this.handleLogin_3}>login 3</button>
             </div>
         );
     }
