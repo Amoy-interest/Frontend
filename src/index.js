@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -6,12 +6,21 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux'
 import {store} from './redux/configureStore'
 
+class AppComplete extends Component {
+
+    render(){
+        return (
+            <React.StrictMode>
+                <Provider store={store}>
+                    <App />
+                </Provider>
+            </React.StrictMode>
+        );
+    }
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-      <Provider store={store}>
-          <App />
-      </Provider>
-  </React.StrictMode>,
+  <AppComplete/>,
   document.getElementById('root')
 );
 

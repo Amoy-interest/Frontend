@@ -1,18 +1,18 @@
 import { combineReducers } from 'redux'
-import {ActionType} from "../utils/constants";
+import {UserActionType, TokenActionType} from "../utils/constants";
 
 function userReducer(
     state = {
         loginState: false,
-        user: null
+        user: null,
     }, action) {
   switch (action.type) {
-    case ActionType.SET_USER:
+    case UserActionType.SET_USER:
       return Object.assign({}, state, {
         loginState: true,
         user: action.user
       })
-    case ActionType.REMOVE_USER:
+    case UserActionType.REMOVE_USER:
       return Object.assign({}, state, {
         loginState: false,
         user: null
@@ -20,6 +20,19 @@ function userReducer(
     default:
       return state
   }
+}
+
+
+function tokenReducer(
+    state = '', action) {
+    switch (action.type) {
+        case TokenActionType.SET_TOKEN:
+            return action.token
+        case TokenActionType.REMOVE_TOKEN:
+            return ''
+        default:
+            return state
+    }
 }
 
 // function selectedSubreddit(state = 'reactjs', action) {
@@ -74,6 +87,6 @@ function userReducer(
 //   }
 // }
 
-const rootReducer = combineReducers({userReducer})
+const rootReducer = combineReducers({userReducer, tokenReducer})
 
 export default rootReducer

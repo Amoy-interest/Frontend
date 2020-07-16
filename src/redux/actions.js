@@ -1,17 +1,30 @@
 // import fetch from 'cross-fetch'
 
-import {ActionType} from "../utils/constants";
+import {UserActionType, TokenActionType} from "../utils/constants";
 
 export function setUser(user) {
     return {
-        type: ActionType.SET_USER,
+        type: UserActionType.SET_USER,
         user
     }
 }
 
 export function removeUser() {
     return {
-        type: ActionType.REMOVE_USER,
+        type: UserActionType.REMOVE_USER,
+    }
+}
+
+export function setToken(token) {
+    return {
+        type: TokenActionType.SET_TOKEN,
+        token
+    }
+}
+
+export function removeToken() {
+    return {
+        type: TokenActionType.REMOVE_TOKEN,
     }
 }
 

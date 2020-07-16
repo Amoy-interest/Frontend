@@ -1,7 +1,36 @@
 import React, {Component} from 'react';
 import {login} from "../service/userService";
+import {setToken, setUser} from "../redux/actions";
+import { connect } from 'react-redux'
+// import PropTypes from 'prop-types'
+import {store} from "../redux/configureStore";
 
-class TestView extends Component{
+function mapStateToProps(state) {
+    return {
+        value: state
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onSetUser: () => {
+            let user = {
+                name: 'bess',
+                userType: 0
+            }
+            dispatch(setUser(user));
+            dispatch(setToken('zyw token'));
+        }
+    }
+}
+
+class Test extends Component{
+    constructor(props) {
+        super(props);
+
+        this.handleGetStore = this.handleGetStore.bind(this)
+        this.handleDispatch = this.handleDispatch.bind(this)
+    }
 
     handleLogin(){
         let data = {
@@ -20,13 +49,16 @@ class TestView extends Component{
         login(data);
     }
 
-    handleLogin_3(){
-        let data = {
-            username: 'a'
-        }
-
-        login(data);
+    handleGetStore(){
+        // console.log(store.getState().tokenReducer)
+        console.log(this.props.value)
     }
+
+    handleDispatch(){
+        this.props.onSetUser()
+        store.dispatch(setToken("4839165"))
+    }
+
 
     render() {
         return (
@@ -34,10 +66,15 @@ class TestView extends Component{
                 TestView page!
                 <button onClick={this.handleLogin}>login</button>
                 <button onClick={this.handleLogin_wrong}>login wrong</button>
-                <button onClick={this.handleLogin_3}>login 3</button>
+                <button onClick={this.handleGetStore}>GetStore</button>
+                <button onClick={this.handleDispatch}>Dispatch</button>
             </div>
         );
     }
 }
 
-export default TestView;
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Test)
