@@ -9,6 +9,7 @@ import {amber} from "@material-ui/core/colors";
 import {ThemeProvider} from "@material-ui/styles";
 
 const {Content, Header, Footer} = Layout;
+
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -19,6 +20,7 @@ const theme = createMuiTheme({
         },
     },
 });
+
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
@@ -40,9 +42,9 @@ const useStyles = makeStyles((theme) =>
         }
     })
 )
+
 export default function PublicRoute(props) {
     const classes = useStyles();
-
 
     const {component: Component, path = "/", exact = false, strict = false} = props;
 

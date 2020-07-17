@@ -16,6 +16,8 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import {blue} from "@material-ui/core/colors";
+import {removeToken, removeUser, setToken, setUser} from "../../redux/actions";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -96,7 +98,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AdminHeader() {
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogout: () => {
+            dispatch(removeUser());
+            dispatch(removeToken());
+        }
+    }
+}
+
+function AdminHeader(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
@@ -117,8 +128,7 @@ export default function AdminHeader() {
 
     const handleLogout = () => {
         handleMenuClose();
-        var log=0;
-        localStorage.setItem('logged',log.toString());
+        props.onLogout();
         history.replace('/');
     };
 
@@ -222,3 +232,8 @@ export default function AdminHeader() {
         </div>
     );
 }
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(AdminHeader)

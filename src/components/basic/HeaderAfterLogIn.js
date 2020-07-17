@@ -15,6 +15,8 @@ import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
+import {removeToken, removeUser} from "../../redux/actions";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -94,7 +96,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeaderAfterLogIn() {
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogout: () => {
+            dispatch(removeUser());
+            dispatch(removeToken());
+        }
+    }
+}
+
+function HeaderAfterLogIn(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
@@ -115,8 +126,7 @@ export default function HeaderAfterLogIn() {
 
     const handleLogout = () => {
         handleMenuClose();
-        var log=0;
-        localStorage.setItem('logged',log.toString());
+        props.onLogout();
         history.replace('/');
     };
 
@@ -220,3 +230,8 @@ export default function HeaderAfterLogIn() {
         </div>
     );
 }
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(HeaderAfterLogIn)

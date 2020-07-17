@@ -7,10 +7,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "./basic/AIField";
 import {login} from "../service/userService";
+import {useHistory} from "react-router";
+import {setToken, setUser} from "../redux/actions";
+import {connect} from "react-redux";
+import {UserType} from "../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,12 +38,43 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function LoginForm(props){
+function mapStateToProps(state) {
+    return {
+        value: state
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogin: (user, token) => {
+            dispatch(setUser(user));
+            dispatch(setToken(token));
+        }
+    }
+}
+
+function LoginForm(props){
     const classes = useStyles();
+    const history = useHistory();
+
+    const callback = (data) => {
+        console.log(data);
+        if (data.status !== 200) {
+            message.error(data.msg);
+            return;
+        }
+
+        message.success(data.msg);
+        props.onLogin(data.data.user, data.data.token)
+        if (data.data.user.user_type === UserType.CUSTOMER)
+            history.push('/home');
+        else
+            history.push('/admin-home');
+    }
 
     const submit = (values) => {
         console.log(values);
-        login(values)
+        login(values, callback)
         props.closeModal();
     }
 
@@ -89,6 +125,12 @@ export default function LoginForm(props){
         </Container>
     );
 }
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginForm)
 
 
 
