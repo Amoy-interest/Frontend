@@ -29,14 +29,7 @@ function TopicDiscussionLayout() {
                 </Grid>
                 <Grid item xs>
                     <TopicHeader/>
-                    <Grid container spacing={1}>
-                        <Grid item xs>
-                            <PostCardList/>
-                        </Grid>
-                        <Grid item xs>
-                            <PostCardList/>
-                        </Grid>
-                    </Grid>
+                    <PostCardList index={0}/>
                 </Grid>
             </Grid>
                 </Paper>

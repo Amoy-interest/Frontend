@@ -64,27 +64,38 @@ const postRequest_json = (url, json, callback) => {
     Request_json(url, json, callback, 'POST');
 };
 
-// get form data
-const getRequest_form = (url, data, callback) => {
-    Request_form(url, data, callback, 'GET');
-};
-
 // get json data
-let getRequest_json = (url, json, callback) => {
-    Request_json(url, json, callback, 'GET');
+const getRequest = (url,callback) => {
+    let opts = {
+        method: "GET",
+        headers: {
+            'token': store.getState().tokenReducer,
+        },
+        credentials: "include"
+    };
+
+    fetch(url,opts)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            callback(data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 // put json data
-let putRequest_json = (url, json, callback) => {
+const putRequest_json = (url, json, callback) => {
     Request_json(url, json, callback, 'PUT')
 };
 
 // delete json data
-let deleteRequest_json = (url, json, callback) => {
+const deleteRequest_json = (url, json, callback) => {
     Request_json(url, json, callback, 'DELETE')
 };
 
-export {postRequest_form, postRequest_json,
-    getRequest_form, getRequest_json,
+export {postRequest_form, postRequest_json, getRequest,
     putRequest_json, deleteRequest_json
 };
