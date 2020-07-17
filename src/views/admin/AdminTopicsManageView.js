@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 function PostsLayout() {
     const classes = useStyles();
 
@@ -38,6 +37,7 @@ function PostsLayout() {
         </div>
     );
 }
+
 class AdminTopicsManageView extends Component{
 
     render() {

@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import FooterBar from "../components/basic/Footer";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
 import HeaderAfterLogIn from "../components/basic/HeaderAfterLogIn";
-// import AdminHeader from "../components/admin/AdminHeader";
 import {ThemeProvider} from "@material-ui/styles";
 import {amber} from "@material-ui/core/colors";
 
@@ -21,6 +20,7 @@ const theme = createMuiTheme({
         },
     },
 });
+
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
@@ -28,10 +28,8 @@ const useStyles = makeStyles((theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
         },
         container: {
-            //backgroundColor: '#cfe8fc',
             minHeight: '85vh',
         },
         scrollTop: {
@@ -42,6 +40,7 @@ const useStyles = makeStyles((theme) =>
         }
     })
 )
+
 export default function PrivateRoute(props) {
     const classes = useStyles();
     const isAuthed = true;

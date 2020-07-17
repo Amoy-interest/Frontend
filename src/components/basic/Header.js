@@ -120,7 +120,7 @@ export default function HeaderBar() {
 
     const body = (
         <div style={modalStyle} className={classes.paper}>
-            <LoginForm move={handleClose}/>
+            <LoginForm closeModal={handleClose}/>
         </div>
     );
     const handleProfileMenuOpen = (event) => {

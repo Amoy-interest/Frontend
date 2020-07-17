@@ -1,12 +1,10 @@
 import React from 'react';
 import {Route} from 'react-router-dom'
-// import {BrowserRouter as Router} from 'react-router-dom'
 import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
 import FooterBar from "../components/basic/Footer";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
 import HeaderBar from "../components/basic/Header";
-// import AdminHeader from "../components/admin/AdminHeader";
 import {amber} from "@material-ui/core/colors";
 import {ThemeProvider} from "@material-ui/styles";
 
