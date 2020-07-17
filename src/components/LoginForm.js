@@ -11,7 +11,7 @@ import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "./basic/AIField";
-import {login} from "../service/userService";
+import * as userService from "../service/userService";
 import {useHistory} from "react-router";
 import {setToken, setUser} from "../redux/actions";
 import {connect} from "react-redux";
@@ -74,7 +74,7 @@ function LoginForm(props){
 
     const submit = (values) => {
         console.log(values);
-        login(values, callback)
+        userService.login(values, callback)
         props.closeModal();
     }
 

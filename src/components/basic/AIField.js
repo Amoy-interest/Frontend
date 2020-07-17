@@ -83,7 +83,7 @@ export function AIPickerField (props) {
                     {
                         props.array.map((item) => {
                             return(
-                                <MenuItem value={item}>{item}</MenuItem>
+                                <MenuItem value={item.value}>{item.name}</MenuItem>
                             )
                         })
                     }
