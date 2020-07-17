@@ -87,11 +87,10 @@ let getRequest_form = (url, data, callback) => {
 };
 
 // get json data
-let getRequest_json = (url, json, callback) => {
+let getRequest_json = (url,callback) => {
 
     let opts = {
         method: "GET",
-        body: JSON.stringify(json),
         headers: {
             'token': store.getState().tokenReducer,
             'Content-Type': 'application/json'

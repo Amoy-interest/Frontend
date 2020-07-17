@@ -1,42 +1,81 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
-// import { FixedSizeList } from 'react-window';
+import React, {Component} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import PostCard from "./PostCard";
-import {Divider} from "@material-ui/core";
-import PostCardPersonal from "./PostCardPersonal";
+import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/postService";
+import {Grid} from "@material-ui/core";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        //marginTop:theme.spacing(1),
         width: '100%',
-        maxWidth: 460,
-        //backgroundColor: theme.palette.background.paper,
+        marginLeft: "1.5px",
+        marginTop: theme.spacing(2)
     },
 }));
 
-export default function PostCardList() {
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
+}
+
+function PostCards(props) {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-            <List>
-                <ListItem button>
-                    <PostCard/>
-                    <Divider/>
-                </ListItem>
-                <ListItem button>
-                    <PostCardPersonal/>
-                    <Divider/>
-                </ListItem>
-                <ListItem button>
-                    <PostCard/>
-                    <Divider/>
-                </ListItem>
-            </List>
+            <Grid className={classes.root} container spacing={2}>
+                {props.posts.map((item, value) => {
+                    const userId = item.blog_child.user_id;
+                    return (
+                        <Grid item xs={6} className={classes.item} key={value}>
+                            {(props.user === null || props.user.user_id !== userId) ?
+                                <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
+                        </Grid>
+                    );
+                })}
+            </Grid>
         </div>
     );
+}
+
+const Posts = connect(
+    mapStateToProps, null
+)(PostCards);
+
+export default class PostCardList extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {posts: null};
+    }
+
+    componentDidMount() {
+        const callback = (data) => {
+            this.setState({posts: data.data});
+            console.log(this.state.posts);
+        };
+        switch (this.props.index) {
+            case 0:
+            default:
+                getRandomPosts(callback);
+                break;
+            case 1:
+                getRecommendPosts(callback);
+                break;
+            case 2:
+                getFollowPosts(callback);
+                break;
+            case 3:
+                getOwnPosts(callback);
+                break;
+        }
+    }
+
+    render() {
+        if (!this.state.posts) return (<div>Loading</div>);
+        else return (
+            <Posts posts={this.state.posts}/>
+        );
+    }
 }

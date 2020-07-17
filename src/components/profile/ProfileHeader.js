@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import Avatar1 from "../../assets/commentavatar.jpeg";
+import Avatar1 from "../../assets/postavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,7 +13,6 @@ import CreateIcon from '@material-ui/icons/Create';
 import Button from '@material-ui/core/Button';
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-// import {useHistory} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -91,7 +90,7 @@ export default function ProfileHeader() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem  onClick={handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
+            <MenuItem onClick={handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
         </Menu>
     );
     return (
@@ -116,14 +115,14 @@ export default function ProfileHeader() {
                         </Grid>
                     </Grid>
                     <Typography variant="h5" color="textPrimary" align='center'>
-                        Binnie
+                        Mok
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" align='center'>
                         粉丝：3000 | 关注：4000
                     </Typography>
                     <div style={{marginTop: '10px'}}>
                         <Typography variant="body1" color="textPrimary" component="p" align='center'>
-                            简介:淘兴趣首席排版大师
+                            简介:优秀交大青年
                         </Typography>
                     </div>
                     <div style={{marginTop: '20px'}}>
