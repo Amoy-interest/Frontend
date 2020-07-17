@@ -1,73 +1,98 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import { FixedSizeList } from 'react-window';
+import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
 import Avatar1 from '../../assets/commentavatar.jpeg';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import IconButton from "@material-ui/core/IconButton";
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
-        marginLeft:theme.spacing(2)
     },
-    text:{
-        minWidth:300,
+    text: {
+        minWidth: 300,
     },
-    submit:{
+    submit: {
         width: 90,
-        height:54,
-        marginLeft:theme.spacing(1)
+        height: 54,
+        marginLeft: theme.spacing(1)
     },
-    command:{
-        marginTop:theme.spacing(1)
+    comment: {
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(2)
     },
     inline: {
         display: 'inline',
     },
 }));
 
-function renderRow(props) {
-    const { index, style } = props;
 
-    return (
-        <ListItem button style={style} key={index}>
-            <ListItemAvatar>
-                <Avatar alt="Binnie" src={Avatar1} />
-            </ListItemAvatar>
-            <ListItemText
-                primary="Binnie"
-                secondary={
-                    <React.Fragment>
+export default function CommentList(props) {
+    const classes = useStyles();
+    const comments = props.comments;
+
+    function renderRow(itemprops) {
+        const {index, style} = itemprops;
+
+        return (
+            <ListItem button style={style} key={index}>
+                <ListItemAvatar>
+                    <Avatar alt="Binnie" src={Avatar1}/>
+                </ListItemAvatar>
+                <ListItemText
+                    primary={comments[index].nickname}
+                    secondary={
+                        <React.Fragment>
+                            <Typography
+                                component="span"
+                                variant="body2"
+                                display='inline'
+                                color="textPrimary"
+                            >
+                                {comments[index].comment_text}
+                            </Typography>
+                            <Typography
+                                component="span"
+                                variant="body2"
+                                display='inline'
+                                color="textSecondary"
+                            >
+                                {comments[index].comment_time}
+                            </Typography>
+                        </React.Fragment>
+                    }
+                />
+                <ListItemIcon>
+                    <IconButton edge="end" aria-label="micoff" style={{marginRight: "5px"}}>
+                        <ThumbUpAltIcon/>
                         <Typography
                             component="span"
                             variant="body2"
                             display='inline'
                             color="textPrimary"
                         >
-                            羡慕！
+                            {comments[index].vote_count}
                         </Typography>
-                        {"我也想要说走就走的旅行"}
-                    </React.Fragment>
-                }
-            />
-        </ListItem>
-    );
-}
+                    </IconButton>
+                </ListItemIcon>
+            </ListItem>
+        );
+    }
 
-renderRow.propTypes = {
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-};
-
-export default function CommentList() {
-    const classes = useStyles();
+    renderRow.propTypes = {
+        index: PropTypes.number.isRequired,
+        style: PropTypes.object.isRequired,
+    };
 
     return (
         <div className={classes.root}>
@@ -82,7 +107,8 @@ export default function CommentList() {
             <Button className={classes.submit} variant="contained" color="primary">
                 提交评论
             </Button>
-            <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100} itemCount={10}>
+            <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100}
+                           itemCount={comments.length}>
                 {renderRow}
             </FixedSizeList>
         </div>

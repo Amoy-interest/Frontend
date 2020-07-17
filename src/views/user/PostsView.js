@@ -30,14 +30,7 @@ function PostsLayout() {
                     </Grid>
                     <Grid item xs>
                         <PostCardForm/>
-                        <Grid container spacing={1}>
-                            <Grid item xs>
-                                <PostCardList/>
-                            </Grid>
-                            <Grid item xs>
-                                <PostCardList/>
-                            </Grid>
-                        </Grid>
+                        <PostCardList index={2}/>
                     </Grid>
                 </Grid>
             </Paper>
