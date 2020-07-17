@@ -1,8 +1,7 @@
 // import {message} from 'antd';
 import {store} from "../redux/configureStore";
 
-// post form data
-let postRequest_form = (url, data, callback) => {
+const Request_form = (url, data, callback, method) => {
     let formData = new FormData();
 
     for (let p in data){
@@ -11,7 +10,7 @@ let postRequest_form = (url, data, callback) => {
     }
 
     let opts = {
-        method: "POST",
+        method: method,
         body: formData,
         headers: {
             'token': store.getState().tokenReducer,
@@ -31,11 +30,10 @@ let postRequest_form = (url, data, callback) => {
         });
 };
 
-// post json data
-let postRequest_json = (url, json, callback) => {
+const Request_json = (url, json, callback, method) => {
 
     let opts = {
-        method: "POST",
+        method: method,
         body: JSON.stringify(json),
         headers: {
             'token': store.getState().tokenReducer,
@@ -56,44 +54,22 @@ let postRequest_json = (url, json, callback) => {
         });
 };
 
-// get form data
-let getRequest_form = (url, data, callback) => {
-    let formData = new FormData();
+// post form data
+const postRequest_form = (url, data, callback) => {
+    Request_form(url, data, callback, 'POST');
+};
 
-    for (let p in data){
-        if(data.hasOwnProperty(p))
-            formData.append(p, data[p]);
-    }
-
-    let opts = {
-        method: "GET",
-        body: formData,
-        headers: {
-            'token': store.getState().tokenReducer,
-        },
-        credentials: "include"
-    };
-
-    fetch(url,opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+// post json data
+const postRequest_json = (url, json, callback) => {
+    Request_json(url, json, callback, 'POST');
 };
 
 // get json data
-let getRequest_json = (url,callback) => {
-
+const getRequest = (url,callback) => {
     let opts = {
         method: "GET",
         headers: {
             'token': store.getState().tokenReducer,
-            'Content-Type': 'application/json'
         },
         credentials: "include"
     };
@@ -111,56 +87,15 @@ let getRequest_json = (url,callback) => {
 };
 
 // put json data
-let putRequest_json = (url, json, callback) => {
-
-    let opts = {
-        method: "PUT",
-        body: JSON.stringify(json),
-        headers: {
-            'token': store.getState().tokenReducer,
-            'Content-Type': 'application/json'
-        },
-        credentials: "include"
-    };
-
-    fetch(url,opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+const putRequest_json = (url, json, callback) => {
+    Request_json(url, json, callback, 'PUT')
 };
 
 // delete json data
-let deleteRequest_json = (url, json, callback) => {
-
-    let opts = {
-        method: "DELETE",
-        body: JSON.stringify(json),
-        headers: {
-            'token': store.getState().tokenReducer,
-            'Content-Type': 'application/json'
-        },
-        credentials: "include"
-    };
-
-    fetch(url,opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+const deleteRequest_json = (url, json, callback) => {
+    Request_json(url, json, callback, 'DELETE')
 };
 
-export {postRequest_form, postRequest_json,
-    getRequest_form, getRequest_json,
+export {postRequest_form, postRequest_json, getRequest,
     putRequest_json, deleteRequest_json
 };
