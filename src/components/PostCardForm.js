@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom'
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "./basic/AIField";
@@ -31,11 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PostCardForm(props){
     const classes = useStyles();
-    const history = useHistory();
 
     const submit = () => {
         console.log(props.props)
-        history.replace('/post');
     }
 
     return (
@@ -44,8 +41,7 @@ export default function PostCardForm(props){
             <Paper elevation={3} className={classes.paper}>
                 <Formik
                     initialValues={{
-                        email: '',
-                        password: '',
+                        content: ''
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
