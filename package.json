@@ -20,6 +20,7 @@
     "formik-material-fields": "^0.0.6",
     "formik-material-ui": "^2.0.1",
     "history": "latest",
+    "nock": "^13.0.2",
     "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

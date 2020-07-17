@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import Avatar1 from "../../assets/postavatar.jpeg";
+import Avatar1 from "../../assets/commentavatar.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
@@ -115,7 +115,7 @@ export default function ProfileHeader() {
                         </Grid>
                     </Grid>
                     <Typography variant="h5" color="textPrimary" align='center'>
-                        Mok
+                        Boz
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" align='center'>
                         粉丝：3000 | 关注：4000
