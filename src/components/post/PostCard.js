@@ -14,9 +14,9 @@ import {red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PostImage1 from '../../assets/post1.png';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
+import Avatar1 from '../../assets/commentavatar.jpeg';
 import Avatar2 from '../../assets/postavatar.jpeg';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -102,24 +102,24 @@ export default function PostCard(props) {
             <Card className={classes.root}>
                 <CardHeader
                     avatar={
-                        <Avatar className={classes.avatar} src={Avatar2}/>
+                        <Avatar className={classes.avatar} src={props.index===0?Avatar2:Avatar1}/>
                     }
                     action={
                         <IconButton onClick={handleMoreInfoClick} aria-label="settings">
                             <MoreVertIcon/>
                         </IconButton>
                     }
-                    title={post.blog_child.nickname}
+                    title={post.nickname}
                     subheader={post.blog_time}
                 />
                 <CardMedia
                     className={classes.media}
-                    image={post.blog_child.images[0]}
+                    image={post.blog_content.images[0]}
                     title="沙滩"
                 />
                 <CardContent>
                     <Typography variant="body1" color="textPrimary" component="p">
-                        {post.blog_child.text}
+                        {post.blog_content.text}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>

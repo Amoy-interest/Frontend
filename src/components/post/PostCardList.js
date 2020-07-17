@@ -19,17 +19,18 @@ function mapStateToProps(state) {
     }
 }
 
-function PostCards(props) {
+export function PostCards(props) {
     const classes = useStyles();
-
+    console.log(props.user);
     return (
         <div className={classes.root}>
             <Grid className={classes.root} container spacing={2}>
                 {props.posts.map((item, value) => {
-                    const userId = item.blog_child.user_id;
+                    const nickname = item.nickname;
+                    console.log(nickname);
                     return (
                         <Grid item xs={6} className={classes.item} key={value}>
-                            {(props.user === null || props.user.user_id !== userId) ?
+                            {(props.user.user === null || props.user.user.nickname !== nickname) ?
                                 <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
                         </Grid>
                     );
@@ -39,7 +40,7 @@ function PostCards(props) {
     );
 }
 
-const Posts = connect(
+export const Posts = connect(
     mapStateToProps, null
 )(PostCards);
 
