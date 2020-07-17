@@ -29,9 +29,7 @@ function PostsLayout() {
                     <AdminSideBar index={1}/>
                 </Grid>
                 <Grid item xs>
-
-                        <AdminPostsList/>
-
+                    <AdminPostsList/>
                 </Grid>
             </Grid>
             </Paper>

@@ -13,11 +13,13 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.4.1",
+    "connected-react-router": "^6.8.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "formik": "^2.1.4",
     "formik-material-fields": "^0.0.6",
     "formik-material-ui": "^2.0.1",
+    "history": "latest",
     "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -54,9 +56,9 @@
   },
   "devDependencies": {
     "jest": "24.9.0",
-    "react-window": "^1.8.5",
-    "regenerator-runtime": "^0.13.5",
     "react-test-renderer": "^16.13.1",
-    "redux-devtools": "^3.5.0"
+    "react-window": "^1.8.5",
+    "redux-devtools": "^3.5.0",
+    "regenerator-runtime": "^0.13.5"
   }
 }

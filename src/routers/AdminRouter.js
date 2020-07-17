@@ -4,11 +4,11 @@ import {Layout} from "antd";
 import Container from "@material-ui/core/Container";
 import FooterBar from "../components/basic/Footer";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
-// import HeaderAfterLogIn from "../components/basic/HeaderAfterLogIn";
 import AdminHeader from "../components/admin/AdminHeader";
 import {blue,indigo} from "@material-ui/core/colors";
 import {ThemeProvider} from "@material-ui/styles";
 
+const {Content, Header, Footer} = Layout;
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -19,7 +19,6 @@ const theme = createMuiTheme({
         },
     },
 });
-const {Content, Header, Footer} = Layout;
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
@@ -41,6 +40,7 @@ const useStyles = makeStyles((theme) =>
         }
     })
 )
+
 export default function AdminRoute(props) {
     const classes = useStyles();
     const isAuthed = true;
@@ -74,7 +74,7 @@ export default function AdminRoute(props) {
                 <div className="AdminRouter">
                     <Layout>
                         <Header>
-                            <AdminHeader/>、
+                            <AdminHeader/>
                         </Header>
                         <Content>
                             <Container className={classes.container} maxWidth="lg">

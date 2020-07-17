@@ -7,10 +7,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AIPickerField, AITextField} from "./basic/AIField";
+import {AITextField} from "./basic/AIField";
+import {login} from "../service/userService";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,15 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginForm(props){
     const classes = useStyles();
-    const history = useHistory();
-    const ages = [1, 2, 3, 6, 10];
 
-    const submit = () => {
-        console.log(props.props);
-        props.move();
-        var log=1;
-        localStorage.setItem('logged',log.toString());
-        history.replace('/home');
+    const submit = (values) => {
+        console.log(values);
+        login(values)
+        props.closeModal();
     }
 
     return (
@@ -58,23 +54,23 @@ export default function LoginForm(props){
                 </Typography>
                 <Formik
                     initialValues={{
-                        email: '',
+                        username: '',
                         password: '',
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
                             alert(JSON.stringify(values, null, 2));
-                            submit();
+                            submit(values);
                         }, 500);
                     }}
                 >
                     {({ submitForm, isSubmitting }) => (
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
-                                <AITextField sm={12} name="email" label="邮箱"/>
+                                <AITextField sm={12} name="username" label="用户名"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
-                                <AIPickerField sm={6} name="name" array={ages} label="label"/>
+                                {/*<AIPickerField sm={6} name="name" array={ages} label="label"/>*/}
                             </Grid>
                             <Button
                                 variant="contained"
@@ -92,8 +88,7 @@ export default function LoginForm(props){
             </Paper>
         </Container>
     );
-
-
 }
+
 
 

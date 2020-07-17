@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../../components/basic/SideBar";
-import NewsCarousel from "../../components/NewsCarousel";
+// import NewsCarousel from "../../components/NewsCarousel";
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
 
@@ -36,7 +36,7 @@ function HomeLayout() {
                     <SideBar/>
                 </Grid>
                 <Grid item xs={7}>
-                    <Paper className={classes.paper}><NewsCarousel/></Paper>
+                    {/*<Paper className={classes.paper}><NewsCarousel/></Paper>*/}
                 </Grid>
                 <Grid item xs>
                     <Paper className={classes.hot}><HotSearchList/></Paper>

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {login} from "../service/userService";
 import {setToken, setUser} from "../redux/actions";
 import { connect } from 'react-redux'
-// import PropTypes from 'prop-types'
 import {store} from "../redux/configureStore";
 
 function mapStateToProps(state) {
@@ -24,7 +23,7 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-class Test extends Component{
+class TestView extends Component{
     constructor(props) {
         super(props);
 
@@ -62,19 +61,20 @@ class Test extends Component{
 
     render() {
         return (
-            <div>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 TestView page!
-                <button onClick={this.handleLogin}>login</button>
-                <button onClick={this.handleLogin_wrong}>login wrong</button>
-                <button onClick={this.handleGetStore}>GetStore</button>
-                <button onClick={this.handleDispatch}>Dispatch</button>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <button onClick={this.handleLogin}>login</button>
+                    <button onClick={this.handleLogin_wrong}>login wrong</button>
+                    <button onClick={this.handleGetStore}>GetStore</button>
+                    <button onClick={this.handleDispatch}>Dispatch</button>
+                </div>
             </div>
         );
     }
 }
 
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Test)
+)(TestView)
