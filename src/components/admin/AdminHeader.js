@@ -10,7 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CameraIcon from '@material-ui/icons/Camera';
 import { useHistory } from 'react-router-dom';
-import Avatar1 from "../../assets/postavatar.jpeg";
+import Avatar1 from "../../assets/avatar2.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';

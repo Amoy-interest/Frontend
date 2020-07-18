@@ -1,8 +1,6 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom'
 import {connect} from "react-redux";
-import {UserType} from "./utils/constants";
-// import * as userService from "../service/userService"
 
 function mapStateToProps(state) {
     return {
@@ -44,10 +42,11 @@ class PrivateRoute extends React.Component{
         }
 
         return <Route path={path} exact={exact} strict={strict} render={props => (
-            this.state.isAuth ? (<Component {...props}/>) : (
-                <Redirect to={{
-                    pathname: '/',
-                    state: {from: props.location}
+            (this.state.isAuth && this.props.role >= this.props.authority ) ?
+                (<Component {...props}/>) : (
+                    <Redirect to={{
+                        pathname: '/',
+                        state: {from: props.location}
                 }}/>)
         )}/>
     }

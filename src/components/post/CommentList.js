@@ -7,7 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
-import Avatar1 from '../../assets/commentavatar.jpeg';
+import Avatar1 from '../../assets/avatar1.jpeg';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';

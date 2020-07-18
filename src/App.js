@@ -20,7 +20,7 @@ import HeaderAfterLogIn from "./components/commen/HeaderAfterLogIn";
 import Container from "@material-ui/core/Container";
 import FooterBar from "./components/commen/Footer";
 import {ThemeProvider} from "@material-ui/styles";
-import {UserType} from "./utils/constants";
+import {AuthorityLevel, UserType} from "./utils/constants";
 import {Route} from 'react-router-dom'
 import Header from "./components/commen/Header";
 import AdminHeader from "./components/admin/AdminHeader";
@@ -95,15 +95,14 @@ function App(props) {
                             <Switch>
                                 <Route exact path='/' component={HomePreLoginView}/>
                                 <Route path='/register' component={RegisterView}/>
-                                <PrivateRoute path='/home' component={HomeView}/>
-                                <PrivateRoute path='/test' component={TestView} />
-                                <PrivateRoute path='/personal-info' component={ProfileView}/>
-                                <PrivateRoute path='/posts' component={PostsView}/>
-                                <PrivateRoute path='/topic-discussion' component={TopicDiscussionView}/>
-                                {/*<PrivateRoute path='/admin-home' component={HomeView}/>*/}
-                                <PrivateRoute path='/users-manage' component={AdminUsersManageView}/>
-                                <PrivateRoute path='/posts-manage' component={AdminPostsManageView}/>
-                                <PrivateRoute path='/topics-manage' component={AdminTopicsManageView}/>
+                                <PrivateRoute path='/home' component={HomeView}n authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/test' component={TestView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/personal-info' component={ProfileView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <Route path='*' component={NotFoundView}/>
                             </Switch>
                         </main>
