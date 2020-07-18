@@ -11,7 +11,7 @@ import Avatar1 from '../../assets/commentavatar.jpeg';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import CommentForm from "../CommentForm";
+import CommentForm from "./CommentForm";
 
 const useStyles = makeStyles((theme) => ({
     root: {

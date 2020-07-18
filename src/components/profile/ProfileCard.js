@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ProfileHeader() {
+export default function ProfileCard() {
     const classes = useStyles();
     // const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -156,7 +156,7 @@ export default function ProfileHeader() {
                 {/*</CardActions>*/}
                 {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
                 {/*    <CardContent>*/}
-                {/*        <PostCardForm/>*/}
+                {/*        <PostForm/>*/}
                 {/*    </CardContent>*/}
                 {/*</Collapse>*/}
                 {renderMenu}

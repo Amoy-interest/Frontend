@@ -81,7 +81,7 @@ export default function AdminPostsList() {
                             <ListItemText id={labelId} primary={`博文 ${value + 1}`}/>
                             <ListItemText id={labelId} primary={`发帖用户id ${10000 - value + 1}`}/>
                             <ListItemText id={labelId} primary={`浏览次数${100 - value + 1}`}/>
-                            {/*<TopicHeader/>*/}
+                            {/*<TopicCard/>*/}
                             <ListItemSecondaryAction>
                                 <Tooltip title={"屏蔽"}>
                                     <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>

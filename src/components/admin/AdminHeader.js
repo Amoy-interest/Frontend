@@ -16,7 +16,7 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import {blue} from "@material-ui/core/colors";
-import * as userService from "../../service/userService"
+import * as userService from "../../service/UserService"
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -128,7 +128,7 @@ export default function AdminHeader() {
 
     const openHomeView=()=>{
         handleMenuClose();
-        history.replace('/admin-home');
+        history.replace('/home');
     };
 
     const menuId = 'primary-search-account-menu';

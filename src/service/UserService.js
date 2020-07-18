@@ -1,17 +1,17 @@
-import {apiUrl, mockUrl, APIModules} from "../utils/constants";
+import {apiUrl, APIModules} from "../utils/constants";
 import {getRequest, postRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";
 
 export const login = (data, callback) => {
     console.log(data);
-    const url = `${mockUrl}${APIModules.USER}/login`;
+    const url = `${apiUrl}${APIModules.USER}/login`;
     postRequest_json(url, data, callback);
 };
 
 export const logout = () => {
     console.log("logout");
-    const url = `${mockUrl}${APIModules.USER}/logout`;
+    const url = `${apiUrl}${APIModules.USER}/logout`;
 
     const callback = () => {
         store.dispatch(removeToken());
@@ -26,6 +26,6 @@ export const register = (formData, callback) => {
         registerDTO: formData,
     }
 
-    const url = `${mockUrl}${APIModules.USER}/register`;
+    const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url, data, callback);
 };

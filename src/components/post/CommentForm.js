@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
-import {AITextField} from "./basic/AIField";
+import {AITextField} from "../commen/AIField";
 
 export default function CommentForm(props){
 

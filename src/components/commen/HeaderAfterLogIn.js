@@ -15,7 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
-import * as userService from "../../service/userService"
+import * as userService from "../../service/UserService"
 
 const useStyles = makeStyles((theme) => ({
     grow: {

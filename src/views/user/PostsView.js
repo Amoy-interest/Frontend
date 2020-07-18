@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBar from "../../components/basic/SideBar";
+import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
-import PostCardForm from "../../components/PostCardForm";
+import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ function PostsLayout() {
                         <SideBar/>
                     </Grid>
                     <Grid item xs>
-                        <PostCardForm/>
+                        <PostForm/>
                         <PostCardList index={2}/>
                     </Grid>
                 </Grid>

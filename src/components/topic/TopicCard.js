@@ -13,7 +13,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Background from '../../assets/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
 import PostImage1 from "../../assets/post1.png";
-import PostCardForm from "../PostCardForm";
+import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function TopicHeader() {
+export default function TopicCard() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -128,7 +128,7 @@ export default function TopicHeader() {
                     </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <PostCardForm/>
+                        <PostForm/>
                     </CardContent>
                 </Collapse>
             </div>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBar from "../../components/basic/SideBar";
+import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
-import TopicHeader from "../../components/topic_discussion/TopicHeader";
+import TopicCard from "../../components/topic/TopicCard";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ function TopicDiscussionLayout() {
                     <SideBar/>
                 </Grid>
                 <Grid item xs>
-                    <TopicHeader/>
+                    <TopicCard/>
                     <PostCardList index={0}/>
                 </Grid>
             </Grid>

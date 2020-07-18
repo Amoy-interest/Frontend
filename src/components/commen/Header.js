@@ -12,7 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import RedditIcon from '@material-ui/icons/Reddit';
 import { useHistory } from 'react-router-dom'
 import Modal from '@material-ui/core/Modal';
-import LoginForm from "../LoginForm";
+import LoginForm from "../signIn/LoginForm";
 
 function getModalStyle() {
     const top = 50;
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeaderBar() {
+export default function Header() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
@@ -118,11 +118,6 @@ export default function HeaderBar() {
         setOpen(false);
     };
 
-    const body = (
-        <div style={modalStyle} className={classes.paper}>
-            <LoginForm closeModal={handleClose}/>
-        </div>
-    );
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -155,6 +150,12 @@ export default function HeaderBar() {
             <MenuItem onClick={handleSignUp}>注册</MenuItem>
             <MenuItem onClick={handleSignIn}>登陆</MenuItem>
         </Menu>
+    );
+
+    const body = (
+        <div style={modalStyle} className={classes.paper}>
+            <LoginForm closeModal={handleClose}/>
+        </div>
     );
 
     return (

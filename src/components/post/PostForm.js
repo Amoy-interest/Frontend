@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField} from "./basic/AIField";
+import {AITextField} from "../commen/AIField";
 // import Uploader from "./basic/Uploader";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PostCardForm(props){
+export default function PostForm(props){
     const classes = useStyles();
 
     const submit = () => {
