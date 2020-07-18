@@ -16,14 +16,13 @@ import TestView from "./views/TestView";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
 import {amber, blue, indigo} from "@material-ui/core/colors";
 import {connect} from "react-redux";
-import HeaderAfterLogIn from "./components/commen/HeaderAfterLogIn";
+import HeaderAfterLogIn from "./components/commen/Header";
 import Container from "@material-ui/core/Container";
 import FooterBar from "./components/commen/Footer";
 import {ThemeProvider} from "@material-ui/styles";
 import {AuthorityLevel, UserType} from "./utils/constants";
 import {Route} from 'react-router-dom'
-import Header from "./components/commen/Header";
-import AdminHeader from "./components/admin/AdminHeader";
+import HeaderPre from "./components/commen/HeaderPre";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -85,9 +84,7 @@ function App(props) {
                             '/topics-manage'
                         ]}
                         component={
-                            (props.role === UserType.VISITOR && Header) ||
-                            (props.role === UserType.CUSTOMER && HeaderAfterLogIn) ||
-                            (props.role === UserType.ADMIN && AdminHeader)
+                            (props.role === UserType.VISITOR && HeaderPre) ||HeaderAfterLogIn
                         }
                     />
                     <Container className={classes.container} maxWidth="lg">
