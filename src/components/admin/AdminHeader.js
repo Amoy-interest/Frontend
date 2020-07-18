@@ -10,14 +10,13 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CameraIcon from '@material-ui/icons/Camera';
 import { useHistory } from 'react-router-dom';
-import Avatar1 from "../../assets/postavatar.jpeg";
+import Avatar1 from "../../assets/avatar2.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import {blue} from "@material-ui/core/colors";
-import {removeToken, removeUser, setToken, setUser} from "../../redux/actions";
-import {connect} from "react-redux";
+import * as userService from "../../service/UserService"
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -98,20 +97,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onLogout: () => {
-            dispatch(removeUser());
-            dispatch(removeToken());
-        }
-    }
-}
-
-function AdminHeader(props) {
+export default function AdminHeader() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
+    const history = useHistory();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -128,8 +118,7 @@ function AdminHeader(props) {
 
     const handleLogout = () => {
         handleMenuClose();
-        props.onLogout();
-        history.replace('/');
+        userService.logout()
     };
 
     const openUsersManageView=()=>{
@@ -139,7 +128,7 @@ function AdminHeader(props) {
 
     const openHomeView=()=>{
         handleMenuClose();
-        history.replace('/admin-home');
+        history.replace('/home');
     };
 
     const menuId = 'primary-search-account-menu';
@@ -233,7 +222,3 @@ function AdminHeader(props) {
     );
 }
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(AdminHeader)

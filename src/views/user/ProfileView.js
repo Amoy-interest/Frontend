@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBarForProfile from "../../components/basic/SideBarForPofile";
+import SideBarForProfile from "../../components/commen/SideBarForPofile";
 import PostCardList from "../../components/post/PostCardList";
-import ProfileHeader from "../../components/profile/ProfileHeader";
+import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ function ProfileLayout() {
                         <SideBarForProfile/>
                     </Grid>
                     <Grid item xs>
-                        <ProfileHeader/>
+                        <ProfileCard/>
                         <PostCardList index={3}/>
                     </Grid>
                 </Grid>

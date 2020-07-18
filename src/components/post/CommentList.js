@@ -7,12 +7,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
-import Avatar1 from '../../assets/commentavatar.jpeg';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import Avatar1 from '../../assets/avatar1.jpeg';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import CommentForm from "./CommentForm";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,8 +40,11 @@ export default function CommentList(props) {
     const classes = useStyles();
     const comments = props.comments;
 
-    function renderRow(itemprops) {
-        const {index, style} = itemprops;
+    function renderRow(itemProps) {
+        const {index, style} = itemProps;
+
+        console.log(itemProps)
+
 
         return (
             <ListItem button style={style} key={index}>
@@ -96,17 +98,7 @@ export default function CommentList(props) {
 
     return (
         <div className={classes.root}>
-            <TextField
-                id="outlined-textarea"
-                label="评论"
-                placeholder="请输入评论"
-                multiline
-                variant="outlined"
-                className={classes.text}
-            />
-            <Button className={classes.submit} variant="contained" color="primary">
-                提交评论
-            </Button>
+            <CommentForm commentId={comments} style={classes}/>
             <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100}
                            itemCount={comments.length}>
                 {renderRow}

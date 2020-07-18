@@ -7,24 +7,22 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom'
+import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField, AICheckField, AIPickerField} from "./basic/AIField";
-import {setToken, setUser} from "../redux/actions";
+import {AITextField} from "../commen/AIField";
+import * as userService from "../../service/UserService";
+import {useHistory} from "react-router";
+import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
-import * as userService from "../service/userService";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
+        width:350,
         flexDirection: 'column',
         alignItems: 'center',
-        padding: theme.spacing(6)
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        padding: theme.spacing(2),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -33,11 +31,10 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    commentText: {
-        color: 'black',
-        fontSize: 'small',
-        textDecoration: 'none'
-    }
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
 }));
 
 function mapDispatchToProps(dispatch) {
@@ -49,32 +46,27 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-function RegisterForm(props){
+function LoginForm(props){
     const classes = useStyles();
     const history = useHistory();
 
     const callback = (data) => {
-        console.log(data)
+        console.log(data);
+        if (data.status !== 200) {
+            message.error(data.msg);
+            return;
+        }
+
+        message.success(data.msg);
         props.onLogin(data.data.user, data.data.token)
         history.push('/home');
     }
 
     const submit = (values) => {
         console.log(values);
-        userService.register(values, callback)
+        userService.login(values, callback)
+        props.closeModal();
     }
-
-    const sex = [
-        {
-            value: 0,
-            name: "女"
-        },
-        {
-            value: 1,
-            name: "男"
-        }
-    ]
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -84,22 +76,17 @@ function RegisterForm(props){
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    注册账号
+                    Log In
                 </Typography>
                 <Formik
                     initialValues={{
-                        address: '',
-                        email: '',
-                        nickname: '',
-                        password: null,
-                        sex: 0,
-                        username: null,
-                        check: false
+                        username: '',
+                        password: '',
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
-                            alert(JSON.stringify(values, null, 2));
+                            // alert(JSON.stringify(values, null, 2));
                             submit(values);
                         }, 500);
                     }}
@@ -109,11 +96,7 @@ function RegisterForm(props){
                             <Grid container spacing={2}>
                                 <AITextField sm={12} name="username" label="用户名"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
-                                <AITextField sm={6} name="nickname" label="昵称"/>
-                                <AIPickerField sm={6} name="sex" label="性别" array={sex}/>
-                                <AITextField sm={12} name="email" label="邮箱"/>
-                                <AITextField sm={12} name="address" label="地址"/>
-                                <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
+                                {/*<AIPickerField sm={6} name="name" array={ages} label="label"/>*/}
                             </Grid>
                             <Button
                                 variant="contained"
@@ -123,7 +106,7 @@ function RegisterForm(props){
                                 onClick={submitForm}
                                 className={classes.submit}
                             >
-                                注册并登陆
+                                登陆
                             </Button>
                         </Form>
                     )}
@@ -133,7 +116,11 @@ function RegisterForm(props){
     );
 }
 
+
 export default connect(
     null,
     mapDispatchToProps
-)(RegisterForm)
+)(LoginForm)
+
+
+

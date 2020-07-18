@@ -10,13 +10,12 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CameraIcon from '@material-ui/icons/Camera';
 import { useHistory } from 'react-router-dom';
-import Avatar1 from "../../assets/commentavatar.jpeg";
+import Avatar1 from "../../assets/avatar1.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
-import {removeToken, removeUser} from "../../redux/actions";
-import {connect} from "react-redux";
+import * as userService from "../../service/UserService"
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -96,16 +95,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onLogout: () => {
-            dispatch(removeUser());
-            dispatch(removeToken());
-        }
-    }
-}
 
-function HeaderAfterLogIn(props) {
+export default function HeaderAfterLogIn() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
@@ -126,7 +117,7 @@ function HeaderAfterLogIn(props) {
 
     const handleLogout = () => {
         handleMenuClose();
-        props.onLogout();
+        userService.logout();
         history.replace('/');
     };
 
@@ -231,7 +222,3 @@ function HeaderAfterLogIn(props) {
     );
 }
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(HeaderAfterLogIn)

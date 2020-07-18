@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {login} from "../service/userService";
+import {login} from "../service/UserService";
 import {setToken, setUser} from "../redux/actions";
 import { connect } from 'react-redux'
 import {store} from "../redux/configureStore";
