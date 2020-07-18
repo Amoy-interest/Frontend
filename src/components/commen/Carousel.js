@@ -23,7 +23,7 @@ import YummyImage from '../../assets/yummy.png';
 //     },
 // }));
 
-export default function NewsCarousel() {
+export default function Carousel() {
     // const classes = useStyles();
     // const theme = useTheme();
         const items = [{

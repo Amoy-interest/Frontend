@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBarForProfile from "../../components/commen/SideBarForPofile";
+import SideBarForProfile from "../../components/profile/PofileSideBar";
 import PostCardList from "../../components/post/PostCardList";
 import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";

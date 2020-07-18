@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import HeaderBar from "../components/basic/Header";
+import HeaderBar from "../components/basic/HeaderPre";
 import PostCard from "../components/post/PostCard";
 import IconButton from "@material-ui/core/IconButton";
 import CommentList from "../components/post/CommentList";

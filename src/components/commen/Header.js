@@ -1,84 +1,35 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import RedditIcon from '@material-ui/icons/Reddit';
-import { useHistory } from 'react-router-dom'
-import Modal from '@material-ui/core/Modal';
-import LoginForm from "../signIn/LoginForm";
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50 ;
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import CameraIcon from '@material-ui/icons/Camera';
+import {useHistory} from 'react-router-dom';
+import Avatar1 from "../../assets/avatar1.jpeg";
+import Avatar from "@material-ui/core/Avatar";
+import ExploreIcon from '@material-ui/icons/Explore';
+import Tooltip from '@material-ui/core/Tooltip';
+import * as userService from "../../service/UserService";
+import Logo from "./Logo";
+import SearchBar from "./SearchBar";
+import {connect} from "react-redux";
+import {UserType} from "../../utils/constants";
+import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
-        width:'100%',
+        width: '100%',
         flexGrow: 1,
-        zIndex:1,
+        zIndex: 1,
         opacity: 0.70,
     },
-    blank:{
+    blank: {
         flexGrow: 1,
     },
     menuButton: {
         marginRight: theme.spacing(2),
-    },
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '500px',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '30ch',
-        },
     },
     sectionDesktop: {
         display: 'none',
@@ -91,32 +42,20 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
-    },
-    paper: {
-        position: 'absolute',
-        // width: 400,
-        // backgroundColor: theme.palette.background.paper,
-        // border: '2px solid #000',
-        // boxShadow: theme.shadows[5],
-        //padding: theme.spacing(2, 4, 3),
-    },
+    }
 }));
 
-export default function Header() {
+function mapStateToProps(state) {
+    return {
+        role: state.userReducer.role
+    }
+}
+
+function Header(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -126,92 +65,114 @@ export default function Header() {
         setAnchorEl(null);
     };
 
-    const handleSignUp = () => {
+    const handleProfile = () => {
         handleMenuClose();
-        history.push('/register');
-    }
+        history.replace('/personal-info');
+    };
 
-    const handleSignIn = () => {
+    const handleLogout = () => {
         handleMenuClose();
-        handleOpen();
-    }
+        userService.logout();
+        history.replace('/');
+    };
 
-    const menuId = 'primary-search-account-menu';
+    const openPostsView = () => {
+        handleMenuClose();
+        history.replace('/posts');
+    };
+
+    const openHomeView = () => {
+        handleMenuClose();
+        history.replace('/home');
+    };
+
+    const openUsersManageView = () => {
+        handleMenuClose();
+        history.replace('/users-manage');
+    };
+
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={menuId}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            id="personal-info-menu"
             keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleSignUp}>注册</MenuItem>
-            <MenuItem onClick={handleSignIn}>登陆</MenuItem>
-        </Menu>
-    );
+            {props.role === UserType.CUSTOMER ?
+                <MenuItem onClick={handleProfile}>个人资料</MenuItem> : null}
+            <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
 
-    const body = (
-        <div style={modalStyle} className={classes.paper}>
-            <LoginForm closeModal={handleClose}/>
-        </div>
+        </Menu>
     );
 
     return (
         <div className={classes.grow}>
             <AppBar position="static">
-                <Toolbar >
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <RedditIcon/>
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Amoy Interest
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="发现更精彩的世界"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            fullWidth={true}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-
-                    <div className={classes.blank} />
-                    <div className={classes.sectionDesktop}>
+                <Toolbar>
+                    <Logo title={'Amoy Interest'}/>
+                    <SearchBar/>
+                    <div className={classes.blank}/>
+                    {props.role === UserType.CUSTOMER ?
+                        <Tooltip title="发现">
+                            <IconButton
+                                edge="start"
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={openPostsView}
+                            >
+                                <ExploreIcon/>
+                            </IconButton>
+                        </Tooltip> :
+                        <Tooltip title="管理">
+                            <IconButton
+                                edge="start"
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={openUsersManageView}
+                            >
+                                <TrackChangesIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    <Tooltip title="主页">
                         <IconButton
-                        edge="end"
-                        aria-label="account of current user"
-                        aria-controls={menuId}
-                        aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                    </IconButton>
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={openHomeView}
+                        >
+                            <CameraIcon/>
+                        </IconButton>
+                    </Tooltip>
+
+                    <div className={classes.sectionDesktop}>
+                        <Tooltip title="个人">
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls="personal-info-menu"
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <Avatar className={classes.avatar} src={Avatar1}/>
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </Toolbar>
             </AppBar>
             {renderMenu}
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
         </div>
     );
 }
+
+export default connect(
+    mapStateToProps,
+    null
+)(Header)
