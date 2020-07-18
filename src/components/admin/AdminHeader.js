@@ -16,8 +16,7 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import {blue} from "@material-ui/core/colors";
-import {removeToken, removeUser, setToken, setUser} from "../../redux/actions";
-import {connect} from "react-redux";
+import * as userService from "../../service/userService"
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -98,20 +97,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onLogout: () => {
-            dispatch(removeUser());
-            dispatch(removeToken());
-        }
-    }
-}
-
-function AdminHeader(props) {
+export default function AdminHeader() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
     const isMenuOpen = Boolean(anchorEl);
+    const history = useHistory();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -128,8 +118,7 @@ function AdminHeader(props) {
 
     const handleLogout = () => {
         handleMenuClose();
-        props.onLogout();
-        history.replace('/');
+        userService.logout()
     };
 
     const openUsersManageView=()=>{
@@ -233,7 +222,3 @@ function AdminHeader(props) {
     );
 }
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(AdminHeader)

@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
-        marginLeft: theme.spacing(100)
+        // margin: theme.spacing(),
+        // marginLeft: theme.spacing(1)
     }
 }));
 
@@ -55,20 +55,22 @@ export default function PostCardForm(props){
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
                                 <AITextField sm={12} name="content" label="博文内容" multiline/>
-                                <Grid item xs={12} sm={12}>
+                                <Grid item xs={12} sm={8}/>
+                                <Grid item xs={12} sm={4}>
                                     {/*<Uploader/>*/}
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={isSubmitting}
+                                        //fullWidth
+                                        onClick={submitForm}
+                                        className={classes.submit}
+                                    >
+                                        确定发布
+                                    </Button>
                                 </Grid>
                             </Grid>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                disabled={isSubmitting}
-                                //fullWidth
-                                onClick={submitForm}
-                                className={classes.submit}
-                            >
-                                确定发布
-                            </Button>
+
                         </Form>
                     )}
                 </Formik>

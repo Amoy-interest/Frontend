@@ -73,6 +73,13 @@ export default class PostCardList extends Component {
         }
     }
 
+
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
     render() {
         if (!this.state.posts) return (<div>Loading</div>);
         else return (
