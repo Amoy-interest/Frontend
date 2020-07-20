@@ -16,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BlockIcon from '@material-ui/icons/Block';
+import Collapse from '@material-ui/core/Collapse';
+import PostCard from "../post/PostCard";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -32,11 +34,11 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-    root: {
+    /*root: {
         '&:nth-of-type(odd)': {
             backgroundColor: theme.palette.action.hover,
         },
-    },
+    },*/
 }))(TableRow);
 
 const useStyles = makeStyles({
@@ -129,37 +131,47 @@ class AdminPostsList extends Component {
                         {
                         this.state.posts.map((blog, index) => {
                             return (
-                                <StyledTableRow key={index}>
-                                    <StyledTableCell component="th" scope="row">
-                                        <Checkbox
-                                            edge="start"
-                                            checked={this.state.checked.indexOf(index) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                        />
-                                    </StyledTableCell>
-                                    <StyledTableCell>{blog.nickname}</StyledTableCell>
-                                    <StyledTableCell>
-                                        <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
-                                            {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                        </IconButton>
-                                        {blog.blog_content.text}
-                                    </StyledTableCell>
-                                    <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
-                                    <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
-                                    <StyledTableCell>
-                                        <Tooltip title={"屏蔽"}>
-                                            <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                <BlockIcon/>
+                                <React.Fragment>
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell component="th" scope="row">
+                                            <Checkbox
+                                                edge="start"
+                                                checked={this.state.checked.indexOf(index) !== -1}
+                                                tabIndex={-1}
+                                                disableRipple
+                                            />
+                                        </StyledTableCell>
+                                        <StyledTableCell>{blog.nickname}</StyledTableCell>
+                                        <StyledTableCell>
+                                            <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
+                                                {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                             </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title={"删除"}>
-                                            <IconButton edge="end" aria-label="micoff">
-                                                <DeleteIcon/>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </StyledTableCell>
-                                </StyledTableRow>
+                                            {blog.blog_content.text}
+                                        </StyledTableCell>
+                                        <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
+                                        <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
+                                        <StyledTableCell>
+                                            <Tooltip title={"屏蔽"}>
+                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
+                                                    <BlockIcon/>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title={"删除"}>
+                                                <IconButton edge="end" aria-label="micoff">
+                                                    <DeleteIcon/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                    <TableRow>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
+                                            <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
+                                                <PostCard post={blog} index={0}/>
+                                            </Collapse>
+                                        </TableCell>
+                                    </TableRow>
+                                </React.Fragment>
                             );
                         })}
                         </TableBody>
