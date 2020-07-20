@@ -1,5 +1,5 @@
 import {apiUrl, APIModules} from "../utils/constants";
-import {getRequest} from "../utils/ajax";
+import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
 
 export const getRecommendPosts = (callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;
@@ -19,4 +19,14 @@ export const getOwnPosts = (callback) => {
 export const getFollowPosts = (callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/follow`;
     getRequest(url, callback);
+};
+
+export const vote=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/vote`;
+    postRequest_json(url, data, callback);
+};
+
+export const cancelVote=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/vote`;
+    deleteRequest_json(url, data, callback);
 };

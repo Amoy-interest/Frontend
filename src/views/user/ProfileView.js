@@ -5,6 +5,7 @@ import SideBarForProfile from "../../components/profile/PofileSideBar";
 import PostCardList from "../../components/post/PostCardList";
 import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
+import HotSearchList from "../../components/hot/HotSearchList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,14 +23,17 @@ function ProfileLayout() {
 
     return (
         <div className={classes.root}>
-            <Paper elevation={1} className={classes.root}>
+            <Paper elevation={0}>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBarForProfile/>
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs={7}>
                         <ProfileCard/>
                         <PostCardList index={3}/>
+                    </Grid>
+                    <Grid item xs>
+                        <HotSearchList/>
                     </Grid>
                 </Grid>
             </Paper>

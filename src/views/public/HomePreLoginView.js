@@ -11,15 +11,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    paper: {
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-    hot: {
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    }
 }));
 
 function HomeLayout() {
@@ -27,23 +18,17 @@ function HomeLayout() {
 
     return (
         <div >
-            <Paper elevation={1} className={classes.root}>
+            <Paper elevation={0} className={classes.root}>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBar/>
                     </Grid>
-                    <Grid item xs={7}>
-                        <Paper className={classes.paper}><Carousel/></Paper>
-                    </Grid>
-                    <Grid item xs>
-                        <Paper className={classes.hot}><HotSearchList/></Paper>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={1}>
-                    <Grid item xs={2}>
-                    </Grid>
-                    <Grid item xs>
+                    <Grid item xs={7} className={classes.content}>
+                        <Carousel/>
                         <PostCardList index={0}/>
+                    </Grid>
+                    <Grid item xs>
+                        <HotSearchList/>
                     </Grid>
                 </Grid>
             </Paper>

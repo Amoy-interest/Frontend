@@ -7,9 +7,9 @@ import Tab from '@material-ui/core/Tab';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        //marginTop:theme.spacing(3),
         backgroundColor: theme.palette.background.paper,
         display: 'flex',
+        position:'fixed'
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,

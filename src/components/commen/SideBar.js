@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
         //marginTop:theme.spacing(3),
         backgroundColor: theme.palette.background.paper,
         display: 'flex',
+        position:'fixed'
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,

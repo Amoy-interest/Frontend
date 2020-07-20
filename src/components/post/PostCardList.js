@@ -2,15 +2,18 @@ import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PostCard from "./PostCard";
 import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
-import {Grid} from "@material-ui/core";
+import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        marginLeft: "1.5px",
+        //marginLeft: "1.5px",
         marginTop: theme.spacing(2)
     },
+    item: {
+        width:'100%'
+    }
 }));
 
 function mapStateToProps(state) {
@@ -24,18 +27,18 @@ export function PostCards(props) {
     console.log(props.user);
     return (
         <div className={classes.root}>
-            <Grid className={classes.root} container spacing={2}>
+            <List>
                 {props.posts.map((item, value) => {
                     const nickname = item.nickname;
                     console.log(nickname);
                     return (
-                        <Grid item xs={6} className={classes.item} key={value}>
+                        <ListItem className={classes.item} key={value}>
                             {(props.user.user === null || props.user.user.nickname !== nickname) ?
                                 <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
-                        </Grid>
+                        </ListItem>
                     );
                 })}
-            </Grid>
+            </List>
         </div>
     );
 }
