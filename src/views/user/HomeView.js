@@ -44,7 +44,7 @@ function HomeLayout() {
                     <Grid item xs={2}>
                     </Grid>
                     <Grid item xs>
-                        <PostCardList index={1}/>
+                        <PostCardList index={2}/>
                     </Grid>
                 </Grid>
             </Paper>

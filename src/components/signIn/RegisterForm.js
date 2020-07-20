@@ -88,12 +88,12 @@ function RegisterForm(props){
                 </Typography>
                 <Formik
                     initialValues={{
-                        address: '',
-                        email: '',
-                        nickname: '',
-                        password: '',
-                        sex: 0,
                         username: '',
+                        password: '',
+                        nickname: '',
+                        sex: 0,
+                        email: '',
+                        address: ''
                         check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {

@@ -1,4 +1,4 @@
-import {apiUrl, APIModules} from "../utils/constants";
+import {apiUrl, mockUrl, APIModules} from "../utils/constants";
 import {getRequest} from "../utils/ajax";
 
 export const getRecommendPosts = (callback) => {
