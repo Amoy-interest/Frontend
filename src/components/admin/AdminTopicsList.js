@@ -67,7 +67,7 @@ export default class AdminTopicsList extends Component{
                 this.setState({reportOrder: "desc"});
                 return a.report_count - b.report_count;
             }
-        })
+        });
         this.setState({topics: tmp});
     };
 

@@ -60,19 +60,17 @@ class AdminPostsList extends Component {
     componentDidMount() {
         getReportedPosts(((res) => {
             console.log(res.data);
+            for (let i=0; i<res.data.length; i++)
+                this.state.open.push(false);
             this.setState({posts: res.data});
         }));
     }
 
-    setOpen (index) {
-        //console.log(this.state.open[index]);
+    setOpen(index) {
         let tmp = this.state.open;
-        if (this.state.open[index] === undefined) tmp[index] = false;
-        else tmp[index] = !tmp[index];
-        //console.log(tmp[index]);
+        tmp[index] = tmp[index] !== true;
         this.setState({open: tmp});
-        //不知道为什么一直都是整列的修改！！！！
-    }
+    };
 
     sortByReportCount = () => {
         let tmp = this.state.posts;
@@ -142,8 +140,8 @@ class AdminPostsList extends Component {
                                     </StyledTableCell>
                                     <StyledTableCell>{blog.nickname}</StyledTableCell>
                                     <StyledTableCell>
-                                        <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen({index})}>
-                                            {this.state.open[{index}] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
+                                            {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                         </IconButton>
                                         {blog.blog_content.text}
                                     </StyledTableCell>
