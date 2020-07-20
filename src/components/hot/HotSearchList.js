@@ -6,13 +6,17 @@ import Typography from '@material-ui/core/Typography';
 import { FixedSizeList } from 'react-window';
 import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
+        width: 280,
+        position:'fixed',
+        color: theme.palette.text.secondary,
     },
+    title: {
+        marginTop:10
+    }
 }));
 
 function renderRow(props) {
@@ -32,11 +36,11 @@ renderRow.propTypes = {
 export default function HotSearchList() {
     const classes = useStyles();
     return (
-        <div>
+        <Paper className={classes.root}>
             <Typography className={classes.title} variant="h6">热搜榜</Typography>
-            <FixedSizeList height={357} width={273} itemSize={50} itemCount={60}>
+            <FixedSizeList height={360} width={280} itemSize={50} itemCount={60}>
                 {renderRow}
             </FixedSizeList>
-        </div>
+        </Paper>
     );
 }

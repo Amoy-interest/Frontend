@@ -1,16 +1,14 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {red} from '@material-ui/core/colors';
+import {amber, red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -23,15 +21,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PostImage from "./PostImage";
+import {cancelVote, vote} from "../../service/PostService";
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%'
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
+const styles=(theme => ({
     expand: {
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
@@ -42,120 +37,269 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[500],
-    },
-    count: {
-        marginLeft: '8px'
-    }
 }));
 
-export default function PostCard(props) {
-    const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const isMenuOpen = Boolean(anchorEl);
-    const menuId = 'report-menu';
-    const {post} = props;
+class PostCard extends React.Component{
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
+    constructor(props) {
+        super(props);
+        this.state= {
+            voted:false,
+            voteCount:this.props.post.blog_count.vote_count,
+            post:this.props.post,
+            anchorEl:null,
+            expanded:false
+        };
     };
 
-    const renderMenu = (
-        props.index === 0 ?
-            <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                id={menuId}
-                keepMounted
-                transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-            >
-                <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
-            </Menu> :
-            <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                id={menuId}
-                keepMounted
-                transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-            >
-                <MenuItem><EditIcon/>编辑</MenuItem>
-                <MenuItem><DeleteIcon/>删除</MenuItem>
-            </Menu>
-    );
-
-    const handleMoreInfoClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    handleVote=(post)=>{
+        let param={blog_id:0,comment_id:-1};
+        let count=this.state.voteCount;
+        const callback1=(data)=>{
+            console.log(data);
+            this.setState({voted:true});
+            this.setState({voteCount:count+1});
+            console.log(this.state.voteCount);
+        };
+        const callback2=(data)=>{
+            console.log(data);
+            this.setState({voted:false});
+            this.setState({voteCount:count-1});
+        };
+        this.state.voted? cancelVote(param,callback2): vote(param,callback1);
     };
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    handleMenuClose = () => {
+        this.setState({anchorEl:null});
     };
 
-    return (
-        <div>
-            <Card className={classes.root}>
-                <CardHeader
-                    avatar={
-                        <Avatar className={classes.avatar} src={props.index===0?Avatar2:Avatar1}/>
-                    }
-                    action={
-                        <IconButton onClick={handleMoreInfoClick} aria-label="settings">
-                            <MoreVertIcon/>
-                        </IconButton>
-                    }
-                    title={post.nickname}
-                    subheader={post.blog_time}
-                />
-                <CardMedia
-                    className={classes.media}
-                    image={post.blog_content.images[0]}
-                    title="沙滩"
-                />
-                <CardContent>
-                    <Typography variant="body1" color="textPrimary" component="p">
-                        {post.blog_content.text}
-                    </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon/>
-                        <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
-                            {post.blog_count.vote_count}
-                        </Typography>
-                    </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon/>
-                        <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
-                            {post.blog_count.forward_count}
-                        </Typography>
-                    </IconButton>
-                    <IconButton
-                        className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                        })}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
-                        <InsertCommentIcon/>
-                        <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
-                            {post.blog_count.comment_count}
-                        </Typography>
-                    </IconButton>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <CommentList comments={post.blog_comments}/>
-                    </CardContent>
-                </Collapse>
-            </Card>
-            {renderMenu}
-        </div>
-    );
+    handleMoreInfoClick = (event) => {
+        this.setState({anchorEl:event.currentTarget});
+    };
+    handleExpandClick = () => {
+        this.setState({expanded:!this.state.expanded})
+    };
+    render() {
+        const {post,voted,voteCount,anchorEl,expanded}=this.state;
+        const {classes}=this.props;
+        const isMenuOpen = Boolean(anchorEl);
+        const menuId = 'report-menu';
+
+        const renderMenu = (
+            this.props.index === 0 ?
+                <Menu
+                    anchorEl={anchorEl}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                    id={menuId}
+                    keepMounted
+                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                    open={isMenuOpen}
+                    onClose={this.handleMenuClose}
+                >
+                    <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                </Menu> :
+                <Menu
+                    anchorEl={anchorEl}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                    id={menuId}
+                    keepMounted
+                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                    open={isMenuOpen}
+                    onClose={this.handleMenuClose}
+                >
+                    <MenuItem><EditIcon/>编辑</MenuItem>
+                    <MenuItem><DeleteIcon/>删除</MenuItem>
+                </Menu>
+        );
+        if(this.state.post!==null)
+            return (
+                <div>
+                    <Card style={{width:657} }>
+                        <CardHeader
+                            avatar={
+                                <Avatar src={this.props.index===0?Avatar2:Avatar1}/>
+                            }
+                            action={
+                                <IconButton onClick={this.handleMoreInfoClick} aria-label="settings">
+                                    <MoreVertIcon/>
+                                </IconButton>
+                            }
+                            title={post.nickname}
+                            subheader={post.blog_time}
+                        />
+                        <PostImage image={post.blog_content.images}/>
+                        <CardContent>
+                            <Typography variant="body1" color="textPrimary" component="p">
+                                {post.blog_content.text}
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing>
+                            <IconButton aria-label="vote" onClick={()=>{this.handleVote(post)}}>
+                                <FavoriteIcon style={{color:voted?amber[200]:null}} />
+                            </IconButton>
+                            <Typography variant="body1" color="textSecondary" component="p">
+                                {voteCount}
+                            </Typography>
+                            <IconButton aria-label="share">
+                                <ShareIcon/>
+                            </IconButton>
+                            <Typography  variant="body1" color="textSecondary" component="p">
+                                {post.blog_count.forward_count}
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: expanded,
+                                })}
+                                onClick={this.handleExpandClick}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <InsertCommentIcon/>
+                            </IconButton>
+                            <Typography variant="body1" color="textSecondary" component="p">
+                                {post.blog_count.comment_count}
+                            </Typography>
+                        </CardActions>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <CardContent>
+                                <CommentList comments={post.blog_comments}/>
+                            </CardContent>
+                        </Collapse>
+                    </Card>
+                    {renderMenu}
+                </div>
+            );
+        else return <div>Loading</div>;
+    }
 }
+
+PostCard.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(PostCard);
+
+// function Post(props) {
+//     const classes = useStyles();
+//     const [expanded, setExpanded] = React.useState(false);
+//     const [anchorEl, setAnchorEl] = React.useState(null);
+//     //const [voted,setVoted]=React.useState(false);
+//     //const [voteCount,setVoteCount]=React.useState(props.post.blog_count.vote_count);
+//     const isMenuOpen = Boolean(anchorEl);
+//     const menuId = 'report-menu';
+//     const {post,voted,voteCount,handleVote} = props;
+//
+//     const handleMenuClose = () => {
+//         setAnchorEl(null);
+//     };
+//
+//     const renderMenu = (
+//         props.index === 0 ?
+//             <Menu
+//                 anchorEl={anchorEl}
+//                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+//                 id={menuId}
+//                 keepMounted
+//                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
+//                 open={isMenuOpen}
+//                 onClose={handleMenuClose}
+//             >
+//                 <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+//             </Menu> :
+//             <Menu
+//                 anchorEl={anchorEl}
+//                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+//                 id={menuId}
+//                 keepMounted
+//                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
+//                 open={isMenuOpen}
+//                 onClose={handleMenuClose}
+//             >
+//                 <MenuItem><EditIcon/>编辑</MenuItem>
+//                 <MenuItem><DeleteIcon/>删除</MenuItem>
+//             </Menu>
+//     );
+//
+//     const handleMoreInfoClick = (event) => {
+//         setAnchorEl(event.currentTarget);
+//     };
+//
+//     const handleExpandClick = () => {
+//         setExpanded(!expanded);
+//     };
+//     // const handleVote=(post)=>{
+//     //     var param={blog_id:0,comment_id:-1};
+//     //     const callback1=(data)=>{
+//     //         console.log(data);
+//     //         setVoted(true);
+//     //         setVoteCount(voteCount+1);
+//     //     };
+//     //
+//     //     const callback2=(data)=>{
+//     //         console.log(data);
+//     //         setVoted(false);
+//     //         setVoteCount(voteCount-1);
+//     //     };
+//     //     voted? cancelVote(param,callback2): vote(param,callback1);
+//     // };
+//
+//     return (
+//         <div>
+//             <Card
+//                 className={classes.root}
+//             >
+//                 <CardHeader
+//                     avatar={
+//                         <Avatar className={classes.avatar} src={props.index===0?Avatar2:Avatar1}/>
+//                     }
+//                     action={
+//                         <IconButton onClick={handleMoreInfoClick} aria-label="settings">
+//                             <MoreVertIcon/>
+//                         </IconButton>
+//                     }
+//                     title={post.nickname}
+//                     subheader={post.blog_time}
+//                 />
+//                 <PostImage image={post.blog_content.images}/>
+//                 <CardContent>
+//                     <Typography variant="body1" color="textPrimary" component="p">
+//                         {post.blog_content.text}
+//                     </Typography>
+//                 </CardContent>
+//                 <CardActions disableSpacing>
+//                     <IconButton aria-label="vote" onClick={()=>{handleVote(post)}}>
+//                         <FavoriteIcon style={{color:voted?amber[200]:null}} />
+//                     </IconButton>
+//                     <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
+//                         {voteCount}
+//                     </Typography>
+//                     <IconButton aria-label="share">
+//                         <ShareIcon/>
+//                     </IconButton>
+//                     <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
+//                         {post.blog_count.forward_count}
+//                     </Typography>
+//                     <IconButton
+//                         className={clsx(classes.expand, {
+//                             [classes.expandOpen]: expanded,
+//                         })}
+//                         onClick={handleExpandClick}
+//                         aria-expanded={expanded}
+//                         aria-label="show more"
+//                     >
+//                         <InsertCommentIcon/>
+//                     </IconButton>
+//                     <Typography className={classes.count} variant="body1" color="textSecondary" component="p">
+//                         {post.blog_count.comment_count}
+//                     </Typography>
+//                 </CardActions>
+//                 <Collapse in={expanded} timeout="auto" unmountOnExit>
+//                     <CardContent>
+//                         <CommentList comments={post.blog_comments}/>
+//                     </CardContent>
+//                 </Collapse>
+//             </Card>
+//             {renderMenu}
+//         </div>
+//     );
+// };

@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) =>
             // position: 'fixed',
             width: '100%',
             bottom: 0,
-            paddingTop: theme.spacing(),
+            //paddingTop: theme.spacing(),
             paddingBottom: theme.spacing(),
             backgroundColor: theme.palette.primary.main,
             opacity: 0.7

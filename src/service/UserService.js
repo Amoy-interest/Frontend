@@ -16,7 +16,7 @@ export const logout = () => {
     const callback = () => {
         store.dispatch(removeToken());
         store.dispatch(removeUser());
-    }
+    };
     getRequest(url, callback);
 };
 
@@ -24,7 +24,7 @@ export const register = (formData, callback) => {
     console.log(formData);
     let data = {
         registerDTO: formData,
-    }
+    };
 
     const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url, data, callback);

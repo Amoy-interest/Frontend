@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -21,19 +21,19 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles((theme) => ({
     background: {
-        backgroundImage:`url(${Background})`,
-        backgroundColor:amber[100]
+        backgroundImage: `url(${Background})`,
+        backgroundColor: amber[100]
     },
     root: {
         width: '100%',
     },
-    content:{
-        paddingTop:40,
+    content: {
+        paddingTop: 40,
     },
     media: {
-        height: 80,
-        width:140,
-        marginLeft:20
+        height: 70,
+        width: 100,
+        marginLeft: 5
         //paddingTop: '56.25%', // 16:9
     },
     expand: {
@@ -49,9 +49,9 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: red[500],
     },
-    chip:{
-        marginLeft:theme.spacing(2),
-        marginBottom:10
+    chip: {
+        marginLeft: theme.spacing(1),
+        marginBottom: 10
     }
 }));
 
@@ -66,35 +66,22 @@ export default function TopicCard() {
 
         <Card className={classes.root}>
             <div className={classes.background}>
-                    {/*<CardHeader*/}
-                    {/*    // avatar={*/}
-                    {/*    //*/}
-                    {/*    // }*/}
-                    {/*    action={*/}
-                    {/*        <IconButton aria-label="settings">*/}
-                    {/*            <MoreVertIcon />*/}
-                    {/*        </IconButton>*/}
-                    {/*    }*/}
-                    {/*    // title="#高考结束#"*/}
-                    {/*    // subheader="September 14, 2016"*/}
-                    {/*>*/}
-                    {/*</CardHeader>*/}
-                    <CardContent className={classes.content}>
-                        <Grid container spacing={10}>
-                            <Grid item xs={2}>
-                                <CardMedia
-                                    className={classes.media}
-                                    image={PostImage1}
-                                    title="沙滩"
-                                />
-                            </Grid>
-                            <Grid item xs>
-                                <div style={{marginTop:'10px'}}>
+                <CardContent className={classes.content}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={2}>
+                            <CardMedia
+                                className={classes.media}
+                                image={PostImage1}
+                                title="沙滩"
+                            />
+                        </Grid>
+                        <Grid item xs>
+                            <div style={{marginTop: '10px'}}>
                                 <Typography variant="h5" color="textPrimary" component="p" align='left'>
-                                    #全国各地高考结束，2020届准大学生来袭#
+                                    #全国各地高考结束#
                                     <Chip
-                                        size={"large"}
-                                        icon={<FaceIcon />}
+                                        size={"middle"}
+                                        icon={<FaceIcon/>}
                                         label="校园"
                                         color="secondary"
                                         variant="outlined"
@@ -102,30 +89,30 @@ export default function TopicCard() {
                                     />
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p" align='left'>
-                                   点击量：3亿 关注人数：3000
+                                    点击量：3亿 关注人数：3000
                                 </Typography>
-                                </div>
-                            </Grid>
+                            </div>
                         </Grid>
-                    </CardContent>
-                    <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites" style={{marginLeft:'10px'}}>
-                            <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="share">
-                            <VisibilityIcon/>
-                        </IconButton>
-                        <IconButton
-                            className={clsx(classes.expand, {
-                                [classes.expandOpen]: expanded,
-                            })}
-                            onClick={handleExpandClick}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <CreateIcon />
-                        </IconButton>
-                    </CardActions>
+                    </Grid>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites" style={{marginLeft: '10px'}}>
+                        <FavoriteIcon/>
+                    </IconButton>
+                    <IconButton aria-label="share">
+                        <VisibilityIcon/>
+                    </IconButton>
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded,
+                        })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <CreateIcon/>
+                    </IconButton>
+                </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
                         <PostForm/>

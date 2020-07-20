@@ -99,7 +99,7 @@ export default function CommentList(props) {
     return (
         <div className={classes.root}>
             <CommentForm commentId={comments} style={classes}/>
-            <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100}
+            <FixedSizeList className={classes.comment} height={300} width={600} itemSize={100}
                            itemCount={comments.length}>
                 {renderRow}
             </FixedSizeList>

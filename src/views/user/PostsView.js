@@ -5,15 +5,12 @@ import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
 import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
+import HotSearchList from "../../components/hot/HotSearchList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom:theme.spacing(1)
-    },
-    paper: {
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        minHeight:700
     },
 }));
 
@@ -23,14 +20,17 @@ function PostsLayout() {
 
     return (
         <div >
-            <Paper elevation={1} className={classes.root}>
+            <Paper elevation={0} className={classes.root}>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBar/>
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs={7}>
                         <PostForm/>
                         <PostCardList index={2}/>
+                    </Grid>
+                    <Grid item xs>
+                        <HotSearchList/>
                     </Grid>
                 </Grid>
             </Paper>
