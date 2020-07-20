@@ -60,7 +60,7 @@ class TestView extends Component{
                 hasMoreItems: data.data.hasMoreItems,
                 nextHref: data.data.nextHref
             })
-        }
+        };
 
         console.log("load more")
         userService.loadMore(this.state.pageSize, this.state.nextHref, callback);

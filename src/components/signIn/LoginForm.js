@@ -10,7 +10,6 @@ import Container from '@material-ui/core/Container';
 import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import {AITextField} from "../commen/AIField";
 import * as userService from "../../service/UserService";
 import {useHistory} from "react-router";
@@ -20,7 +19,7 @@ import {connect} from "react-redux";
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
-        width: 350,
+        width:350,
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(2),
@@ -53,7 +52,7 @@ function LoginForm(props){
 
     const callback = (data) => {
         console.log(data);
-        if (data.status !== 0) {
+        if (data.status !== 200) {
             message.error(data.msg);
             return;
         }
@@ -97,6 +96,7 @@ function LoginForm(props){
                             <Grid container spacing={2}>
                                 <AITextField sm={12} name="username" label="用户名"/>
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
+                                {/*<AIPickerField sm={6} name="name" array={ages} label="label"/>*/}
                             </Grid>
                             <Button
                                 variant="contained"
@@ -126,7 +126,6 @@ function LoginForm(props){
         </Container>
     );
 }
-
 
 export default connect(
     null,

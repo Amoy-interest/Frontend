@@ -31,12 +31,11 @@ export const register = (formData, callback) => {
 };
 
 export const loadMore = (pageSize, pageIndex, callback) => {
-    const url = `${apiUrl}/test/loadMore`;
+    const url = `${apiUrl}/test/loadMore`
     const json = {
-        pageIndex: pageIndex,
-        pageSize: pageSize
+        pageSize: pageSize,
+        pageIndex: pageIndex
     }
-    console.log(json);
 
     postRequest_json(url, json, callback);
 }

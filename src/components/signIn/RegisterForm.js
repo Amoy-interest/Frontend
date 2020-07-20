@@ -93,7 +93,7 @@ function RegisterForm(props){
                         nickname: '',
                         sex: 0,
                         email: '',
-                        address: ''
+                        address: '',
                         check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
