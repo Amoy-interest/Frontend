@@ -91,9 +91,9 @@ function RegisterForm(props){
                         address: '',
                         email: '',
                         nickname: '',
-                        password: null,
+                        password: '',
                         sex: 0,
-                        username: null,
+                        username: '',
                         check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
@@ -125,6 +125,12 @@ function RegisterForm(props){
                             >
                                 注册并登陆
                             </Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}/>
+                                <Grid item xs={12} sm={8}>
+                                    <Button href="/" color="primary">go back to home</Button>
+                                </Grid>
+                            </Grid>
                         </Form>
                     )}
                 </Formik>
