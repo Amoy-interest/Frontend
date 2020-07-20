@@ -46,7 +46,8 @@ export default class AdminUsersList extends Component {
         this.state = {
             users: [],
             checked: [],
-            open: []
+            open: [],
+            creditsOrder: "desc"
         };
     }
 
@@ -56,6 +57,19 @@ export default class AdminUsersList extends Component {
             this.setState({users: res.data});
         }));
     }
+
+    sortByCredits = () => {
+        let tmp = this.state.users;
+        tmp.sort((a, b) => {
+            if (this.state.creditsOrder === "desc") {
+                this.setState({creditsOrder: "asc"});
+                return b.credits - a.credits;
+            } else {
+                this.setState({creditsOrder: "desc"});
+                return a.credits - b.credits;
+            }
+        })
+    };
 
     render() {
         return (
@@ -72,9 +86,9 @@ export default class AdminUsersList extends Component {
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>选中</StyledTableCell>
+                               <StyledTableCell>选中</StyledTableCell>
                                 <StyledTableCell>用户</StyledTableCell>
-                                <StyledTableCell>信用值</StyledTableCell>
+                                <StyledTableCell onClick={this.sortByCredits}>信用值</StyledTableCell>
                                 <StyledTableCell>举报原因</StyledTableCell>
                                 <StyledTableCell> </StyledTableCell>
                             </TableRow>

@@ -51,7 +51,9 @@ class AdminPostsList extends Component {
         this.state = {
             posts: [],
             open: [],
-            checked: []
+            checked: [],
+            reportOrder: "desc",
+            hotOrder: "desc"
         };
     }
 
@@ -72,6 +74,35 @@ class AdminPostsList extends Component {
         //不知道为什么一直都是整列的修改！！！！
     }
 
+    sortByReportCount = () => {
+        let tmp = this.state.posts;
+        tmp.sort((a, b) => {
+            if (this.state.reportOrder === "desc") {
+                this.setState({reportOrder: "asc"});
+                return b.blog_count.report_count - a.blog_count.report_count;
+            } else {
+                this.setState({reportOrder: "desc"});
+                return a.blog_count.report_count - b.blog_count.report_count;
+            }
+        });
+        this.setState({posts: tmp});
+    };
+
+    sortByHot = () => {
+        let tmp = this.state.posts;
+        tmp.sort((a, b) => {
+            if (this.state.hotOrder === "desc") {
+                this.setState({hotOrder: "asc"});
+                return b.blog_count.vote_count+b.blog_count.comment_count+b.blog_count.forward_count -
+                    a.blog_count.vote_count - a.blog_count.comment_count - a.blog_count.forward_count;
+            } else {
+                this.setState({hotOrder: "desc"});
+                return a.blog_count.vote_count+a.blog_count.comment_count+a.blog_count.forward_count -
+                    b.blog_count.vote_count - b.blog_count.comment_count - b.blog_count.forward_count;
+            }
+        })
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -91,8 +122,8 @@ class AdminPostsList extends Component {
                                 <StyledTableCell>选中</StyledTableCell>
                                 <StyledTableCell>发帖人</StyledTableCell>
                                 <StyledTableCell>博文内容</StyledTableCell>
-                                <StyledTableCell>热度</StyledTableCell>
-                                <StyledTableCell>举报数</StyledTableCell>
+                                <StyledTableCell onClick={this.sortByHot}>热度</StyledTableCell>
+                                <StyledTableCell onClick={this.sortByReportCount}>举报数</StyledTableCell>
                                 <StyledTableCell> </StyledTableCell>
                             </TableRow>
                         </TableHead>
