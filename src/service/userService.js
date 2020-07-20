@@ -1,9 +1,9 @@
-import {mockUrl, APIModules} from "../utils/constants";
+import {apiUrl, mockUrl, APIModules} from "../utils/constants";
 import {postRequest_json} from "../utils/ajax";
 
 export const login = (data, callback) => {
     console.log(data);
-    const url = `${mockUrl}${APIModules.USER}/login`;
+    const url = `${apiUrl}${APIModules.USER}/login`;
     postRequest_json(url, data, callback);
 };
 
@@ -13,6 +13,6 @@ export const register = (formData, callback) => {
         registerDTO: formData,
     }
 
-    const url = `${mockUrl}${APIModules.USER}/register`;
+    const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url, data, callback);
 };

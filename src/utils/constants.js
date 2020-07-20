@@ -19,8 +19,8 @@ const APIModules = {
 }
 
 const UserType = {
-    ADMIN: 0,
-    CUSTOMER: 1
+    ADMIN: 1,
+    CUSTOMER: 0
 }
 
 export {apiUrl, mockUrl, UserActionType, TokenActionType, UserType, APIModules}
