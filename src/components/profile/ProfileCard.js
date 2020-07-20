@@ -115,14 +115,14 @@ export default function ProfileCard() {
                         </Grid>
                     </Grid>
                     <Typography variant="h5" color="textPrimary" align='center'>
-                        Boz
+                        鲁迅
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" align='center'>
                         粉丝：3000 | 关注：4000
                     </Typography>
                     <div style={{marginTop: '10px'}}>
                         <Typography variant="body1" color="textPrimary" component="p" align='center'>
-                            简介:优秀交大青年
+                            简介: 中国近代文学家、思想家。
                         </Typography>
                     </div>
                     <div style={{marginTop: '20px'}}>
