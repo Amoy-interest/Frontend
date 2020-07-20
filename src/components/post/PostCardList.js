@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PostCard from "./PostCard";
-import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/postService";
+import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
 import {Grid} from "@material-ui/core";
 import {connect} from "react-redux";
 
@@ -71,6 +71,13 @@ export default class PostCardList extends Component {
                 getOwnPosts(callback);
                 break;
         }
+    }
+
+
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
     render() {

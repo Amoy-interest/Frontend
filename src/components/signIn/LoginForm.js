@@ -10,12 +10,11 @@ import Container from '@material-ui/core/Container';
 import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField} from "./basic/AIField";
-import * as userService from "../service/userService";
+import {AITextField} from "../commen/AIField";
+import * as userService from "../../service/UserService";
 import {useHistory} from "react-router";
-import {setToken, setUser} from "../redux/actions";
+import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
-import {UserType} from "../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,12 +36,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.main,
     },
 }));
-
-function mapStateToProps(state) {
-    return {
-        value: state
-    }
-}
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -66,10 +59,7 @@ function LoginForm(props){
 
         message.success(data.msg);
         props.onLogin(data.data.user, data.data.token)
-        if (data.data.user.user_type === UserType.CUSTOMER)
-            history.push('/home');
-        else
-            history.push('/admin-home');
+        history.push('/home');
     }
 
     const submit = (values) => {
@@ -96,7 +86,7 @@ function LoginForm(props){
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
-                            alert(JSON.stringify(values, null, 2));
+                            // alert(JSON.stringify(values, null, 2));
                             submit(values);
                         }, 500);
                     }}
@@ -128,7 +118,7 @@ function LoginForm(props){
 
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(LoginForm)
 

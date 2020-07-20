@@ -10,10 +10,10 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
-import {AITextField, AICheckField, AIPickerField} from "./basic/AIField";
-import {setToken, setUser} from "../redux/actions";
+import {AITextField, AICheckField, AIPickerField} from "../commen/AIField";
+import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
-import * as userService from "../service/userService";
+import * as userService from "../../service/UserService";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

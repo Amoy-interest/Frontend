@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import RegisterForm from "../../components/RegisterForm";
+import RegisterForm from "../../components/signIn/RegisterForm";
 
 class RegisterView extends Component{
 
