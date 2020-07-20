@@ -108,6 +108,17 @@ function LoginForm(props){
                             >
                                 登陆
                             </Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={8}>
+                                    <Button onClick={props.closeModal} color="primary">Forgot password?</Button>
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    {/*<Link href="#" variant="body2">*/}
+                                    {/*    Don't have an account? Sign Up*/}
+                                    {/*</Link>*/}
+                                    <Button href="/register" color="primary">Sign Up</Button>
+                                </Grid>
+                            </Grid>
                         </Form>
                     )}
                 </Formik>
@@ -115,7 +126,6 @@ function LoginForm(props){
         </Container>
     );
 }
-
 
 export default connect(
     null,
