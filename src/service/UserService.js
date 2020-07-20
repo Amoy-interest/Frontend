@@ -29,3 +29,14 @@ export const register = (formData, callback) => {
     const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url, data, callback);
 };
+
+export const loadMore = (pageSize, pageIndex, callback) => {
+    const url = `${apiUrl}/test/loadMore`;
+    const json = {
+        pageIndex: pageIndex,
+        pageSize: pageSize
+    }
+    console.log(json);
+
+    postRequest_json(url, json, callback);
+}

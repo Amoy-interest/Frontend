@@ -88,12 +88,13 @@ function RegisterForm(props){
                 </Typography>
                 <Formik
                     initialValues={{
-                        username: null,
+                        username: '',
+                        password: '',
                         nickname: '',
-                        password: null,
                         sex: 0,
                         email: '',
                         address: ''
+                        check: false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
@@ -124,6 +125,12 @@ function RegisterForm(props){
                             >
                                 注册并登陆
                             </Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}/>
+                                <Grid item xs={12} sm={8}>
+                                    <Button href="/" color="primary">go back to home</Button>
+                                </Grid>
+                            </Grid>
                         </Form>
                     )}
                 </Formik>

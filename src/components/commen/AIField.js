@@ -50,6 +50,7 @@ export function AICheckField (props) {
     return (
         <Grid item xs={12} sm={props.sm}>
             <Field
+                type='checkbox'
                 component={CheckboxWithLabel}
                 name={props.name}
                 Label={{ label: props.label}}
@@ -83,7 +84,7 @@ export function AIPickerField (props) {
                     {
                         props.array.map((item) => {
                             return(
-                                <MenuItem value={item.value}>{item.name}</MenuItem>
+                                <MenuItem key={item.value} value={item.value}>{item.name}</MenuItem>
                             )
                         })
                     }
