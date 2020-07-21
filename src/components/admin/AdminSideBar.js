@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,9 @@ export default function AdminSideBar(props) {
     const openTopicsManageView=()=>{
         history.replace('/topics-manage');
     };
+    const openSensWordsManageView=()=>{
+        history.replace('/sensWords-manage');
+    };
     return (
         <div className={classes.root}>
             <Tabs
@@ -51,6 +55,7 @@ export default function AdminSideBar(props) {
                 <Tab label="用户管理" icon={<PeopleAltIcon/>} onClick={openUsersManageView}/>
                 <Tab label="博文管理" icon={<ViewListIcon/>} onClick={openPostsManageView}/>
                 <Tab label="话题管理" icon={<WhatshotIcon/>} onClick={openTopicsManageView}/>
+                <Tab label="敏感词管理" icon={<AcUnitIcon/>} onClick={openSensWordsManageView}/>
             </Tabs>
         </div>
     );
