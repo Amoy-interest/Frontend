@@ -3,8 +3,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import {getReportedTopics} from "../../service/AdminService";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import {getReportedTopics, checkReportedTopic} from "../../service/AdminService";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
+import {putRequest_json} from "../../utils/ajax";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -57,6 +58,14 @@ export default class AdminTopicsList extends Component{
                 this.state.checked.push(false);
             this.setState({topics: res.data});
         }));
+    }
+
+    checkTopic(name, status) {
+        let data = {"topic_name": name, "check_status": status};
+        console.log(data);
+        checkReportedTopic(data, ((res) => {
+            console.log(res);
+        }))
     }
 
     sortByReport = () => {
@@ -131,16 +140,18 @@ export default class AdminTopicsList extends Component{
                                             <StyledTableCell>{topic.name}</StyledTableCell>
                                             <StyledTableCell>{topic.time}</StyledTableCell>
                                             <StyledTableCell>{topic.report_count}</StyledTableCell>
-                                            <Tooltip title={"删除"}>
-                                                <IconButton edge="end" aria-label="micoff">
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title={"编辑"}>
-                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                    <EditIcon/>
-                                                </IconButton>
-                                            </Tooltip>
+                                            <StyledTableCell>
+                                                <Tooltip title={"通过"} onClick={() => {this.checkTopic(topic.name, 1)}}>
+                                                    <IconButton edge="end" aria-label="micoff">
+                                                        <DoubleArrowIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip title={"删除"} onClick={() => {this.checkTopic(topic.name, 2)}}>
+                                                    <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </StyledTableCell>
                                         </StyledTableRow>
                                     );
                                 })

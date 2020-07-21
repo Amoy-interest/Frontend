@@ -16,5 +16,12 @@ export const getReportedTopics = (callback) => {
     getRequest(url, callback);
 };
 
+export const checkReportedTopic = (data, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported`;
+    putRequest_json(url, data, callback);
+};
+
+
+
 
 
