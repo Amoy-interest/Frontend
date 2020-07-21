@@ -47,13 +47,16 @@ export default class AdminUsersList extends Component {
             users: [],
             checked: [],
             open: [],
-            creditsOrder: "desc"
+            creditsOrder: "desc",
+            checkAll: false
         };
     }
 
     componentDidMount() {
         getReportedUsers(((res) => {
             console.log(res.data);
+            for (let i=0; i<res.data.length; i++)
+                this.state.checked.push(false);
             this.setState({users: res.data});
         }));
     }
@@ -77,6 +80,17 @@ export default class AdminUsersList extends Component {
         this.setState({checked: tmp});
     };
 
+    setCheckAll() {
+        let tmp = this.state.checked;
+        for (let i=0; i<tmp.length; i++) {
+            tmp[i] = !this.state.checkAll;
+        }
+        this.setState({
+            checkAll: !this.state.checkAll,
+            checked: tmp
+        });
+    }
+
     render() {
         return (
             <div>
@@ -92,7 +106,9 @@ export default class AdminUsersList extends Component {
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                               <StyledTableCell>选中</StyledTableCell>
+                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                    全选
+                                </StyledTableCell>
                                 <StyledTableCell>用户</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByCredits}>信用值</StyledTableCell>
                                 <StyledTableCell>举报原因</StyledTableCell>

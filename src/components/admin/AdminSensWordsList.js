@@ -49,12 +49,15 @@ class AdminSensWordsList extends Component {
         this.state = {
             sensWords: [],
             checked: [],
+            checkAll: false
         };
     }
 
     componentDidMount() {
         getSensWords(((res) => {
             console.log(res.data);
+            for (let i=0; i<res.data.length; i++)
+                this.state.checked.push(false);
             this.setState({sensWords: res.data});
         }));
     }
@@ -64,6 +67,17 @@ class AdminSensWordsList extends Component {
         tmp[index] = tmp[index] !== true;
         this.setState({checked: tmp});
     };
+
+    setCheckAll() {
+        let tmp = this.state.checked;
+        for (let i=0; i<tmp.length; i++) {
+            tmp[i] = !this.state.checkAll;
+        }
+        this.setState({
+            checkAll: !this.state.checkAll,
+            checked: tmp
+        });
+    }
 
     render() {
         const { classes } = this.props;
@@ -81,10 +95,14 @@ class AdminSensWordsList extends Component {
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>选中</StyledTableCell>
+                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                    全选
+                                </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
                                 <StyledTableCell> </StyledTableCell>
-                                <StyledTableCell>选中</StyledTableCell>
+                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                    全选
+                                </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
                                 <StyledTableCell> </StyledTableCell>
                             </TableRow>
