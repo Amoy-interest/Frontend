@@ -21,7 +21,7 @@ import Container from "@material-ui/core/Container";
 import FooterBar from "./components/commen/Footer";
 import {ThemeProvider} from "@material-ui/styles";
 import {AuthorityLevel, UserType} from "./utils/constants";
-import {Route} from 'react-router-dom'
+import {Route} from 'react-router-dom';
 import HeaderPre from "./components/commen/HeaderPre";
 
 const theme_user = createMuiTheme({
@@ -67,7 +67,6 @@ const useStyles = makeStyles((theme) =>
 
 function App(props) {
     const classes = useStyles();
-
     return (
         <div className="App">
             <ThemeProvider theme={props.role === UserType.ADMIN ? theme_admin: theme_user}>
@@ -92,8 +91,8 @@ function App(props) {
                             <Switch>
                                 <Route exact path='/' component={HomePreLoginView}/>
                                 <Route path='/register' component={RegisterView}/>
-                                <PrivateRoute path='/home' component={HomeView}n authority={AuthorityLevel.CUSTOMER}/>
-                                <PrivateRoute path='/test' component={TestView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path='/home' component={HomeView} authority={AuthorityLevel.CUSTOMER}/>
+                                <Route path='/test' component={TestView}/>
                                 <PrivateRoute path='/personal-info' component={ProfileView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>

@@ -30,3 +30,13 @@ export const cancelVote=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/vote`;
     deleteRequest_json(url, data, callback);
 };
+
+export const postComment=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/comments`;
+    postRequest_json(url, data, callback);
+};
+
+export const deleteComment=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/comments`;
+    deleteRequest_json(url, data, callback);
+};
