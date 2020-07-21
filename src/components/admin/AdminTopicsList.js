@@ -71,6 +71,12 @@ export default class AdminTopicsList extends Component{
         this.setState({topics: tmp});
     };
 
+    setChecked(index) {
+        let tmp = this.state.checked;
+        tmp[index] = tmp[index] !== true;
+        this.setState({checked: tmp});
+    };
+
     render() {
         return (
             <div>
@@ -101,9 +107,10 @@ export default class AdminTopicsList extends Component{
                                             <StyledTableCell component="th" scope="row">
                                                 <Checkbox
                                                     edge="start"
-                                                    checked={this.state.checked.indexOf(index) !== -1}
+                                                    checked={this.state.checked[index]}
                                                     tabIndex={-1}
                                                     disableRipple
+                                                    onChange={() => this.setChecked(index)}
                                                 />
                                             </StyledTableCell>
                                             <StyledTableCell>{topic.name}</StyledTableCell>

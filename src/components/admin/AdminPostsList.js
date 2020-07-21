@@ -62,8 +62,10 @@ class AdminPostsList extends Component {
     componentDidMount() {
         getReportedPosts(((res) => {
             console.log(res.data);
-            for (let i=0; i<res.data.length; i++)
+            for (let i=0; i<res.data.length; i++) {
                 this.state.open.push(false);
+                this.state.checked.push(false);
+            }
             this.setState({posts: res.data});
         }));
     }
@@ -72,6 +74,12 @@ class AdminPostsList extends Component {
         let tmp = this.state.open;
         tmp[index] = tmp[index] !== true;
         this.setState({open: tmp});
+    };
+
+    setChecked(index) {
+        let tmp = this.state.checked;
+        tmp[index] = tmp[index] !== true;
+        this.setState({checked: tmp});
     };
 
     sortByReportCount = () => {
@@ -136,9 +144,10 @@ class AdminPostsList extends Component {
                                         <StyledTableCell component="th" scope="row">
                                             <Checkbox
                                                 edge="start"
-                                                checked={this.state.checked.indexOf(index) !== -1}
+                                                checked={this.state.checked[index]}
                                                 tabIndex={-1}
                                                 disableRipple
+                                                onChange={() => this.setChecked(index)}
                                             />
                                         </StyledTableCell>
                                         <StyledTableCell>{blog.nickname}</StyledTableCell>

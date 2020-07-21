@@ -15,3 +15,9 @@ export const getReportedTopics = (callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported`;
     getRequest(url, callback);
 };
+
+export const getSensWords = (callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    getRequest(url, callback);
+};
+

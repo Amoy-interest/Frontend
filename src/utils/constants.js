@@ -1,6 +1,7 @@
 const devUrl = 'http://52.90.204.208:8080';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
-const apiUrl = mockUrl;
+const localUrl = 'http://localhost:8080';
+const apiUrl = localUrl;
 
 const UserActionType = {
     SET_USER: 'set user',
@@ -16,7 +17,8 @@ const APIModules = {
     USER: '/users',
     ADMIN: '/admins',
     BLOG: '/blogs',
-    TOPIC: '/topics'
+    TOPIC: '/topics',
+    SENSITIVEWORD: '/keywords',
 };
 
 const UserType = {
