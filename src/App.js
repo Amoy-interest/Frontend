@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminUsersManageView from "./views/admin/AdminUsersManageView";
 import AdminPostsManageView from "./views/admin/AdminPostsManageView";
 import AdminTopicsManageView from "./views/admin/AdminTopicsManageView";
+import AdminSensWordsManageView from './views/admin/AdminSensWordsManageView';
 import TestView from "./views/TestView";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
 import {amber, blue, indigo} from "@material-ui/core/colors";
@@ -80,7 +81,8 @@ function App(props) {
                             '/topic-discussion',
                             '/users-manage',
                             '/posts-manage',
-                            '/topics-manage'
+                            '/topics-manage',
+                            '/sensWords-manage'
                         ]}
                         component={
                             (props.role === UserType.VISITOR && HeaderPre) ||HeaderAfterLogIn
@@ -99,6 +101,7 @@ function App(props) {
                                 <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute path='/sensWords-manage' component={AdminSensWordsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <Route path='*' component={NotFoundView}/>
                             </Switch>
                         </main>

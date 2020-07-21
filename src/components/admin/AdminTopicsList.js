@@ -46,13 +46,15 @@ export default class AdminTopicsList extends Component{
             topics: [],
             open: [],
             checked: [],
-            reportOrder: "desc"
+            reportOrder: "desc",
+            checkAll: false
         };
     }
 
     componentDidMount() {
         getReportedTopics(((res) => {
-            console.log(res.data);
+            for (let i=0; i<res.data.length; i++)
+                this.state.checked.push(false);
             this.setState({topics: res.data});
         }));
     }
@@ -71,6 +73,23 @@ export default class AdminTopicsList extends Component{
         this.setState({topics: tmp});
     };
 
+    setChecked(index) {
+        let tmp = this.state.checked;
+        tmp[index] = tmp[index] !== true;
+        this.setState({checked: tmp});
+    };
+
+    setCheckAll() {
+        let tmp = this.state.checked;
+        for (let i=0; i<tmp.length; i++) {
+            tmp[i] = !this.state.checkAll;
+        }
+        this.setState({
+            checkAll: !this.state.checkAll,
+            checked: tmp
+        });
+    }
+
     render() {
         return (
             <div>
@@ -86,7 +105,9 @@ export default class AdminTopicsList extends Component{
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>选中</StyledTableCell>
+                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                    全选
+                                </StyledTableCell>
                                 <StyledTableCell>话题</StyledTableCell>
                                 <StyledTableCell>创建时间</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByReport}>举报数</StyledTableCell>
@@ -101,9 +122,10 @@ export default class AdminTopicsList extends Component{
                                             <StyledTableCell component="th" scope="row">
                                                 <Checkbox
                                                     edge="start"
-                                                    checked={this.state.checked.indexOf(index) !== -1}
+                                                    checked={this.state.checked[index]}
                                                     tabIndex={-1}
                                                     disableRipple
+                                                    onChange={() => this.setChecked(index)}
                                                 />
                                             </StyledTableCell>
                                             <StyledTableCell>{topic.name}</StyledTableCell>
