@@ -92,7 +92,7 @@ class Comment extends React.Component {
             "root_comment_id": this.state.comment_id,
             "text": text.comment
         };
-        let comment = [{
+        let comment = {
             "_deleted": false,
             "blog_id": -1,
             "comment_id": this.state.comment_id,
@@ -100,12 +100,13 @@ class Comment extends React.Component {
             "comment_text": text.comment,
             "comment_time": Date(),
             "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": "",
+            "reply_comment_nickname": this.state.comment.nickname,
             "root_comment_id": -1,
             "vote_count": 0
-        }];
+        };
+        console.log(comment);
         const callback = () => {
-            this.setState({expanded:false});
+            this.setState({expanded: false});
             this.setState({secondaryComment: comment});
         };
         postComment(param, callback);
@@ -198,9 +199,10 @@ class Comment extends React.Component {
                         <Typography variant="body1" color="textSecondary" component="p">
                             {comment.comment_text}
                         </Typography>
-                        {secondaryComment===null?null:
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            {comment.comment_text}
+                        {secondaryComment === null ? null :
+                            <Typography variant="body2" color="textSecondary" component="p"
+                                        style={{backgroundColor: grey[50], marginTop: '10px'}}>
+                                {secondaryComment.nickname} 回复 {comment.nickname}: {secondaryComment.comment_text}
                             </Typography>
                         }
                         <Collapse in={expanded} timeout="auto" unmountOnExit>

@@ -189,7 +189,7 @@ class Post extends React.Component {
                         </CardActions>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <CommentList comments={post.blog_comments} addComment={this.addComment}/>
+                                <CommentList blog={post} comments={post.blog_comments} addComment={this.addComment}/>
                             </CardContent>
                         </Collapse>
                     </Card>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
+import {Link} from 'react-router-dom'
 import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
 import CommentForm from "./CommentForm";
@@ -8,11 +9,15 @@ import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {postComment} from "../../service/PostService";
 import {Divider} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import Message from "../commen/Message";
 
 const styles = ((theme) => ({
     root: {
         width: '100%',
+        display:'flex',
+        alignItem:'center',
+        flexDirection:'column'
         //backgroundColor: theme.palette.background.paper,
     },
     submit: {
@@ -27,6 +32,9 @@ const styles = ((theme) => ({
     inline: {
         display: 'inline',
     },
+    load: {
+
+    }
 }));
 
 function mapStateToProps(state) {
@@ -85,7 +93,7 @@ class Comments extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes,blog} = this.props;
         const {comments, messageOpen} = this.state;
 
         const handleDeleteItem = (index) => {
@@ -96,7 +104,7 @@ class Comments extends React.Component {
 
         function renderRow(itemProps) {
             const {index, style} = itemProps;
-            console.log(itemProps);
+            //console.log(itemProps);
             return (
                 <ListItem button style={style} key={index}>
                     <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}/>
@@ -118,6 +126,13 @@ class Comments extends React.Component {
                                    itemCount={comments.length}>
                         {renderRow}
                     </FixedSizeList>
+                    <Link to={{
+                        pathname: '/post-detail',
+                        search: '?id=' + 1}}
+                          target="_blank"
+                    >
+                        <Button classes={classes.load} size="large" color="primary" >Load More</Button>
+                    </Link>
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );
