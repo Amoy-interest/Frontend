@@ -18,6 +18,7 @@ const APIModules = {
     ADMIN: '/admins',
     BLOG: '/blogs',
     TOPIC: '/topics',
+    COMMENTS:'/comments',
     SENSITIVEWORD: '/keywords',
 };
 

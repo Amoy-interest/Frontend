@@ -6,6 +6,7 @@ import SideBar from "../../components/commen/SideBar";
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
 import {getPost} from "../../service/PostService";
+import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -29,14 +30,11 @@ class PostDetailView extends Component {
         return (
             <div>
                 <Paper elevation={0} className={this.props.classes.root}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                            <SideBar/>
+                    <Grid container >
+                        <Grid item xs={12} sm={9}>
+                            <PostCardList index={PostType.OWN}/>
                         </Grid>
-                        <Grid item xs={7}>
-                            <PostCardList index={1}/>
-                        </Grid>
-                        <Grid item xs>
+                        <Grid item xs={12} sm={3}>
                             <HotSearchList/>
                         </Grid>
                     </Grid>

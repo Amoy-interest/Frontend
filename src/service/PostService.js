@@ -1,5 +1,6 @@
 import {apiUrl, APIModules} from "../utils/constants";
 import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
+
 export const getPost=(id,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/?${id}`;
     getRequest(url,callback);
@@ -33,6 +34,11 @@ export const vote=(data,callback)=>{
 export const cancelVote=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/vote`;
     deleteRequest_json(url, data, callback);
+};
+
+export const getComments=(params,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}${APIModules.COMMENTS}/level1`;
+    getRequest(url,params,callback);
 };
 
 export const postComment=(data,callback)=>{

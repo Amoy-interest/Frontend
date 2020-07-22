@@ -77,28 +77,6 @@ class PostCardList extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     const callback = (data) => {
-    //         this.setState({posts: data.data.list});
-    //         console.log(this.state.posts);
-    //     };
-    //     switch (this.props.index) {
-    //         case PostType.RANDOM:
-    //         default:
-    //             getRandomPosts(null, callback);
-    //             break;
-    //         case PostType.RECOMMEND:
-    //             getRecommendPosts(null, callback);
-    //             break;
-    //         case PostType.FOLLOW:
-    //             getFollowPosts(null, callback);
-    //             break;
-    //         case PostType.OWN:
-    //             getOwnPosts(null, callback);
-    //             break;
-    //     }
-    // }
-
     componentWillUnmount = () => {
         this.setState = (state,callback)=>{
             return;

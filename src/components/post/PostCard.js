@@ -27,6 +27,8 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import Message from "../commen/Message";
+import Grid from "@material-ui/core/Grid";
+import {Link} from "react-router-dom";
 
 const styles = (theme => ({
     expand: {
@@ -89,6 +91,11 @@ class PostCard extends React.Component {
         this.setState({commentCount: count + 1});
     };
 
+    deleteComment = () => {
+        const count = this.state.commentCount;
+        this.setState({commentCount: count - 1});
+    };
+
     handleMenuClose = () => {
         this.setState({anchorEl: null});
     };
@@ -110,13 +117,13 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, voteCount, commentCount, anchorEl, expanded,messageOpen} = this.state;
+        const {post, voted, voteCount, commentCount, anchorEl, expanded, messageOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
         const renderMenu = (
-            this.props.index === 0 ?
+            this.props.type === "Others" ?
                 <Menu
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -145,7 +152,7 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: 657}}>
+                    <Card style={{width: '100%'}}>
                         <CardHeader
                             avatar={
                                 <Avatar src={post.avatar_path}/>
@@ -195,7 +202,20 @@ class PostCard extends React.Component {
                         </CardActions>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <CommentList blog_id={post.blog_id} addComment={this.addComment}/>
+                                <CommentList blog_id={post.blog_id} addComment={this.addComment} deleteComment={this.deleteComment}/>
+                                <Grid container className={classes.link}>
+                                    <Grid item xs={5}/>
+                                    <Grid item xs>
+                                        <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                            pathname: '/post-detail',
+                                            search: '?id=' + post.blog_id
+                                        }}
+                                              target="_blank"
+                                        >Load More
+                                        </Link>
+                                    </Grid>
+                                    <Grid item xs/>
+                                </Grid>
                             </CardContent>
                         </Collapse>
                     </Card>
