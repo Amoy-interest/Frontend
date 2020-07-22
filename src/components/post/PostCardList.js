@@ -4,12 +4,16 @@ import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "..
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
+import * as postService from "../../service/PostService";
+import InfiniteScroll from "react-infinite-scroller";
+import Typography from "@material-ui/core/Typography";
 import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
+        overflow: 'auto'
     },
     item: {
         width:'100%'
@@ -28,31 +32,72 @@ class PostCardList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: []
+            posts: [],
+            hasMoreItems: true,
+            nextHref: 0,
+            pageSize: 2
         };
+
+        this.loadMore = this.loadMore.bind(this);
     }
 
-    componentDidMount() {
+    loadMore() {
         const callback = (data) => {
-            this.setState({posts: data.data.list});
-            console.log(this.state.posts);
+            console.log("loadMore data", data);
+            console.log("state", this.state);
+            this.setState({
+                posts: [...this.state.posts, ...data.data.list],
+                hasMoreItems: (data.data.totalPage > this.state.nextHref),
+                nextHref: this.state.nextHref + 1
+            })
         };
+
+        const params = {
+            pageNum: this.state.nextHref,
+            pageSize: this.state.pageSize
+        };
+
+        // postService.getRandomPosts(params, callback);
+
         switch (this.props.index) {
             case PostType.RANDOM:
             default:
-                getRandomPosts(null, callback);
+                getRandomPosts(params, callback);
                 break;
             case PostType.RECOMMEND:
-                getRecommendPosts(null, callback);
+                getRecommendPosts(params, callback);
                 break;
             case PostType.FOLLOW:
-                getFollowPosts(null, callback);
+                getFollowPosts(params, callback);
                 break;
             case PostType.OWN:
-                getOwnPosts(null, callback);
+                params.user_id = 0;
+                getOwnPosts(params, callback);
                 break;
         }
     }
+
+    // componentDidMount() {
+    //     const callback = (data) => {
+    //         this.setState({posts: data.data.list});
+    //         console.log(this.state.posts);
+    //     };
+    //     switch (this.props.index) {
+    //         case PostType.RANDOM:
+    //         default:
+    //             getRandomPosts(null, callback);
+    //             break;
+    //         case PostType.RECOMMEND:
+    //             getRecommendPosts(null, callback);
+    //             break;
+    //         case PostType.FOLLOW:
+    //             getFollowPosts(null, callback);
+    //             break;
+    //         case PostType.OWN:
+    //             getOwnPosts(null, callback);
+    //             break;
+    //     }
+    // }
 
     componentWillUnmount = () => {
         this.setState = (state,callback)=>{
@@ -61,21 +106,29 @@ class PostCardList extends Component {
     };
 
     render() {
-        if (!this.state.posts) return (<div>Loading</div>);
-        else return (
+
+        return (
             <div className={this.props.classes.root}>
-                <List>
-                    {this.state.posts.map((item, value) => {
-                        const nickname = item.nickname;
-                        console.log(nickname);
-                        return (
-                            <ListItem className={this.props.classes.item} key={value}>
-                                {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                    <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
-                            </ListItem>
-                        );
-                    })}
-                </List>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this.loadMore}
+                    hasMore={this.state.hasMoreItems}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                    // useWindow={false}
+                >
+                    <List>
+                        {this.state.posts.map((item, value) => {
+                            const nickname = item.nickname;
+                            console.log(value, nickname);
+                            return (
+                                <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
+                                    {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
+                                        <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+                </InfiniteScroll>
             </div>
         );
     }

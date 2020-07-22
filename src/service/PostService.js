@@ -6,7 +6,7 @@ export const getPost=(id,callback)=>{
 };
 
 export const getRecommendPosts = (params,callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/recommend/old`;
+    const url = `${apiUrl}${APIModules.BLOG}/recommend`;
     getRequest(url,params,callback);
 };
 
@@ -16,12 +16,12 @@ export const getRandomPosts = (params,callback) => {
 };
 
 export const getOwnPosts = (params,callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/own/old`;
+    const url = `${apiUrl}${APIModules.BLOG}/users`;
     getRequest(url,params,callback);
 };
 
 export const getFollowPosts = (params,callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/follow/old`;
+    const url = `${apiUrl}${APIModules.BLOG}/follow`;
     getRequest(url, params,callback);
 };
 
