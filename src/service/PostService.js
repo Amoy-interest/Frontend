@@ -17,7 +17,7 @@ export const getRandomPosts = (params,callback) => {
 };
 
 export const getOwnPosts = (params,callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/own`;
+    const url = `${apiUrl}${APIModules.BLOG}/users`;
     getRequest(url,params,callback);
 };
 

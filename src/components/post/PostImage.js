@@ -20,13 +20,13 @@ export default function PostImage(props) {
     const classes = useStyles();
     if (props.image !== null) {
         const imageCount = props.image.length;
-        console.log(props.image);
+        // console.log(props.image);
         return (
             <div className={classes.root}>
                 <Grid container spacing={1}>
                     {props.image.map((item, value) => {
                         return (
-                            <Grid item xs={
+                            <Grid key={`postImage-${value}`} item xs={
                                 (imageCount === 1 && 12) || (imageCount >= 2 && imageCount <= 4 && 6) ||
                                 (imageCount >= 5 && imageCount <= 9 && 4)
                             }>
