@@ -32,6 +32,7 @@ class PostCardList extends Component {
     }
 
     componentDidMount() {
+        let param={pageNum:1,pageSize:1};
         const callback = (data) => {
             this.setState({posts: data.data});
             console.log(this.state.posts);
@@ -39,16 +40,16 @@ class PostCardList extends Component {
         switch (this.props.index) {
             case 0:
             default:
-                getRandomPosts(callback);
+                getRandomPosts(param,callback);
                 break;
             case 1:
-                getRecommendPosts(callback);
+                getRecommendPosts(param,callback);
                 break;
             case 2:
-                getFollowPosts(callback);
+                getFollowPosts(param,callback);
                 break;
             case 3:
-                getOwnPosts(callback);
+                getOwnPosts(param,callback);
                 break;
         }
     }
@@ -60,7 +61,7 @@ class PostCardList extends Component {
     };
 
     render() {
-        if (!this.state.posts) return (<div>Loading</div>);
+        if (this.state.posts.length === 0) return (<div>Loading</div>);
         else return (
             <div className={this.props.classes.root}>
                 <List>
