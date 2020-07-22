@@ -93,8 +93,7 @@ function RegisterForm(props){
                         nickname: '',
                         sex: 0,
                         email: '',
-                        address: '',
-                        check: false
+                        address: ''
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {

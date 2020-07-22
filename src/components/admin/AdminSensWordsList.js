@@ -66,11 +66,15 @@ class AdminSensWordsList extends Component {
     }
 
     componentDidMount() {
-        getSensWords(((res) => {
-            console.log(res.data);
-            for (let i=0; i<res.data.length; i++)
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getSensWords(params, ((res) => {
+            console.log(res.data.list);
+            for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({sensWords: res.data});
+            this.setState({sensWords: res.data.list});
         }));
     }
 
@@ -223,7 +227,7 @@ class AdminSensWordsList extends Component {
                                                     index+1 < this.state.sensWords.length ? this.state.sensWords[index+1].keyword : ""
                                                 }</StyledTableCell>
                                                 <StyledTableCell>
-                                                    <Tooltip title={"删除"}>
+                                                    <Tooltip title={"删除"} onClick={() => {this.handleDelete(index+1)}}>
                                                         <IconButton edge="end" aria-label="micoff">
                                                             <DeleteIcon/>
                                                         </IconButton>
@@ -242,7 +246,7 @@ class AdminSensWordsList extends Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title">
+                <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">Add</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
@@ -265,7 +269,7 @@ class AdminSensWordsList extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <Dialog open={this.state.showEditDialog} aria-labelledby="form-dialog-title">
+                <Dialog open={this.state.showEditDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">Update</DialogTitle>
                     <DialogContent>
                         <DialogContentText>

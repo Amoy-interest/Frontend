@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
-import {getReportedUsers} from "../../service/AdminService";
+import {getReportedUsers, banReportedUser, forbidReportedUser} from "../../service/AdminService";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Table from '@material-ui/core/Table';
@@ -16,6 +16,13 @@ import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import BlockIcon from "@material-ui/icons/Block";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import {InputAdornment} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -48,16 +55,26 @@ export default class AdminUsersList extends Component {
             checked: [],
             open: [],
             creditsOrder: "desc",
-            checkAll: false
+            checkAll: false,
+            showBanDialog: false,
+            showForbidDialog: false,
+            year: 0,
+            day: 0,
+            hour: 0,
+            userId: -1
         };
     }
 
     componentDidMount() {
-        getReportedUsers(((res) => {
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getReportedUsers(params, ((res) => {
             console.log(res.data);
-            for (let i=0; i<res.data.length; i++)
+            for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({users: res.data});
+            this.setState({users: res.data.list});
         }));
     }
 
@@ -90,6 +107,46 @@ export default class AdminUsersList extends Component {
             checked: tmp
         });
     }
+
+    cancelBan = () => {
+        this.setState({showBanDialog: false});
+    };
+
+    confirmBan = () => {
+        this.setState({showBanDialog: false});
+        let banTime = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": banTime};
+        console.log(data);
+        banReportedUser(data, ((res)=> {
+            console.log(res.data);
+        }))
+    };
+
+    cancelForbid = () => {
+        this.setState({showForbidDialog: false});
+    };
+
+    confirmForbid = () => {
+        this.setState({showForbidDialog: false});
+        let forbidTime = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": forbidTime};
+        console.log(data);
+        forbidReportedUser(data, ((res)=> {
+            console.log(res.data);
+        }))
+    };
+
+    handleYearChange = (e) => {
+        this.setState({year: e.target.value});
+    };
+
+    handleDayChange = (e) => {
+        this.setState({day: e.target.value});
+    };
+
+    handleHourChange = (e) => {
+        this.setState({hour: e.target.value});
+    };
 
     render() {
         return (
@@ -138,12 +195,12 @@ export default class AdminUsersList extends Component {
                                                 低俗，暴力，色情
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                <Tooltip title={"屏蔽"}>
+                                                <Tooltip title={"禁言"} onClick={() => {this.setState({showBanDialog: true, userId: user.user_id})}}>
                                                     <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
                                                         <BlockIcon/>
                                                     </IconButton>
                                                 </Tooltip>
-                                                <Tooltip title={"删除"}>
+                                                <Tooltip title={"封号"} onClick={() => {this.setState({showForbidDialog: true, userId: user.user_id})}}>
                                                     <IconButton edge="end" aria-label="micoff">
                                                         <DeleteIcon/>
                                                     </IconButton>
@@ -155,6 +212,60 @@ export default class AdminUsersList extends Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+                    <DialogTitle id="form-dialog-title">禁言</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写禁言时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                                <TextField  onChange={this.handleYearChange}  variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                    endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                                }}/>
+                                <TextField  onChange={this.handleDayChange}  variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                    endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                                }}/>
+                                <TextField  onChange={this.handleHourChange} variant="outlined" style={{marginLeft: '8px', width: 100}}  InputProps={{
+                                    endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                                }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelBan} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmBan} color="primary">
+                            确认禁言
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showForbidDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+                    <DialogTitle id="form-dialog-title">封号</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写封号时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                            <TextField  onChange={this.handleYearChange} variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleDayChange} variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleHourChange} variant="outlined" style={{marginLeft: '8px', width: 100}}  InputProps={{
+                                endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                            }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelForbid} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmForbid} color="primary">
+                            确认封号
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
