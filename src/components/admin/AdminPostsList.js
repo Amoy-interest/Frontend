@@ -15,7 +15,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import BlockIcon from '@material-ui/icons/Block';
 import Collapse from '@material-ui/core/Collapse';
 import PostCard from "../post/PostCard";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
@@ -24,6 +23,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -65,7 +66,10 @@ class AdminPostsList extends Component {
             checkAll: false,
             showPassDialog: false,
             showDeleteDialog: false,
-            blogId: null
+            blogId: null,
+            page: 0,
+            rowsPerPage: 10,
+            totalLength: 0
         };
     }
 
@@ -80,7 +84,10 @@ class AdminPostsList extends Component {
                 this.state.open.push(false);
                 this.state.checked.push(false);
             }
-            this.setState({posts: res.data.list});
+            this.setState({
+                posts: res.data.list,
+                totalLength: res.data.total
+            });
         }));
     }
 
@@ -248,6 +255,18 @@ class AdminPostsList extends Component {
                             );
                         })}
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    colSpan={3}
+                                    count={this.state.totalLength}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    onChangePage={this.handleChangePage}
+                                    />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
