@@ -28,7 +28,9 @@ export default function CommentForm(props){
                 {({ submitForm, isSubmitting }) => (
                     <Form>
                         <Grid container spacing={1}>
-                            <AITextField sm={10} name="comment" label="评论"/>
+                            <AITextField sm={10} name="comment"
+                                         variant="standard"
+                                         multiline label="评论"/>
                             <Grid item xs sm={2}>
                                 <Button
                                     variant="contained"
