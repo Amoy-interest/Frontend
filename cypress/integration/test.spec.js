@@ -1,4 +1,4 @@
-/*describe ('Test login', () => {
+describe ('Test login', () => {
     it ('is working', () => {
         cy.visit('http://localhost:3000/');
         cy.get('.makeStyles-sectionDesktop-5 > .MuiButtonBase-root').click();
@@ -18,7 +18,7 @@ describe ('Test register', () => {
         cy.visit('http://localhost:3000/');
         cy.get('.makeStyles-sectionDesktop-5 > .MuiButtonBase-root').click();
         cy.get('#sign-menu > .MuiPaper-root > .MuiList-root > [tabindex="0"]').click();
-        cy.get(':nth-child(1) > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input').eq(0).type("大蒜马甲3");
+        cy.get(':nth-child(1) > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input').eq(0).type("大蒜马甲4");
         cy.get(':nth-child(2) > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input').eq(0).type("1");
         cy.get(':nth-child(3) > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input').eq(0).type("大蒜马甲");
         cy.get('#mui-component-select-sex').click();
@@ -63,7 +63,7 @@ describe ('Test add sensWord', () => {
         cy.get('[title="管理"] > .MuiIconButton-label > .MuiSvgIcon-root').click();
         cy.get(':nth-child(4) > .MuiTab-wrapper').click();
         cy.get(':nth-child(1) > .MuiButton-label').click();
-        cy.get('#name').type("出售炸药test2");
+        cy.get('#name').type("出售炸药test3");
         cy.get('.MuiDialogActions-root > :nth-child(2) > .MuiButton-label').click();
 
         cy.visit('http://localhost:3000/');
@@ -76,7 +76,7 @@ describe ('Test add sensWord', () => {
         cy.get(':nth-child(4) > .MuiTab-wrapper').click();
         cy.contains("出售炸药test2");
     });
-});*/
+});
 
 
 
