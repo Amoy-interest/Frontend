@@ -3,8 +3,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import {getReportedTopics} from "../../service/AdminService";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import {getReportedTopics, checkReportedTopic} from "../../service/AdminService";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +14,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
+import {putRequest_json} from "../../utils/ajax";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import {deleteSensWord} from "../../service/KeyWordService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -47,17 +54,60 @@ export default class AdminTopicsList extends Component{
             open: [],
             checked: [],
             reportOrder: "desc",
-            checkAll: false
+            checkAll: false,
+            showPassDialog: false,
+            showDeleteDialog: false,
+            topicName: null
         };
     }
 
     componentDidMount() {
-        getReportedTopics(((res) => {
-            for (let i=0; i<res.data.length; i++)
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getReportedTopics(params, ((res) => {
+            for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({topics: res.data});
+            this.setState({topics: res.data.list});
         }));
     }
+
+    checkTopic(name, status) {
+        /*let data = {"topic_name": name, "check_status": status};
+        console.log(data);
+        checkReportedTopic(data, ((res) => {
+            console.log(res);
+        }))*/
+        if (status === 1) {
+            this.setState({showPassDialog: true});
+        } else this.setState({showDeleteDialog: true});
+        this.setState({topicName: name});
+    }
+
+    cancelDelete = () => {
+        this.setState({showDeleteDialog: false});
+    };
+
+    confirmDelete = () => {
+        this.setState({showDeleteDialog: false});
+        let data = {"topic_name": this.state.topicName, "check_status": 2};
+        checkReportedTopic(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
+
+    cancelPass = () => {
+        this.setState({showPassDialog: false});
+    };
+
+    confirmPass = () => {
+        this.setState({showPassDialog: false});
+        let data = {"topic_name": this.state.topicName, "check_status": 1};
+        checkReportedTopic(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
 
     sortByReport = () => {
         let tmp = this.state.topics;
@@ -131,16 +181,18 @@ export default class AdminTopicsList extends Component{
                                             <StyledTableCell>{topic.name}</StyledTableCell>
                                             <StyledTableCell>{topic.time}</StyledTableCell>
                                             <StyledTableCell>{topic.report_count}</StyledTableCell>
-                                            <Tooltip title={"删除"}>
-                                                <IconButton edge="end" aria-label="micoff">
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title={"编辑"}>
-                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                    <EditIcon/>
-                                                </IconButton>
-                                            </Tooltip>
+                                            <StyledTableCell>
+                                                <Tooltip title={"通过"} onClick={() => {this.checkTopic(topic.name, 1)}}>
+                                                    <IconButton edge="end" aria-label="micoff">
+                                                        <DoubleArrowIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip title={"删除"} onClick={() => {this.checkTopic(topic.name, 2)}}>
+                                                    <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </StyledTableCell>
                                         </StyledTableRow>
                                     );
                                 })
@@ -148,6 +200,38 @@ export default class AdminTopicsList extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Pass</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认该话题并无违规:<br/>{this.state.topicName}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelPass} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmPass} color="primary">
+                            确认通过
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showDeleteDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Delete</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认删除该话题:<br/>{this.state.topicName}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelDelete} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmDelete} color="primary">
+                            确认删除
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
