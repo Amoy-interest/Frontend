@@ -14,10 +14,11 @@ export const logout = () => {
     const url = `${apiUrl}${APIModules.USER}/logout`;
 
     const callback = () => {
+        console.log("logout callback");
         store.dispatch(removeToken());
         store.dispatch(removeUser());
     };
-    getRequest(url, callback);
+    getRequest(url, null, callback);
 };
 
 export const register = (formData, callback) => {

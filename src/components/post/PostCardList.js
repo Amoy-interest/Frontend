@@ -4,6 +4,7 @@ import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "..
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
+import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -32,24 +33,23 @@ class PostCardList extends Component {
     }
 
     componentDidMount() {
-        let param={pageNum:1,pageSize:1};
         const callback = (data) => {
-            this.setState({posts: data.data});
+            this.setState({posts: data.data.list});
             console.log(this.state.posts);
         };
         switch (this.props.index) {
-            case 0:
+            case PostType.RANDOM:
             default:
-                getRandomPosts(param,callback);
+                getRandomPosts(null, callback);
                 break;
-            case 1:
-                getRecommendPosts(param,callback);
+            case PostType.RECOMMEND:
+                getRecommendPosts(null, callback);
                 break;
-            case 2:
-                getFollowPosts(param,callback);
+            case PostType.FOLLOW:
+                getFollowPosts(null, callback);
                 break;
-            case 3:
-                getOwnPosts(param,callback);
+            case PostType.OWN:
+                getOwnPosts(null, callback);
                 break;
         }
     }
@@ -61,7 +61,7 @@ class PostCardList extends Component {
     };
 
     render() {
-        if (this.state.posts.length === 0) return (<div>Loading</div>);
+        if (!this.state.posts) return (<div>Loading</div>);
         else return (
             <div className={this.props.classes.root}>
                 <List>
@@ -84,37 +84,3 @@ class PostCardList extends Component {
 export default connect(
     mapStateToProps, null
 )(PostCardList);
-
-
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         width: '100%',
-//         //marginLeft: "1.5px",
-//         marginTop: theme.spacing(2)
-//     },
-//     item: {
-//         width:'100%'
-//     }
-// }));
-
-// export function PostCards(props) {
-//     const classes = useStyles();
-//     console.log(props.user);
-//     return (
-//         <div className={classes.root}>
-//             <List>
-//                 {props.posts.map((item, value) => {
-//                     const nickname = item.nickname;
-//                     console.log(nickname);
-//                     return (
-//                         <ListItem className={classes.item} key={value}>
-//                             {(props.user.user === null || props.user.user.nickname !== nickname) ?
-//                                 <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
-//                         </ListItem>
-//                     );
-//                 })}
-//             </List>
-//         </div>
-//     );
-// }

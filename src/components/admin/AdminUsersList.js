@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withStyles, makeStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";

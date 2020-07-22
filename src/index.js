@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {store} from './redux/configureStore'
+import {store, persist} from './redux/configureStore'
+import {PersistGate} from 'redux-persist/lib/integration/react';
 
 class AppComplete extends Component {
 
@@ -12,7 +13,9 @@ class AppComplete extends Component {
         return (
             <React.Fragment>
                 <Provider store={store}>
-                    <App />
+                    <PersistGate loading={null} persistor={persist}>
+                        <App />
+                    </PersistGate>
                 </Provider>
             </React.Fragment>
         );

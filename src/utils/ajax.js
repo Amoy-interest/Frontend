@@ -64,7 +64,7 @@ const postRequest_json = (url, json, callback) => {
     Request_json(url, json, callback, 'POST');
 };
 
-const getRequest = (url,params,callback) => {
+const getRequest = (url, params, callback) => {
     if (params) {
         let paramsArray = [];
         Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
@@ -76,6 +76,9 @@ const getRequest = (url,params,callback) => {
     }
     let opts = {
         method: "GET",
+        headers: {
+            'token': store.getState().tokenReducer,
+        },
         credentials: "include"
     };
 

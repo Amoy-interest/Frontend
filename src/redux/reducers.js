@@ -31,14 +31,14 @@ function tokenReducer(
     state = '', action) {
     switch (action.type) {
         case TokenActionType.SET_TOKEN:
-            return action.token
+            return action.token;
         case TokenActionType.REMOVE_TOKEN:
-            return ''
+            return '';
         default:
             return state
     }
 }
 
-const rootReducer = combineReducers({userReducer, tokenReducer})
+const reducers = combineReducers({userReducer, tokenReducer});
 
-export default rootReducer
+export default reducers;

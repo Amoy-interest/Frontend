@@ -6,6 +6,7 @@ import PostCardList from "../../components/post/PostCardList";
 import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
+import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +28,7 @@ function PostsLayout() {
                     </Grid>
                     <Grid item xs={7}>
                         <PostForm/>
-                        <PostCardList index={2}/>
+                        <PostCardList index={PostType.FOLLOW}/>
                     </Grid>
                     <Grid item xs>
                         <HotSearchList/>

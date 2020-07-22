@@ -40,9 +40,10 @@ function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
-}
+};
 
-class Comments extends React.Component {
+@withStyles(styles)
+class CommentList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -146,11 +147,6 @@ class Comments extends React.Component {
 }
 
 
-const CommentList = connect(
+export default connect(
     mapStateToProps, null
-)(Comments);
-
-CommentList.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-export default withStyles(styles)(CommentList);
+)(CommentList);
