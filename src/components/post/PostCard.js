@@ -211,7 +211,7 @@ class PostCard extends React.Component {
                                     <Grid item xs>
                                         <Link style={{color: amber[200], fontSize: '18px'}} to={{
                                             pathname: '/post-detail',
-                                            search: '?id=' + post.blog_id
+                                            search: '?id=' + post.blog_id,
                                         }}
                                         >Load More
                                         </Link>

@@ -4,9 +4,7 @@ import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "..
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
-import * as postService from "../../service/PostService";
 import InfiniteScroll from "react-infinite-scroller";
-import Typography from "@material-ui/core/Typography";
 import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
@@ -57,8 +55,6 @@ class PostCardList extends Component {
             pageSize: this.state.pageSize
         };
 
-        // postService.getRandomPosts(params, callback);
-
         switch (this.props.index) {
             case PostType.RANDOM:
             default:
@@ -92,7 +88,6 @@ class PostCardList extends Component {
                     loadMore={this.loadMore}
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
-                    // useWindow={false}
                 >
                     <List>
                         {this.state.posts.map((item, value) => {
