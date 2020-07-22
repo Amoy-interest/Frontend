@@ -39,7 +39,7 @@ function PostsLayout() {
 class AdminSensWordsManageView extends Component{
 
     render() {
-        console.log(this.props)
+        console.log(this.props);
         return (
             <div>
                 <PostsLayout/>
