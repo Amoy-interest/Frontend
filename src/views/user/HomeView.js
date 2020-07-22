@@ -6,6 +6,7 @@ import SideBar from "../../components/commen/SideBar";
 import Carousel from "../../components/commen/Carousel";
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
+import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +26,7 @@ function HomeLayout() {
                     </Grid>
                     <Grid item xs={7}>
                         <Carousel/>
-                        <PostCardList index={1}/>
+                        <PostCardList index={PostType.RECOMMEND}/>
                     </Grid>
                     <Grid item xs>
                         <HotSearchList/>

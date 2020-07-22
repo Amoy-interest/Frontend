@@ -7,23 +7,22 @@ import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
-import {postComment} from "../../service/PostService";
+import {getComments, postComment} from "../../service/PostService";
 import {Divider} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import Message from "../commen/Message";
+import amber from "@material-ui/core/colors/amber";
+import Grid from "@material-ui/core/Grid";
 
 const styles = ((theme) => ({
     root: {
         width: '100%',
-        display:'flex',
-        alignItem:'center',
-        flexDirection:'column'
-        //backgroundColor: theme.palette.background.paper,
+        display: 'flex',
+        alignItem: 'center',
+        flexDirection: 'column'
     },
     submit: {
         width: 90,
         height: 54,
-        //marginLeft: theme.spacing(1)
     },
     comment: {
         marginTop: theme.spacing(2),
@@ -32,8 +31,8 @@ const styles = ((theme) => ({
     inline: {
         display: 'inline',
     },
-    load: {
-
+    link: {
+        marginTop: theme.spacing(2)
     }
 }));
 
@@ -42,69 +41,67 @@ function mapStateToProps(state) {
         user: state.userReducer
     }
 }
-
-class Comments extends React.Component {
+@withStyles(styles)
+class CommentList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            comments: this.props.comments,
-            messageOpen: false,
+            comments: [],
         };
     };
 
-    submit = (text) => {
-        console.log(text);
-        if (this.props.user.user === null) this.setState({messageOpen: true});
-        else {
-            let param = {
-                "blog_id": 0,
-                "nickname": "binnie",
-                "reply_comment_nickname": this.props.user.user.nickname,
-                "root_comment_id": -1,
-                "text": text.comment
-            };
-            let comment = [{
-                "_deleted": false,
-                "blog_id": -1,
-                "comment_id": 1,
-                "comment_level": 0,
-                "comment_text": text.comment,
-                "comment_time": Date(),
-                "nickname": this.props.user.user.nickname,
-                "reply_comment_nickname": "",
-                "root_comment_id": -1,
-                "vote_count": 0
-            }];
-            const callback = () => {
-                const newComments = [...comment, ...this.state.comments];
-                this.setState({comments: newComments});
-                this.props.addComment();
-            };
-            postComment(param, callback);
-        }
+    componentDidMount() {
+        const callback = (data) => {
+            this.setState({comments: data.data.list});
+            console.log(this.state.comments);
+        };
+        let param = {blog_id: this.props.blog_id};
+        getComments(param, callback)
     };
 
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        this.setState({messageOpen: false});
+    submitComment = (text) => {
+        let param = {
+            "blog_id": 0,
+            "nickname": "binnie",
+            "reply_comment_nickname": this.props.user.user.nickname,
+            "root_comment_id": -1,
+            "text": text.comment
+        };
+        let comment = [{
+            "_deleted": false,
+            "blog_id": -1,
+            "comment_id": 1,
+            "comment_level": 0,
+            "comment_text": text.comment,
+            "comment_time": Date(),
+            "nickname": this.props.user.user.nickname,
+            "reply_comment_nickname": "",
+            "root_comment_id": -1,
+            "vote_count": 0
+        }];
+        const callback = () => {
+            const newComments = [...comment, ...this.state.comments];
+            this.setState({comments: newComments});
+            this.props.addComment();
+        };
+        postComment(param, callback);
     };
+
 
     render() {
-        const {classes,blog} = this.props;
-        const {comments, messageOpen} = this.state;
+        const {classes} = this.props;
+        const {comments} = this.state;
 
         const handleDeleteItem = (index) => {
             let arr = this.state.comments;
             arr.splice(index, 1);
             this.setState({comments: arr});
+            this.props.deleteComment();
         };
 
         function renderRow(itemProps) {
             const {index, style} = itemProps;
-            //console.log(itemProps);
             return (
                 <ListItem button style={style} key={index}>
                     <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}/>
@@ -117,36 +114,24 @@ class Comments extends React.Component {
             style: PropTypes.object.isRequired,
         };
 
-        if (comments !== null)
+        if (comments.length === 0) return <div>Loading</div>
+        else {
             return (
                 <div className={classes.root}>
-                    <CommentForm commentId={comments} style={classes} submit={this.submit}/>
-                    <Divider style={{marginTop:'20px'}}/>
-                    <FixedSizeList className={classes.comment} style={{marginTop: '20px'}}height={300} width={600} itemSize={170}
+                    <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
+                    <Divider style={{marginTop: '20px'}}/>
+                    <FixedSizeList className={classes.comment} style={{marginTop: '20px'}} height={300} width={600}
+                                   itemSize={170}
                                    itemCount={comments.length}>
                         {renderRow}
                     </FixedSizeList>
-                    <Link to={{
-                        pathname: '/post-detail',
-                        search: '?id=' + 1}}
-                          target="_blank"
-                    >
-                        <Button classes={classes.load} size="large" color="primary" >Load More</Button>
-                    </Link>
-                    <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );
-        else
-            return <div>Loading</div>
+        }
+
     }
 }
 
-
-const CommentList = connect(
+export default connect(
     mapStateToProps, null
-)(Comments);
-
-CommentList.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-export default withStyles(styles)(CommentList);
+)(CommentList)

@@ -66,8 +66,11 @@ class AdminSensWordsList extends Component {
     }
 
     componentDidMount() {
-        let data = "?pageNum=0&pageSize=20";
-        getSensWords(data, ((res) => {
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getSensWords(params, ((res) => {
             console.log(res.data.list);
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);

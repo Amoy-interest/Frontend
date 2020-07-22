@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withStyles, makeStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
@@ -66,7 +66,11 @@ export default class AdminUsersList extends Component {
     }
 
     componentDidMount() {
-        getReportedUsers(((res) => {
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getReportedUsers(params, ((res) => {
             console.log(res.data);
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);

@@ -6,7 +6,7 @@ function Alert(props) {
 }
 export default function Message(props) {
     return(
-        <Snackbar open={props.messageOpen} autoHideDuration={6000} onClose={props.handleClose}>
+        <Snackbar open={props.messageOpen} autoHideDuration={2000} onClose={props.handleClose}>
             <Alert onClose={props.handleClose} severity={props.type}>
                 {props.text}
             </Alert>

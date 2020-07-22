@@ -6,6 +6,7 @@ import PostCardList from "../../components/post/PostCardList";
 import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
+import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,7 +31,7 @@ function ProfileLayout() {
                     </Grid>
                     <Grid item xs={7}>
                         <ProfileCard/>
-                        <PostCardList index={3}/>
+                        <PostCardList index={PostType.OWN}/>
                     </Grid>
                     <Grid item xs>
                         <HotSearchList/>

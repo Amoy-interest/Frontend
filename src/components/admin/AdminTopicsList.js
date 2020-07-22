@@ -15,6 +15,12 @@ import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
 import {putRequest_json} from "../../utils/ajax";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import {deleteSensWord} from "../../service/KeyWordService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -48,12 +54,19 @@ export default class AdminTopicsList extends Component{
             open: [],
             checked: [],
             reportOrder: "desc",
-            checkAll: false
+            checkAll: false,
+            showPassDialog: false,
+            showDeleteDialog: false,
+            topicName: null
         };
     }
 
     componentDidMount() {
-        getReportedTopics(((res) => {
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getReportedTopics(params, ((res) => {
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
             this.setState({topics: res.data.list});
@@ -61,12 +74,40 @@ export default class AdminTopicsList extends Component{
     }
 
     checkTopic(name, status) {
-        let data = {"topic_name": name, "check_status": status};
+        /*let data = {"topic_name": name, "check_status": status};
         console.log(data);
         checkReportedTopic(data, ((res) => {
             console.log(res);
-        }))
+        }))*/
+        if (status === 1) {
+            this.setState({showPassDialog: true});
+        } else this.setState({showDeleteDialog: true});
+        this.setState({topicName: name});
     }
+
+    cancelDelete = () => {
+        this.setState({showDeleteDialog: false});
+    };
+
+    confirmDelete = () => {
+        this.setState({showDeleteDialog: false});
+        let data = {"topic_name": this.state.topicName, "check_status": 2};
+        checkReportedTopic(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
+
+    cancelPass = () => {
+        this.setState({showPassDialog: false});
+    };
+
+    confirmPass = () => {
+        this.setState({showPassDialog: false});
+        let data = {"topic_name": this.state.topicName, "check_status": 1};
+        checkReportedTopic(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
 
     sortByReport = () => {
         let tmp = this.state.topics;
@@ -159,6 +200,38 @@ export default class AdminTopicsList extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Pass</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认该话题并无违规:<br/>{this.state.topicName}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelPass} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmPass} color="primary">
+                            确认通过
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showDeleteDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Delete</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认删除该话题:<br/>{this.state.topicName}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelDelete} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmDelete} color="primary">
+                            确认删除
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }

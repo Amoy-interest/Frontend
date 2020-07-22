@@ -50,23 +50,21 @@ function LoginForm(props){
     const classes = useStyles();
     const history = useHistory();
 
-    const callback = (data) => {
-        console.log(data);
-        if (data.status !== 0) {
-            message.error(data.msg);
-            return;
-        }
-
-        message.success(data.msg);
-        props.onLogin(data.data.user, data.data.token)
-        history.push('/home');
-    }
-
     const submit = (values) => {
         console.log(values);
-        userService.login(values, callback)
+        userService.login(values, (data) => {
+            console.log(data);
+            if (data.status !== 0) {
+                message.error(data.msg);
+                return;
+            }
+
+            message.success(data.msg);
+            props.onLogin(data.data.user, data.data.token)
+            history.push('/home');
+        });
         props.closeModal();
-    }
+    };
 
     return (
         <Container component="main" maxWidth="xs">

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {getReportedPosts} from '../../service/AdminService';
+import {checkReportedBlog, getReportedPosts} from '../../service/AdminService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,6 +19,11 @@ import BlockIcon from '@material-ui/icons/Block';
 import Collapse from '@material-ui/core/Collapse';
 import PostCard from "../post/PostCard";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -57,12 +62,19 @@ class AdminPostsList extends Component {
             checked: [],
             reportOrder: "desc",
             hotOrder: "desc",
-            checkAll: false
+            checkAll: false,
+            showPassDialog: false,
+            showDeleteDialog: false,
+            blogId: null
         };
     }
 
     componentDidMount() {
-        getReportedPosts(((res) => {
+        const params = {
+            pageNum: 0,
+            pageSize: 20
+        };
+        getReportedPosts(params, ((res) => {
             console.log(res.data);
             for (let i=0; i<res.data.list.length; i++) {
                 this.state.open.push(false);
@@ -124,6 +136,42 @@ class AdminPostsList extends Component {
         })
     };
 
+    checkBlog(blogId, status) {
+        /*let data = {"topic_name": name, "check_status": status};
+        console.log(data);
+        checkReportedTopic(data, ((res) => {
+            console.log(res);
+        }))*/
+        if (status === 1) {
+            this.setState({showPassDialog: true});
+        } else this.setState({showDeleteDialog: true});
+        this.setState({blogId: blogId});
+    }
+
+    cancelDelete = () => {
+        this.setState({showDeleteDialog: false});
+    };
+
+    confirmDelete = () => {
+        this.setState({showDeleteDialog: false});
+        let data = {"blog_id": this.state.blogId, "check_status": 2};
+        checkReportedBlog(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
+
+    cancelPass = () => {
+        this.setState({showPassDialog: false});
+    };
+
+    confirmPass = () => {
+        this.setState({showPassDialog: false});
+        let data = {"blog_id": this.state.blogId, "check_status": 1};
+        checkReportedBlog(data, ((res) => {
+            console.log(res.data);
+        }))
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -175,12 +223,12 @@ class AdminPostsList extends Component {
                                         <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
                                         <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
                                         <StyledTableCell>
-                                            <Tooltip title={"通过"}>
+                                            <Tooltip title={"通过"} onClick={() => {this.checkBlog(blog.blog_id, 1)}}>
                                                 <IconButton edge="end" aria-label="micoff">
                                                     <DoubleArrowIcon/>
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title={"删除"}>
+                                            <Tooltip title={"删除"} onClick={() => {this.checkBlog(blog.blog_id, 2)}}>
                                                 <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
                                                     <DeleteIcon/>
                                                 </IconButton>
@@ -202,6 +250,38 @@ class AdminPostsList extends Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Pass</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认该博文并无违规
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelPass} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmPass} color="primary">
+                            确认通过
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showDeleteDialog} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Delete</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            是否确认删除该博文
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelDelete} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmDelete} color="primary">
+                            确认删除
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }
