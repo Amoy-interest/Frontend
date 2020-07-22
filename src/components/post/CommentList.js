@@ -20,11 +20,6 @@ const styles = ((theme) => ({
         flexDirection:'column'
         //backgroundColor: theme.palette.background.paper,
     },
-    submit: {
-        width: 90,
-        height: 54,
-        //marginLeft: theme.spacing(1)
-    },
     comment: {
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(1)

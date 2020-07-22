@@ -36,6 +36,7 @@ export function AITextField (props) {
                 type={props.type?props.type:null}
                 variant={props.variant? props.variant:"outlined"}
                 multiline={!!props.multiline}
+                size={props.size? props.size: "medium"}
                 required
                 fullWidth
                 autoFocus

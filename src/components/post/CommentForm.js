@@ -4,8 +4,22 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import {AITextField} from "../commen/AIField";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    submit_primary: {
+        // width: 90,
+        height: 54,
+        marginLeft: theme.spacing(1)
+    },
+    submit_secondary: {
+        height: 40
+    }
+}));
 
 export default function CommentForm(props){
+    const classes = useStyles();
+
     return (
         <Container component="main" maxWidth="lg">
             <Formik
@@ -24,16 +38,18 @@ export default function CommentForm(props){
                 {({ submitForm, isSubmitting }) => (
                     <Form>
                         <Grid container spacing={1}>
-                            <AITextField sm={10} name="comment"
-                                         variant="standard"
+                            <AITextField sm={9} name="comment"
+                                         variant={props.secondary?"standard" : "outlined"}
+                                         size={props.secondary?"small" : "medium"}
                                          multiline label="评论"/>
-                            <Grid item xs sm={2}>
+                            <Grid item xs sm={3}>
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}
-                                    className={props.style.submit}
+                                    className={props.secondary?
+                                        classes.submit_secondary : classes.submit_primary}
                                 >
                                     确定发布
                                 </Button>
