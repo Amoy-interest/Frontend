@@ -64,13 +64,18 @@ const postRequest_json = (url, json, callback) => {
     Request_json(url, json, callback, 'POST');
 };
 
-// get json data
-const getRequest = (url,callback) => {
+const getRequest = (url,params,callback) => {
+    if (params) {
+        let paramsArray = [];
+        Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&')
+        } else {
+            url += '&' + paramsArray.join('&')
+        }
+    }
     let opts = {
         method: "GET",
-        headers: {
-            'token': store.getState().tokenReducer,
-        },
         credentials: "include"
     };
 

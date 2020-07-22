@@ -8,7 +8,6 @@ import {withStyles} from "@material-ui/core/styles";
 const styles = ((theme) => ({
     root: {
         width: '100%',
-        //marginLeft: "1.5px",
         marginTop: theme.spacing(2)
     },
     item: {
@@ -54,12 +53,11 @@ class PostCardList extends Component {
         }
     }
 
-
     componentWillUnmount = () => {
         this.setState = (state,callback)=>{
             return;
         };
-    }
+    };
 
     render() {
         if (!this.state.posts) return (<div>Loading</div>);

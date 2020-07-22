@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         zIndex: 1,
         opacity: 0.70,
+        //position:'fixed'
     },
     blank: {
         flexGrow: 1,
