@@ -1,24 +1,28 @@
 import {apiUrl, APIModules} from "../utils/constants";
 import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
-
-export const getRecommendPosts = (callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/recommend`;
-    getRequest(url, callback);
+export const getPost=(id,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/?${id}`;
+    getRequest(url,callback);
 };
 
-export const getRandomPosts = (callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/beforeLogin`;
-    getRequest(url, callback);
+export const getRecommendPosts = (params,callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/recommend/old`;
+    getRequest(url,params,callback);
 };
 
-export const getOwnPosts = (callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/own`;
-    getRequest(url, callback);
+export const getRandomPosts = (params,callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/beforeLogin/old`;
+    getRequest(url,params,callback);
 };
 
-export const getFollowPosts = (callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/follow`;
-    getRequest(url, callback);
+export const getOwnPosts = (params,callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/own/old`;
+    getRequest(url,params,callback);
+};
+
+export const getFollowPosts = (params,callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/follow/old`;
+    getRequest(url, params,callback);
 };
 
 export const vote=(data,callback)=>{

@@ -9,8 +9,9 @@ import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {postComment} from "../../service/PostService";
 import {Divider} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import Message from "../commen/Message";
+import amber from "@material-ui/core/colors/amber";
+import Grid from "@material-ui/core/Grid";
 
 const styles = ((theme) => ({
     root: {
@@ -18,12 +19,10 @@ const styles = ((theme) => ({
         display:'flex',
         alignItem:'center',
         flexDirection:'column'
-        //backgroundColor: theme.palette.background.paper,
     },
     submit: {
         width: 90,
         height: 54,
-        //marginLeft: theme.spacing(1)
     },
     comment: {
         marginTop: theme.spacing(2),
@@ -32,8 +31,8 @@ const styles = ((theme) => ({
     inline: {
         display: 'inline',
     },
-    load: {
-
+    link: {
+        marginTop: theme.spacing(2)
     }
 }));
 
@@ -126,13 +125,18 @@ class Comments extends React.Component {
                                    itemCount={comments.length}>
                         {renderRow}
                     </FixedSizeList>
-                    <Link to={{
-                        pathname: '/post-detail',
-                        search: '?id=' + 1}}
-                          target="_blank"
-                    >
-                        <Button classes={classes.load} size="large" color="primary" >Load More</Button>
-                    </Link>
+                    <Grid container className={classes.link}>
+                        <Grid item xs={5}></Grid>
+                        <Grid item xs>
+                            <Link style={{color:amber[200],fontSize:'18px'}} to={{
+                            pathname: '/post-detail',
+                            search: '?id=' + 1}}
+                                  target="_blank"
+                            >Load More
+                            </Link>
+                        </Grid>
+                        <Grid item xs></Grid>
+                    </Grid>
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );

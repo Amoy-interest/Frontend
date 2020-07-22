@@ -6,6 +6,8 @@ import SideBar from "../../components/commen/SideBar";
 import Carousel from "../../components/commen/Carousel";
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
+import {getPost} from "../../service/PostService";
+import {dark} from "@material-ui/core/styles/createPalette";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,13 +41,16 @@ class PostDetailView extends Component {
     constructor(props) {
         super(props);
     };
+
     componentDidMount() {
         const query = this.props.location.search;
         const arr = query.split('&');
         const blogId = arr[0].substr(4);
-
-    }
-
+        const callback=(data)=>{
+            console.log(data);
+        };
+        getPost(blogId,callback);
+    };
     render() {
         return (
             <div>

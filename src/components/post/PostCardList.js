@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        //marginLeft: "1.5px",
         marginTop: theme.spacing(2)
     },
     item: {
@@ -76,12 +75,11 @@ export default class PostCardList extends Component {
         }
     }
 
-
     componentWillUnmount = () => {
         this.setState = (state,callback)=>{
             return;
         };
-    }
+    };
 
     render() {
         if (!this.state.posts) return (<div>Loading</div>);
