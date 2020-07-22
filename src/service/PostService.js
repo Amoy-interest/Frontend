@@ -1,9 +1,10 @@
 import {apiUrl, APIModules} from "../utils/constants";
 import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
 
-export const getPost=(id,callback)=>{
-    const url = `${apiUrl}${APIModules.BLOG}/?${id}`;
-    getRequest(url,callback);
+export const getPost = (id, callback) => {
+    const params = {blog_id: id};
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    getRequest(url, params, callback);
 };
 
 export const getRecommendPosts = (params,callback) => {
