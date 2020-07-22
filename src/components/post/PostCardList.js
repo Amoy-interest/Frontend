@@ -22,13 +22,14 @@ function mapStateToProps(state) {
     }
 }
 
-
 @withStyles(styles)
 class PostCardList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {posts: null};
+        this.state = {
+            posts: []
+        };
     }
 
     componentDidMount() {
@@ -70,7 +71,7 @@ class PostCardList extends Component {
                         console.log(nickname);
                         return (
                             <ListItem className={this.props.classes.item} key={value}>
-                                {(this.state.user.user === null || this.state.user.user.nickname !== nickname) ?
+                                {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
                                     <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
                             </ListItem>
                         );
