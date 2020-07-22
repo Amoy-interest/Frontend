@@ -41,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "async-wait-until": "^1.2.4",
+    "cypress": "^4.11.0",
     "jest": "24.9.0",
     "react-test-renderer": "^16.13.1",
     "react-window": "^1.8.5",

@@ -56,7 +56,8 @@ export default class PostCardList extends Component {
 
     componentDidMount() {
         const callback = (data) => {
-            this.setState({posts: data.data});
+            console.log(data);
+            this.setState({posts: data.data.list});
             console.log(this.state.posts);
         };
         switch (this.props.index) {

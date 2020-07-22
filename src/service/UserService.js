@@ -22,12 +22,9 @@ export const logout = () => {
 
 export const register = (formData, callback) => {
     console.log(formData);
-    let data = {
-        registerDTO: formData,
-    };
 
     const url = `${apiUrl}${APIModules.USER}/register`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url, formData, callback);
 };
 
 export const loadMore = (pageSize, pageIndex, callback) => {

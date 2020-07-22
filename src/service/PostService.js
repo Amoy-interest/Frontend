@@ -7,6 +7,7 @@ export const getRecommendPosts = (callback) => {
 };
 
 export const getRandomPosts = (callback) => {
+    console.log("testRandom");
     const url = `${apiUrl}${APIModules.BLOG}/beforeLogin`;
     getRequest(url, callback);
 };

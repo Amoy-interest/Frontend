@@ -54,9 +54,9 @@ export default class AdminTopicsList extends Component{
 
     componentDidMount() {
         getReportedTopics(((res) => {
-            for (let i=0; i<res.data.length; i++)
+            for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({topics: res.data});
+            this.setState({topics: res.data.list});
         }));
     }
 

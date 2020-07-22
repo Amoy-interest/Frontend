@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import BlockIcon from '@material-ui/icons/Block';
 import Collapse from '@material-ui/core/Collapse';
 import PostCard from "../post/PostCard";
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -63,11 +64,11 @@ class AdminPostsList extends Component {
     componentDidMount() {
         getReportedPosts(((res) => {
             console.log(res.data);
-            for (let i=0; i<res.data.length; i++) {
+            for (let i=0; i<res.data.list.length; i++) {
                 this.state.open.push(false);
                 this.state.checked.push(false);
             }
-            this.setState({posts: res.data});
+            this.setState({posts: res.data.list});
         }));
     }
 
@@ -174,13 +175,13 @@ class AdminPostsList extends Component {
                                         <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
                                         <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
                                         <StyledTableCell>
-                                            <Tooltip title={"屏蔽"}>
-                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                    <BlockIcon/>
+                                            <Tooltip title={"通过"}>
+                                                <IconButton edge="end" aria-label="micoff">
+                                                    <DoubleArrowIcon/>
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title={"删除"}>
-                                                <IconButton edge="end" aria-label="micoff">
+                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
                                                     <DeleteIcon/>
                                                 </IconButton>
                                             </Tooltip>
@@ -193,6 +194,7 @@ class AdminPostsList extends Component {
                                                 <PostCard post={blog} index={0}/>
                                             </Collapse>
                                         </TableCell>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
                                     </TableRow>
                                 </React.Fragment>
                             );
