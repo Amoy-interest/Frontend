@@ -33,6 +33,13 @@ const AuthorityLevel = {
     ADMIN: 1
 };
 
+const PostType = {
+    RANDOM:0,
+    RECOMMEND:1,
+    FOLLOW:2,
+    OWN:3
+};
 export {apiUrl, mockUrl, devUrl,
     UserActionType, TokenActionType, APIModules,
-    UserType, AuthorityLevel};
+    UserType, AuthorityLevel,PostType};
+

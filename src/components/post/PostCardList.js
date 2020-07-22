@@ -4,6 +4,7 @@ import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "..
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
+import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -33,21 +34,21 @@ class PostCardList extends Component {
 
     componentDidMount() {
         const callback = (data) => {
-            this.setState({posts: data.data});
+            this.setState({posts: data.data.list});
             console.log(this.state.posts);
         };
         switch (this.props.index) {
-            case 0:
+            case PostType.RANDOM:
             default:
                 getRandomPosts(null, callback);
                 break;
-            case 1:
+            case PostType.RECOMMEND:
                 getRecommendPosts(null, callback);
                 break;
-            case 2:
+            case PostType.FOLLOW:
                 getFollowPosts(null, callback);
                 break;
-            case 3:
+            case PostType.OWN:
                 getOwnPosts(null, callback);
                 break;
         }

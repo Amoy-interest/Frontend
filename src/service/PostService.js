@@ -11,7 +11,7 @@ export const getRecommendPosts = (params,callback) => {
 };
 
 export const getRandomPosts = (params,callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/beforeLogin/old`;
+    const url = `${apiUrl}${APIModules.BLOG}/beforeLogin`;
     getRequest(url,params,callback);
 };
 
