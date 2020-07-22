@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+// import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
@@ -22,20 +22,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {grey} from "@material-ui/core/colors";
-import CommentSecondary from "./CommendSecondary";
 import CommentForm from "./CommentForm";
-import Grid from "antd/lib/card/Grid";
-import {back} from "nock";
 import {Divider} from "@material-ui/core";
 
 const styles = ((theme) => ({
     root: {
         width: '100%',
-    },
-    submit: {
-        width: 90,
-        height: 54,
-        //marginLeft: theme.spacing(1)
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -84,6 +76,7 @@ class Comment extends React.Component {
         };
         this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
     };
+
     submitComment = (text) => {
         let param = {
             "blog_id": -1,
@@ -111,6 +104,7 @@ class Comment extends React.Component {
         };
         postComment(param, callback);
     };
+
     handleDeleteComment = () => {
         let param = {comment_id: this.state.comment.comment_id};
         const callback = () => {
@@ -207,7 +201,7 @@ class Comment extends React.Component {
                         }
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent style={{backgroundColor: grey[50]}}>
-                                <CommentForm commentId={comment} style={classes} submit={this.submitComment}/>
+                                <CommentForm secondary commentId={comment} submit={this.submitComment}/>
                             </CardContent>
                         </Collapse>
                         <Divider style={{marginTop: '20px'}}/>
@@ -219,7 +213,7 @@ class Comment extends React.Component {
     }
 }
 
-export const CommentItem = connect(
+const CommentItem = connect(
     mapStateToProps, null
 )(Comment);
 
