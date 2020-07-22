@@ -160,7 +160,7 @@ class CommentItem extends React.Component {
                 <Card className={classes.root} elevation={0} variant="">
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="comment" src={Avatar1}/>
+                            <Avatar aria-label="comment" src={comment.avatar_path}/>
                         }
                         action={
                             <React.Fragment>

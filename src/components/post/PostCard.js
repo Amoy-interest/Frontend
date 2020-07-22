@@ -14,8 +14,6 @@ import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
-import Avatar1 from '../../assets/avatar1.jpeg';
-import Avatar2 from '../../assets/avatar2.jpeg';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -29,6 +27,7 @@ import {connect} from "react-redux";
 import Message from "../commen/Message";
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
+import ForwardCard from "./ForwardCard";
 
 const styles = (theme => ({
     expand: {
@@ -57,8 +56,10 @@ class PostCard extends React.Component {
         const {blog_count} = this.props.post;
         this.state = {
             voted: false,
+            forward: false,
             voteCount: blog_count.vote_count,
             commentCount: blog_count.comment_count,
+            forwardCount: blog_count.forward_count,
             post: this.props.post,
             anchorEl: null,
             expanded: false,
@@ -117,7 +118,7 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, voteCount, commentCount, anchorEl, expanded, messageOpen} = this.state;
+        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
@@ -152,7 +153,7 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: '100%'}}>
+                    <Card style={{width: 657}}>
                         <CardHeader
                             avatar={
                                 <Avatar src={post.avatar_path}/>
@@ -170,7 +171,8 @@ class PostCard extends React.Component {
                                 {post.blog_content.text}
                             </Typography>
                         </CardContent>
-                        <PostImage image={post.blog_content.images}/>
+                        {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
+                            <ForwardCard post={post.blog_child}/>}
                         <CardActions disableSpacing>
                             <IconButton aria-label="vote" onClick={() => {
                                 this.handleVote(post)
@@ -181,10 +183,10 @@ class PostCard extends React.Component {
                                 {voteCount}
                             </Typography>
                             <IconButton aria-label="share">
-                                <ShareIcon/>
+                                <ShareIcon style={{color: forward ? amber[200] : null}}/>
                             </IconButton>
                             <Typography variant="body1" color="textSecondary" component="p">
-                                {post.blog_count.forward_count}
+                                {forwardCount}
                             </Typography>
                             <IconButton
                                 className={clsx(classes.expand, {
@@ -202,7 +204,8 @@ class PostCard extends React.Component {
                         </CardActions>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <CommentList blog_id={post.blog_id} addComment={this.addComment} deleteComment={this.deleteComment}/>
+                                <CommentList blog_id={post.blog_id} addComment={this.addComment}
+                                             deleteComment={this.deleteComment}/>
                                 <Grid container className={classes.link}>
                                     <Grid item xs={5}/>
                                     <Grid item xs>
@@ -210,7 +213,6 @@ class PostCard extends React.Component {
                                             pathname: '/post-detail',
                                             search: '?id=' + post.blog_id
                                         }}
-                                              target="_blank"
                                         >Load More
                                         </Link>
                                     </Grid>
