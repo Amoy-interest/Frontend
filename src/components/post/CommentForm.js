@@ -6,11 +6,6 @@ import {Formik, Form} from 'formik';
 import {AITextField} from "../commen/AIField";
 
 export default function CommentForm(props){
-
-    const submit = () => {
-        console.log(props.props)
-    }
-
     return (
         <Container component="main" maxWidth="lg">
             <Formik
@@ -21,7 +16,8 @@ export default function CommentForm(props){
                     setTimeout(() => {
                         setSubmitting(false);
                         alert(JSON.stringify(values, null, 2));
-                        submit();
+                        console.log(values);
+                        props.submit(values);
                     }, 500);
                 }}
             >

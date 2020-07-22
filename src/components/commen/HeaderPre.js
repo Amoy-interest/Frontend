@@ -123,7 +123,7 @@ export default function HeaderPre() {
                 </Toolbar>
             </AppBar>
             {renderMenu}
-            <Modal open={open}>
+            <Modal open={open} onClose={handleModalClose}>
                 <div style={modalStyle} className={classes.paper}>
                     <LoginForm closeModal={handleModalClose}/>
                 </div>
