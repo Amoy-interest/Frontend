@@ -61,7 +61,7 @@ class PostCardList extends Component {
     };
 
     render() {
-        if (!this.state.posts) return (<div>Loading</div>);
+        if (this.state.posts.length===0) return (<div>Loading</div>);
         else return (
             <div className={this.props.classes.root}>
                 <List>
@@ -71,7 +71,7 @@ class PostCardList extends Component {
                         return (
                             <ListItem className={this.props.classes.item} key={value}>
                                 {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                    <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
+                                    <PostCard post={item} type="Others"/> : <PostCard post={item} type="Own"/>}
                             </ListItem>
                         );
                     })}

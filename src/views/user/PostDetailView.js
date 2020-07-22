@@ -29,14 +29,11 @@ class PostDetailView extends Component {
         return (
             <div>
                 <Paper elevation={0} className={this.props.classes.root}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                            <SideBar/>
-                        </Grid>
-                        <Grid item xs={7}>
+                    <Grid container>
+                        <Grid item xs={8}>
                             <PostCardList index={1}/>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs={4}>
                             <HotSearchList/>
                         </Grid>
                     </Grid>

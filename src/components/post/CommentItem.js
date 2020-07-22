@@ -10,7 +10,6 @@ import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-// import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
@@ -20,7 +19,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {connect} from "react-redux";
-import PropTypes from "prop-types";
 import {grey} from "@material-ui/core/colors";
 import CommentForm from "./CommentForm";
 import {Divider} from "@material-ui/core";
@@ -47,7 +45,8 @@ function mapStateToProps(state) {
     }
 }
 
-class Comment extends React.Component {
+@withStyles(styles)
+class CommentItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -213,12 +212,6 @@ class Comment extends React.Component {
     }
 }
 
-const CommentItem = connect(
+export default connect(
     mapStateToProps, null
-)(Comment);
-
-CommentItem.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(CommentItem);
+)(CommentItem);
