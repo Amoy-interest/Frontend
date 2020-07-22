@@ -24,9 +24,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PostImage from "./PostImage";
 import {cancelVote, vote} from "../../service/PostService";
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
+import {connect} from "react-redux";
+import Message from "../commen/Message";
 
-const styles=(theme => ({
+const styles = (theme => ({
     expand: {
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
@@ -39,49 +41,72 @@ const styles=(theme => ({
     },
 }));
 
-class PostCard extends React.Component{
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
+}
+
+class Post extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state= {
-            voted:false,
-            voteCount:this.props.post.blog_count.vote_count,
-            post:this.props.post,
-            anchorEl:null,
-            expanded:false
+        const {blog_count} = this.props.post;
+        this.state = {
+            voted: false,
+            voteCount: blog_count.vote_count,
+            commentCount: blog_count.comment_count,
+            post: this.props.post,
+            anchorEl: null,
+            expanded: false,
+            messageOpen: false,
         };
     };
 
-    handleVote=(post)=>{
-        let param={blog_id:0,comment_id:-1};
-        let count=this.state.voteCount;
-        const callback1=(data)=>{
-            console.log(data);
-            this.setState({voted:true});
-            this.setState({voteCount:count+1});
-            console.log(this.state.voteCount);
-        };
-        const callback2=(data)=>{
-            console.log(data);
-            this.setState({voted:false});
-            this.setState({voteCount:count-1});
-        };
-        this.state.voted? cancelVote(param,callback2): vote(param,callback1);
+    handleVote = (post) => {
+        if (this.props.user.user === null) this.setState({messageOpen: true});
+        else {
+            let param = {blog_id: 0, comment_id: -1};
+            let count = this.state.voteCount;
+            const callback1 = (data) => {
+                console.log(data);
+                this.setState({voted: true});
+                this.setState({voteCount: count + 1});
+                console.log(this.state.voteCount);
+            };
+            const callback2 = (data) => {
+                console.log(data);
+                this.setState({voted: false});
+                this.setState({voteCount: count - 1});
+            };
+            this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
+        }
     };
-
+    addComment = () => {
+        const count = this.state.commentCount;
+        this.setState({commentCount: count + 1});
+    };
     handleMenuClose = () => {
-        this.setState({anchorEl:null});
+        this.setState({anchorEl: null});
     };
 
     handleMoreInfoClick = (event) => {
-        this.setState({anchorEl:event.currentTarget});
+        this.setState({anchorEl: event.currentTarget});
     };
+
     handleExpandClick = () => {
-        this.setState({expanded:!this.state.expanded})
+        if (this.props.user.user === null) this.setState({messageOpen: true});
+        else this.setState({expanded: !this.state.expanded});
+    };
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({messageOpen: false});
     };
     render() {
-        const {post,voted,voteCount,anchorEl,expanded}=this.state;
-        const {classes}=this.props;
+        const {post, voted, voteCount, commentCount, anchorEl, expanded,messageOpen} = this.state;
+        const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
@@ -111,13 +136,13 @@ class PostCard extends React.Component{
                     <MenuItem><DeleteIcon/>删除</MenuItem>
                 </Menu>
         );
-        if(this.state.post!==null)
+        if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width:657} }>
+                    <Card style={{width: 657}}>
                         <CardHeader
                             avatar={
-                                <Avatar src={this.props.index===0?Avatar2:Avatar1}/>
+                                <Avatar src={this.props.index === 0 ? Avatar2 : Avatar1}/>
                             }
                             action={
                                 <IconButton onClick={this.handleMoreInfoClick} aria-label="settings">
@@ -127,15 +152,17 @@ class PostCard extends React.Component{
                             title={post.nickname}
                             subheader={post.blog_time}
                         />
-                        <PostImage image={post.blog_content.images}/>
                         <CardContent>
                             <Typography variant="body1" color="textPrimary" component="p">
                                 {post.blog_content.text}
                             </Typography>
                         </CardContent>
+                        <PostImage image={post.blog_content.images}/>
                         <CardActions disableSpacing>
-                            <IconButton aria-label="vote" onClick={()=>{this.handleVote(post)}}>
-                                <FavoriteIcon style={{color:voted?amber[200]:null}} />
+                            <IconButton aria-label="vote" onClick={() => {
+                                this.handleVote(post)
+                            }}>
+                                <FavoriteIcon style={{color: voted ? amber[200] : null}}/>
                             </IconButton>
                             <Typography variant="body1" color="textSecondary" component="p">
                                 {voteCount}
@@ -143,7 +170,7 @@ class PostCard extends React.Component{
                             <IconButton aria-label="share">
                                 <ShareIcon/>
                             </IconButton>
-                            <Typography  variant="body1" color="textSecondary" component="p">
+                            <Typography variant="body1" color="textSecondary" component="p">
                                 {post.blog_count.forward_count}
                             </Typography>
                             <IconButton
@@ -154,24 +181,28 @@ class PostCard extends React.Component{
                                 aria-expanded={expanded}
                                 aria-label="show more"
                             >
-                                <InsertCommentIcon/>
+                                <InsertCommentIcon style={{color: expanded ? amber[200] : null}}/>
                             </IconButton>
                             <Typography variant="body1" color="textSecondary" component="p">
-                                {post.blog_count.comment_count}
+                                {commentCount}
                             </Typography>
                         </CardActions>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <CommentList comments={post.blog_comments}/>
+                                <CommentList blog={post} comments={post.blog_comments} addComment={this.addComment}/>
                             </CardContent>
                         </Collapse>
                     </Card>
                     {renderMenu}
+                    <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );
         else return <div>Loading</div>;
     }
 }
+
+const PostCard = connect
+(mapStateToProps, null)(Post);
 
 PostCard.propTypes = {
     classes: PropTypes.object.isRequired,

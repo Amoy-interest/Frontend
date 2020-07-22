@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function HomeLayout() {
+function PostDetailLayout() {
     const classes = useStyles();
 
     return (
@@ -24,7 +24,6 @@ function HomeLayout() {
                         <SideBar/>
                     </Grid>
                     <Grid item xs={7}>
-                        <Carousel/>
                         <PostCardList index={1}/>
                     </Grid>
                     <Grid item xs>
@@ -36,15 +35,24 @@ function HomeLayout() {
     );
 }
 
-class HomeView extends Component {
+class PostDetailView extends Component {
+    constructor(props) {
+        super(props);
+    };
+    componentDidMount() {
+        const query = this.props.location.search;
+        const arr = query.split('&');
+        const blogId = arr[0].substr(4);
+
+    }
 
     render() {
         return (
             <div>
-                <HomeLayout/>
+                <PostDetailLayout/>
             </div>
         );
     }
 }
 
-export default HomeView;
+export default PostDetailView;

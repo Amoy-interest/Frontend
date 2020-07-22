@@ -31,16 +31,16 @@ export default function AdminSideBar(props) {
         setValue(newValue);
     };
     const openUsersManageView=()=>{
-        history.replace('/users-manage');
+        history.push('/users-manage');
     };
     const openPostsManageView=()=>{
-        history.replace('/posts-manage');
+        history.push('/posts-manage');
     };
     const openTopicsManageView=()=>{
-        history.replace('/topics-manage');
+        history.push('/topics-manage');
     };
     const openSensWordsManageView=()=>{
-        history.replace('/sensWords-manage');
+        history.push('/sensWords-manage');
     };
     return (
         <div className={classes.root}>
