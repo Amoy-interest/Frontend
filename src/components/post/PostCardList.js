@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PostCard from "./PostCard";
+import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
 import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
@@ -78,7 +78,11 @@ class PostCardList extends Component {
             return;
         };
     };
-
+    addPost = (newPost) => {
+        const newPosts=[newPost,...this.state.posts];
+        console.log(newPosts);
+        this.setState({posts:newPosts});
+    };
     render() {
 
         return (
@@ -96,7 +100,7 @@ class PostCardList extends Component {
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                        <PostCard post={item} size={657} index={0}/> : <PostCard post={item} size={657} index={1}/>}
+                                        <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.OTHERS} addPost={this.addPost}/> : <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.PERSONAL} addPost={this.addPost}/>}
                                 </ListItem>
                             );
                         })}

@@ -43,8 +43,13 @@ function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
-}
+};
 
+export const CommentItemType={
+    CARD:0,
+    PRIMARY:1,
+    SECONDARY:2
+};
 @withStyles(styles)
 class CommentItem extends React.Component {
     constructor(props) {

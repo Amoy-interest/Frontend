@@ -51,15 +51,15 @@ class PostForm extends React.Component{
 
         const callback = (data) => {
             console.log(data);
-
+            this.props.submit(data.data);
             // data display....
-        }
+        };
         makePost(values.content, images, callback);
     };
 
     uploadFiles = (files) => {
         this.setState({fileList: files});
-    }
+    };
 
     render() {
         const classes = this.props.classes;

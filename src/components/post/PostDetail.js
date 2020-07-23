@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PostCard from "./PostCard";
+import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
 import {getComments, getPost, postComment} from "../../service/PostService";
 import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
@@ -140,7 +140,7 @@ class PostDetail extends Component {
             <div className={classes.root}>
                 <div className={classes.content}>
                     {(this.props.user.user === null || this.props.user.user.nickname !== post.nickname) ?
-                        <PostCard post={post}  index={0} type={"postDetail"}/> : <PostCard post={post} size={870} index={1} type={"postDetail"}/>}
+                        <PostCard post={post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS}/> : <PostCard post={post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
                 </div>
                 <div className={classes.commentContainer}>
                     <div style={{marginTop: '10px'}}>
