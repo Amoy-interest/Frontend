@@ -4,10 +4,10 @@ import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
 export const makePost = (text, images, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}`;
     const params = {
-        BlogContentDto: {
-            text: text,
-            images: images
-        }
+        text: text,
+        images: images,
+        topic_id: 0,
+        user_id: 0
     };
     console.log("params", params);
     postRequest_json(url, params, callback);
@@ -67,6 +67,7 @@ export const getComments=(params,callback)=>{
 
 export const postComment=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/comments`;
+    console.log(data);
     postRequest_json(url, data, callback);
 };
 

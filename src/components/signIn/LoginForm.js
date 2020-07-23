@@ -54,7 +54,7 @@ function LoginForm(props){
         console.log(values);
         userService.login(values, (data) => {
             console.log(data);
-            if (data.status !== 200) {
+            if (data.status !== 0) {
                 message.error(data.msg);
                 console.log("error");
                 return;
