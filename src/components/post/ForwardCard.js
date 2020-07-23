@@ -46,7 +46,7 @@ class ForwardCard extends React.Component {
                     search: '?id=' + post.blog_id
                 }}>
                 <div>
-                        <Card className={classes.root} style={{width: '100%'}} elevation={0}>
+                        <Card className={classes.root} style={{width: this.props.size}} elevation={0}>
                             <CardHeader
                                 avatar={
                                     <Avatar src={post.avatar_path}/>

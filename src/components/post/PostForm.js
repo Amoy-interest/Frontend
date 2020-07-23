@@ -33,7 +33,7 @@ export default function PostForm(props){
 
     const submit = () => {
         console.log(props.props)
-    }
+    };
 
     return (
         <Container component="main" maxWidth="lg">

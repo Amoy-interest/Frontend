@@ -28,6 +28,10 @@ import Message from "../commen/Message";
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 import ForwardCard from "./ForwardCard";
+import Modal from "@material-ui/core/Modal";
+import PostForm from "./PostForm";
+import Paper from "@material-ui/core/Paper";
+import grey from "@material-ui/core/colors/grey";
 
 const styles = (theme => ({
     expand: {
@@ -40,7 +44,23 @@ const styles = (theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
+    paper: {
+        position: 'absolute',
+    },
+    forwardModal: {
+        padding: theme.spacing(1)
+    }
 }));
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+};
 
 function mapStateToProps(state) {
     return {
@@ -64,13 +84,14 @@ class PostCard extends React.Component {
             anchorEl: null,
             expanded: false,
             messageOpen: false,
+            forwardModalOpen: false,
         };
     };
 
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {
-            let param = {blog_id: 0, comment_id: -1};
+            let param = {blog_id: post.blog_id, comment_id: -1};
             let count = this.state.voteCount;
             const callback1 = (data) => {
                 console.log(data);
@@ -85,6 +106,22 @@ class PostCard extends React.Component {
             };
             this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
         }
+    };
+
+    handleForward = (post) => {
+        if (this.props.user.user === null) this.setState({messageOpen: true});
+        else if (!this.state.forward) {
+            this.handleModalOpen();
+            this.setState({forward: true});
+        }
+    };
+
+    handleModalOpen = () => {
+        this.setState({forwardModalOpen: true});
+    };
+
+    handleModalClose = () => {
+        this.setState({forwardModalOpen: false, forward: false});
     };
 
     addComment = () => {
@@ -118,7 +155,7 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen} = this.state;
+        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, forwardModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
@@ -153,7 +190,7 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: 657}}>
+                    <Card style={{width:this.props.size===null?this.props.size:'100%'}} elevation={this.props.type === "postDetail" ? 0 : 1}>
                         <CardHeader
                             avatar={
                                 <Avatar src={post.avatar_path}/>
@@ -166,13 +203,18 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={post.blog_time}
                         />
-                        <CardContent>
-                            <Typography variant="body1" color="textPrimary" component="p">
-                                {post.blog_content.text}
-                            </Typography>
-                        </CardContent>
+                        <Link style={{color: '#fff'}} to={{
+                            pathname: '/post-detail',
+                            search: '?id=' + post.blog_id
+                        }}>
+                            <CardContent>
+                                <Typography variant="body1" color="textPrimary" component="p">
+                                    {post.blog_content.text}
+                                </Typography>
+                            </CardContent>
+                        </Link>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                            <ForwardCard post={post.blog_child}/>}
+                            <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
                             <IconButton aria-label="vote" onClick={() => {
                                 this.handleVote(post)
@@ -182,7 +224,9 @@ class PostCard extends React.Component {
                             <Typography variant="body1" color="textSecondary" component="p">
                                 {voteCount}
                             </Typography>
-                            <IconButton aria-label="share">
+                            <IconButton aria-label="share" onClick={() => {
+                                this.handleForward(post)
+                            }}>
                                 <ShareIcon style={{color: forward ? amber[200] : null}}/>
                             </IconButton>
                             <Typography variant="body1" color="textSecondary" component="p">
@@ -202,26 +246,36 @@ class PostCard extends React.Component {
                                 {commentCount}
                             </Typography>
                         </CardActions>
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent>
-                                <CommentList blog_id={post.blog_id} addComment={this.addComment}
-                                             deleteComment={this.deleteComment}/>
-                                <Grid container className={classes.link}>
-                                    <Grid item xs={5}/>
-                                    <Grid item xs>
-                                        <Link style={{color: amber[200], fontSize: '18px'}} to={{
-                                            pathname: '/post-detail',
-                                            search: '?id=' + post.blog_id,
-                                        }}
-                                        >Load More
-                                        </Link>
+                        {this.props.type === "postDetail" ? null :
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <CommentList blog_id={post.blog_id} addComment={this.addComment}
+                                                 deleteComment={this.deleteComment}/>
+                                    <Grid container className={classes.link}>
+                                        <Grid item xs={5}/>
+                                        <Grid item xs>
+                                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                                pathname: '/post-detail',
+                                                search: '?id=' + post.blog_id,
+                                            }}
+                                            >Load More
+                                            </Link>
+                                        </Grid>
+                                        <Grid item xs/>
                                     </Grid>
-                                    <Grid item xs/>
-                                </Grid>
-                            </CardContent>
-                        </Collapse>
+                                </CardContent>
+                            </Collapse>
+                        }
                     </Card>
                     {renderMenu}
+                    <Modal open={forwardModalOpen} onClose={this.handleModalClose}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.forwardModal}>
+                                <PostForm closeModal={this.handleModalClose}/>
+                                <ForwardCard post={post.blog_type === 0 ? post : post.blog_child} size={400}/>
+                            </Paper>
+                        </div>
+                    </Modal>
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );

@@ -25,9 +25,8 @@ class PostDetailView extends Component {
         return (
             <div>
                 <Paper elevation={0} className={this.props.classes.root}>
-                    <Grid container >
+                    <Grid container spacing={2}>
                         <Grid item xs={12} sm={9}>
-                            {/*<PostCardList index={PostType.OWN}/>*/}
                             <PostDetail id={blogId}/>
                         </Grid>
                         <Grid item xs={12} sm={3}>
