@@ -125,7 +125,7 @@ export default function HeaderPre() {
             </AppBar>
             {renderMenu}
             <Modal open={open} onClose={handleModalClose}>
-                <div style={modalStyle} className={classes.paper}>
+                <div style={getModalStyle()} className={classes.paper}>
                     <LoginForm closeModal={handleModalClose}/>
                 </div>
             </Modal>

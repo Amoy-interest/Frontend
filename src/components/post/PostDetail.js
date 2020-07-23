@@ -5,16 +5,17 @@ import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import {PostType} from "../../utils/constants";
 import CommentForm from "./CommentForm";
-import {FixedSizeList} from "react-window";
 import CommentItem from "./CommentItem";
 
 const styles = ((theme) => ({
     root: {
         width: '100%',
         marginTop: theme.spacing(2),
-        overflow: 'auto'
+        overflow: 'auto',
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center'
     },
     content: {
         width:'100%'
@@ -35,7 +36,7 @@ const styles = ((theme) => ({
         height: 54,
     },
     comment: {
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1)
     },
     inline: {
@@ -62,7 +63,7 @@ class PostDetail extends Component {
             pageSize: 2
         };
 
-        console.log("props", props)
+        console.log("props", props);
         this.loadMore = this.loadMore.bind(this);
     }
 
@@ -83,28 +84,26 @@ class PostDetail extends Component {
 
     submitComment = (text) => {
         let param = {
-            "blog_id": 0,
-            "nickname": "binnie",
-            "reply_comment_nickname": this.props.user.user.nickname,
-            "root_comment_id": -1,
+            "blog_id": this.state.post.blog_id,
+            "reply_user_id": 0,
+            "root_comment_id": 0,
             "text": text.comment
         };
         let comment = [{
-            "_deleted": false,
-            "blog_id": -1,
-            "comment_id": 1,
-            "comment_level": 0,
+            "avatar_path": "",
+            "comment_id": 0,
             "comment_text": text.comment,
             "comment_time": Date(),
+            "have_child": false,
             "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": "",
-            "root_comment_id": -1,
+            "user_id": 0,
             "vote_count": 0
         }];
         const callback = () => {
             const newComments = [...comment, ...this.state.comments];
             this.setState({comments: newComments});
-            this.props.addComment();
+            console.log(this.state.comments);
+            //this.props.addComment();
         };
         postComment(param, callback);
     };
@@ -141,10 +140,12 @@ class PostDetail extends Component {
             <div className={classes.root}>
                 <div className={classes.content}>
                     {(this.props.user.user === null || this.props.user.user.nickname !== post.nickname) ?
-                        <PostCard post={post} index={0}/> : <PostCard post={post} index={1}/>}
+                        <PostCard post={post}  index={0} type={"postDetail"}/> : <PostCard post={post} size={870} index={1} type={"postDetail"}/>}
                 </div>
                 <div className={classes.commentContainer}>
-                    <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
+                    <div style={{marginTop: '10px'}}>
+                        <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
+                    </div>
                     <Divider style={{marginTop: '20px'}}/>
                     <InfiniteScroll
                         pageStart={0}
@@ -155,7 +156,7 @@ class PostDetail extends Component {
                         <List>
                             {this.state.comments.map((item, index) => {
                                 return (
-                                    <ListItem button style={{marginTop: '20px'}} key={index}>
+                                    <ListItem key={index}>
                                         <CommentItem comment={item} index={index} deleteComment={() =>{}}/>
                                     </ListItem>
                                 );

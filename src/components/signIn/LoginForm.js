@@ -19,7 +19,7 @@ import {connect} from "react-redux";
 const useStyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
-        width:350,
+        width:'350',
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(2),
@@ -56,11 +56,12 @@ function LoginForm(props){
             console.log(data);
             if (data.status !== 200) {
                 message.error(data.msg);
+                console.log("error");
                 return;
             }
 
             message.success(data.msg);
-            props.onLogin(data.data.user, data.data.token)
+            props.onLogin(data.data.user, data.data.token);
             history.push('/home');
         });
         props.closeModal();
