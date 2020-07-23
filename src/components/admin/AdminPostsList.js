@@ -15,7 +15,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import BlockIcon from '@material-ui/icons/Block';
 import Collapse from '@material-ui/core/Collapse';
 import PostCard from "../post/PostCard";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
@@ -24,6 +23,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -47,12 +48,6 @@ const StyledTableRow = withStyles((theme) => ({
     },*/
 }))(TableRow);
 
-const useStyles = makeStyles({
-    table: {
-        maxWidth: 1000
-    },
-});
-
 class AdminPostsList extends Component {
     constructor(props) {
         super(props);
@@ -65,14 +60,17 @@ class AdminPostsList extends Component {
             checkAll: false,
             showPassDialog: false,
             showDeleteDialog: false,
-            blogId: null
+            blogId: null,
+            page: 0,
+            rowsPerPage: 10,
+            totalLength: 0
         };
     }
 
     componentDidMount() {
         const params = {
             pageNum: 0,
-            pageSize: 20
+            pageSize: 10
         };
         getReportedPosts(params, ((res) => {
             console.log(res.data);
@@ -80,9 +78,44 @@ class AdminPostsList extends Component {
                 this.state.open.push(false);
                 this.state.checked.push(false);
             }
-            this.setState({posts: res.data.list});
+            this.setState({
+                posts: res.data.list,
+                totalLength: res.data.total
+            });
         }));
     }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("post page finally get keyword");
+        console.log(nextProps.keyword);
+    }
+
+    updatePost(page, rowsPerPage) {
+        const params = {
+            pageNum: page,
+            pageSize: rowsPerPage
+        };
+        getReportedPosts(params, ((res) => {
+            console.log(res.data);
+            this.setState({
+                posts: res.data.list,
+                totalLength: res.data.total
+            });
+        }));
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage});
+        this.updatePost(newPage, this.state.rowsPerPage);
+    };
+
+    handleChangeRowsPerPage = (e) => {
+        this.setState({
+            rowsPerPage: parseInt(e.target.value, 10),
+            page: 0
+        });
+        this.updatePost(0, parseInt(e.target.value, 10));
+    };
 
     setOpen(index) {
         let tmp = this.state.open;
@@ -156,7 +189,8 @@ class AdminPostsList extends Component {
         this.setState({showDeleteDialog: false});
         let data = {"blog_id": this.state.blogId, "check_status": 2};
         checkReportedBlog(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updatePost(0, 10);
         }))
     };
 
@@ -168,12 +202,12 @@ class AdminPostsList extends Component {
         this.setState({showPassDialog: false});
         let data = {"blog_id": this.state.blogId, "check_status": 1};
         checkReportedBlog(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updatePost(0, 10);
         }))
     };
 
     render() {
-        const { classes } = this.props;
         return (
             <div>
                 <div style={{marginTop: '30px', marginBottom: '30px'}}>
@@ -185,7 +219,7 @@ class AdminPostsList extends Component {
                     </Button>
                 </div>
                 <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                    <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell onClick={() => this.setCheckAll()}>
@@ -248,6 +282,19 @@ class AdminPostsList extends Component {
                             );
                         })}
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    colSpan={4}
+                                    count={this.state.totalLength}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
@@ -287,6 +334,6 @@ class AdminPostsList extends Component {
     }
 }
 
-export default withStyles(useStyles)(AdminPostsList);
+export default AdminPostsList;
 
 

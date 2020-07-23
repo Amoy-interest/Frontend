@@ -20,6 +20,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TablePagination from "@material-ui/core/TablePagination";
+import TableFooter from "@material-ui/core/TableFooter";
+import {getReportedTopics} from "../../service/AdminService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -43,11 +46,6 @@ const StyledTableRow = withStyles((theme) => ({
     },*/
 }))(TableRow);
 
-const useStyles = makeStyles({
-    table: {
-        maxWidth: 1000
-    },
-});
 
 class AdminSensWordsList extends Component {
     constructor(props) {
@@ -61,7 +59,10 @@ class AdminSensWordsList extends Component {
             showDeleteDialog: false,
             oldWord: null,
             newWord: null,
-            deleteWord: null
+            deleteWord: null,
+            page: 0,
+            rowsPerPage: 20,
+            totalLength: 0
         };
     }
 
@@ -74,9 +75,44 @@ class AdminSensWordsList extends Component {
             console.log(res.data.list);
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({sensWords: res.data.list});
+            this.setState({
+                sensWords: res.data.list,
+                totalLength: res.data.total
+            });
         }));
     }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("sensWord page finally get keyword");
+        console.log(nextProps.keyword);
+    }
+
+    updateSensWords(page, rowsPerPage) {
+        const params = {
+            pageNum: page,
+            pageSize: rowsPerPage
+        };
+        getSensWords(params, ((res) => {
+            console.log(res.data);
+            this.setState({
+                sensWords: res.data.list,
+                totalLength: res.data.total
+            });
+        }));
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage});
+        this.updateSensWords(newPage, this.state.rowsPerPage);
+    };
+
+    handleChangeRowsPerPage = (e) => {
+        this.setState({
+            rowsPerPage: parseInt(e.target.value, 10),
+            page: 0
+        });
+        this.updateSensWords(0, parseInt(e.target.value, 10));
+    };
 
     setChecked(index) {
         let tmp = this.state.checked;
@@ -119,7 +155,8 @@ class AdminSensWordsList extends Component {
         this.setState({showDeleteDialog: false});
         let data = "?keyword=" + this.state.deleteWord.toString();
         deleteSensWord(data, (res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         })
     };
 
@@ -127,7 +164,8 @@ class AdminSensWordsList extends Component {
         this.setState({showAddDialog: false});
         let data = "?keyword=" + this.state.newWord.toString();
         postSensWord(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         }));
     };
 
@@ -136,7 +174,8 @@ class AdminSensWordsList extends Component {
         let data = "?oldWord=" + this.state.oldWord.toString() + "&newWord=" + this.state.newWord.toString();
         console.log(data);
         putSensWord(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         }));
     };
 
@@ -171,7 +210,7 @@ class AdminSensWordsList extends Component {
                     </Button>
                 </div>
                 <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                    <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell onClick={() => this.setCheckAll()}>
@@ -244,6 +283,19 @@ class AdminSensWordsList extends Component {
                                 })
                             }
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[10, 20, 50]}
+                                    colSpan={4}
+                                    count={this.state.totalLength}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
@@ -314,6 +366,6 @@ class AdminSensWordsList extends Component {
     }
 }
 
-export default withStyles(useStyles)(AdminSensWordsList);
+export default AdminSensWordsList;
 
 

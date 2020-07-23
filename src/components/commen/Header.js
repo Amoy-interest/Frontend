@@ -109,12 +109,17 @@ function Header(props) {
         </Menu>
     );
 
+    const handleSearch = (keyword) => {
+        console.log(keyword);
+        props.handleSearch(keyword);
+    };
+
     return (
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
                     <Logo title={'Amoy Interest'}/>
-                    <SearchBar/>
+                    <SearchBar handleSearch={handleSearch}/>
                     <div className={classes.blank}/>
                     {props.role === UserType.CUSTOMER ?
                         <Tooltip title="发现">

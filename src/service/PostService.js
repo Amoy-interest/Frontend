@@ -1,6 +1,18 @@
 import {apiUrl, APIModules} from "../utils/constants";
 import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
 
+export const makePost = (text, images, callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    const params = {
+        BlogContentDto: {
+            text: text,
+            images: images
+        }
+    };
+    console.log("params", params);
+    postRequest_json(url, params, callback);
+};
+
 export const getPost = (id, callback) => {
     const params = {blog_id: id};
     const url = `${apiUrl}${APIModules.BLOG}`;
