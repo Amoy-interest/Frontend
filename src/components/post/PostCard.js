@@ -66,7 +66,16 @@ function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
-}
+};
+
+export const PostCardBelong={
+    OTHERS:0,
+    PERSONAL:1
+};
+export const PostCardType={
+    LIST:0,
+    DETAIL:1,
+};
 
 @withStyles(styles)
 class PostCard extends React.Component {
@@ -115,6 +124,40 @@ class PostCard extends React.Component {
             this.setState({forward: true});
         }
     };
+    submitForward = (values) => {
+        let blog_type = this.state.post.blog_type;
+        console.log(values);
+        let rootPost = blog_type === 0 ? this.state.post : this.state.post.blog_child;
+        let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+        console.log(this.props.user.user);
+        let newPost = {
+            avatar_path: this.props.user.user.avatar,
+            blog_child: {
+                avatar_path: rootPost.avatar_path,
+                blog_content:rootPost.blog_content,
+                blog_id: rootPost.blog_id,
+                blog_time: rootPost.blog_time,
+                nickname: rootPost.nickname,
+                user_id: 0
+            },
+            blog_content: {
+                images: [],
+                text: values.content
+            },
+            blog_count: {
+                comment_count: 0,
+                forward_count: 0,
+                report_count: 0,
+                vote_count: 0
+            },
+            blog_id: 0,
+            blog_time:date,
+            blog_type: 1,
+            nickname: this.props.user.user.nickname
+        };
+        this.handleModalClose();
+        this.props.addPost(newPost);
+    };
 
     handleModalOpen = () => {
         this.setState({forwardModalOpen: true});
@@ -161,7 +204,7 @@ class PostCard extends React.Component {
         const menuId = 'report-menu';
 
         const renderMenu = (
-            this.props.type === "Others" ?
+            this.props.belong === PostCardBelong.OTHERS ?
                 <Menu
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -190,7 +233,8 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width:this.props.size===null?this.props.size:'100%'}} elevation={this.props.type === "postDetail" ? 0 : 1}>
+                    <Card style={{width: this.props.size === null ? '100%' : this.props.size}}
+                          elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
                                 <Avatar src={post.avatar_path}/>
@@ -246,7 +290,7 @@ class PostCard extends React.Component {
                                 {commentCount}
                             </Typography>
                         </CardActions>
-                        {this.props.type === "postDetail" ? null :
+                        {this.props.type === PostCardType.DETAIL ? null :
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <CardContent>
                                     <CommentList blog_id={post.blog_id} addComment={this.addComment}
@@ -271,7 +315,7 @@ class PostCard extends React.Component {
                     <Modal open={forwardModalOpen} onClose={this.handleModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.forwardModal}>
-                                <PostForm closeModal={this.handleModalClose}/>
+                                <PostForm closeModal={this.handleModalClose} submit={this.submitForward}/>
                                 <ForwardCard post={post.blog_type === 0 ? post : post.blog_child} size={400}/>
                             </Paper>
                         </div>

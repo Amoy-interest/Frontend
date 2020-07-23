@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PostForm(props){
     const classes = useStyles();
 
-    const submit = () => {
-        console.log(props.props)
+    const submit = (values) => {
+        props.submit(values);
     };
 
     return (
@@ -47,7 +47,7 @@ export default function PostForm(props){
                         setTimeout(() => {
                             setSubmitting(false);
                             alert(JSON.stringify(values, null, 2));
-                            submit();
+                            submit(values);
                         }, 500);
                     }}
                 >
