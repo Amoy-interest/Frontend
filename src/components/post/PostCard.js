@@ -13,7 +13,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
-import CommentList from "./FixedCommentList";
+import CommentList from "./CardCommentList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';

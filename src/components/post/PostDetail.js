@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
 import {getComments, getPost, postComment} from "../../service/PostService";
-import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
-import InfiniteScroll from "react-infinite-scroller";
-import CommentForm from "./CommentForm";
-import CommentItem from "./CommentItem";
+import CommentList, {CommentListType} from "./CommentList";
 
 const styles = ((theme) => ({
     root: {
@@ -19,28 +16,6 @@ const styles = ((theme) => ({
     },
     content: {
         width:'100%'
-    },
-    item: {
-        width:'100%'
-    },
-    commentContainer: {
-        width: '100%',
-        display: 'flex',
-        alignItem: 'center',
-        flexDirection: 'column',
-        marginTop: theme.spacing(2),
-        overflow: 'auto'
-    },
-    submit: {
-        width: 90,
-        height: 54,
-    },
-    comment: {
-        marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(1)
-    },
-    inline: {
-        display: 'inline',
     },
 }));
 
@@ -57,15 +32,10 @@ class PostDetail extends Component {
         super(props);
         this.state = {
             post: null,
-            comments: [],
-            hasMoreItems: true,
-            nextHref: 0,
-            pageSize: 2,
-            key: 0
         };
 
         console.log("props", props);
-        this.loadMore = this.loadMore.bind(this);
+        //this.loadMore = this.loadMore.bind(this);
     }
 
     componentDidMount() {
@@ -83,56 +53,6 @@ class PostDetail extends Component {
         };
     };
 
-    submitComment = (text) => {
-        let param = {
-            "blog_id": this.state.post.blog_id,
-            "reply_user_id": 0,
-            "root_comment_id": 0,
-            "text": text.comment
-        };
-        let comment = {
-            "avatar_path": "",
-            "comment_id": 0,
-            "comment_text": text.comment,
-            "comment_time": Date(),
-            "have_child": false,
-            "nickname": this.props.user.user.nickname,
-            "user_id": 0,
-            "vote_count": 0
-        };
-        const callback = () => {
-            this.setState({
-                comments: [comment, ...this.state.comments],
-                key: this.state.key + 1
-                // key: Math.random().toString(36).substr(2)
-            });
-            console.log(this.state.comments);
-            //this.props.addComment();
-        };
-        postComment(param, callback);
-    };
-
-
-    loadMore() {
-        const callback = (data) => {
-            console.log("loadMore data", this.state);
-            this.setState({
-                comments: [...this.state.comments, ...data.data.list],
-                hasMoreItems: (data.data.totalPage > this.state.nextHref),
-                nextHref: this.state.nextHref + 1
-            })
-        };
-
-        const params = {
-            pageNum: this.state.nextHref,
-            pageSize: this.state.pageSize,
-            blog_id: this.state.post.blog_id
-        };
-
-        getComments(params, callback);
-
-    }
-
 
     render() {
         const {classes} = this.props;
@@ -146,30 +66,7 @@ class PostDetail extends Component {
                     {(this.props.user.user === null || this.props.user.user.nickname !== post.nickname) ?
                         <PostCard post={post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS}/> : <PostCard post={post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
                 </div>
-                <div className={classes.commentContainer}>
-                    <div style={{marginTop: '10px'}}>
-                        <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
-                    </div>
-                    <Divider style={{marginTop: '20px'}}/>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.loadMore}
-                        hasMore={this.state.hasMoreItems}
-                        loader={<div className="loader" key={0}>Loading ...</div>}
-                        key={this.state.key}
-                    >
-                        <List>
-                        {this.state.comments.map((item, index) => {
-                            return (
-                                <ListItem key={index}>
-                                    <CommentItem comment={item} index={index} deleteComment={() =>{}}/>
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-                    </InfiniteScroll>
-                </div>
-
+                <CommentList post={this.state.post} type={CommentListType.PRIMARY}/>
             </div>
         );
     }

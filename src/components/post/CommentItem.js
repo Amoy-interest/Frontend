@@ -23,7 +23,7 @@ import CommentForm from "./CommentForm";
 import {Divider} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import InfiniteScroll from "react-infinite-scroller";
+import CommentList, {CommentListType} from "./CommentList";
 
 const styles = ((theme) => ({
     root: {
@@ -95,6 +95,7 @@ class CommentItem extends React.Component {
             this.setState({expanded: false});
             let newSecondaryComment = [data.data, ...this.state.secondaryComment];
             this.setState({secondaryComment: newSecondaryComment});
+            if(this.props.type===CommentItemType.SECONDARY) this.submit(data.data);
         };
         postComment(param, callback);
     };
@@ -204,9 +205,12 @@ class CommentItem extends React.Component {
                             : null
                         }
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent style={{backgroundColor: grey[50]}}>
-                                <CommentForm secondary commentId={comment} submit={this.submitComment}/>
-                            </CardContent>
+                                <CardContent style={{backgroundColor: grey[50]}}>
+                                    {this.props.type===CommentItemType.SECONDARY?
+                                    <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} key="init"/>}
+                                </CardContent>
+
                         </Collapse>
                         <Divider style={{marginTop: '20px'}}/>
                     </CardContent>

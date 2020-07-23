@@ -62,7 +62,7 @@ function mapStateToProps(state) {
     }
 }
 @withStyles(styles)
-class FixedCommentList extends React.Component {
+class CardCommentList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -142,4 +142,4 @@ class FixedCommentList extends React.Component {
 
 export default connect(
     mapStateToProps, null
-)(FixedCommentList)
+)(CardCommentList)

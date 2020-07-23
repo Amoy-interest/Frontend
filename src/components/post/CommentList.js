@@ -1,25 +1,14 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
-import {getComments, getPost, postComment} from "../../service/PostService";
+import {getComments, getMultiLevelComments, getPost, postComment} from "../../service/PostService";
 import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 import CommentForm from "./CommentForm";
-import CommentItem from "./CommentItem";
+import CommentItem, {CommentItemType} from "./CommentItem";
 
 const styles = ((theme) => ({
-    root: {
-        width: '100%',
-        marginTop: theme.spacing(2),
-        overflow: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    content: {
-        width: '100%'
-    },
     item: {
         width: '100%'
     },
@@ -56,7 +45,7 @@ export const CommentListType = {
 };
 
 @withStyles(styles)
-class PostDetail extends Component {
+class CommentList extends Component {
 
     constructor(props) {
         super(props);
@@ -64,7 +53,8 @@ class PostDetail extends Component {
             comments: [],
             hasMoreItems: true,
             nextHref: 0,
-            pageSize: 2
+            pageSize: 2,
+            key:props.key?props.key:0
         };
 
         console.log("props", props);
@@ -72,6 +62,7 @@ class PostDetail extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
     }
 
     componentWillUnmount = () => {
@@ -81,17 +72,39 @@ class PostDetail extends Component {
     };
 
     submitComment = (text) => {
-        let param = {
-            blog_id: 0,
-            reply_user_id: this.state.comment.user_id,
-            root_comment_id: this.state.comment.comment_id,
-            text: text.comment
-        };
         const callback = (data) => {
-            const newComments = [data.data, ...this.state.comments];
-            this.setState({comments: newComments});
+            this.setState({
+                comments: [data.data, ...this.state.comments],
+                key: this.state.key + 1
+                // key: Math.random().toString(36).substr(2)
+            });
+            console.log(this.state);
         };
-        postComment(param, callback);
+        if (this.props.type === CommentListType.PRIMARY) {
+            let param = {
+                blog_id: this.props.post.blog_id,
+                reply_user_id: this.props.post.user_id,
+                root_comment_id: 0,
+                text: text.comment
+            };
+            postComment(param, callback);
+        } else {
+            let param = {
+                blog_id: 0,
+                reply_user_id: this.props.comment.user_id,
+                root_comment_id: this.props.comment.comment_id,
+                text: text.comment
+            };
+            postComment(param, callback);
+        }
+        ;
+    };
+
+    addComment = (comment) => {
+        this.setState({
+            comments: [comment, ...this.state.comments],
+            key: this.state.key + 1
+        });
     };
 
 
@@ -104,21 +117,28 @@ class PostDetail extends Component {
                 nextHref: this.state.nextHref + 1
             })
         };
-
-        const params = {
-            pageNum: this.state.nextHref,
-            pageSize: this.state.pageSize,
-            blog_id: this.state.post.blog_id
-        };
-
-        getComments(params, callback);
+        if (this.props.type === CommentListType.PRIMARY) {
+            const params = {
+                pageNum: this.state.nextHref,
+                pageSize: this.state.pageSize,
+                blog_id: this.props.post.blog_id
+            };
+            getComments(params, callback);
+        } else {
+            const params = {
+                pageNum: this.state.nextHref,
+                pageSize: this.state.pageSize,
+                root_comment_id: 1
+                //this.props.comment.comment_id
+            };
+            getMultiLevelComments(params, callback);
+        }
 
     }
 
 
     render() {
         const {classes} = this.props;
-        if (this.state.comments.length === 0) return null;
         return (
             <div className={classes.commentContainer}>
                 <div style={{marginTop: '10px'}}>
@@ -130,12 +150,15 @@ class PostDetail extends Component {
                     loadMore={this.loadMore}
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
-                >
+                    key={this.state.key}>
                     <List>
                         {this.state.comments.map((item, index) => {
                             return (
                                 <ListItem key={index}>
-                                    <CommentItem comment={item} index={index} deleteComment={() => {
+                                    <CommentItem comment={item}
+                                                 type={this.props.type === CommentListType.PRIMARY ? CommentItemType.PRIMARY : CommentItemType.SECONDARY}
+                                                 submit={this.addComment}
+                                                 index={index} deleteComment={() => {
                                     }}/>
                                 </ListItem>
                             );
@@ -149,4 +172,4 @@ class PostDetail extends Component {
 
 export default connect(
     mapStateToProps, null
-)(PostDetail);
+)(CommentList);
