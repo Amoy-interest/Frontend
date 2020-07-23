@@ -1,7 +1,7 @@
 import React from 'react';
 import PostCard from "../components/post/PostCard";
 import IconButton from "@material-ui/core/IconButton";
-import CommentList from "../components/post/CommentList";
+import CommentList from "../components/post/FixedCommentList";
 import Menu from "@material-ui/core/Menu";
 import Enzyme, { mount } from 'enzyme';
 import ReactDOM from "react-dom";

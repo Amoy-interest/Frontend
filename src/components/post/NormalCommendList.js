@@ -13,15 +13,15 @@ const styles = ((theme) => ({
         width: '100%',
         marginTop: theme.spacing(2),
         overflow: 'auto',
-        display:'flex',
-        flexDirection:'column',
-        alignItems:'center'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     content: {
-        width:'100%'
+        width: '100%'
     },
     item: {
-        width:'100%'
+        width: '100%'
     },
     commentContainer: {
         width: '100%',
@@ -69,15 +69,15 @@ class PostDetail extends Component {
 
     componentDidMount() {
         console.log(this.props.id);
-        const callback=(data)=>{
+        const callback = (data) => {
             console.log("data", data);
             this.setState({post: data.data});
         };
-        getPost(this.props.id,callback);
+        getPost(this.props.id, callback);
     }
 
     componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
+        this.setState = (state, callback) => {
             return;
         };
     };
@@ -132,39 +132,30 @@ class PostDetail extends Component {
 
     render() {
         const {classes} = this.props;
-        const {post} = this.state;
-
-        if(this.state.post === null) return null;
-
+        if (this.state.comments.length === 0) return null;
         return (
-            <div className={classes.root}>
-                <div className={classes.content}>
-                    {(this.props.user.user === null || this.props.user.user.nickname !== post.nickname) ?
-                        <PostCard post={post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS}/> : <PostCard post={post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
+            <div className={classes.commentContainer}>
+                <div style={{marginTop: '10px'}}>
+                    <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
                 </div>
-                <div className={classes.commentContainer}>
-                    <div style={{marginTop: '10px'}}>
-                        <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
-                    </div>
-                    <Divider style={{marginTop: '20px'}}/>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.loadMore}
-                        hasMore={this.state.hasMoreItems}
-                        loader={<div className="loader" key={0}>Loading ...</div>}
-                    >
-                        <List>
+                <Divider style={{marginTop: '20px'}}/>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this.loadMore}
+                    hasMore={this.state.hasMoreItems}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                >
+                    <List>
                         {this.state.comments.map((item, index) => {
                             return (
                                 <ListItem key={index}>
-                                    <CommentItem comment={item} index={index} deleteComment={() =>{}}/>
+                                    <CommentItem comment={item} index={index} deleteComment={() => {
+                                    }}/>
                                 </ListItem>
                             );
                         })}
                     </List>
-                    </InfiniteScroll>
-                </div>
-
+                </InfiniteScroll>
             </div>
         );
     }

@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import HeaderBar from "../components/basic/HeaderPre";
 import PostCard from "../components/post/PostCard";
 import IconButton from "@material-ui/core/IconButton";
-import CommentList from "../components/post/CommentList";
+import CommentList from "../components/post/FixedCommentList";
 import Menu from "@material-ui/core/Menu";
 import ReactDOM from "react-dom";
 import Enzyme, { shallow, render, mount } from 'enzyme';

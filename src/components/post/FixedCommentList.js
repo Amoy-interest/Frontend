@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
 import CommentForm from "./CommentForm";
-import CommentItem from "./CommentItem";
+import CommentItem, {CommentItemType} from "./CommentItem";
 import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {getComments, postComment} from "../../service/PostService";
@@ -62,7 +62,7 @@ function mapStateToProps(state) {
     }
 }
 @withStyles(styles)
-class CommentList extends React.Component {
+class FixedCommentList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -82,27 +82,14 @@ class CommentList extends React.Component {
 
     submitComment = (text) => {
         let param = {
-            "blog_id": 0,
-            "nickname": "binnie",
-            "reply_comment_nickname": this.props.user.user.nickname,
-            "root_comment_id": -1,
-            "text": text.comment
+            blog_id: this.props.blog.blog_id,
+            reply_user_id: this.props.blog.user_id,
+            root_comment_id: 0,
+            text: text.comment
         };
-        let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
-        let comment = [{
-            "_deleted": false,
-            "blog_id": -1,
-            "comment_id": 1,
-            "comment_level": 0,
-            "comment_text": text.comment,
-            "comment_time": date,
-            "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": "",
-            "root_comment_id": -1,
-            "vote_count": 0
-        }];
-        const callback = () => {
-            const newComments = [...comment, ...this.state.comments];
+        const callback = (data) => {
+            let comment=data.data;
+            const newComments = [comment, ...this.state.comments];
             this.setState({comments: newComments});
             this.props.addComment();
         };
@@ -125,7 +112,7 @@ class CommentList extends React.Component {
             const {index, style} = itemProps;
             return (
                 <ListItem button style={style} key={index}>
-                    <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}/>
+                    <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem} type={CommentItemType.CARD}/>
                 </ListItem>
             );
         }
@@ -155,4 +142,4 @@ class CommentList extends React.Component {
 
 export default connect(
     mapStateToProps, null
-)(CommentList)
+)(FixedCommentList)
