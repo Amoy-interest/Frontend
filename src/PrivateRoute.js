@@ -15,7 +15,8 @@ class PrivateRoute extends React.Component{
         super(props);
         this.state = {
             isAuth: false,
-            hasAuth: false
+            hasAuth: false,
+            keyword: null
         }
     }
 
@@ -34,6 +35,11 @@ class PrivateRoute extends React.Component{
         })
     };
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword});
+    }
+
     render() {
         const {component: Component, path = "/", exact = false, strict = false} = this.props;
 
@@ -43,7 +49,7 @@ class PrivateRoute extends React.Component{
 
         return <Route path={path} exact={exact} strict={strict} render={props => (
             (this.state.isAuth && this.props.role >= this.props.authority ) ?
-                (<Component {...props}/>) : (
+                (<Component {...props} keyword={this.state.keyword}/>) : (
                     <Redirect to={{
                         pathname: '/',
                         state: {from: props.location}

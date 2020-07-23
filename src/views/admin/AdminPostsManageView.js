@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
 import AdminPostsList from "../../components/admin/AdminPostsList";
+import AdminTopicsList from "../../components/admin/AdminTopicsList";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     root: {
         flexGrow: 1,
         padding:theme.spacing(3),
@@ -17,32 +18,35 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-function PostsLayout() {
-    const classes = useStyles();
-
-    return (
-        <div >
-            <Paper elevation={1} className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={2}>
-                    <AdminSideBar index={1}/>
-                </Grid>
-                <Grid item xs>
-                    <AdminPostsList/>
-                </Grid>
-            </Grid>
-            </Paper>
-        </div>
-    );
-}
+@withStyles(styles)
 class AdminPostsManageView extends Component{
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            keyword: null
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword})
+    }
+
     render() {
-        console.log(this.props)
+        const {classes} = this.props;
         return (
             <div>
-                <PostsLayout/>
+                <Paper elevation={1} className={classes.root}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={2}>
+                            <AdminSideBar index={1}/>
+                        </Grid>
+                        <Grid item xs>
+                            <AdminPostsList keyword={this.state.keyword}/>
+                        </Grid>
+                    </Grid>
+                </Paper>
             </div>
         );
     }
