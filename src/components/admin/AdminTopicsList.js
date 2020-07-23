@@ -14,13 +14,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
-import {putRequest_json} from "../../utils/ajax";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
-import {deleteSensWord} from "../../service/KeyWordService";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableFooter from "@material-ui/core/TableFooter";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -57,28 +57,56 @@ export default class AdminTopicsList extends Component{
             checkAll: false,
             showPassDialog: false,
             showDeleteDialog: false,
-            topicName: null
+            topicName: null,
+            page: 0,
+            rowsPerPage: 10,
+            totalLength: 0
         };
     }
 
     componentDidMount() {
         const params = {
             pageNum: 0,
-            pageSize: 20
+            pageSize: 10
         };
         getReportedTopics(params, ((res) => {
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({topics: res.data.list});
+            this.setState({
+                topics: res.data.list,
+                totalLength: res.data.total
+            });
         }));
     }
 
+    updateTopics(page, rowsPerPage) {
+        const params = {
+            pageNum: page,
+            pageSize: rowsPerPage
+        };
+        getReportedTopics(params, ((res) => {
+            console.log(res.data);
+            this.setState({
+                topics: res.data.list,
+                totalLength: res.data.total
+            });
+        }));
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage});
+        this.updateTopics(newPage, this.state.rowsPerPage);
+    };
+
+    handleChangeRowsPerPage = (e) => {
+        this.setState({
+            rowsPerPage: parseInt(e.target.value, 10),
+            page: 0
+        });
+        this.updateTopics(0, parseInt(e.target.value, 10));
+    };
+
     checkTopic(name, status) {
-        /*let data = {"topic_name": name, "check_status": status};
-        console.log(data);
-        checkReportedTopic(data, ((res) => {
-            console.log(res);
-        }))*/
         if (status === 1) {
             this.setState({showPassDialog: true});
         } else this.setState({showDeleteDialog: true});
@@ -198,6 +226,19 @@ export default class AdminTopicsList extends Component{
                                 })
                             }
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    colSpan={4}
+                                    count={this.state.totalLength}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">

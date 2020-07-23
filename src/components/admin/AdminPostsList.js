@@ -76,7 +76,7 @@ class AdminPostsList extends Component {
     componentDidMount() {
         const params = {
             pageNum: 0,
-            pageSize: 20
+            pageSize: 10
         };
         getReportedPosts(params, ((res) => {
             console.log(res.data);
@@ -90,6 +90,33 @@ class AdminPostsList extends Component {
             });
         }));
     }
+
+    updatePost(page, rowsPerPage) {
+        const params = {
+            pageNum: page,
+            pageSize: rowsPerPage
+        };
+        getReportedPosts(params, ((res) => {
+            console.log(res.data);
+            this.setState({
+                posts: res.data.list,
+                totalLength: res.data.total
+            });
+        }));
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage});
+        this.updatePost(newPage, this.state.rowsPerPage);
+    };
+
+    handleChangeRowsPerPage = (e) => {
+        this.setState({
+            rowsPerPage: parseInt(e.target.value, 10),
+            page: 0
+        });
+        this.updatePost(0, parseInt(e.target.value, 10));
+    };
 
     setOpen(index) {
         let tmp = this.state.open;
@@ -259,11 +286,12 @@ class AdminPostsList extends Component {
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25]}
-                                    colSpan={3}
+                                    colSpan={4}
                                     count={this.state.totalLength}
                                     rowsPerPage={this.state.rowsPerPage}
                                     page={this.state.page}
                                     onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                     />
                             </TableRow>
                         </TableFooter>

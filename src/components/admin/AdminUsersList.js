@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
-import {getReportedUsers, banReportedUser, forbidReportedUser} from "../../service/AdminService";
+import {getReportedUsers, banReportedUser, forbidReportedUser, getReportedPosts} from "../../service/AdminService";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Table from '@material-ui/core/Table';
@@ -23,6 +23,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import {InputAdornment} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableFooter from "@material-ui/core/TableFooter";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -61,22 +63,55 @@ export default class AdminUsersList extends Component {
             year: 0,
             day: 0,
             hour: 0,
-            userId: -1
+            userId: -1,
+            page: 0,
+            rowsPerPage: 10,
+            totalLength: 0
         };
     }
 
     componentDidMount() {
         const params = {
             pageNum: 0,
-            pageSize: 20
+            pageSize: 10
         };
         getReportedUsers(params, ((res) => {
             console.log(res.data);
             for (let i=0; i<res.data.list.length; i++)
                 this.state.checked.push(false);
-            this.setState({users: res.data.list});
+            this.setState({
+                users: res.data.list,
+                totalLength: res.data.total
+            });
         }));
     }
+
+    updateUsers(page, rowsPerPage) {
+        const params = {
+            pageNum: page,
+            pageSize: rowsPerPage
+        };
+        getReportedUsers(params, ((res) => {
+            console.log(res.data);
+            this.setState({
+                users: res.data.list,
+                totalLength: res.data.total
+            });
+        }));
+    };
+
+    handleChangePage = (e, newPage) => {
+        this.setState({page: newPage});
+        this.updateUsers(newPage, this.state.rowsPerPage);
+    };
+
+    handleChangeRowsPerPage = (e) => {
+        this.setState({
+            rowsPerPage: parseInt(e.target.value, 10),
+            page: 0
+        });
+        this.updateUsers(0, parseInt(e.target.value, 10));
+    };
 
     sortByCredits = () => {
         let tmp = this.state.users;
@@ -210,6 +245,19 @@ export default class AdminUsersList extends Component {
                                     );
                                 })}
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    colSpan={3}
+                                    count={this.state.totalLength}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
