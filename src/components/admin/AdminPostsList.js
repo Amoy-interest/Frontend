@@ -48,12 +48,6 @@ const StyledTableRow = withStyles((theme) => ({
     },*/
 }))(TableRow);
 
-const useStyles = makeStyles({
-    table: {
-        maxWidth: 1000
-    },
-});
-
 class AdminPostsList extends Component {
     constructor(props) {
         super(props);
@@ -89,6 +83,11 @@ class AdminPostsList extends Component {
                 totalLength: res.data.total
             });
         }));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("post page finally get keyword");
+        console.log(nextProps.keyword);
     }
 
     updatePost(page, rowsPerPage) {
@@ -190,7 +189,8 @@ class AdminPostsList extends Component {
         this.setState({showDeleteDialog: false});
         let data = {"blog_id": this.state.blogId, "check_status": 2};
         checkReportedBlog(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updatePost(0, 10);
         }))
     };
 
@@ -202,12 +202,12 @@ class AdminPostsList extends Component {
         this.setState({showPassDialog: false});
         let data = {"blog_id": this.state.blogId, "check_status": 1};
         checkReportedBlog(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updatePost(0, 10);
         }))
     };
 
     render() {
-        const { classes } = this.props;
         return (
             <div>
                 <div style={{marginTop: '30px', marginBottom: '30px'}}>
@@ -219,7 +219,7 @@ class AdminPostsList extends Component {
                     </Button>
                 </div>
                 <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                    <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell onClick={() => this.setCheckAll()}>
@@ -334,6 +334,6 @@ class AdminPostsList extends Component {
     }
 }
 
-export default withStyles(useStyles)(AdminPostsList);
+export default AdminPostsList;
 
 

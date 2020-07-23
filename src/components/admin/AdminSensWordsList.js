@@ -46,11 +46,6 @@ const StyledTableRow = withStyles((theme) => ({
     },*/
 }))(TableRow);
 
-const useStyles = makeStyles({
-    table: {
-        maxWidth: 1000
-    },
-});
 
 class AdminSensWordsList extends Component {
     constructor(props) {
@@ -85,6 +80,11 @@ class AdminSensWordsList extends Component {
                 totalLength: res.data.total
             });
         }));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("sensWord page finally get keyword");
+        console.log(nextProps.keyword);
     }
 
     updateSensWords(page, rowsPerPage) {
@@ -155,7 +155,8 @@ class AdminSensWordsList extends Component {
         this.setState({showDeleteDialog: false});
         let data = "?keyword=" + this.state.deleteWord.toString();
         deleteSensWord(data, (res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         })
     };
 
@@ -163,7 +164,8 @@ class AdminSensWordsList extends Component {
         this.setState({showAddDialog: false});
         let data = "?keyword=" + this.state.newWord.toString();
         postSensWord(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         }));
     };
 
@@ -172,7 +174,8 @@ class AdminSensWordsList extends Component {
         let data = "?oldWord=" + this.state.oldWord.toString() + "&newWord=" + this.state.newWord.toString();
         console.log(data);
         putSensWord(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateSensWords(0, 20);
         }));
     };
 
@@ -207,7 +210,7 @@ class AdminSensWordsList extends Component {
                     </Button>
                 </div>
                 <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                    <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell onClick={() => this.setCheckAll()}>
@@ -363,6 +366,6 @@ class AdminSensWordsList extends Component {
     }
 }
 
-export default withStyles(useStyles)(AdminSensWordsList);
+export default AdminSensWordsList;
 
 

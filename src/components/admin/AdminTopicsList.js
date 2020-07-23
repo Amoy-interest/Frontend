@@ -60,7 +60,8 @@ export default class AdminTopicsList extends Component{
             topicName: null,
             page: 0,
             rowsPerPage: 10,
-            totalLength: 0
+            totalLength: 0,
+            keyword: null
         };
     }
 
@@ -77,6 +78,11 @@ export default class AdminTopicsList extends Component{
                 totalLength: res.data.total
             });
         }));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("topic page finally get keyword");
+        console.log(nextProps.keyword);
     }
 
     updateTopics(page, rowsPerPage) {
@@ -121,7 +127,8 @@ export default class AdminTopicsList extends Component{
         this.setState({showDeleteDialog: false});
         let data = {"topic_name": this.state.topicName, "check_status": 2};
         checkReportedTopic(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateTopics(0, 10);
         }))
     };
 
@@ -133,7 +140,8 @@ export default class AdminTopicsList extends Component{
         this.setState({showPassDialog: false});
         let data = {"topic_name": this.state.topicName, "check_status": 1};
         checkReportedTopic(data, ((res) => {
-            console.log(res.data);
+            console.log(res);
+            this.updateTopics(0, 10);
         }))
     };
 

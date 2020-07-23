@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {BrowserRouter as Router, Switch} from 'react-router-dom'
 import './App.css';
 import HomePreLoginView from "./views/public/HomePreLoginView";
@@ -69,11 +69,29 @@ const useStyles = makeStyles((theme) =>
 
 function App(props) {
     const classes = useStyles();
+    const [keyword, setKeyword] = useState(null);
+    const renderMergedProps = (component, ...rest) => {
+        const finalProps = Object.assign({}, ...rest);
+        return (
+            React.createElement(component, finalProps)
+        );
+    };
+    const PropsRoute = ({ component, ...rest }) => {
+        return (
+            <Route {...rest} render={routeProps => {
+                return renderMergedProps(component, routeProps, rest);
+            }}/>
+        );
+    };
+    const handleSearch = (keyword) => {
+        console.log(keyword);
+        setKeyword(keyword);
+    };
     return (
         <div className="App">
             <ThemeProvider theme={props.role === UserType.ADMIN ? theme_admin: theme_user}>
                 <Router>
-                    <Route
+                    <PropsRoute
                         path={[
                             '/',
                             '/home',
@@ -86,8 +104,9 @@ function App(props) {
                             '/sensWords-manage'
                         ]}
                         component={
-                            (props.role === UserType.VISITOR && HeaderPre) ||HeaderAfterLogIn
+                            (props.role === UserType.VISITOR && HeaderPre) || HeaderAfterLogIn
                         }
+                        handleSearch={handleSearch}
                     />
                     <Container className={classes.container} maxWidth="lg">
                         <main className={classes.content}>
@@ -100,10 +119,10 @@ function App(props) {
                                 <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/post-detail" component={PostDetailView} authority={AuthorityLevel.CUSTOMER}/>
-                                <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
-                                <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN}/>
-                                <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN}/>
-                                <PrivateRoute path='/sensWords-manage' component={AdminSensWordsManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
+                                <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
+                                <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
+                                <PrivateRoute path='/sensWords-manage' component={AdminSensWordsManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
                                 <Route path='*' component={NotFoundView}/>
                             </Switch>
                         </main>

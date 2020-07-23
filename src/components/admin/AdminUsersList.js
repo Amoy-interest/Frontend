@@ -66,7 +66,8 @@ export default class AdminUsersList extends Component {
             userId: -1,
             page: 0,
             rowsPerPage: 10,
-            totalLength: 0
+            totalLength: 0,
+            keyword: null
         };
     }
 
@@ -84,6 +85,11 @@ export default class AdminUsersList extends Component {
                 totalLength: res.data.total
             });
         }));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("user page finally get keyword");
+        console.log(nextProps.keyword);
     }
 
     updateUsers(page, rowsPerPage) {
@@ -154,6 +160,7 @@ export default class AdminUsersList extends Component {
         console.log(data);
         banReportedUser(data, ((res)=> {
             console.log(res.data);
+            this.updateUsers(0, 10);
         }))
     };
 
@@ -168,6 +175,7 @@ export default class AdminUsersList extends Component {
         console.log(data);
         forbidReportedUser(data, ((res)=> {
             console.log(res.data);
+            this.updateUsers(0, 10);
         }))
     };
 

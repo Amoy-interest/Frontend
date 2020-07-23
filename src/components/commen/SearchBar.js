@@ -1,6 +1,6 @@
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import React from "react";
+import React, {useState} from "react";
 import {fade, makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0, 2),
         height: '100%',
         position: 'absolute',
-        pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 4
     },
     inputRoot: {
         color: 'inherit',
@@ -43,11 +43,19 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SearchBar() {
+const SearchBar = (props) => {
     const classes = useStyles();
+    const [keyword, setKeyword] = useState(null);
+    const handleChange = (e) => {
+        console.log(e.target.value);
+        setKeyword(e.target.value);
+    };
+    const handleSearch = () => {
+        props.handleSearch(keyword);
+    };
     return (
         <div className={classes.search}>
-            <div className={classes.searchIcon}>
+            <div className={classes.searchIcon} onClick={handleSearch}>
                 <SearchIcon/>
             </div>
             <InputBase
@@ -58,7 +66,9 @@ export default function SearchBar() {
                 }}
                 fullWidth={true}
                 inputProps={{'aria-label': 'search'}}
+                onChange={handleChange}
             />
         </div>
     );
-}
+};
+export default SearchBar;
