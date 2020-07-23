@@ -7,9 +7,11 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
-// import Uploader from "./basic/Uploader";
+import Uploader from "../commen/Uploader";
+import {withStyles} from "@material-ui/styles";
+import {makePost} from "../../service/PostService";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
@@ -28,55 +30,89 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PostForm(props){
-    const classes = useStyles();
+@withStyles(styles)
+class PostForm extends React.Component{
 
-    const submit = () => {
-        console.log(props.props)
+    constructor(props) {
+        super(props);
+        this.state = {
+            fileList: []
+        }
+
+        this.uploadFiles = this.uploadFiles.bind(this);
     }
 
-    return (
-        <Container component="main" maxWidth="lg">
-            <CssBaseline />
-            <Paper elevation={3} className={classes.paper}>
-                <Formik
-                    initialValues={{
-                        content: ''
-                    }}
-                    onSubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            setSubmitting(false);
-                            alert(JSON.stringify(values, null, 2));
-                            submit();
-                        }, 500);
-                    }}
-                >
-                    {({ submitForm, isSubmitting }) => (
-                        <Form className={classes.form}>
-                            <Grid container spacing={2}>
-                                <AITextField sm={12} name="content" label="博文内容" multiline/>
-                                <Grid item xs={12} sm={8}/>
-                                <Grid item xs={12} sm={4}>
-                                    {/*<Uploader/>*/}
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={isSubmitting}
-                                        //fullWidth
-                                        onClick={submitForm}
-                                        className={classes.submit}
-                                    >
-                                        确定发布
-                                    </Button>
-                                </Grid>
-                            </Grid>
+    submit = (values) => {
+        let images = [];
+        let files = this.state.fileList;
+        for (let i = 0; i < files.length; ++i){
+            images.push(files[i].base64);
+        }
 
-                        </Form>
-                    )}
-                </Formik>
-            </Paper>
-        </Container>
-    );
+        const callback = (data) => {
+            console.log(data);
+
+            // data display....
+        }
+        makePost(values.content, images, callback);
+    };
+
+    uploadFiles = (files) => {
+        this.setState({fileList: files});
+    }
+
+    render() {
+        const classes = this.props.classes;
+
+        return (
+            <Container component="main" maxWidth="lg">
+                <CssBaseline />
+                <Paper elevation={3} className={classes.paper}>
+                    <Formik
+                        initialValues={{
+                            content: ''
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            setTimeout(() => {
+                                setSubmitting(false);
+                                alert(JSON.stringify(values, null, 2));
+                                this.submit(values);
+                            }, 500);
+                        }}
+                    >
+                        {({ submitForm, isSubmitting }) => (
+                            <Form className={classes.form}>
+                                <Grid container spacing={2}>
+                                    <AITextField sm={12} name="content" label="博文内容" multiline/>
+                                    <Grid item xs={12} sm={12}>
+                                        <Uploader uploadFiles={this.uploadFiles}/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}></Grid>
+                                    <Grid item xs={12} sm={4}></Grid>
+                                    <Grid item xs={12} sm={9}/>
+                                    <Grid item xs={12} sm={3}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={isSubmitting}
+                                            fullWidth
+                                            onClick={submitForm}
+                                            className={classes.submit}
+                                        >
+                                            确定发布
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                            </Form>
+                        )}
+                    </Formik>
+                </Paper>
+            </Container>
+        );
+    }
+
 }
 
 
+export default PostForm;
