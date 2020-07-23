@@ -13,6 +13,17 @@ export const makePost = (text, images, callback) => {
     postRequest_json(url, params, callback);
 };
 
+export const forwardPost = (reply_blog_id, text, topic_id, callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/forward`;
+    const json = {
+        reply_blog_id: reply_blog_id,
+        text: text,
+        topic_id: topic_id
+    };
+
+    postRequest_json(url, json, callback);
+};
+
 export const getPost = (id, callback) => {
     const params = {blog_id: id};
     const url = `${apiUrl}${APIModules.BLOG}`;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Upload, Dialog, Button} from 'element-react'
 import 'element-theme-default'
+import '../../assets/css/uploader.css'
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {

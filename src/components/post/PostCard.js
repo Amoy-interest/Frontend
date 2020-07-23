@@ -32,6 +32,7 @@ import Modal from "@material-ui/core/Modal";
 import PostForm from "./PostForm";
 import Paper from "@material-ui/core/Paper";
 import grey from "@material-ui/core/colors/grey";
+import {PostType} from "../../utils/constants";
 
 const styles = (theme => ({
     expand: {
@@ -125,38 +126,38 @@ class PostCard extends React.Component {
         }
     };
     submitForward = (values) => {
-        let blog_type = this.state.post.blog_type;
-        console.log(values);
-        let rootPost = blog_type === 0 ? this.state.post : this.state.post.blog_child;
-        let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
-        console.log(this.props.user.user);
-        let newPost = {
-            avatar_path: this.props.user.user.avatar,
-            blog_child: {
-                avatar_path: rootPost.avatar_path,
-                blog_content:rootPost.blog_content,
-                blog_id: rootPost.blog_id,
-                blog_time: rootPost.blog_time,
-                nickname: rootPost.nickname,
-                user_id: 0
-            },
-            blog_content: {
-                images: [],
-                text: values.content
-            },
-            blog_count: {
-                comment_count: 0,
-                forward_count: 0,
-                report_count: 0,
-                vote_count: 0
-            },
-            blog_id: 0,
-            blog_time:date,
-            blog_type: 1,
-            nickname: this.props.user.user.nickname
-        };
+        // let blog_type = this.state.post.blog_type;
+        // console.log(values);
+        // let rootPost = blog_type === 0 ? this.state.post : this.state.post.blog_child;
+        // let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+        // console.log(this.props.user.user);
+        // let newPost = {
+        //     avatar_path: this.props.user.user.avatar,
+        //     blog_child: {
+        //         avatar_path: rootPost.avatar_path,
+        //         blog_content:rootPost.blog_content,
+        //         blog_id: rootPost.blog_id,
+        //         blog_time: rootPost.blog_time,
+        //         nickname: rootPost.nickname,
+        //         user_id: 0
+        //     },
+        //     blog_content: {
+        //         images: [],
+        //         text: values.content
+        //     },
+        //     blog_count: {
+        //         comment_count: 0,
+        //         forward_count: 0,
+        //         report_count: 0,
+        //         vote_count: 0
+        //     },
+        //     blog_id: 0,
+        //     blog_time:date,
+        //     blog_type: 1,
+        //     nickname: this.props.user.user.nickname
+        // };
         this.handleModalClose();
-        this.props.addPost(newPost);
+        this.props.addPost(values);
     };
 
     handleModalOpen = () => {
@@ -315,8 +316,15 @@ class PostCard extends React.Component {
                     <Modal open={forwardModalOpen} onClose={this.handleModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.forwardModal}>
-                                <PostForm closeModal={this.handleModalClose} submit={this.submitForward}/>
-                                <ForwardCard post={post.blog_type === 0 ? post : post.blog_child} size={400}/>
+                                <PostForm type={PostType.FORWARD}
+                                          postId={post.blog_type === 0 ? post.blog_id : post.blog_child.blog_id}
+                                          closeModal={this.handleModalClose}
+                                          submit={this.submitForward}
+                                />
+                                <ForwardCard
+                                    post={post.blog_type === 0 ? post : post.blog_child}
+                                    size={500}
+                                />
                             </Paper>
                         </div>
                     </Modal>

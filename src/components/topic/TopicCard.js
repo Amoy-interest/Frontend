@@ -10,9 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {amber, red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import Background from '../../assets/topicbackground.jpeg'
+import Background from '../../assets/img/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
-import PostImage1 from "../../assets/post1.png";
+import PostImage1 from "../../assets/img/post1.png";
 import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
