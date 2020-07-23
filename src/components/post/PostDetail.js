@@ -60,7 +60,8 @@ class PostDetail extends Component {
             comments: [],
             hasMoreItems: true,
             nextHref: 0,
-            pageSize: 2
+            pageSize: 2,
+            key: 0
         };
 
         console.log("props", props);
@@ -89,7 +90,7 @@ class PostDetail extends Component {
             "root_comment_id": 0,
             "text": text.comment
         };
-        let comment = [{
+        let comment = {
             "avatar_path": "",
             "comment_id": 0,
             "comment_text": text.comment,
@@ -98,10 +99,13 @@ class PostDetail extends Component {
             "nickname": this.props.user.user.nickname,
             "user_id": 0,
             "vote_count": 0
-        }];
+        };
         const callback = () => {
-            const newComments = [...comment, ...this.state.comments];
-            this.setState({comments: newComments});
+            this.setState({
+                comments: [comment, ...this.state.comments],
+                key: this.state.key + 1
+                // key: Math.random().toString(36).substr(2)
+            });
             console.log(this.state.comments);
             //this.props.addComment();
         };
@@ -152,6 +156,7 @@ class PostDetail extends Component {
                         loadMore={this.loadMore}
                         hasMore={this.state.hasMoreItems}
                         loader={<div className="loader" key={0}>Loading ...</div>}
+                        key={this.state.key}
                     >
                         <List>
                             {this.state.comments.map((item, index) => {

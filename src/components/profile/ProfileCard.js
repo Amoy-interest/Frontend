@@ -1,13 +1,13 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import Avatar1 from "../../assets/avatar1.jpeg";
+import Avatar1 from "../../assets/img/avatar1.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {amber, red} from '@material-ui/core/colors';
-import Background from '../../assets/topicbackground.jpeg'
+import Background from '../../assets/img/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
 import CreateIcon from '@material-ui/icons/Create';
 import Button from '@material-ui/core/Button';

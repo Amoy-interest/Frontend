@@ -1,11 +1,11 @@
 import React from 'react';
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ReactSwiper from 'reactjs-swiper';
-import TravelImage from '../../assets/travel.png';
-import ChildrenImage from '../../assets/children.png';
-import AnimalImage from '../../assets/animal.png';
-import FunImage from '../../assets/fun.png';
-import YummyImage from '../../assets/yummy.png';
+import TravelImage from '../../assets/img/travel.png';
+import ChildrenImage from '../../assets/img/children.png';
+import AnimalImage from '../../assets/img/animal.png';
+import FunImage from '../../assets/img/fun.png';
+import YummyImage from '../../assets/img/yummy.png';
 
 // const useStyles = makeStyles((theme) => ({
 //     root: {

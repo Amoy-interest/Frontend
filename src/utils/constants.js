@@ -35,10 +35,11 @@ const AuthorityLevel = {
 };
 
 const PostType = {
-    RANDOM:0,
-    RECOMMEND:1,
-    FOLLOW:2,
-    OWN:3
+    RANDOM: 0,
+    RECOMMEND: 1,
+    FOLLOW: 2,
+    OWN: 3,
+    FORWARD: 4
 };
 
 export {apiUrl, mockUrl, devUrl,

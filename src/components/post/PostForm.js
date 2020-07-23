@@ -9,7 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
 import Uploader from "../commen/Uploader";
 import {withStyles} from "@material-ui/styles";
-import {makePost} from "../../service/PostService";
+import {forwardPost, makePost} from "../../service/PostService";
+import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     paper: {
@@ -30,6 +31,7 @@ const styles = ((theme) => ({
     }
 }));
 
+
 @withStyles(styles)
 class PostForm extends React.Component{
 
@@ -42,19 +44,30 @@ class PostForm extends React.Component{
         this.uploadFiles = this.uploadFiles.bind(this);
     }
 
-    submit = (values) => {
+    submitOwn = (values) => {
         let images = [];
         let files = this.state.fileList;
         for (let i = 0; i < files.length; ++i){
             images.push(files[i].base64);
         }
 
-        const callback = (data) => {
-            console.log(data);
+        const callbackOwn = (data) => {
+            console.log("callback_own", data);
             this.props.submit(data.data);
-            // data display....
         };
-        makePost(values.content, images, callback);
+        makePost(values.content, images, callbackOwn);
+    };
+
+
+    submitForward = (values) => {
+
+        const callbackForward = (data) => {
+            console.log("callback_forward", data);
+
+            // data display....
+            this.props.closeModal();
+        };
+        forwardPost(this.props.postId, values.content, 0, callbackForward);
     };
 
     uploadFiles = (files) => {
@@ -63,11 +76,12 @@ class PostForm extends React.Component{
 
     render() {
         const classes = this.props.classes;
+        const type = this.props.type ? this.props.type : PostType.OWN;
 
         return (
             <Container component="main" maxWidth="lg">
                 <CssBaseline />
-                <Paper elevation={3} className={classes.paper}>
+                <Paper elevation={type === PostType.OWN? 3: 0} className={classes.paper}>
                     <Formik
                         initialValues={{
                             content: ''
@@ -76,7 +90,9 @@ class PostForm extends React.Component{
                             setTimeout(() => {
                                 setSubmitting(false);
                                 alert(JSON.stringify(values, null, 2));
-                                this.submit(values);
+                                if(this.props.type === PostType.FORWARD)
+                                    this.submitForward(values);
+                                else this.submitOwn(values);
                             }, 500);
                         }}
                     >
@@ -84,9 +100,12 @@ class PostForm extends React.Component{
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
                                     <AITextField sm={12} name="content" label="博文内容" multiline/>
-                                    <Grid item xs={12} sm={12}>
-                                        <Uploader uploadFiles={this.uploadFiles}/>
-                                    </Grid>
+                                    {
+                                        type === PostType.OWN ?
+                                            <Grid item xs={12} sm={12}>
+                                                <Uploader uploadFiles={this.uploadFiles}/>
+                                            </Grid> : null
+                                    }
                                     <Grid item xs={12} sm={4}></Grid>
                                     <Grid item xs={12} sm={4}></Grid>
                                     <Grid item xs={12} sm={9}/>

@@ -1,0 +1,23 @@
+.el-upload--picture-card:hover{
+    border-color:#FFC107;
+    color:#FFC107
+}
+.el-upload--picture-card i{
+    font-size:28px;
+    color:#8c939d
+}
+.el-icon-upload-success{
+    color:#FFC107
+}
+.el-upload-list--picture .el-upload-list__item-status-label {
+    position:absolute;
+    right:-17px;
+    top:-7px;
+    width:46px;
+    height:26px;
+    background:#FFC107;
+    text-align:center;
+    -ms-transform:rotate(45deg);
+    transform:rotate(45deg);
+    box-shadow:0 1px 1px #ccc
+}
