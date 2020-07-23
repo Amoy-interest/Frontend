@@ -33,7 +33,8 @@ class PostCardList extends Component {
             posts: [],
             hasMoreItems: true,
             nextHref: 0,
-            pageSize: 2
+            pageSize: 2,
+            key: 0
         };
 
         this.loadMore = this.loadMore.bind(this);
@@ -78,11 +79,15 @@ class PostCardList extends Component {
             return;
         };
     };
+
     addPost = (newPost) => {
-        const newPosts=[newPost,...this.state.posts];
-        console.log(newPosts);
-        this.setState({posts:newPosts});
+        console.log(newPost);
+        this.setState({
+            posts: [newPost,...this.state.posts],
+            key: this.state.key + 1
+        });
     };
+
     render() {
 
         return (
@@ -92,6 +97,7 @@ class PostCardList extends Component {
                     loadMore={this.loadMore}
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
+                    key={this.state.key}
                 >
                     <List>
                         {this.state.posts.map((item, value) => {

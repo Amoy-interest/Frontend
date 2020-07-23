@@ -66,6 +66,7 @@ class PostForm extends React.Component{
 
             // data display....
             this.props.closeModal();
+            this.props.submit(data.data);
         };
         forwardPost(this.props.postId, values.content, 0, callbackForward);
     };
