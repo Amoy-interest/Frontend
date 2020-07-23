@@ -50,13 +50,17 @@ function mapStateToProps(state) {
     }
 }
 
+export const CommentListType = {
+    PRIMARY: 0,
+    SECONDARY: 1
+};
+
 @withStyles(styles)
 class PostDetail extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            post: null,
             comments: [],
             hasMoreItems: true,
             nextHref: 0,
@@ -68,12 +72,6 @@ class PostDetail extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.id);
-        const callback = (data) => {
-            console.log("data", data);
-            this.setState({post: data.data});
-        };
-        getPost(this.props.id, callback);
     }
 
     componentWillUnmount = () => {
@@ -84,26 +82,14 @@ class PostDetail extends Component {
 
     submitComment = (text) => {
         let param = {
-            "blog_id": this.state.post.blog_id,
-            "reply_user_id": 0,
-            "root_comment_id": 0,
-            "text": text.comment
+            blog_id: 0,
+            reply_user_id: this.state.comment.user_id,
+            root_comment_id: this.state.comment.comment_id,
+            text: text.comment
         };
-        let comment = [{
-            "avatar_path": "",
-            "comment_id": 0,
-            "comment_text": text.comment,
-            "comment_time": Date(),
-            "have_child": false,
-            "nickname": this.props.user.user.nickname,
-            "user_id": 0,
-            "vote_count": 0
-        }];
-        const callback = () => {
-            const newComments = [...comment, ...this.state.comments];
+        const callback = (data) => {
+            const newComments = [data.data, ...this.state.comments];
             this.setState({comments: newComments});
-            console.log(this.state.comments);
-            //this.props.addComment();
         };
         postComment(param, callback);
     };
