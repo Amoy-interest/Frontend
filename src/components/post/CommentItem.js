@@ -1,5 +1,5 @@
 import Avatar from "@material-ui/core/Avatar";
-import Avatar1 from "../../assets/avatar1.jpeg";
+import Avatar1 from "../../assets/img/avatar1.jpeg";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -43,8 +43,13 @@ function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
-}
+};
 
+export const CommentItemType={
+    CARD:0,
+    PRIMARY:1,
+    SECONDARY:2
+};
 @withStyles(styles)
 class CommentItem extends React.Component {
     constructor(props) {
@@ -157,10 +162,10 @@ class CommentItem extends React.Component {
         );
         return (
             <React.Fragment>
-                <Card className={classes.root} elevation={0} variant="">
+                <Card className={classes.root} elevation={0}>
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="comment" src={Avatar1}/>
+                            <Avatar aria-label="comment" src={comment.avatar_path}/>
                         }
                         action={
                             <React.Fragment>

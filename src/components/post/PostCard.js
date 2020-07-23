@@ -14,8 +14,6 @@ import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentList from "./CommentList";
-import Avatar1 from '../../assets/avatar1.jpeg';
-import Avatar2 from '../../assets/avatar2.jpeg';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -29,6 +27,12 @@ import {connect} from "react-redux";
 import Message from "../commen/Message";
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
+import ForwardCard from "./ForwardCard";
+import Modal from "@material-ui/core/Modal";
+import PostForm from "./PostForm";
+import Paper from "@material-ui/core/Paper";
+import grey from "@material-ui/core/colors/grey";
+import {PostType} from "../../utils/constants";
 
 const styles = (theme => ({
     expand: {
@@ -41,13 +45,38 @@ const styles = (theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
+    paper: {
+        position: 'absolute',
+    },
+    forwardModal: {
+        padding: theme.spacing(1)
+    }
 }));
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+};
 
 function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
-}
+};
+
+export const PostCardBelong={
+    OTHERS:0,
+    PERSONAL:1
+};
+export const PostCardType={
+    LIST:0,
+    DETAIL:1,
+};
 
 @withStyles(styles)
 class PostCard extends React.Component {
@@ -57,19 +86,22 @@ class PostCard extends React.Component {
         const {blog_count} = this.props.post;
         this.state = {
             voted: false,
+            forward: false,
             voteCount: blog_count.vote_count,
             commentCount: blog_count.comment_count,
+            forwardCount: blog_count.forward_count,
             post: this.props.post,
             anchorEl: null,
             expanded: false,
             messageOpen: false,
+            forwardModalOpen: false,
         };
     };
 
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {
-            let param = {blog_id: 0, comment_id: -1};
+            let param = {blog_id: post.blog_id, comment_id: -1};
             let count = this.state.voteCount;
             const callback1 = (data) => {
                 console.log(data);
@@ -84,6 +116,56 @@ class PostCard extends React.Component {
             };
             this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
         }
+    };
+
+    handleForward = (post) => {
+        if (this.props.user.user === null) this.setState({messageOpen: true});
+        else if (!this.state.forward) {
+            this.handleModalOpen();
+            this.setState({forward: true});
+        }
+    };
+    submitForward = (values) => {
+        // let blog_type = this.state.post.blog_type;
+        // console.log(values);
+        // let rootPost = blog_type === 0 ? this.state.post : this.state.post.blog_child;
+        // let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+        // console.log(this.props.user.user);
+        // let newPost = {
+        //     avatar_path: this.props.user.user.avatar,
+        //     blog_child: {
+        //         avatar_path: rootPost.avatar_path,
+        //         blog_content:rootPost.blog_content,
+        //         blog_id: rootPost.blog_id,
+        //         blog_time: rootPost.blog_time,
+        //         nickname: rootPost.nickname,
+        //         user_id: 0
+        //     },
+        //     blog_content: {
+        //         images: [],
+        //         text: values.content
+        //     },
+        //     blog_count: {
+        //         comment_count: 0,
+        //         forward_count: 0,
+        //         report_count: 0,
+        //         vote_count: 0
+        //     },
+        //     blog_id: 0,
+        //     blog_time:date,
+        //     blog_type: 1,
+        //     nickname: this.props.user.user.nickname
+        // };
+        this.handleModalClose();
+        this.props.addPost(values);
+    };
+
+    handleModalOpen = () => {
+        this.setState({forwardModalOpen: true});
+    };
+
+    handleModalClose = () => {
+        this.setState({forwardModalOpen: false, forward: false});
     };
 
     addComment = () => {
@@ -117,13 +199,13 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, voteCount, commentCount, anchorEl, expanded, messageOpen} = this.state;
+        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, forwardModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
         const renderMenu = (
-            this.props.type === "Others" ?
+            this.props.belong === PostCardBelong.OTHERS ?
                 <Menu
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -152,7 +234,8 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: '100%'}}>
+                    <Card style={{width: this.props.size === null ? '100%' : this.props.size}}
+                          elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
                                 <Avatar src={post.avatar_path}/>
@@ -165,12 +248,18 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={post.blog_time}
                         />
-                        <CardContent>
-                            <Typography variant="body1" color="textPrimary" component="p">
-                                {post.blog_content.text}
-                            </Typography>
-                        </CardContent>
-                        <PostImage image={post.blog_content.images}/>
+                        <Link style={{color: '#fff'}} to={{
+                            pathname: '/post-detail',
+                            search: '?id=' + post.blog_id
+                        }}>
+                            <CardContent>
+                                <Typography variant="body1" color="textPrimary" component="p">
+                                    {post.blog_content.text}
+                                </Typography>
+                            </CardContent>
+                        </Link>
+                        {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
+                            <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
                             <IconButton aria-label="vote" onClick={() => {
                                 this.handleVote(post)
@@ -180,11 +269,13 @@ class PostCard extends React.Component {
                             <Typography variant="body1" color="textSecondary" component="p">
                                 {voteCount}
                             </Typography>
-                            <IconButton aria-label="share">
-                                <ShareIcon/>
+                            <IconButton aria-label="share" onClick={() => {
+                                this.handleForward(post)
+                            }}>
+                                <ShareIcon style={{color: forward ? amber[200] : null}}/>
                             </IconButton>
                             <Typography variant="body1" color="textSecondary" component="p">
-                                {post.blog_count.forward_count}
+                                {forwardCount}
                             </Typography>
                             <IconButton
                                 className={clsx(classes.expand, {
@@ -200,26 +291,43 @@ class PostCard extends React.Component {
                                 {commentCount}
                             </Typography>
                         </CardActions>
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent>
-                                <CommentList blog_id={post.blog_id} addComment={this.addComment} deleteComment={this.deleteComment}/>
-                                <Grid container className={classes.link}>
-                                    <Grid item xs={5}/>
-                                    <Grid item xs>
-                                        <Link style={{color: amber[200], fontSize: '18px'}} to={{
-                                            pathname: '/post-detail',
-                                            search: '?id=' + post.blog_id
-                                        }}
-                                              target="_blank"
-                                        >Load More
-                                        </Link>
+                        {this.props.type === PostCardType.DETAIL ? null :
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <CommentList blog_id={post.blog_id} addComment={this.addComment}
+                                                 deleteComment={this.deleteComment}/>
+                                    <Grid container className={classes.link}>
+                                        <Grid item xs={5}/>
+                                        <Grid item xs>
+                                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                                pathname: '/post-detail',
+                                                search: '?id=' + post.blog_id,
+                                            }}
+                                            >Load More
+                                            </Link>
+                                        </Grid>
+                                        <Grid item xs/>
                                     </Grid>
-                                    <Grid item xs/>
-                                </Grid>
-                            </CardContent>
-                        </Collapse>
+                                </CardContent>
+                            </Collapse>
+                        }
                     </Card>
                     {renderMenu}
+                    <Modal open={forwardModalOpen} onClose={this.handleModalClose}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.forwardModal}>
+                                <PostForm type={PostType.FORWARD}
+                                          postId={post.blog_type === 0 ? post.blog_id : post.blog_child.blog_id}
+                                          closeModal={this.handleModalClose}
+                                          submit={this.submitForward}
+                                />
+                                <ForwardCard
+                                    post={post.blog_type === 0 ? post : post.blog_child}
+                                    size={500}
+                                />
+                            </Paper>
+                        </div>
+                    </Modal>
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                 </div>
             );

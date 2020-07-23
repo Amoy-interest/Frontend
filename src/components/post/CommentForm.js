@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
 export default function CommentForm(props){
     const classes = useStyles();
 
+    const submit = (values) => {
+        props.submit(values);
+    };
+
     return (
         <Container component="main" maxWidth="lg">
             <Formik
@@ -31,7 +35,7 @@ export default function CommentForm(props){
                         setSubmitting(false);
                         alert(JSON.stringify(values, null, 2));
                         console.log(values);
-                        props.submit(values);
+                        submit(values);
                     }, 500);
                 }}
             >

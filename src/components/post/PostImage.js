@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
     },
     image: {
         width: '100%',
@@ -20,7 +19,6 @@ export default function PostImage(props) {
     const classes = useStyles();
     if (props.image !== null) {
         const imageCount = props.image.length;
-        // console.log(props.image);
         return (
             <div className={classes.root}>
                 <Grid container spacing={1}>

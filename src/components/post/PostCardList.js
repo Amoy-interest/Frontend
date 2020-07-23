@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import PostCard from "./PostCard";
+import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
 import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
 import {List,ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
-import * as postService from "../../service/PostService";
 import InfiniteScroll from "react-infinite-scroller";
-import Typography from "@material-ui/core/Typography";
 import {PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
@@ -35,7 +33,8 @@ class PostCardList extends Component {
             posts: [],
             hasMoreItems: true,
             nextHref: 0,
-            pageSize: 2
+            pageSize: 2,
+            key: 0
         };
 
         this.loadMore = this.loadMore.bind(this);
@@ -56,8 +55,6 @@ class PostCardList extends Component {
             pageNum: this.state.nextHref,
             pageSize: this.state.pageSize
         };
-
-        // postService.getRandomPosts(params, callback);
 
         switch (this.props.index) {
             case PostType.RANDOM:
@@ -83,6 +80,14 @@ class PostCardList extends Component {
         };
     };
 
+    addPost = (newPost) => {
+        console.log(newPost);
+        this.setState({
+            posts: [newPost,...this.state.posts],
+            key: this.state.key + 1
+        });
+    };
+
     render() {
 
         return (
@@ -92,7 +97,7 @@ class PostCardList extends Component {
                     loadMore={this.loadMore}
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
-                    // useWindow={false}
+                    key={this.state.key}
                 >
                     <List>
                         {this.state.posts.map((item, value) => {
@@ -101,7 +106,7 @@ class PostCardList extends Component {
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                        <PostCard post={item} index={0}/> : <PostCard post={item} index={1}/>}
+                                        <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.OTHERS} addPost={this.addPost}/> : <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.PERSONAL} addPost={this.addPost}/>}
                                 </ListItem>
                             );
                         })}

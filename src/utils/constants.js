@@ -1,7 +1,7 @@
 const devUrl = 'http://52.90.204.208:8080';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
 const localUrl = 'http://localhost:8080';
-const apiUrl = localUrl;
+const apiUrl = mockUrl;
 
 const UserActionType = {
     SET_USER: 'set user',
@@ -35,11 +35,13 @@ const AuthorityLevel = {
 };
 
 const PostType = {
-    RANDOM:0,
-    RECOMMEND:1,
-    FOLLOW:2,
-    OWN:3
+    RANDOM: 0,
+    RECOMMEND: 1,
+    FOLLOW: 2,
+    OWN: 3,
+    FORWARD: 4
 };
+
 export {apiUrl, mockUrl, devUrl,
     UserActionType, TokenActionType, APIModules,
     UserType, AuthorityLevel,PostType};

@@ -7,6 +7,7 @@ import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
 import {getPost} from "../../service/PostService";
 import {PostType} from "../../utils/constants";
+import PostDetail from "../../components/post/PostDetail";
 
 const styles = ((theme) => ({
     root: {
@@ -17,22 +18,16 @@ const styles = ((theme) => ({
 @withStyles(styles)
 class PostDetailView extends Component {
 
-    componentDidMount() {
-        const query = this.props.location.search;
-        const arr = query.split('&');
-        const blogId = arr[0].substr(4);
-        const callback=(data)=>{
-            console.log(data);
-        };
-        getPost(blogId,callback);
-    };
     render() {
+        const arr = this.props.location.search.split('&');
+        const blogId = arr[0].substr(4);
+
         return (
             <div>
                 <Paper elevation={0} className={this.props.classes.root}>
-                    <Grid container >
+                    <Grid container spacing={2}>
                         <Grid item xs={12} sm={9}>
-                            <PostCardList index={PostType.OWN}/>
+                            <PostDetail id={blogId}/>
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <HotSearchList/>
