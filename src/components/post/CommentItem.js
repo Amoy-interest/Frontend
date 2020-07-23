@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Avatar1 from "../../assets/img/avatar1.jpeg";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -22,6 +21,9 @@ import {connect} from "react-redux";
 import {grey} from "@material-ui/core/colors";
 import CommentForm from "./CommentForm";
 import {Divider} from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import CommentList, {CommentListType} from "./CommentList";
 
 const styles = ((theme) => ({
     root: {
@@ -45,11 +47,12 @@ function mapStateToProps(state) {
     }
 };
 
-export const CommentItemType={
-    CARD:0,
-    PRIMARY:1,
-    SECONDARY:2
+export const CommentItemType = {
+    CARD: 0,
+    PRIMARY: 1,
+    SECONDARY: 2
 };
+
 @withStyles(styles)
 class CommentItem extends React.Component {
     constructor(props) {
@@ -58,7 +61,7 @@ class CommentItem extends React.Component {
             voted: false,
             voteCount: this.props.comment.vote_count,
             comment: this.props.comment,
-            secondaryComment: null,
+            secondaryComment: [],
             expanded: false,
             anchorEl: null
         };
@@ -84,28 +87,16 @@ class CommentItem extends React.Component {
 
     submitComment = (text) => {
         let param = {
-            "blog_id": -1,
-            "nickname": "binnie",
-            "reply_comment_nickname": this.props.user.user.nickname,
-            "root_comment_id": this.state.comment_id,
-            "text": text.comment
+            blog_id: 0,
+            reply_user_id: this.state.comment.user_id,
+            root_comment_id: this.state.comment.comment_id,
+            text: text.comment
         };
-        let comment = {
-            "_deleted": false,
-            "blog_id": -1,
-            "comment_id": this.state.comment_id,
-            "comment_level": 2,
-            "comment_text": text.comment,
-            "comment_time": Date(),
-            "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": this.state.comment.nickname,
-            "root_comment_id": -1,
-            "vote_count": 0
-        };
-        console.log(comment);
-        const callback = () => {
+        const callback = (data) => {
             this.setState({expanded: false});
-            this.setState({secondaryComment: comment});
+            let newSecondaryComment = [data.data, ...this.state.secondaryComment];
+            this.setState({secondaryComment: newSecondaryComment});
+            if(this.props.type===CommentItemType.SECONDARY) this.submit(data.data);
         };
         postComment(param, callback);
     };
@@ -131,7 +122,7 @@ class CommentItem extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, type} = this.props;
         const {expanded, voted, voteCount, comment, anchorEl, secondaryComment} = this.state;
         const menuId = 'report-menu';
         const isMenuOpen = Boolean(anchorEl);
@@ -198,16 +189,29 @@ class CommentItem extends React.Component {
                         <Typography variant="body1" color="textSecondary" component="p">
                             {comment.comment_text}
                         </Typography>
-                        {secondaryComment === null ? null :
-                            <Typography variant="body2" color="textSecondary" component="p"
-                                        style={{backgroundColor: grey[50], marginTop: '10px'}}>
-                                {secondaryComment.nickname} 回复 {comment.nickname}: {secondaryComment.comment_text}
-                            </Typography>
+                        {type === CommentItemType.CARD ?
+                            secondaryComment.length === 0 ? null :
+                                <List>
+                                    {secondaryComment.map((item, index) => {
+                                        return (
+                                            <ListItem key={index}>
+                                                <Typography variant="body2" color="textSecondary" component="p"
+                                                            style={{backgroundColor: grey[50], marginTop: '10px'}}>
+                                                    {item.nickname} 回复 {comment.nickname}: {item.comment_text}
+                                                </Typography>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List>
+                            : null
                         }
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent style={{backgroundColor: grey[50]}}>
-                                <CommentForm secondary commentId={comment} submit={this.submitComment}/>
-                            </CardContent>
+                                <CardContent style={{backgroundColor: grey[50]}}>
+                                    {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
+                                    <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} key="init"/>}
+                                </CardContent>
+
                         </Collapse>
                         <Divider style={{marginTop: '20px'}}/>
                     </CardContent>

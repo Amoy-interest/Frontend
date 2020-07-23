@@ -1,158 +1,175 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import {Link} from 'react-router-dom'
-import {FixedSizeList} from 'react-window';
-import PropTypes from "prop-types";
-import CommentForm from "./CommentForm";
-import CommentItem from "./CommentItem";
-import {withStyles} from "@material-ui/core/styles";
+import React, {Component} from 'react';
+import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
+import {getComments, getMultiLevelComments, getPost, postComment} from "../../service/PostService";
+import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
-import {getComments, postComment} from "../../service/PostService";
-import {Divider} from "@material-ui/core";
-import Message from "../commen/Message";
-import amber from "@material-ui/core/colors/amber";
-import Grid from "@material-ui/core/Grid";
+import {withStyles} from "@material-ui/core/styles";
+import InfiniteScroll from "react-infinite-scroller";
+import CommentForm from "./CommentForm";
+import CommentItem, {CommentItemType} from "./CommentItem";
 
 const styles = ((theme) => ({
-    root: {
+    item: {
+        width: '100%'
+    },
+    commentContainer: {
         width: '100%',
         display: 'flex',
         alignItem: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop: theme.spacing(2),
+        overflow: 'auto'
     },
     submit: {
         width: 90,
         height: 54,
     },
     comment: {
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1)
     },
     inline: {
         display: 'inline',
     },
-    link: {
-        marginTop: theme.spacing(2)
-    }
 }));
-
-Date.prototype.Format = function(fmt)
-{
-    var o = {
-        "M+" : this.getMonth()+1,                 //月份
-        "d+" : this.getDate(),                    //日
-        "h+" : this.getHours(),                   //小时
-        "m+" : this.getMinutes(),                 //分
-        "s+" : this.getSeconds(),                 //秒
-        "q+" : Math.floor((this.getMonth()+3)/3), //季度
-        "S"  : this.getMilliseconds()             //毫秒
-    };
-    if(/(y+)/.test(fmt))
-        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-    for(var k in o)
-        if(new RegExp("("+ k +")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ?
-                (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
-    return fmt;
-};
 
 function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
 }
+
+export const CommentListType = {
+    PRIMARY: 0,
+    SECONDARY: 1
+};
+
 @withStyles(styles)
-class CommentList extends React.Component {
+class CommentList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             comments: [],
+            hasMoreItems: true,
+            nextHref: 0,
+            pageSize: 2,
+            key:props.key?props.key:0
         };
-    };
+
+        console.log("props", props);
+        this.loadMore = this.loadMore.bind(this);
+    }
 
     componentDidMount() {
-        const callback = (data) => {
-            this.setState({comments: data.data.list});
-            console.log(this.state.comments);
+        console.log(this.props);
+    }
+
+    componentWillUnmount = () => {
+        this.setState = (state, callback) => {
+            return;
         };
-        let param = {blog_id: this.props.blog_id};
-        getComments(param, callback)
     };
 
     submitComment = (text) => {
-        let param = {
-            "blog_id": 0,
-            "nickname": "binnie",
-            "reply_comment_nickname": this.props.user.user.nickname,
-            "root_comment_id": -1,
-            "text": text.comment
+        const callback = (data) => {
+            this.setState({
+                comments: [data.data, ...this.state.comments],
+                key: this.state.key + 1
+                // key: Math.random().toString(36).substr(2)
+            });
+            console.log(this.state);
         };
-        let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
-        let comment = [{
-            "_deleted": false,
-            "blog_id": -1,
-            "comment_id": 1,
-            "comment_level": 0,
-            "comment_text": text.comment,
-            "comment_time": date,
-            "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": "",
-            "root_comment_id": -1,
-            "vote_count": 0
-        }];
-        const callback = () => {
-            const newComments = [...comment, ...this.state.comments];
-            this.setState({comments: newComments});
-            this.props.addComment();
-        };
-        postComment(param, callback);
+        if (this.props.type === CommentListType.PRIMARY) {
+            let param = {
+                blog_id: this.props.post.blog_id,
+                reply_user_id: this.props.post.user_id,
+                root_comment_id: 0,
+                text: text.comment
+            };
+            postComment(param, callback);
+        } else {
+            let param = {
+                blog_id: 0,
+                reply_user_id: this.props.comment.user_id,
+                root_comment_id: this.props.comment.comment_id,
+                text: text.comment
+            };
+            postComment(param, callback);
+        }
+        ;
     };
+
+    addComment = (comment) => {
+        this.setState({
+            comments: [comment, ...this.state.comments],
+            key: this.state.key + 1
+        });
+    };
+
+
+    loadMore() {
+        const callback = (data) => {
+            console.log("loadMore data", this.state);
+            this.setState({
+                comments: [...this.state.comments, ...data.data.list],
+                hasMoreItems: (data.data.totalPage > this.state.nextHref),
+                nextHref: this.state.nextHref + 1
+            })
+        };
+        if (this.props.type === CommentListType.PRIMARY) {
+            const params = {
+                pageNum: this.state.nextHref,
+                pageSize: this.state.pageSize,
+                blog_id: this.props.post.blog_id
+            };
+            getComments(params, callback);
+        } else {
+            const params = {
+                pageNum: this.state.nextHref,
+                pageSize: this.state.pageSize,
+                root_comment_id: 1
+                //this.props.comment.comment_id
+            };
+            getMultiLevelComments(params, callback);
+        }
+
+    }
 
 
     render() {
         const {classes} = this.props;
-        const {comments} = this.state;
-
-        const handleDeleteItem = (index) => {
-            let arr = this.state.comments;
-            arr.splice(index, 1);
-            this.setState({comments: arr});
-            this.props.deleteComment();
-        };
-
-        function renderRow(itemProps) {
-            const {index, style} = itemProps;
-            return (
-                <ListItem button style={style} key={index}>
-                    <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}/>
-                </ListItem>
-            );
-        }
-
-        renderRow.propTypes = {
-            index: PropTypes.number.isRequired,
-            style: PropTypes.object.isRequired,
-        };
-
-        if (comments.length === 0) return <div>Loading</div>
-        else {
-            return (
-                <div className={classes.root}>
-                    <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
-                    <Divider style={{marginTop: '20px'}}/>
-                    <FixedSizeList className={classes.comment} style={{marginTop: '20px'}} height={300} width={600}
-                                   itemSize={170}
-                                   itemCount={comments.length}>
-                        {renderRow}
-                    </FixedSizeList>
+        return (
+            <div className={classes.commentContainer}>
+                <div style={{marginTop: '10px'}}>
+                    <CommentForm commentId={9} style={classes} submit={this.submitComment}/>
                 </div>
-            );
-        }
-
+                <Divider style={{marginTop: '20px'}}/>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this.loadMore}
+                    hasMore={this.state.hasMoreItems}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                    key={this.state.key}>
+                    <List>
+                        {this.state.comments.map((item, index) => {
+                            return (
+                                <ListItem key={index}>
+                                    <CommentItem comment={item}
+                                                 type={this.props.type === CommentListType.PRIMARY ? CommentItemType.PRIMARY : CommentItemType.SECONDARY}
+                                                 submit={this.addComment}
+                                                 index={index} deleteComment={() => {
+                                    }}/>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+                </InfiniteScroll>
+            </div>
+        );
     }
 }
 
 export default connect(
     mapStateToProps, null
-)(CommentList)
+)(CommentList);
