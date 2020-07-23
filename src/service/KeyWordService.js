@@ -20,3 +20,8 @@ export const deleteSensWord = (data, callback) => {
     const url = `${apiUrl}${APIModules.SENSITIVEWORD}${data}`;
     deleteRequest_json(url, null, callback);
 };
+
+export const searchSensWords = (params, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}/search`;
+    getRequest(url, params, callback);
+};
