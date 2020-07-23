@@ -13,7 +13,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
-import CommentList from "./CommentList";
+import CommentList from "./CardCommentList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -294,7 +294,7 @@ class PostCard extends React.Component {
                         {this.props.type === PostCardType.DETAIL ? null :
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <CardContent>
-                                    <CommentList blog_id={post.blog_id} addComment={this.addComment}
+                                    <CommentList blog={post} addComment={this.addComment}
                                                  deleteComment={this.deleteComment}/>
                                     <Grid container className={classes.link}>
                                         <Grid item xs={5}/>

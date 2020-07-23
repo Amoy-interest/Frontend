@@ -65,6 +65,11 @@ export const getComments=(params,callback)=>{
     getRequest(url,params,callback);
 };
 
+export const getMultiLevelComments=(params,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}${APIModules.COMMENTS}/multilevel`;
+    getRequest(url,params,callback);
+};
+
 export const postComment=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/comments`;
     postRequest_json(url, data, callback);
