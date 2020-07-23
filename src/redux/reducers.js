@@ -1,82 +1,44 @@
 import { combineReducers } from 'redux'
-import {
-  SET_USER,
-  REMOVE_USER
-} from './actions'
+import {UserActionType, TokenActionType, UserType} from "../utils/constants";
 
 function userReducer(
     state = {
         loginState: false,
-        user: null
+        role: UserType.VISITOR,
+        user: null,
     }, action) {
   switch (action.type) {
-    case SET_USER:
-      return Object.assign({}, state, {
-        loginState: true,
-        user: action.user
-      })
-    case REMOVE_USER:
-      return Object.assign({}, state, {
-        loginState: false,
-        user: null
-      })
+    case UserActionType.SET_USER:
+        if (action.user === null) return state;
+        else return Object.assign({}, state, {
+          loginState: true,
+          role: action.user.user_type,
+          user: action.user
+        });
+    case UserActionType.REMOVE_USER:
+        return Object.assign({}, state, {
+          loginState: false,
+          role: UserType.VISITOR,
+          user: null,
+        });
     default:
       return state
   }
 }
 
-// function selectedSubreddit(state = 'reactjs', action) {
-//   switch (action.type) {
-//     case SELECT_SUBREDDIT:
-//       return action.subreddit
-//     default:
-//       return state
-//   }
-// }
-//
-// function posts(
-//   state = {
-//     isFetching: false,
-//     didInvalidate: false,
-//     items: []
-//   },
-//   action
-// ) {
-//   switch (action.type) {
-//     case INVALIDATE_SUBREDDIT:
-//       return Object.assign({}, state, {
-//         didInvalidate: true
-//       })
-//     case REQUEST_POSTS:
-//       return Object.assign({}, state, {
-//         isFetching: true,
-//         didInvalidate: false
-//       })
-//     case RECEIVE_POSTS:
-//       return Object.assign({}, state, {
-//         isFetching: false,
-//         didInvalidate: false,
-//         items: action.posts,
-//         lastUpdated: action.receivedAt
-//       })
-//     default:
-//       return state
-//   }
-// }
-//
-// function postsBySubreddit(state = {}, action) {
-//   switch (action.type) {
-//     case INVALIDATE_SUBREDDIT:
-//     case RECEIVE_POSTS:
-//     case REQUEST_POSTS:
-//       return Object.assign({}, state, {
-//         [action.subreddit]: posts(state[action.subreddit], action)
-//       })
-//     default:
-//       return state
-//   }
-// }
 
-const rootReducer = combineReducers({userReducer})
+function tokenReducer(
+    state = '', action) {
+    switch (action.type) {
+        case TokenActionType.SET_TOKEN:
+            return action.token;
+        case TokenActionType.REMOVE_TOKEN:
+            return '';
+        default:
+            return state
+    }
+}
 
-export default rootReducer
+const reducers = combineReducers({userReducer, tokenReducer});
+
+export default reducers;

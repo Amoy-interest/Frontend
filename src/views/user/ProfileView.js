@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBar from "../../components/basic/SideBar";
+import SideBarForProfile from "../../components/profile/PofileSideBar";
 import PostCardList from "../../components/post/PostCardList";
-import ProfileHeader from "../../components/profile/ProfileHeader";
+import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
+import HotSearchList from "../../components/hot/HotSearchList";
+import {PostType} from "../../utils/constants";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom:theme.spacing(1)
+        marginBottom: theme.spacing(1)
     },
     paper: {
         textAlign: 'center',
@@ -21,35 +24,30 @@ function ProfileLayout() {
 
     return (
         <div className={classes.root}>
-            <Paper elevation={1} className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={2}>
-                    <SideBar/>
-                </Grid>
-                <Grid item xs>
-                    <ProfileHeader/>
-                    <Grid container spacing={1}>
-                        <Grid item xs>
-                            <PostCardList/>
-                        </Grid>
-                        <Grid item xs>
-                            <PostCardList/>
-                        </Grid>
+            <Paper elevation={0}>
+                <Grid container spacing={1}>
+                    <Grid item xs={2}>
+                        <SideBarForProfile/>
+                    </Grid>
+                    <Grid item xs={7}>
+                        <ProfileCard/>
+                        <PostCardList index={PostType.OWN}/>
+                    </Grid>
+                    <Grid item xs>
+                        <HotSearchList/>
                     </Grid>
                 </Grid>
-            </Grid>
-                </Paper>
+            </Paper>
         </div>
     );
 }
-class ProfileView extends Component{
+
+class ProfileView extends Component {
 
     render() {
-        console.log(this.props)
         return (
             <div>
                 <ProfileLayout/>
-                {/*<Button variant="contained" color="primary">go to home</Button>*/}
             </div>
         );
     }

@@ -1,90 +1,158 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import { FixedSizeList } from 'react-window';
+import {Link} from 'react-router-dom'
+import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
-import Avatar1 from '../../assets/commentavatar.jpeg';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import CommentForm from "./CommentForm";
+import CommentItem from "./CommentItem";
+import {withStyles} from "@material-ui/core/styles";
+import {connect} from "react-redux";
+import {getComments, postComment} from "../../service/PostService";
+import {Divider} from "@material-ui/core";
+import Message from "../commen/Message";
+import amber from "@material-ui/core/colors/amber";
+import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     root: {
         width: '100%',
-        backgroundColor: theme.palette.background.paper,
-        marginLeft:theme.spacing(2)
+        display: 'flex',
+        alignItem: 'center',
+        flexDirection: 'column'
     },
-    text:{
-        minWidth:300,
-    },
-    submit:{
+    submit: {
         width: 90,
-        height:54,
-        marginLeft:theme.spacing(1)
+        height: 54,
     },
-    command:{
-        marginTop:theme.spacing(1)
+    comment: {
+        marginTop: theme.spacing(2),
+        marginLeft: theme.spacing(1)
     },
     inline: {
         display: 'inline',
     },
+    link: {
+        marginTop: theme.spacing(2)
+    }
 }));
 
-function renderRow(props) {
-    const { index, style } = props;
-
-    return (
-        <ListItem button style={style} key={index}>
-            <ListItemAvatar>
-                <Avatar alt="Binnie" src={Avatar1} />
-            </ListItemAvatar>
-            <ListItemText
-                primary="Binnie"
-                secondary={
-                    <React.Fragment>
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            display='inline'
-                            color="textPrimary"
-                        >
-                            羡慕！
-                        </Typography>
-                        {"我也想要说走就走的旅行"}
-                    </React.Fragment>
-                }
-            />
-        </ListItem>
-    );
-}
-
-renderRow.propTypes = {
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
+Date.prototype.Format = function(fmt)
+{
+    var o = {
+        "M+" : this.getMonth()+1,                 //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                   //小时
+        "m+" : this.getMinutes(),                 //分
+        "s+" : this.getSeconds(),                 //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt))
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)
+        if(new RegExp("("+ k +")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ?
+                (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    return fmt;
 };
 
-export default function CommentList() {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <TextField
-                id="outlined-textarea"
-                label="评论"
-                placeholder="请输入评论"
-                multiline
-                variant="outlined"
-                className={classes.text}
-            />
-            <Button className={classes.submit} variant="contained" color="primary">
-                提交评论
-            </Button>
-            <FixedSizeList className={classes.comment} height={300} width={405} itemSize={100} itemCount={10}>
-                {renderRow}
-            </FixedSizeList>
-        </div>
-    );
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
 }
+@withStyles(styles)
+class CommentList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            comments: [],
+        };
+    };
+
+    componentDidMount() {
+        const callback = (data) => {
+            this.setState({comments: data.data.list});
+            console.log(this.state.comments);
+        };
+        let param = {blog_id: this.props.blog_id};
+        getComments(param, callback)
+    };
+
+    submitComment = (text) => {
+        let param = {
+            "blog_id": 0,
+            "nickname": "binnie",
+            "reply_comment_nickname": this.props.user.user.nickname,
+            "root_comment_id": -1,
+            "text": text.comment
+        };
+        let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+        let comment = [{
+            "_deleted": false,
+            "blog_id": -1,
+            "comment_id": 1,
+            "comment_level": 0,
+            "comment_text": text.comment,
+            "comment_time": date,
+            "nickname": this.props.user.user.nickname,
+            "reply_comment_nickname": "",
+            "root_comment_id": -1,
+            "vote_count": 0
+        }];
+        const callback = () => {
+            const newComments = [...comment, ...this.state.comments];
+            this.setState({comments: newComments});
+            this.props.addComment();
+        };
+        postComment(param, callback);
+    };
+
+
+    render() {
+        const {classes} = this.props;
+        const {comments} = this.state;
+
+        const handleDeleteItem = (index) => {
+            let arr = this.state.comments;
+            arr.splice(index, 1);
+            this.setState({comments: arr});
+            this.props.deleteComment();
+        };
+
+        function renderRow(itemProps) {
+            const {index, style} = itemProps;
+            return (
+                <ListItem button style={style} key={index}>
+                    <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}/>
+                </ListItem>
+            );
+        }
+
+        renderRow.propTypes = {
+            index: PropTypes.number.isRequired,
+            style: PropTypes.object.isRequired,
+        };
+
+        if (comments.length === 0) return <div>Loading</div>
+        else {
+            return (
+                <div className={classes.root}>
+                    <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
+                    <Divider style={{marginTop: '20px'}}/>
+                    <FixedSizeList className={classes.comment} style={{marginTop: '20px'}} height={300} width={600}
+                                   itemSize={170}
+                                   itemCount={comments.length}>
+                        {renderRow}
+                    </FixedSizeList>
+                </div>
+            );
+        }
+
+    }
+}
+
+export default connect(
+    mapStateToProps, null
+)(CommentList)

@@ -1,56 +1,42 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBar from "../../components/basic/SideBar";
+import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
-import PostCardForm from "../../components/PostCardForm";
+import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
+import HotSearchList from "../../components/hot/HotSearchList";
+import {PostType} from "../../utils/constants";
+import {withStyles} from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom:theme.spacing(1)
-    },
-    paper: {
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        minHeight:700
     },
 }));
 
-
-function PostsLayout() {
-    const classes = useStyles();
-
-    return (
-        <div >
-            <Paper elevation={1} className={classes.root}>
-                <Grid container spacing={1}>
-                    <Grid item xs={2}>
-                        <SideBar/>
-                    </Grid>
-                    <Grid item xs>
-                        <PostCardForm/>
-                        <Grid container spacing={1}>
-                            <Grid item xs>
-                                <PostCardList/>
-                            </Grid>
-                            <Grid item xs>
-                                <PostCardList/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Paper>
-        </div>
-    );
-}
+@withStyles(styles)
 class PostsView extends Component{
 
     render() {
-        console.log(this.props)
+        const classes = this.props.classes;
+
         return (
-            <div>
-                <PostsLayout/>
+            <div >
+                <Paper elevation={0} className={classes.root}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={2}>
+                            <SideBar/>
+                        </Grid>
+                        <Grid item xs={7}>
+                            <PostForm/>
+                            <PostCardList index={PostType.FOLLOW}/>
+                        </Grid>
+                        <Grid item xs>
+                            <HotSearchList/>
+                        </Grid>
+                    </Grid>
+                </Paper>
             </div>
         );
     }

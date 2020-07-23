@@ -1,42 +1,116 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
-// import { FixedSizeList } from 'react-window';
-import PostCard from "./PostCard";
-import {Divider} from "@material-ui/core";
-import PostCardPersonal from "./PostCardPersonal";
+import React, {Component} from 'react';
+import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
+import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
+import {List,ListItem} from "@material-ui/core";
+import {connect} from "react-redux";
+import {withStyles} from "@material-ui/core/styles";
+import InfiniteScroll from "react-infinite-scroller";
+import {PostType} from "../../utils/constants";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     root: {
-        //marginTop:theme.spacing(1),
         width: '100%',
-        maxWidth: 460,
-        //backgroundColor: theme.palette.background.paper,
+        marginTop: theme.spacing(2),
+        overflow: 'auto'
     },
+    item: {
+        width:'100%'
+    }
 }));
 
-export default function PostCardList() {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <List>
-                <ListItem button>
-                    <PostCard/>
-                    <Divider/>
-                </ListItem>
-                <ListItem button>
-                    <PostCardPersonal/>
-                    <Divider/>
-                </ListItem>
-                <ListItem button>
-                    <PostCard/>
-                    <Divider/>
-                </ListItem>
-            </List>
-        </div>
-    );
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
 }
+
+@withStyles(styles)
+class PostCardList extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: [],
+            hasMoreItems: true,
+            nextHref: 0,
+            pageSize: 2
+        };
+
+        this.loadMore = this.loadMore.bind(this);
+    }
+
+    loadMore() {
+        const callback = (data) => {
+            console.log("loadMore data", data);
+            console.log("state", this.state);
+            this.setState({
+                posts: [...this.state.posts, ...data.data.list],
+                hasMoreItems: (data.data.totalPage > this.state.nextHref),
+                nextHref: this.state.nextHref + 1
+            })
+        };
+
+        const params = {
+            pageNum: this.state.nextHref,
+            pageSize: this.state.pageSize
+        };
+
+        switch (this.props.index) {
+            case PostType.RANDOM:
+            default:
+                getRandomPosts(params, callback);
+                break;
+            case PostType.RECOMMEND:
+                getRecommendPosts(params, callback);
+                break;
+            case PostType.FOLLOW:
+                getFollowPosts(params, callback);
+                break;
+            case PostType.OWN:
+                params.user_id = 0;
+                getOwnPosts(params, callback);
+                break;
+        }
+    }
+
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    };
+    addPost = (newPost) => {
+        const newPosts=[newPost,...this.state.posts];
+        console.log(newPosts);
+        this.setState({posts:newPosts});
+    };
+    render() {
+
+        return (
+            <div className={this.props.classes.root}>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this.loadMore}
+                    hasMore={this.state.hasMoreItems}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                >
+                    <List>
+                        {this.state.posts.map((item, value) => {
+                            const nickname = item.nickname;
+                            console.log(value, nickname);
+                            return (
+                                <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
+                                    {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
+                                        <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.OTHERS} addPost={this.addPost}/> : <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.PERSONAL} addPost={this.addPost}/>}
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+                </InfiniteScroll>
+            </div>
+        );
+    }
+}
+
+export default connect(
+    mapStateToProps, null
+)(PostCardList);
