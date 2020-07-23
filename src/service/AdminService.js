@@ -6,13 +6,28 @@ export const getReportedPosts = (params, callback) => {
     getRequest(url, params, callback);
 };
 
+export const searchReportedPosts = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.BLOG}/reported/search`;
+    getRequest(url, params, callback);
+};
+
 export const getReportedUsers = (params, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/`;
     getRequest(url, params, callback);
 };
 
+export const searchReportedUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/search`;
+    getRequest(url, params, callback);
+};
+
 export const getReportedTopics = (params, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported/`;
+    getRequest(url, params, callback);
+};
+
+export const searchReportedTopics = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported/search`;
     getRequest(url, params, callback);
 };
 

@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
-import {getReportedUsers, banReportedUser, forbidReportedUser, getReportedPosts} from "../../service/AdminService";
+import {getReportedUsers, banReportedUser, forbidReportedUser, searchReportedUsers} from "../../service/AdminService";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Table from '@material-ui/core/Table';
@@ -89,21 +89,38 @@ export default class AdminUsersList extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("user page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateUsers(0, 10);
+        });
     }
 
     updateUsers(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getReportedUsers(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                users: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getReportedUsers(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    users: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchReportedUsers(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    users: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {

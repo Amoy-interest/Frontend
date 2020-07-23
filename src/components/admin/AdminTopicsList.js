@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import {getReportedTopics, checkReportedTopic} from "../../service/AdminService";
+import {getReportedTopics, checkReportedTopic, searchReportedTopics} from "../../service/AdminService";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -82,21 +82,38 @@ export default class AdminTopicsList extends Component{
 
     componentWillReceiveProps(nextProps) {
         console.log("topic page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateTopics(0, 10);
+        });
     }
 
     updateTopics(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getReportedTopics(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                topics: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getReportedTopics(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    topics: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchReportedTopics(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    topics: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {getSensWords, postSensWord, putSensWord, deleteSensWord} from '../../service/KeyWordService';
+import {getSensWords, postSensWord, putSensWord, deleteSensWord,searchSensWords} from '../../service/KeyWordService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -62,7 +62,8 @@ class AdminSensWordsList extends Component {
             deleteWord: null,
             page: 0,
             rowsPerPage: 20,
-            totalLength: 0
+            totalLength: 0,
+            keyword: null
         };
     }
 
@@ -84,21 +85,38 @@ class AdminSensWordsList extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("sensWord page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateSensWords(0, 10);
+        });
     }
 
     updateSensWords(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getSensWords(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                sensWords: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getSensWords(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    sensWords: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchSensWords(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    sensWords: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {
