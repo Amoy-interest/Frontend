@@ -39,7 +39,8 @@ const PostType = {
     RECOMMEND: 1,
     FOLLOW: 2,
     OWN: 3,
-    FORWARD: 4
+    FORWARD: 4,
+    TOPIC:5
 };
 
 export {apiUrl, mockUrl, devUrl,
