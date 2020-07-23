@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {checkReportedBlog, getReportedPosts} from '../../service/AdminService';
+import {checkReportedBlog, getReportedPosts, searchReportedPosts} from '../../service/AdminService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -63,7 +63,8 @@ class AdminPostsList extends Component {
             blogId: null,
             page: 0,
             rowsPerPage: 10,
-            totalLength: 0
+            totalLength: 0,
+            keyword: null
         };
     }
 
@@ -87,21 +88,38 @@ class AdminPostsList extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("post page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updatePost(0, 10);
+        });
     }
 
     updatePost(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getReportedPosts(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                posts: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getReportedPosts(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    posts: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchReportedPosts(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    posts: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {
