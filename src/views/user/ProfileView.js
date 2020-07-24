@@ -25,8 +25,6 @@ class ProfileView extends Component {
 
     render() {
         const {classes}=this.props;
-        const arr = this.props.location.search.split('&');
-        const user_id= arr[0].substr(4);
 
         return (
             <div className={classes.root}>
@@ -36,8 +34,8 @@ class ProfileView extends Component {
                             <SideBarForProfile/>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProfileCard userId={user_id}/>
-                            <PostCardList index={PostType.OWN} userId={user_id}/>
+                            <ProfileCard {...this.props}/>
+                            <PostCardList index={PostType.OWN} {...this.props}/>
                         </Grid>
                         <Grid item xs>
                             <HotSearchList/>

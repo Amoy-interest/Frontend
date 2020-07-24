@@ -70,20 +70,65 @@ class PostCardList extends Component {
                 getFollowPosts(params, callback);
                 break;
             case PostType.OWN:
-                params.user_id = this.props.userId?this.props.userId:this.props.user.user.user_id;
+                const param = this.props.location.search.split('&');
+                if (param) {
+                    const user_id = param[0].substr(4);
+                    params.user_id=user_id;
+                }
+                else params.user_id=this.props.user.user.user_id;
                 console.log(params);
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:
-                params.topic_name=this.props.topic_name;
+                const arr = this.props.location.search.split('&');
+                const topic_name = arr[0].substr(12);
+                params.topic_name = topic_name;
                 console.log(params);
-                getTopicPosts(params,callback);
+                getTopicPosts(params, callback);
         }
     }
 
-    componentWillMount(){
-        PubSub.subscribe(MsgType.ADD_POST, (msg,data)=> {
-            console.log(msg,data);
+    componentWillReceiveProps(newProps) {
+        const callback = (data) => {
+            this.setState({posts: []});
+            this.setState({
+                posts: [...this.state.posts, ...data.data.list],
+                hasMoreItems: (data.data.totalPage > this.state.nextHref),
+                nextHref: this.state.nextHref + 1
+            })
+        };
+
+        const params = {
+            pageNum: this.state.nextHref,
+            pageSize: this.state.pageSize
+        };
+
+        switch (this.props.index) {
+            case PostType.RANDOM:
+            default:
+                getRandomPosts(params, callback);
+                break;
+            case PostType.OWN:
+                const param = this.props.location.search.split('&');
+                if (param) {
+                    const user_id = param[0].substr(4);
+                    params.user_id=user_id;
+                }
+                else params.user_id=this.props.user.user.user_id;
+                getOwnPosts(params, callback);
+                break;
+            case PostType.TOPIC:
+                const arr = newProps.location.search.split('&');
+                const topic_name = arr[0].substr(12);
+                params.topic_name = topic_name;
+                console.log(params);
+                getTopicPosts(params, callback);
+        }
+    }
+
+    componentWillMount() {
+        PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
+            console.log(msg, data);
             this.addPost(data);
         });
     };
@@ -93,6 +138,7 @@ class PostCardList extends Component {
             return;
         };
     };
+
 
     addPost = (newPost) => {
         console.log(newPost);
@@ -127,9 +173,11 @@ class PostCardList extends Component {
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
                                         <PostCard size={657} post={item} index={value} type={PostCardType.LIST}
-                                                  belong={PostCardBelong.OTHERS} addPost={this.addPost} delete={this.deletePost}/> :
+                                                  belong={PostCardBelong.OTHERS} addPost={this.addPost}
+                                                  delete={this.deletePost}/> :
                                         <PostCard post={item} size={657} index={value} type={PostCardType.LIST}
-                                                  belong={PostCardBelong.PERSONAL} addPost={this.addPost} delete={this.deletePost}/> }
+                                                  belong={PostCardBelong.PERSONAL} addPost={this.addPost}
+                                                  delete={this.deletePost}/>}
                                 </ListItem>
                             );
                         })}

@@ -17,12 +17,9 @@ const styles = (theme) => ({
 
 @withStyles(styles)
 class TopicDiscussionView extends Component{
-
     render() {
         const {classes}=this.props;
-        const arr = this.props.location.search.split('&');
-        const topic_name = arr[0].substr(12);
-        const heat=this.props.location.state.heat;
+
 
         return (
             <div className={classes.root}>
@@ -31,8 +28,8 @@ class TopicDiscussionView extends Component{
                         <SideBar/>
                     </Grid>
                     <Grid item xs={7}>
-                        <TopicCard topic_name={topic_name} heat={heat}/>
-                        <PostCardList topic_name={topic_name} index={PostType.TOPIC}/>
+                        <TopicCard {...this.props}/>
+                        <PostCardList {...this.props} index={PostType.TOPIC}/>
                     </Grid>
                     <Grid item>
                         <HotSearchList/>

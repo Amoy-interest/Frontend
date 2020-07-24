@@ -70,11 +70,23 @@ class ProfileCard extends React.Component {
     }
 
     componentDidMount() {
+        const arr = this.props.location.search.split('&');
+        const user_id= arr[0].substr(4);
         const callback=(data)=>{
             this.setState({userInfo:data.data,followed:data.data._follow});
         };
-        getUserInfo(this.props.userId,callback);
+        getUserInfo(user_id,callback);
     }
+
+    componentWillReceiveProps(newProps) {
+        const arr = newProps.location.search.split('&');
+        const user_id= arr[0].substr(4);
+        const callback=(data)=>{
+            this.setState({userInfo:data.data,followed:data.data._follow});
+        };
+        getUserInfo(user_id,callback);
+    }
+
     handleProfileMenuOpen = (event) => {
         this.setState({anchorEl:event.currentTarget});
     };

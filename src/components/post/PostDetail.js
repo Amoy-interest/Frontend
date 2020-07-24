@@ -4,6 +4,7 @@ import {getComments, getPost, postComment} from "../../service/PostService";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import CommentList, {CommentListType} from "./CommentList";
+import {getUserInfo} from "../../service/UserService";
 
 const styles = ((theme) => ({
     root: {
@@ -39,12 +40,12 @@ class PostDetail extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.id);
+        const arr = this.props.location.search.split('&');
+        const blogId = arr[0].substr(4);
         const callback=(data)=>{
-            console.log("data", data);
             this.setState({post: data.data});
         };
-        getPost(this.props.id,callback);
+        getPost(blogId,callback);
     }
 
     componentWillUnmount = () => {
