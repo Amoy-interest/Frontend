@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import PubSub from "pubsub-js";
 import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
@@ -10,7 +10,7 @@ import {AITextField} from "../commen/AIField";
 import Uploader from "../commen/Uploader";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
-import {PostType} from "../../utils/constants";
+import {MsgType, PostType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     paper: {
@@ -53,7 +53,7 @@ class PostForm extends React.Component{
 
         const callbackOwn = (data) => {
             console.log("callback_own", data);
-            this.props.submit(data.data);
+            PubSub.publish(MsgType.ADD_POST, data.data);
         };
         makePost(values.content, images, callbackOwn);
     };

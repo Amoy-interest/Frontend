@@ -5,8 +5,9 @@ import {List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import {PostType} from "../../utils/constants";
 import {getTopicPosts} from "../../service/TopicService";
+import {PostType, MsgType} from "../../utils/constants";
+import PubSub from "pubsub-js";
 
 const styles = ((theme) => ({
     root: {
@@ -79,6 +80,13 @@ class PostCardList extends Component {
                 getTopicPosts(params,callback);
         }
     }
+
+    componentWillMount(){
+        PubSub.subscribe(MsgType.ADD_POST, (msg,data)=> {
+            console.log(msg,data);
+            this.addPost(data);
+        });
+    };
 
     componentWillUnmount = () => {
         this.setState = (state, callback) => {
