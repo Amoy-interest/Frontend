@@ -55,8 +55,10 @@ const UserSearchBar = (props) => {
     };
 
     const goto=()=>{
-        if(keyword)
+        if(keyword) {
             history.push('/search',{keyword:keyword});
+            setKeyword(null);
+        }
     };
     return (
         <div className={classes.search}>

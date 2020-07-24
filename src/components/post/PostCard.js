@@ -117,7 +117,7 @@ class PostCard extends React.Component {
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {
-            let param = {blog_id: post.blog_id, comment_id: -1};
+            let param = {blog_id: post.blog_id, comment_id: 0};
             let count = this.state.voteCount;
             const callback1 = (data) => {
                 console.log(data);
