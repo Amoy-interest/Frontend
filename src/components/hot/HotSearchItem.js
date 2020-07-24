@@ -46,9 +46,10 @@ export default function HotSearchItem(props) {
                 <Link style={{color: '#000', fontSize: '18px'}} to={{
                     pathname: '/topic-discussion',
                     search: '?topic_name=' + props.item.topic_name,
+                    state:{heat:props.item.heat}
                 }}>
                     <Typography className={classes.text} noWrap={true} variant={'subtitle1'}>
-                        #{props.item.topic_name}#
+                        {props.item.topic_name}
                     </Typography>
                 </Link>
                 <Typography className={classes.secondaryText} noWrap={true} variant={'body2'}>

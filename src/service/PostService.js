@@ -1,5 +1,5 @@
 import {apiUrl, APIModules} from "../utils/constants";
-import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
+import {deleteRequest_json, getRequest, postRequest_json, putRequest_json} from "../utils/ajax";
 
 export const makePost = (text, images, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}`;
@@ -34,6 +34,11 @@ export const deletePost=(id, callback) => {
     const params = {blog_id: id};
     const url = `${apiUrl}${APIModules.BLOG}`;
     deleteRequest_json(url, params, callback);
+};
+
+export const editPost=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    putRequest_json(url,data,callback);
 };
 
 export const reportPost=(id,callback)=>{
