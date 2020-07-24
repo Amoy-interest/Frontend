@@ -31,21 +31,27 @@ export const getPost = (id, callback) => {
 };
 
 export const getRecommendPosts = (params,callback) => {
+    console.log("executing getRecommendPosts");
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;
     getRequest(url,params,callback);
 };
 
 export const getRandomPosts = (params,callback) => {
+    console.log("executing getRandomPosts");
     const url = `${apiUrl}${APIModules.BLOG}/beforeLogin`;
     getRequest(url,params,callback);
 };
 
 export const getOwnPosts = (params,callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/users`;
+    console.log("executing getOwnPosts");
+    console.log(params);
+    console.log(url);
     getRequest(url,params,callback);
 };
 
 export const getFollowPosts = (params,callback) => {
+    console.log("executing getFollowPosts");
     const url = `${apiUrl}${APIModules.BLOG}/follow`;
     getRequest(url, params,callback);
 };
@@ -62,6 +68,7 @@ export const cancelVote=(data,callback)=>{
 
 export const getComments=(params,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}${APIModules.COMMENTS}/level1`;
+    console.log(params);
     getRequest(url,params,callback);
 };
 

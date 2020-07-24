@@ -76,7 +76,7 @@ class CardCommentList extends React.Component {
             this.setState({comments: data.data.list});
             console.log(this.state.comments);
         };
-        let param = {blog_id: this.props.blog_id};
+        let param = {blog_id: this.props.blog.blog_id};
         getComments(param, callback)
     };
 
