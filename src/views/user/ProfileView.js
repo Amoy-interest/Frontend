@@ -7,8 +7,9 @@ import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
 import {PostType} from "../../utils/constants";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-const useStyles = makeStyles((theme) => ({
+const styles =((theme) => ({
     root: {
         flexGrow: 1,
         marginBottom: theme.spacing(1)
@@ -19,35 +20,30 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProfileLayout() {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <Paper elevation={0}>
-                <Grid container spacing={1}>
-                    <Grid item xs={2}>
-                        <SideBarForProfile/>
-                    </Grid>
-                    <Grid item xs={7}>
-                        <ProfileCard/>
-                        <PostCardList index={PostType.OWN}/>
-                    </Grid>
-                    <Grid item xs>
-                        <HotSearchList/>
-                    </Grid>
-                </Grid>
-            </Paper>
-        </div>
-    );
-}
-
+@withStyles(styles)
 class ProfileView extends Component {
 
     render() {
+        const {classes}=this.props;
+        const arr = this.props.location.search.split('&');
+        const user_id= arr[0].substr(4);
+
         return (
-            <div>
-                <ProfileLayout/>
+            <div className={classes.root}>
+                <Paper elevation={0}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={2}>
+                            <SideBarForProfile/>
+                        </Grid>
+                        <Grid item xs={7}>
+                            <ProfileCard userId={user_id}/>
+                            <PostCardList index={PostType.OWN} userId={user_id}/>
+                        </Grid>
+                        <Grid item xs>
+                            <HotSearchList/>
+                        </Grid>
+                    </Grid>
+                </Paper>
             </div>
         );
     }

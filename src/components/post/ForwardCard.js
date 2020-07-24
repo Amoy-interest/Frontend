@@ -49,7 +49,12 @@ class ForwardCard extends React.Component {
                         <Card className={classes.root} style={{width: this.props.size}} elevation={0}>
                             <CardHeader
                                 avatar={
-                                    <Avatar src={post.avatar_path}/>
+                                    <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                        pathname: '/personal-info',
+                                        search: '?id=' + post.user_id,
+                                    }}>
+                                        <Avatar src={post.avatar_path}/>
+                                    </Link>
                                 }
                                 title={post.nickname}
                                 subheader={post.blog_time}

@@ -33,7 +33,20 @@ export const loadMore = (pageSize, pageIndex, callback) => {
     const json = {
         pageSize: pageSize,
         pageIndex: pageIndex
-    }
+    };
 
     postRequest_json(url, json, callback);
-}
+};
+
+export const follow = (id, callback) => {
+    const data = {follow_id:id};
+    const url = `${apiUrl}${APIModules.USER}/follow`;
+    postRequest_json(url, data, callback);
+};
+
+export const unfollow = (id, callback) => {
+    const data = {follow_id:id};
+    const url = `${apiUrl}${APIModules.USER}/unfollow`;
+    postRequest_json(url, data, callback);
+};
+

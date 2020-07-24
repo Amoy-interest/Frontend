@@ -15,15 +15,17 @@ import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {follow, unfollow} from "../../service/UserService";
 
-
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     background: {
         backgroundImage: `url(${Background})`,
         backgroundColor: amber[100]
     },
     root: {
-        width: '100%',
+        width: 660,
+        marginLeft:theme.spacing(2)
     },
     content: {
         paddingTop: 20
@@ -47,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: red[500],
         width: 100,
         height: 100,
-        marginLeft: 20
+        marginBottom:10,
+        marginLeft:45
     },
     chip: {
         marginLeft: theme.spacing(2),
@@ -55,113 +58,117 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ProfileCard() {
-    const classes = useStyles();
-    // const [expanded, setExpanded] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    // const history = useHistory();
-    const isMenuOpen = Boolean(anchorEl);
+@withStyles(styles)
+class ProfileCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: null,
+            anchorEl:null,
+            followed:false
+        };
+    }
 
-    // const handleExpandClick = () => {
-    //     setExpanded(!expanded);
-    // };
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+    componentDidMount() {
+        const callback=(data)=>{
+            this.setState({userInfo:data.data});
+        }
+    }
+    handleProfileMenuOpen = (event) => {
+        this.setState({anchorEl:event.currentTarget});
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
+    handleMenuClose = () => {
+        this.setState({anchorEl:null});
     };
 
-    const handleEdit = () => {
-        handleMenuClose();
-        //handleExpandClick();
+    handleEdit = () => {
+        this.handleMenuClose();
+    };
+    handleFollow=()=>{
+        const callback=()=> {
+            this.setState({followed: true});
+        };
+        follow(1,callback);
     };
 
+    handleUnFollow=()=>{
+        const callback=()=> {
+            this.setState({followed: false});
+        };
+        unfollow(1,callback);
+    };
 
-    const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-            id={menuId}
-            keepMounted
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
-        </Menu>
-    );
-    return (
-
-        <Card className={classes.root}>
-            <div className={classes.background}>
-                <CardHeader
-                    action={
-                        <IconButton onClick={handleProfileMenuOpen} aria-label="settings">
-                            <MoreVertIcon/>
-                        </IconButton>
-                    }
-                />
-                <CardContent className={classes.content}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={5}>
+    render() {
+        const {classes}=this.props;
+        const {anchorEl,userInfo,followed}=this.state;
+        const isMenuOpen = Boolean(anchorEl);
+        const menuId = 'primary-search-account-menu';
+        const renderMenu = (
+            <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                id={menuId}
+                keepMounted
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                open={isMenuOpen}
+                onClose={this.handleMenuClose}
+            >
+                <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
+            </Menu>
+        );
+        return (
+            <Card className={classes.root}>
+                <div className={classes.background}>
+                    <CardHeader
+                        action={
+                            <IconButton onClick={this.handleProfileMenuOpen} aria-label="settings">
+                                <MoreVertIcon/>
+                            </IconButton>
+                        }
+                    />
+                    <CardContent className={classes.content}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={4}>
+                            </Grid>
+                            <Grid item xs>
+                                <Avatar aria-label="profile" className={classes.avatar} src={Avatar1}/>
+                            </Grid>
+                            <Grid item xs>
+                            </Grid>
                         </Grid>
-                        <Grid item xs>
-                            <Avatar aria-label="profile" className={classes.avatar} src={Avatar1}/>
-                        </Grid>
-                        <Grid item xs>
-                        </Grid>
-                    </Grid>
-                    <Typography variant="h5" color="textPrimary" align='center'>
-                        鲁迅
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" align='center'>
-                        粉丝：3000 | 关注：4000
-                    </Typography>
-                    <div style={{marginTop: '10px'}}>
-                        <Typography variant="body1" color="textPrimary" component="p" align='center'>
-                            简介: 中国近代文学家、思想家。
+                        <Typography variant="h5" color="textPrimary" align='center'>
+                            鲁迅
                         </Typography>
-                    </div>
-                    <div style={{marginTop: '20px'}}>
-                        <Grid container spacing={2}>
-                            <Grid item xs>
+                        <Typography variant="body2" color="textSecondary" component="p" align='center'>
+                            粉丝：3000 | 关注：4000
+                        </Typography>
+                        <div style={{marginTop: '10px'}}>
+                            <Typography variant="body1" color="textPrimary" component="p" align='center'>
+                                简介: 中国近代文学家、思想家。
+                            </Typography>
+                        </div>
+                        <div style={{marginTop: '20px'}}>
+                            <Grid container spacing={2}>
+                                <Grid item xs>
+                                </Grid>
+                                <Grid item xs>
+                                    <Button variant="contained" color="primary" onClick={followed?this.handleUnFollow:this.handleFollow}>
+                                        {followed?"取消关注":"关注"}
+                                    </Button>
+                                    <Button variant="contained" color="primary" style={{marginLeft: '8px'}}>
+                                        私信
+                                    </Button>
+                                </Grid>
+                                <Grid item xs>
+                                </Grid>
                             </Grid>
-                            <Grid item xs>
-                                <Button variant="contained" color="primary">
-                                    关注
-                                </Button>
-                                <Button variant="contained" color="primary" style={{marginLeft: '8px'}}>
-                                    私信
-                                </Button>
-                            </Grid>
-                            <Grid item xs>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </CardContent>
-                {/*<CardActions disableSpacing>*/}
-                {/*    <IconButton*/}
-                {/*        className={clsx(classes.expand, {*/}
-                {/*            [classes.expandOpen]: expanded,*/}
-                {/*        })}*/}
-                {/*        onClick={handleExpandClick}*/}
-                {/*        aria-expanded={expanded}*/}
-                {/*        aria-label="new post"*/}
-                {/*    >*/}
-                {/*        <CreateIcon/>*/}
-                {/*    </IconButton>*/}
-                {/*</CardActions>*/}
-                {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
-                {/*    <CardContent>*/}
-                {/*        <PostForm/>*/}
-                {/*    </CardContent>*/}
-                {/*</Collapse>*/}
-                {renderMenu}
-            </div>
-        </Card>
+                        </div>
+                    </CardContent>
+                    {renderMenu}
+                </div>
+            </Card>)
+    }
 
-    );
 }
+export default ProfileCard;
