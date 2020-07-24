@@ -30,10 +30,11 @@ import ForwardCard from "./ForwardCard";
 import Modal from "@material-ui/core/Modal";
 import PostForm from "./PostForm";
 import Paper from "@material-ui/core/Paper";
-import {PostType, UserType} from "../../utils/constants";
+import {MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
 import EditForm from "./EditForm";
+import PubSub from "pubsub-js";
 
 const styles = (theme => ({
     expand: {
@@ -107,7 +108,12 @@ class PostCard extends React.Component {
             reportMessageOpen: false
         };
     };
-
+    componentWillMount() {
+        PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
+            console.log(msg);
+            this.setState({commentCount:this.state.commentCount+1});
+        });
+    };
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {

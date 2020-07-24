@@ -98,7 +98,7 @@ class CardCommentList extends React.Component {
 
 
     render() {
-        const {classes} = this.props;
+        const {classes,post} = this.props;
         const {comments} = this.state;
 
         const handleDeleteItem = (index) => {
@@ -107,13 +107,16 @@ class CardCommentList extends React.Component {
             this.setState({comments: arr});
             this.props.deleteComment();
         };
-
+        const addComment=()=>{
+            console.log('add comment');
+            this.props.addComment();
+        };
         function renderRow(itemProps) {
             const {index, style} = itemProps;
             return (
                 <ListItem button style={style} key={index}>
                     <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}
-                                 type={CommentItemType.CARD}/>
+                                 type={CommentItemType.CARD} post={post} submit={addComment}/>
                 </ListItem>
             );
         }

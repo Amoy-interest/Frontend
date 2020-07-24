@@ -7,6 +7,8 @@ import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 import CommentForm from "./CommentForm";
 import CommentItem, {CommentItemType} from "./CommentItem";
+import PubSub from "pubsub-js";
+import {MsgType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     item: {
@@ -79,6 +81,7 @@ class CommentList extends Component {
                 key: this.state.key + 1
                 // key: Math.random().toString(36).substr(2)
             });
+            PubSub.publish(MsgType.ADD_COMMENT);
             console.log(this.state);
         };
         if (this.props.type === CommentListType.PRIMARY) {
@@ -91,7 +94,7 @@ class CommentList extends Component {
             postComment(param, callback);
         } else {
             let param = {
-                blog_id: 0,
+                blog_id: this.props.post.blog_id,
                 reply_user_id: this.props.comment.user_id,
                 root_comment_id: this.props.comment.comment_id,
                 text: text.comment
@@ -105,6 +108,7 @@ class CommentList extends Component {
             comments: [comment, ...this.state.comments],
             key: this.state.key + 1
         });
+        PubSub.publish(MsgType.ADD_COMMENT);
         console.log(this.state.comments);
     };
 
@@ -164,7 +168,9 @@ class CommentList extends Component {
                                     <CommentItem comment={item}
                                                  type={this.props.type === CommentListType.PRIMARY ? CommentItemType.PRIMARY : CommentItemType.SECONDARY}
                                                  submit={this.addComment}
-                                                 index={index} deleteComment={this.handleDeleteItem}/>
+                                                 index={index} deleteComment={this.handleDeleteItem}
+                                                 post={this.props.post}
+                                    />
                                 </ListItem>
                             );
                         })}

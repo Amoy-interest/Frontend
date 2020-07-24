@@ -48,6 +48,11 @@ export const reportPost=(id,callback)=>{
     postRequest_json(url, params, callback);
 };
 
+export const searchPosts=(params,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/search`;
+    getRequest(url,params,callback);
+};
+
 export const getRecommendPosts = (params,callback) => {
     console.log("executing getRecommendPosts");
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;
