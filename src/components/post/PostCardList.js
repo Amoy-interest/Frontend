@@ -71,11 +71,8 @@ class PostCardList extends Component {
                 break;
             case PostType.OWN:
                 const param = this.props.location.search.split('&');
-                if (param) {
-                    const user_id = param[0].substr(4);
-                    params.user_id=user_id;
-                }
-                else params.user_id=this.props.user.user.user_id;
+                const user_id = param[0].substr(4);
+                params.user_id=user_id;
                 console.log(params);
                 getOwnPosts(params, callback);
                 break;
@@ -110,11 +107,8 @@ class PostCardList extends Component {
                 break;
             case PostType.OWN:
                 const param = this.props.location.search.split('&');
-                if (param) {
-                    const user_id = param[0].substr(4);
-                    params.user_id=user_id;
-                }
-                else params.user_id=this.props.user.user.user_id;
+                const user_id = param[0].substr(4);
+                params.user_id=user_id;
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:
