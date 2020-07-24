@@ -14,6 +14,7 @@ import {AITextField, AICheckField, AIPickerField} from "../commen/AIField";
 import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
 import * as userService from "../../service/UserService";
+import Message from "../commen/Message";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -52,9 +53,28 @@ function mapDispatchToProps(dispatch) {
 function RegisterForm(props){
     const classes = useStyles();
     const history = useHistory();
+    const [message, setMessage] = React.useState({
+        open: false,
+        text: '',
+        type: 'warning'
+    });
 
     const callback = (data) => {
         console.log(data)
+        if (data.status !== 0){
+            setMessage({
+                text: data.msg,
+                type: 'error',
+                open: true
+            });
+            return;
+        }
+        console.log(data.data.user, data.data.token)
+        setMessage({
+            text: data.msg,
+            type: 'success',
+            open: true
+        })
         props.onLogin(data.data.user, data.data.token)
         history.push('/home');
     }
@@ -134,6 +154,12 @@ function RegisterForm(props){
                     )}
                 </Formik>
             </Paper>
+            <Message
+                messageOpen={message.open}
+                handleClose={() => setMessage({open:false})}
+                type={message.type}
+                text={message.text}
+            />
         </Container>
     );
 }

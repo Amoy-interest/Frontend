@@ -1,17 +1,17 @@
-import {apiUrl, APIModules} from "../utils/constants";
+import {localUrl, apiUrl, APIModules} from "../utils/constants";
 import {getRequest, postRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";
 
 export const login = (data, callback) => {
     console.log(data);
-    const url = `${apiUrl}${APIModules.USER}/login`;
+    const url = `${localUrl}${APIModules.USER}/login`;
     postRequest_json(url, data, callback);
 };
 
 export const logout = () => {
     console.log("logout");
-    const url = `${apiUrl}${APIModules.USER}/logout`;
+    const url = `${localUrl}${APIModules.USER}/logout`;
 
     const callback = () => {
         console.log("logout callback");
@@ -21,11 +21,11 @@ export const logout = () => {
     getRequest(url, null, callback);
 };
 
-export const register = (formData, callback) => {
-    console.log(formData);
+export const register = (data, callback) => {
+    console.log(data);
 
-    const url = `${apiUrl}${APIModules.USER}/register`;
-    postRequest_json(url, formData, callback);
+    const url = `${localUrl}${APIModules.USER}/register`;
+    postRequest_json(url, data, callback);
 };
 
 export const loadMore = (pageSize, pageIndex, callback) => {
@@ -40,8 +40,9 @@ export const loadMore = (pageSize, pageIndex, callback) => {
 
 export const follow = (id, callback) => {
     const data = {follow_id:id};
-    const url = `${apiUrl}${APIModules.USER}/follow`;
-    postRequest_json(url, data, callback);
+    console.log(data);
+    const url = `${apiUrl}${APIModules.USER}/follow?follow_id=${id}`;
+    postRequest_json(url, null, callback);
 };
 
 export const unfollow = (id, callback) => {
@@ -50,3 +51,8 @@ export const unfollow = (id, callback) => {
     postRequest_json(url, data, callback);
 };
 
+export const getUserInfo = (id, callback) => {
+    const data = {user_id:id};
+    const url = `${apiUrl}${APIModules.USER}`;
+    getRequest(url, data, callback);
+};

@@ -16,7 +16,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {follow, unfollow} from "../../service/UserService";
+import {follow, getUserInfo, unfollow} from "../../service/UserService";
 
 const styles = ((theme) => ({
     background: {
@@ -71,8 +71,9 @@ class ProfileCard extends React.Component {
 
     componentDidMount() {
         const callback=(data)=>{
-            this.setState({userInfo:data.data});
-        }
+            this.setState({userInfo:data.data,followed:data.data._follow});
+        };
+        getUserInfo(this.props.userId,callback);
     }
     handleProfileMenuOpen = (event) => {
         this.setState({anchorEl:event.currentTarget});
@@ -89,14 +90,14 @@ class ProfileCard extends React.Component {
         const callback=()=> {
             this.setState({followed: true});
         };
-        follow(1,callback);
+        follow(this.state.userInfo.user_id, callback);
     };
 
     handleUnFollow=()=>{
         const callback=()=> {
             this.setState({followed: false});
         };
-        unfollow(1,callback);
+        unfollow(this.state.userInfo.user_id,callback);
     };
 
     render() {
@@ -117,7 +118,9 @@ class ProfileCard extends React.Component {
                 <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
             </Menu>
         );
-        return (
+        if(this.state.userInfo===null) return <div>Loading</div>;
+        else
+        {return (
             <Card className={classes.root}>
                 <div className={classes.background}>
                     <CardHeader
@@ -132,20 +135,20 @@ class ProfileCard extends React.Component {
                             <Grid item xs={4}>
                             </Grid>
                             <Grid item xs>
-                                <Avatar aria-label="profile" className={classes.avatar} src={Avatar1}/>
+                                <Avatar aria-label="profile" className={classes.avatar} src={userInfo.avatar}/>
                             </Grid>
                             <Grid item xs>
                             </Grid>
                         </Grid>
                         <Typography variant="h5" color="textPrimary" align='center'>
-                            鲁迅
+                            {userInfo.nickname}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p" align='center'>
-                            粉丝：3000 | 关注：4000
+                            {userInfo.address}
                         </Typography>
                         <div style={{marginTop: '10px'}}>
                             <Typography variant="body1" color="textPrimary" component="p" align='center'>
-                                简介: 中国近代文学家、思想家。
+                                简介: {userInfo.introduction}
                             </Typography>
                         </div>
                         <div style={{marginTop: '20px'}}>
@@ -167,7 +170,7 @@ class ProfileCard extends React.Component {
                     </CardContent>
                     {renderMenu}
                 </div>
-            </Card>)
+            </Card>)}
     }
 
 }

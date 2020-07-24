@@ -21,10 +21,12 @@ import HeaderAfterLogIn from "./components/commen/Header";
 import Container from "@material-ui/core/Container";
 import FooterBar from "./components/commen/Footer";
 import {ThemeProvider} from "@material-ui/styles";
-import {AuthorityLevel, UserType} from "./utils/constants";
+import {AuthorityLevel, MsgType, UserType} from "./utils/constants";
 import {Route} from 'react-router-dom';
 import HeaderPre from "./components/commen/HeaderPre";
 import PostDetailView from "./views/user/PostDetailView";
+import Message from "./components/commen/Message";
+import PubSub from "pubsub-js";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -70,12 +72,23 @@ const useStyles = makeStyles((theme) =>
 function App(props) {
     const classes = useStyles();
     const [keyword, setKeyword] = useState(null);
+    const [message, setMessage] = React.useState({
+        open: false,
+        text: '',
+        type: 'warning'
+    });
+    PubSub.subscribe(MsgType.SET_MESSAGE, function (msg, data) {
+        console.log(data);
+        setMessage(data);
+    });
+
     const renderMergedProps = (component, ...rest) => {
         const finalProps = Object.assign({}, ...rest);
         return (
             React.createElement(component, finalProps)
         );
     };
+
     const PropsRoute = ({ component, ...rest }) => {
         return (
             <Route {...rest} render={routeProps => {
@@ -83,10 +96,12 @@ function App(props) {
             }}/>
         );
     };
+
     const handleSearch = (keyword) => {
         console.log(keyword);
         setKeyword(keyword);
     };
+
     return (
         <div className="App">
             <ThemeProvider theme={props.role === UserType.ADMIN ? theme_admin: theme_user}>
@@ -129,6 +144,12 @@ function App(props) {
                     </Container>
                     <FooterBar/>
                 </Router>
+                <Message
+                    messageOpen={message.open}
+                    handleClose={() => setMessage({open:false})}
+                    type={message.type}
+                    text={message.text}
+                />
             </ThemeProvider>
         </div>
     );
