@@ -20,8 +20,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostImage from "./PostImage";
-import {cancelVote, vote} from "../../service/PostService";
-import PropTypes from 'prop-types';
+import {cancelVote, reportPost, vote, deletePost} from "../../service/PostService";
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import Message from "../commen/Message";
@@ -31,8 +30,9 @@ import ForwardCard from "./ForwardCard";
 import Modal from "@material-ui/core/Modal";
 import PostForm from "./PostForm";
 import Paper from "@material-ui/core/Paper";
-import grey from "@material-ui/core/colors/grey";
-import {PostType} from "../../utils/constants";
+import {PostType, UserType} from "../../utils/constants";
+import MicOffIcon from '@material-ui/icons/MicOff';
+import BlockIcon from "@material-ui/icons/Block";
 
 const styles = (theme => ({
     expand: {
@@ -65,7 +65,8 @@ function getModalStyle() {
 
 function mapStateToProps(state) {
     return {
-        user: state.userReducer
+        user: state.userReducer,
+        role: state.userReducer.role
     }
 };
 
@@ -95,6 +96,7 @@ class PostCard extends React.Component {
             expanded: false,
             messageOpen: false,
             forwardModalOpen: false,
+            reportMessageOpen:false
         };
     };
 
@@ -126,36 +128,6 @@ class PostCard extends React.Component {
         }
     };
     submitForward = (values) => {
-        // let blog_type = this.state.post.blog_type;
-        // console.log(values);
-        // let rootPost = blog_type === 0 ? this.state.post : this.state.post.blog_child;
-        // let date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
-        // console.log(this.props.user.user);
-        // let newPost = {
-        //     avatar_path: this.props.user.user.avatar,
-        //     blog_child: {
-        //         avatar_path: rootPost.avatar_path,
-        //         blog_content:rootPost.blog_content,
-        //         blog_id: rootPost.blog_id,
-        //         blog_time: rootPost.blog_time,
-        //         nickname: rootPost.nickname,
-        //         user_id: 0
-        //     },
-        //     blog_content: {
-        //         images: [],
-        //         text: values.content
-        //     },
-        //     blog_count: {
-        //         comment_count: 0,
-        //         forward_count: 0,
-        //         report_count: 0,
-        //         vote_count: 0
-        //     },
-        //     blog_id: 0,
-        //     blog_time:date,
-        //     blog_type: 1,
-        //     nickname: this.props.user.user.nickname
-        // };
         this.handleModalClose();
         this.props.addPost(values);
     };
@@ -198,13 +170,39 @@ class PostCard extends React.Component {
         this.setState({messageOpen: false});
     };
 
+    handleReportMessageClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({reportMessageOpen: false});
+    };
+
+    handleReportPost=()=>{
+        const callback=()=>{
+            console.log('report success');
+            this.handleMenuClose();
+            this.setState({reportMessageOpen: true})
+        };
+        reportPost(this.state.post.blog_id,callback);
+    };
+
+    handleDeletePost=()=>{
+        const callback=()=>{
+            console.log('delete success');
+            this.handleMenuClose();
+            this.props.delete(this.props.index);
+        };
+        deletePost(this.state.post.blog_id,callback);
+    };
+
     render() {
-        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, forwardModalOpen} = this.state;
+        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
         const renderMenu = (
+            this.props.role===UserType.CUSTOMER?
             this.props.belong === PostCardBelong.OTHERS ?
                 <Menu
                     anchorEl={anchorEl}
@@ -215,7 +213,7 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                    <MenuItem onClick={this.handleReportPost}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
                 </Menu> :
                 <Menu
                     anchorEl={anchorEl}
@@ -227,8 +225,21 @@ class PostCard extends React.Component {
                     onClose={this.handleMenuClose}
                 >
                     <MenuItem><EditIcon/>编辑</MenuItem>
-                    <MenuItem><DeleteIcon/>删除</MenuItem>
-                </Menu>
+                    <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
+                </Menu>:this.props.role===UserType.ADMIN?
+                <Menu
+                    anchorEl={anchorEl}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                    id={menuId}
+                    keepMounted
+                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                    open={isMenuOpen}
+                    onClose={this.handleMenuClose}
+                >
+                    <MenuItem ><MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem ><BlockIcon color={"secondary"}/>封号</MenuItem>
+                </Menu>:null
+
         );
 
         if (this.state.post !== null)
@@ -238,7 +249,12 @@ class PostCard extends React.Component {
                           elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
-                                <Avatar src={post.avatar_path}/>
+                                <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                    pathname: '/personal-info',
+                                    search: '?id=' + post.user_id,
+                                }}>
+                                    <Avatar src={post.avatar_path}/>
+                                </Link>
                             }
                             action={
                                 <IconButton onClick={this.handleMoreInfoClick} aria-label="settings">
@@ -294,7 +310,7 @@ class PostCard extends React.Component {
                         {this.props.type === PostCardType.DETAIL ? null :
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <CardContent>
-                                    <CommentList blog={post} addComment={this.addComment}
+                                    <CommentList post={post} addComment={this.addComment}
                                                  deleteComment={this.deleteComment}/>
                                     <Grid container className={classes.link}>
                                         <Grid item xs={5}/>
@@ -329,6 +345,7 @@ class PostCard extends React.Component {
                         </div>
                     </Modal>
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
+                    <Message messageOpen={reportMessageOpen} handleClose={this.handleReportMessageClose} type={'success'} text={"举报成功"}/>
                 </div>
             );
         else return <div>Loading</div>;

@@ -30,6 +30,18 @@ export const getPost = (id, callback) => {
     getRequest(url, params, callback);
 };
 
+export const deletePost=(id, callback) => {
+    const params = {blog_id: id};
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    deleteRequest_json(url, params, callback);
+};
+
+export const reportPost=(id,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/report`;
+    const params = {blog_id: id};
+    postRequest_json(url, params, callback);
+};
+
 export const getRecommendPosts = (params,callback) => {
     console.log("executing getRecommendPosts");
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;

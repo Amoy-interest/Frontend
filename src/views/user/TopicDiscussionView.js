@@ -5,41 +5,39 @@ import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
 import TopicCard from "../../components/topic/TopicCard";
 import HotSearchList from "../../components/hot/HotSearchList";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {PostType} from "../../utils/constants";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
     root: {
         flexGrow: 1,
         marginBottom:theme.spacing(1)
     }
-}));
+});
 
-function TopicDiscussionLayout() {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={2}>
-                    <SideBar/>
-                </Grid>
-                <Grid item xs={7}>
-                    <TopicCard/>
-                    <PostCardList index={0}/>
-                </Grid>
-                <Grid item>
-                    <HotSearchList/>
-                </Grid>
-            </Grid>
-        </div>
-    );
-}
+@withStyles(styles)
 class TopicDiscussionView extends Component{
 
     render() {
-        console.log(this.props);
+        const {classes}=this.props;
+        const arr = this.props.location.search.split('&');
+        const topic_name = arr[0].substr(12);
+        console.log(topic_name);
+
         return (
-            <div>
-                <TopicDiscussionLayout/>
+            <div className={classes.root}>
+                <Grid container spacing={1}>
+                    <Grid item xs={2}>
+                        <SideBar/>
+                    </Grid>
+                    <Grid item xs={7}>
+                        <TopicCard topic_name={topic_name}/>
+                        <PostCardList topic_name={topic_name} index={PostType.TOPIC}/>
+                    </Grid>
+                    <Grid item>
+                        <HotSearchList/>
+                    </Grid>
+                </Grid>
             </div>
         );
     }

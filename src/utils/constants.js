@@ -39,10 +39,17 @@ const PostType = {
     RECOMMEND: 1,
     FOLLOW: 2,
     OWN: 3,
-    FORWARD: 4
+    FORWARD: 4,
+    TOPIC:5
+};
+
+const MsgType = {
+    ADD_POST: "addPost",
 };
 
 export {apiUrl, mockUrl, devUrl,
     UserActionType, TokenActionType, APIModules,
-    UserType, AuthorityLevel,PostType};
+    UserType, AuthorityLevel,PostType,
+    MsgType
+};
 

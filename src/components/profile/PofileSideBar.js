@@ -37,8 +37,8 @@ export default function SideBarForProfile() {
                 className={classes.tabs}
             >
                 <Tab label="个人资料" />
-                <Tab label="好友圈" />
-                <Tab label="消息" />
+                <Tab label="关注列表" />
+                <Tab label="粉丝列表" />
                 <Tab label="设置" />
             </Tabs>
         </div>

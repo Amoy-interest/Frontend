@@ -76,14 +76,14 @@ class CardCommentList extends React.Component {
             this.setState({comments: data.data.list});
             console.log(this.state.comments);
         };
-        let param = {blog_id: this.props.blog.blog_id};
+        let param = {blog_id: this.props.post.blog_id};
         getComments(param, callback)
     };
 
     submitComment = (text) => {
         let param = {
-            blog_id: this.props.blog.blog_id,
-            reply_user_id: this.props.blog.user_id,
+            blog_id: this.props.post.blog_id,
+            reply_user_id: this.props.post.user_id,
             root_comment_id: 0,
             text: text.comment
         };
@@ -122,20 +122,18 @@ class CardCommentList extends React.Component {
             style: PropTypes.object.isRequired,
         };
 
-        if (comments.length === 0) return <div>Loading</div>
-        else {
-            return (
-                <div className={classes.root}>
-                    <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
-                    <Divider style={{marginTop: '20px'}}/>
+        return (
+            <div className={classes.root}>
+                <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
+                <Divider style={{marginTop: '20px'}}/>
+                {comments.length === 0 ? <div>Loading</div> :
                     <FixedSizeList className={classes.comment} style={{marginTop: '20px'}} height={300} width={600}
                                    itemSize={170}
                                    itemCount={comments.length}>
                         {renderRow}
-                    </FixedSizeList>
-                </div>
-            );
-        }
+                    </FixedSizeList>}
+            </div>
+        );
 
     }
 }

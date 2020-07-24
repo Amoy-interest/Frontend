@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
 import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
-import {List,ListItem} from "@material-ui/core";
+import {List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import {PostType} from "../../utils/constants";
+import {getTopicPosts} from "../../service/TopicService";
+import {PostType, MsgType} from "../../utils/constants";
+import PubSub from "pubsub-js";
 
 const styles = ((theme) => ({
     root: {
@@ -14,7 +16,7 @@ const styles = ((theme) => ({
         overflow: 'auto'
     },
     item: {
-        width:'100%'
+        width: '100%'
     }
 }));
 
@@ -68,14 +70,25 @@ class PostCardList extends Component {
                 getFollowPosts(params, callback);
                 break;
             case PostType.OWN:
-                params.user_id = 0;
+                params.user_id = this.props.userId?this.props.userId:this.props.user.user.user_id;
                 getOwnPosts(params, callback);
                 break;
+            case PostType.TOPIC:
+                params.topic_name=this.props.topic_name;
+                console.log(params);
+                getTopicPosts(params,callback);
         }
     }
 
+    componentWillMount(){
+        PubSub.subscribe(MsgType.ADD_POST, (msg,data)=> {
+            console.log(msg,data);
+            this.addPost(data);
+        });
+    };
+
     componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
+        this.setState = (state, callback) => {
             return;
         };
     };
@@ -83,9 +96,15 @@ class PostCardList extends Component {
     addPost = (newPost) => {
         console.log(newPost);
         this.setState({
-            posts: [newPost,...this.state.posts],
+            posts: [newPost, ...this.state.posts],
             key: this.state.key + 1
         });
+    };
+
+    deletePost = (index) => {
+        let arr = this.state.posts;
+        arr.splice(index, 1);
+        this.setState({posts: arr, key: this.state.key + 1});
     };
 
     render() {
@@ -106,7 +125,10 @@ class PostCardList extends Component {
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                        <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.OTHERS} addPost={this.addPost}/> : <PostCard post={item} size={657} type={PostCardType.LIST} belong={PostCardBelong.PERSONAL} addPost={this.addPost}/>}
+                                        <PostCard size={657} post={item} index={value} type={PostCardType.LIST}
+                                                  belong={PostCardBelong.OTHERS} addPost={this.addPost} delete={this.deletePost}/> :
+                                        <PostCard post={item} size={657} index={value} type={PostCardType.LIST}
+                                                  belong={PostCardBelong.PERSONAL} addPost={this.addPost} delete={this.deletePost}/> }
                                 </ListItem>
                             );
                         })}

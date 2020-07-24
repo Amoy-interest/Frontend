@@ -54,7 +54,7 @@ class CommentList extends Component {
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
-            key:props.key?props.key:0
+            key: props.key ? props.key : 0
         };
 
         console.log("props", props);
@@ -97,7 +97,6 @@ class CommentList extends Component {
             };
             postComment(param, callback);
         }
-        ;
     };
 
     addComment = (comment) => {
@@ -105,8 +104,14 @@ class CommentList extends Component {
             comments: [comment, ...this.state.comments],
             key: this.state.key + 1
         });
+        console.log(this.state.comments);
     };
 
+    handleDeleteItem = (index) => {
+        let arr = this.state.comments;
+        arr.splice(index, 1);
+        this.setState({comments: arr, key: this.state.key + 1});
+    };
 
     loadMore() {
         const callback = (data) => {
@@ -158,8 +163,7 @@ class CommentList extends Component {
                                     <CommentItem comment={item}
                                                  type={this.props.type === CommentListType.PRIMARY ? CommentItemType.PRIMARY : CommentItemType.SECONDARY}
                                                  submit={this.addComment}
-                                                 index={index} deleteComment={() => {
-                                    }}/>
+                                                 index={index} deleteComment={this.handleDeleteItem}/>
                                 </ListItem>
                             );
                         })}

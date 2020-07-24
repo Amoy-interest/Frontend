@@ -24,6 +24,7 @@ import {Divider} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import CommentList, {CommentListType} from "./CommentList";
+import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
     root: {
@@ -96,7 +97,8 @@ class CommentItem extends React.Component {
             this.setState({expanded: false});
             let newSecondaryComment = [data.data, ...this.state.secondaryComment];
             this.setState({secondaryComment: newSecondaryComment});
-            if(this.props.type===CommentItemType.SECONDARY) this.submit(data.data);
+            if(this.props.type===CommentItemType.SECONDARY)
+                this.props.submit(data.data);
         };
         postComment(param, callback);
     };
@@ -157,7 +159,12 @@ class CommentItem extends React.Component {
                 <Card className={classes.root} elevation={0}>
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="comment" src={comment.avatar_path}/>
+                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                pathname: '/personal-info',
+                                search: '?id=' + comment.user_id,
+                            }}>
+                                <Avatar aria-label="comment" src={comment.avatar_path}/>
+                            </Link>
                         }
                         action={
                             <React.Fragment>
