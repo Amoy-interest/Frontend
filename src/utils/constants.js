@@ -43,7 +43,13 @@ const PostType = {
     TOPIC:5
 };
 
+const MsgType = {
+    ADD_POST: "addPost",
+};
+
 export {apiUrl, mockUrl, devUrl,
     UserActionType, TokenActionType, APIModules,
-    UserType, AuthorityLevel,PostType};
+    UserType, AuthorityLevel,PostType,
+    MsgType
+};
 
