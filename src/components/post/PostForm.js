@@ -39,7 +39,7 @@ class PostForm extends React.Component{
         super(props);
         this.state = {
             fileList: []
-        }
+        };
 
         this.uploadFiles = this.uploadFiles.bind(this);
     }

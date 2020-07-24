@@ -27,6 +27,7 @@ import HeaderPre from "./components/commen/HeaderPre";
 import PostDetailView from "./views/user/PostDetailView";
 import Message from "./components/commen/Message";
 import PubSub from "pubsub-js";
+import PostSearchView from "./views/user/PostSearchView";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -134,6 +135,7 @@ function App(props) {
                                 <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/post-detail" component={PostDetailView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path="/search" component={PostSearchView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
                                 <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>
                                 <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN} keyword={keyword}/>

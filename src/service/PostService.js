@@ -1,5 +1,5 @@
 import {apiUrl, APIModules} from "../utils/constants";
-import {deleteRequest_json, getRequest, postRequest_json} from "../utils/ajax";
+import {deleteRequest_json, getRequest, postRequest_json, putRequest_json} from "../utils/ajax";
 
 export const makePost = (text, images, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}`;
@@ -36,10 +36,20 @@ export const deletePost=(id, callback) => {
     deleteRequest_json(url, params, callback);
 };
 
+export const editPost=(data,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    putRequest_json(url,data,callback);
+};
+
 export const reportPost=(id,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/report`;
     const params = {blog_id: id};
     postRequest_json(url, params, callback);
+};
+
+export const searchPosts=(params,callback)=>{
+    const url = `${apiUrl}${APIModules.BLOG}/search`;
+    getRequest(url,params,callback);
 };
 
 export const getRecommendPosts = (params,callback) => {
@@ -54,6 +64,7 @@ export const getRandomPosts = (params,callback) => {
 
 export const getOwnPosts = (params,callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/users`;
+    console.log(params);
     getRequest(url,params,callback);
 };
 

@@ -20,7 +20,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostImage from "./PostImage";
-import {cancelVote, reportPost, vote, deletePost} from "../../service/PostService";
+import {cancelVote, reportPost, vote, deletePost, editPost} from "../../service/PostService";
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import Message from "../commen/Message";
@@ -30,9 +30,11 @@ import ForwardCard from "./ForwardCard";
 import Modal from "@material-ui/core/Modal";
 import PostForm from "./PostForm";
 import Paper from "@material-ui/core/Paper";
-import {PostType, UserType} from "../../utils/constants";
+import {MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
+import EditForm from "./EditForm";
+import PubSub from "pubsub-js";
 
 const styles = (theme => ({
     expand: {
@@ -50,6 +52,10 @@ const styles = (theme => ({
     },
     forwardModal: {
         padding: theme.spacing(1)
+    },
+    editModal: {
+        padding: theme.spacing(1),
+        width:500
     }
 }));
 
@@ -70,13 +76,14 @@ function mapStateToProps(state) {
     }
 };
 
-export const PostCardBelong={
-    OTHERS:0,
-    PERSONAL:1
+export const PostCardBelong = {
+    OTHERS: 0,
+    PERSONAL: 1
 };
-export const PostCardType={
-    LIST:0,
-    DETAIL:1,
+
+export const PostCardType = {
+    LIST: 0,
+    DETAIL: 1,
 };
 
 @withStyles(styles)
@@ -91,15 +98,22 @@ class PostCard extends React.Component {
             voteCount: blog_count.vote_count,
             commentCount: blog_count.comment_count,
             forwardCount: blog_count.forward_count,
+            text:this.props.post.blog_content.text,
             post: this.props.post,
             anchorEl: null,
             expanded: false,
             messageOpen: false,
             forwardModalOpen: false,
-            reportMessageOpen:false
+            editModalOpen: false,
+            reportMessageOpen: false
         };
     };
-
+    componentWillMount() {
+        PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
+            console.log(msg);
+            this.setState({commentCount:this.state.commentCount+1});
+        });
+    };
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {
@@ -127,6 +141,7 @@ class PostCard extends React.Component {
             this.setState({forward: true});
         }
     };
+
     submitForward = (values) => {
         this.handleModalClose();
         this.props.addPost(values);
@@ -138,6 +153,27 @@ class PostCard extends React.Component {
 
     handleModalClose = () => {
         this.setState({forwardModalOpen: false, forward: false});
+    };
+
+    handleEditModalOpen = () => {
+        this.setState({editModalOpen: true});
+    };
+
+    handleEditModalClose = () => {
+        this.setState({editModalOpen: false});
+    };
+
+    submitEdit=(text)=>{
+        const callback=()=>{
+            this.setState({text:text.comment});
+            this.handleEditModalClose();
+        };
+        let data={
+            blog_id: this.state.post.blog_id,
+            images:this.state.post.blog_content.images,
+            text:text.comment
+        };
+        editPost(data,callback);
     };
 
     addComment = () => {
@@ -177,33 +213,56 @@ class PostCard extends React.Component {
         this.setState({reportMessageOpen: false});
     };
 
-    handleReportPost=()=>{
-        const callback=()=>{
+    handleReportPost = () => {
+        const callback = () => {
             console.log('report success');
             this.handleMenuClose();
             this.setState({reportMessageOpen: true})
         };
-        reportPost(this.state.post.blog_id,callback);
+        reportPost(this.state.post.blog_id, callback);
     };
 
-    handleDeletePost=()=>{
-        const callback=()=>{
+    handleDeletePost = () => {
+        const callback = () => {
             console.log('delete success');
             this.handleMenuClose();
             this.props.delete(this.props.index);
         };
-        deletePost(this.state.post.blog_id,callback);
+        deletePost(this.state.post.blog_id, callback);
     };
 
     render() {
-        const {post, voted, forward, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen} = this.state;
+        const {post, voted, forward,text, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen, editModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
         const renderMenu = (
-            this.props.role===UserType.CUSTOMER?
-            this.props.belong === PostCardBelong.OTHERS ?
+            this.props.role === UserType.CUSTOMER ?
+                this.props.belong === PostCardBelong.OTHERS ?
+                    <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                        id={menuId}
+                        keepMounted
+                        transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                        open={isMenuOpen}
+                        onClose={this.handleMenuClose}
+                    >
+                        <MenuItem onClick={this.handleReportPost}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                    </Menu> :
+                    <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                        id={menuId}
+                        keepMounted
+                        transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                        open={isMenuOpen}
+                        onClose={this.handleMenuClose}
+                    >
+                        <MenuItem onClick={this.handleEditModalOpen}><EditIcon/>编辑</MenuItem>
+                        <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
+                    </Menu> : this.props.role === UserType.ADMIN ?
                 <Menu
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -213,32 +272,9 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem onClick={this.handleReportPost}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
-                </Menu> :
-                <Menu
-                    anchorEl={anchorEl}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    id={menuId}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={isMenuOpen}
-                    onClose={this.handleMenuClose}
-                >
-                    <MenuItem><EditIcon/>编辑</MenuItem>
-                    <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
-                </Menu>:this.props.role===UserType.ADMIN?
-                <Menu
-                    anchorEl={anchorEl}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    id={menuId}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={isMenuOpen}
-                    onClose={this.handleMenuClose}
-                >
-                    <MenuItem ><MicOffIcon color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem ><BlockIcon color={"secondary"}/>封号</MenuItem>
-                </Menu>:null
+                    <MenuItem><MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem><BlockIcon color={"secondary"}/>封号</MenuItem>
+                </Menu> : null
 
         );
 
@@ -270,7 +306,7 @@ class PostCard extends React.Component {
                         }}>
                             <CardContent>
                                 <Typography variant="body1" color="textPrimary" component="p">
-                                    {post.blog_content.text}
+                                    {text}
                                 </Typography>
                             </CardContent>
                         </Link>
@@ -344,8 +380,24 @@ class PostCard extends React.Component {
                             </Paper>
                         </div>
                     </Modal>
+                    <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.editModal}>
+                                <EditForm type={PostType.FORWARD}
+                                          postId={post.blog_id}
+                                          closeModal={this.handleEditModalClose}
+                                          submit={this.submitEdit}
+                                          post_content={post.blog_content.text}
+                                />
+                                {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
+                                    <PostImage image={post.blog_child.blog_content.images}/>}
+                            </Paper>
+                        </div>
+                    </Modal>
+
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
-                    <Message messageOpen={reportMessageOpen} handleClose={this.handleReportMessageClose} type={'success'} text={"举报成功"}/>
+                    <Message messageOpen={reportMessageOpen} handleClose={this.handleReportMessageClose}
+                             type={'success'} text={"举报成功"}/>
                 </div>
             );
         else return <div>Loading</div>;

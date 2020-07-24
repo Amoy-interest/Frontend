@@ -9,12 +9,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CommentList, {CommentListType} from "../post/CommentList";
 import {getPost} from "../../service/PostService";
 import {getHotList} from "../../service/TopicService";
+import Box from "@material-ui/core/Box";
 
 const styles =((theme) => ({
     root: {
-        width: 280,
+        width: '300',
         position:'fixed',
-        color: theme.palette.text.secondary,
+        color: theme.palette.text.primary,
     },
     title: {
         marginTop:10
@@ -62,7 +63,11 @@ class HotSearchList extends React.Component{
         if(hotList.length!==0)
         return (
             <Paper className={classes.root}>
-                <Typography className={classes.title} variant="h6">热门话题</Typography>
+                <Typography className={classes.title} variant="h5">
+                    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>
+                    热门话题
+                    </Box>
+                </Typography>
                 <FixedSizeList height={360} width={280} itemSize={50} itemCount={hotList.length}>
                     {renderRow}
                 </FixedSizeList>

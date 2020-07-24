@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import CameraIcon from '@material-ui/icons/Camera';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import Avatar1 from "../../assets/img/avatar1.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
@@ -17,6 +17,9 @@ import SearchBar from "./SearchBar";
 import {connect} from "react-redux";
 import {UserType} from "../../utils/constants";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {amber} from "@material-ui/core/colors";
+import UserSearchBar from "./UserSearchBar";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -48,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 function mapStateToProps(state) {
     return {
-        role: state.userReducer.role
+        role: state.userReducer.role,
+        user: state.userReducer
     }
 }
 
@@ -92,22 +96,22 @@ function Header(props) {
         history.replace('/users-manage');
     };
 
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-            id="personal-info-menu"
-            keepMounted
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            {props.role === UserType.CUSTOMER ?
-                <MenuItem onClick={handleProfile}>个人资料</MenuItem> : null}
-            <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
-
-        </Menu>
-    );
+    // const renderMenu = (
+    //     <Menu
+    //         anchorEl={anchorEl}
+    //         anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+    //         id="personal-info-menu"
+    //         keepMounted
+    //         transformOrigin={{vertical: 'top', horizontal: 'right'}}
+    //         open={isMenuOpen}
+    //         onClose={handleMenuClose}
+    //     >
+    //         {props.role === UserType.CUSTOMER ?
+    //             <MenuItem onClick={handleProfile}>个人资料</MenuItem> : null}
+    //         <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
+    //
+    //     </Menu>
+    // );
 
     const handleSearch = (keyword) => {
         console.log(keyword);
@@ -119,7 +123,7 @@ function Header(props) {
             <AppBar position="static">
                 <Toolbar>
                     <Logo title={'Amoy Interest'}/>
-                    <SearchBar handleSearch={handleSearch}/>
+                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<UserSearchBar/>}
                     <div className={classes.blank}/>
                     {props.role === UserType.CUSTOMER ?
                         <Tooltip title="发现">
@@ -156,24 +160,37 @@ function Header(props) {
                             <CameraIcon/>
                         </IconButton>
                     </Tooltip>
-
-                    <div className={classes.sectionDesktop}>
-                        <Tooltip title="个人">
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls="personal-info-menu"
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <Avatar className={classes.avatar} src={Avatar1}/>
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                    <Tooltip title="退出">
+                        <IconButton
+                            edge="start"
+                            aria-label="exit"
+                            onClick={handleLogout}
+                            className={classes.menuButton}
+                            color="inherit"
+                        >
+                            <ExitToAppIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                        pathname: '/personal-info',
+                        search: '?id=' + props.user.user.user_id,
+                    }}>
+                        <div className={classes.sectionDesktop}>
+                            <Tooltip title="个人">
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls="personal-info-menu"
+                                    aria-haspopup="true"
+                                    color="inherit"
+                                >
+                                    <Avatar className={classes.avatar} src={props.user.user.avatar}/>
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    </Link>
                 </Toolbar>
             </AppBar>
-            {renderMenu}
         </div>
     );
 }

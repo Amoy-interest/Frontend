@@ -1,41 +1,35 @@
 import React, {Component} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SideBarForProfile from "../../components/profile/PofileSideBar";
+import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
-import ProfileCard from "../../components/profile/ProfileCard";
+import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
 import {PostType} from "../../utils/constants";
-import withStyles from "@material-ui/core/styles/withStyles";
+import {withStyles} from "@material-ui/styles";
 
-const styles =((theme) => ({
+const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom: theme.spacing(1)
-    },
-    paper: {
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        minHeight:700
     },
 }));
 
 @withStyles(styles)
-class ProfileView extends Component {
+class PostSearchView extends Component{
 
     render() {
-        const {classes}=this.props;
+        const classes = this.props.classes;
 
         return (
-            <div className={classes.root}>
-                <Paper elevation={0}>
+            <div >
+                <Paper elevation={0} className={classes.root}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            <SideBarForProfile/>
+                            <SideBar/>
                         </Grid>
                         <Grid item xs={7}>
-                            <ProfileCard {...this.props}/>
-                            <PostCardList index={PostType.OWN} {...this.props}/>
+                            <PostCardList index={PostType.SEARCH} {...this.props}/>
                         </Grid>
                         <Grid item xs>
                             <HotSearchList/>
@@ -47,4 +41,4 @@ class ProfileView extends Component {
     }
 }
 
-export default ProfileView;
+export default PostSearchView;
