@@ -45,9 +45,10 @@ const PostType = {
 
 const MsgType = {
     ADD_POST: "addPost",
+    SET_MESSAGE: "setMessage"
 };
 
-export {apiUrl, mockUrl, devUrl,
+export {apiUrl, mockUrl, devUrl, localUrl,
     UserActionType, TokenActionType, APIModules,
     UserType, AuthorityLevel,PostType,
     MsgType

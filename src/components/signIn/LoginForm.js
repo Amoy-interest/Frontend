@@ -15,6 +15,9 @@ import * as userService from "../../service/UserService";
 import {useHistory} from "react-router";
 import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
+import Message from "../commen/Message";
+import PubSub from "pubsub-js";
+import {MsgType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -54,13 +57,14 @@ function LoginForm(props){
         console.log(values);
         userService.login(values, (data) => {
             console.log(data);
-            if (data.status !== 200) {
-                message.error(data.msg);
-                console.log("error");
+            if (data.status !== 0) {
+                console.log(data.msg);
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    open: true, text: data.msg, type: 'warning'});
                 return;
             }
-
-            message.success(data.msg);
+            PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'success'});
             props.onLogin(data.data.user, data.data.token);
             history.push('/home');
         });
@@ -112,9 +116,6 @@ function LoginForm(props){
                                     <Button onClick={props.closeModal} color="primary">Forgot password?</Button>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    {/*<Link href="#" variant="body2">*/}
-                                    {/*    Don't have an account? Sign Up*/}
-                                    {/*</Link>*/}
                                     <Button href="/register" color="primary">Sign Up</Button>
                                 </Grid>
                             </Grid>
