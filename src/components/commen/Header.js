@@ -68,7 +68,7 @@ function Header(props) {
 
     const handleProfile = () => {
         handleMenuClose();
-        history.replace('/personal-info');
+        history.replace('/personal-info?id=1');
     };
 
     const handleLogout = () => {

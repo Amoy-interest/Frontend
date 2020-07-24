@@ -17,6 +17,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {follow, getUserInfo, unfollow} from "../../service/UserService";
+import {connect} from "react-redux";
 
 const styles = ((theme) => ({
     background: {
@@ -57,7 +58,11 @@ const styles = ((theme) => ({
         marginBottom: 10
     }
 }));
-
+function mapStateToProps(state) {
+    return {
+        user: state.userReducer
+    }
+};
 @withStyles(styles)
 class ProfileCard extends React.Component {
     constructor(props) {
@@ -70,11 +75,25 @@ class ProfileCard extends React.Component {
     }
 
     componentDidMount() {
+        //const param = this.props.location.search.split('&');
+        const user_id=1;//param?param[0].substr(4):this.props.user.user.user_id;
         const callback=(data)=>{
-            this.setState({userInfo:data.data,followed:data.data._follow});
+            this.setState({userInfo:data.data,followed:data.data.is_follow});
         };
-        getUserInfo(this.props.userId,callback);
+        getUserInfo(user_id,callback);
     }
+
+    componentWillReceiveProps(newProps) {
+
+        const param = this.props.location.search.split('&');
+        const user_id=param?param[0].substr(4):this.props.user.user.user_id;
+
+        const callback=(data)=>{
+            this.setState({userInfo:data.data,followed:data.data.is_follow});
+        };
+        getUserInfo(user_id,callback);
+    }
+
     handleProfileMenuOpen = (event) => {
         this.setState({anchorEl:event.currentTarget});
     };
@@ -87,10 +106,12 @@ class ProfileCard extends React.Component {
         this.handleMenuClose();
     };
     handleFollow=()=>{
+        console.log("testing");
+        //console.log(this.props);
         const callback=()=> {
             this.setState({followed: true});
         };
-        follow(this.state.userInfo.user_id, callback);
+        follow(this.state.userInfo.user_id,callback);
     };
 
     handleUnFollow=()=>{
@@ -174,4 +195,6 @@ class ProfileCard extends React.Component {
     }
 
 }
-export default ProfileCard;
+export default connect(
+    mapStateToProps, null
+)(ProfileCard)

@@ -32,8 +32,9 @@ export const getPost = (id, callback) => {
 
 export const deletePost=(id, callback) => {
     const params = {blog_id: id};
-    const url = `${apiUrl}${APIModules.BLOG}`;
-    deleteRequest_json(url, params, callback);
+    console.log(params);
+    const url = `${apiUrl}${APIModules.BLOG}?blog_id=${id}`;
+    deleteRequest_json(url, null, callback);
 };
 
 export const reportPost=(id,callback)=>{
