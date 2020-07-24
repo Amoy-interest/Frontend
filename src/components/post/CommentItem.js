@@ -217,7 +217,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post.blog_id} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init"/>}
                                 </CardContent>
 
                         </Collapse>

@@ -53,7 +53,10 @@ class PostForm extends React.Component{
 
         const callbackOwn = (data) => {
             console.log("callback_own", data);
-            PubSub.publish(MsgType.ADD_POST, data.data);
+            if (!data.status) PubSub.publish(MsgType.ADD_POST, data.data);
+            else PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'warning'});
+
         };
         makePost(values.content, images, callbackOwn);
     };
@@ -66,7 +69,9 @@ class PostForm extends React.Component{
 
             // data display....
             this.props.closeModal();
-            this.props.submit(data.data);
+            if (!data.status) this.props.submit(data.data);
+            else PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'warning'});
         };
         forwardPost(this.props.postId, values.content, 0, callbackForward);
     };

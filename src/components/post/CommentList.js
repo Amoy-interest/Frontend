@@ -99,6 +99,7 @@ class CommentList extends Component {
                 root_comment_id: this.props.comment.comment_id,
                 text: text.comment
             };
+            console.log(param);
             postComment(param, callback);
         }
     };

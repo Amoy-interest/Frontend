@@ -64,7 +64,7 @@ const UserSearchBar = (props) => {
                 <SearchIcon/>
             </div>
             <InputBase
-                placeholder="请输入关键词"
+                placeholder="发现更精彩的世界"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,

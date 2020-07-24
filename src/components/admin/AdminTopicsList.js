@@ -201,9 +201,6 @@ export default class AdminTopicsList extends Component{
                     <Button variant="contained" color="secondary">
                         删除所选话题
                     </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        调整话题位置
-                    </Button>
                 </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
