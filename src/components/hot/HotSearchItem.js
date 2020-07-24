@@ -39,7 +39,7 @@ export default function HotSearchItem(props) {
                     pathname: '/topic-discussion',
                     search: '?topic_name=' + props.item.topic_name,
                 }}>
-                    <Typography className={classes.text} noWrap={true} variant={'subtitle2'}>
+                    <Typography className={classes.text} noWrap={true} variant={'subtitle1'}>
                         <Box textAlign="center" lineHeight={2} m={1}>
                             #{props.item.topic_name}#
                         </Box>
