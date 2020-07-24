@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
-import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts} from "../../service/PostService";
+import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts, searchPosts} from "../../service/PostService";
 import {List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
@@ -82,6 +82,10 @@ class PostCardList extends Component {
                 params.topic_name = topic_name;
                 console.log(params);
                 getTopicPosts(params, callback);
+            case PostType.SEARCH:
+                params.keyword = this.props.location.state.keyword;
+                console.log(params);
+                searchPosts(params,callback);
         }
     }
 
@@ -117,6 +121,10 @@ class PostCardList extends Component {
                 params.topic_name = topic_name;
                 console.log(params);
                 getTopicPosts(params, callback);
+            case PostType.SEARCH:
+                params.keyword = newProps.location.state.keyword;
+                console.log(params);
+                searchPosts(params,callback);
         }
     }
 
