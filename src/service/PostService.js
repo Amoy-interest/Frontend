@@ -54,6 +54,7 @@ export const getRandomPosts = (params,callback) => {
 
 export const getOwnPosts = (params,callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/users`;
+    console.log(params);
     getRequest(url,params,callback);
 };
 

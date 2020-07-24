@@ -21,7 +21,7 @@ class TopicDiscussionView extends Component{
     render() {
         const {classes}=this.props;
         const arr = this.props.location.search.split('&');
-        const topic_name = arr[0].substr(4);
+        const topic_name = arr[0].substr(12);
         console.log(topic_name);
 
         return (

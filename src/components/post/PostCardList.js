@@ -70,6 +70,7 @@ class PostCardList extends Component {
                 break;
             case PostType.OWN:
                 params.user_id = this.props.userId?this.props.userId:this.props.user.user.user_id;
+                console.log(params);
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:

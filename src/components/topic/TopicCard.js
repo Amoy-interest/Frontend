@@ -73,7 +73,7 @@ class TopicCard extends React.Component {
         const callback=(data)=>{
             this.setState({topic:data.data});
         };
-        getTopic(this.props.name,callback);
+        getTopic(this.props.topic_name,callback);
     }
 
     handleExpandClick = () => {
