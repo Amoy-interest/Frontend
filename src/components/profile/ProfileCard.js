@@ -58,11 +58,13 @@ const styles = ((theme) => ({
         marginBottom: 10
     }
 }));
+
 function mapStateToProps(state) {
     return {
         user: state.userReducer
     }
 };
+
 @withStyles(styles)
 class ProfileCard extends React.Component {
     constructor(props) {
@@ -75,8 +77,8 @@ class ProfileCard extends React.Component {
     }
 
     componentDidMount() {
-        //const param = this.props.location.search.split('&');
-        const user_id=1;//param?param[0].substr(4):this.props.user.user.user_id;
+        const param = this.props.location.search.split('&');
+        const user_id=param[0].substr(4);
         const callback=(data)=>{
             this.setState({userInfo:data.data,followed:data.data.is_follow});
         };
@@ -86,7 +88,8 @@ class ProfileCard extends React.Component {
     componentWillReceiveProps(newProps) {
 
         const param = this.props.location.search.split('&');
-        const user_id=param?param[0].substr(4):this.props.user.user.user_id;
+
+        const user_id=param[0].substr(4);
 
         const callback=(data)=>{
             this.setState({userInfo:data.data,followed:data.data.is_follow});
@@ -172,22 +175,26 @@ class ProfileCard extends React.Component {
                                 简介: {userInfo.introduction}
                             </Typography>
                         </div>
-                        <div style={{marginTop: '20px'}}>
-                            <Grid container spacing={2}>
-                                <Grid item xs>
+                        {userInfo.user_id === this.props.user.user.user_id ?null:
+                            <div style={{marginTop: '20px'}}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs>
+                                    </Grid>
+
+                                    <Grid item xs>
+                                        <Button variant="contained" color="primary"
+                                                onClick={followed ? this.handleUnFollow : this.handleFollow}>
+                                            {followed ? "取消关注" : "关注"}
+                                        </Button>
+                                        <Button variant="contained" color="primary" style={{marginLeft: '8px'}}>
+                                            私信
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs>
-                                    <Button variant="contained" color="primary" onClick={followed?this.handleUnFollow:this.handleFollow}>
-                                        {followed?"取消关注":"关注"}
-                                    </Button>
-                                    <Button variant="contained" color="primary" style={{marginLeft: '8px'}}>
-                                        私信
-                                    </Button>
-                                </Grid>
-                                <Grid item xs>
-                                </Grid>
-                            </Grid>
-                        </div>
+                            </div>
+                        }
                     </CardContent>
                     {renderMenu}
                 </div>
