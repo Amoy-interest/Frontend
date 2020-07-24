@@ -40,12 +40,14 @@ const PostType = {
     FOLLOW: 2,
     OWN: 3,
     FORWARD: 4,
-    TOPIC:5
+    TOPIC:5,
+    SEARCH:6
 };
 
 const MsgType = {
     ADD_POST: "addPost",
-    SET_MESSAGE: "setMessage"
+    SET_MESSAGE: "setMessage",
+    ADD_COMMENT:"addComment"
 };
 
 export {apiUrl, mockUrl, devUrl, localUrl,

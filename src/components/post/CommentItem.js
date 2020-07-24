@@ -87,7 +87,7 @@ class CommentItem extends React.Component {
 
     submitComment = (text) => {
         let param = {
-            blog_id: 0,
+            blog_id: this.props.post.blog_id,
             reply_user_id: this.state.comment.user_id,
             root_comment_id: this.state.comment.comment_id,
             text: text.comment
@@ -96,8 +96,9 @@ class CommentItem extends React.Component {
             this.setState({expanded: false});
             let newSecondaryComment = [data.data, ...this.state.secondaryComment];
             this.setState({secondaryComment: newSecondaryComment});
-            if(this.props.type===CommentItemType.SECONDARY)
+            if(this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD) {
                 this.props.submit(data.data);
+            }
         };
         postComment(param, callback);
     };
@@ -215,7 +216,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post.blog_id} key="init"/>}
                                 </CardContent>
 
                         </Collapse>
