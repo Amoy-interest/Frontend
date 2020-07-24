@@ -50,3 +50,8 @@ export const unfollow = (id, callback) => {
     postRequest_json(url, data, callback);
 };
 
+export const getUserInfo = (id, callback) => {
+    const data = {user_id:id};
+    const url = `${apiUrl}${APIModules.USER}`;
+    postRequest_json(url, data, callback);
+};

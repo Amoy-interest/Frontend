@@ -21,6 +21,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getTopic} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
+import ListItem from "@material-ui/core/ListItem";
 
 const styles =((theme) => ({
     background: {
@@ -80,8 +81,9 @@ class TopicCard extends React.Component {
         this.setState({expanded:!this.state.expanded});
     };
     render() {
-        const {classes}=this.props;
+        const {classes,heat}=this.props;
         const {topic,expanded}=this.state;
+        console.log(this.props);
         if(topic)
         return (
             <Card className={classes.root}>
@@ -99,13 +101,24 @@ class TopicCard extends React.Component {
                                 <div style={{marginTop: '10px',marginLeft:'20px'}}>
                                     <Typography variant="h5" color="textPrimary" component="p" align='left'>
                                         #{topic.name}#
-                                        <Chip
-                                            size={"middle"}
-                                            icon={<WhatshotIcon/>}
-                                            label="热"
-                                            color="secondary"
-                                            className={classes.chip}
-                                        />
+                                        {heat > 10000 ?
+                                            <Chip
+                                                className={classes.chip}
+                                                icon={<WhatshotIcon/>}
+                                                label='爆'
+                                                color="secondary"
+                                            /> : heat > 1000 ?
+                                                <Chip
+                                                    className={classes.chip}
+                                                    icon={<WhatshotIcon/>}
+                                                    label='热'
+                                                    color="primary"
+                                                /> :
+                                                <Chip
+                                                    className={classes.chip}
+                                                    icon={<WhatshotIcon/>}
+                                                    label='沸'
+                                                />}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="p" align='left'>
                                         {topic.topic_intro}
