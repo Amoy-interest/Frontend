@@ -236,8 +236,8 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem ><MicOffIcon color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem ><BlockIcon color={"secondary"}/>封号</MenuItem>
+                    <MenuItem onClick={() => this.props.handleBan(this.props.post.user_id)}><MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem onClick={() => this.props.handleForbid(this.props.post.user_id)}><BlockIcon color={"secondary"}/>封号</MenuItem>
                 </Menu>:null
 
         );
