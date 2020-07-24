@@ -101,6 +101,7 @@ export const postComment=(data,callback)=>{
 };
 
 export const deleteComment=(data,callback)=>{
-    const url = `${apiUrl}${APIModules.BLOG}/comments`;
+    console.log(data);
+    const url = `${apiUrl}${APIModules.BLOG}/comments?comment_id=${data.comment_id}`;
     deleteRequest_json(url, data, callback);
 };

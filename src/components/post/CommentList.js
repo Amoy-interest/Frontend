@@ -73,6 +73,7 @@ class CommentList extends Component {
 
     submitComment = (text) => {
         const callback = (data) => {
+            console.log(data);
             this.setState({
                 comments: [data.data, ...this.state.comments],
                 key: this.state.key + 1
