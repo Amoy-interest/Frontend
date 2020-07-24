@@ -13,17 +13,20 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
-    number: {},
+    number:{
+        width: 30,
+        color:theme.palette.text.secondary
+    },
     text: {
         width: 70,
-        //marginLeft: theme.spacing(1),
+        marginLeft:'10px',
     },
     secondaryText: {
-        marginLeft: theme.spacing(2),
-        fontSize: '20px'
+        width: 50,
+        color:theme.palette.text.secondary
     },
     chip: {
-        marginLeft: theme.spacing(5),
+        marginLeft: theme.spacing(1),
     }
 
 }));
@@ -34,18 +37,23 @@ export default function HotSearchItem(props) {
     return (
         <div>
             <ListItem button className={classes.root}>
-                <ListItemText className={classes.number} primary={`${props.index + 1}`}/>
+                <Typography className={classes.number} noWrap={true} variant={'h6'}
+                style={{color:props.index===0?'#ef5350':props.index===1?'#ef6c00':props.index===2?'#ffd54f':null}}>
+                    <Box fontWeight="fontWeightBold" m={1}>
+                        {props.index + 1}
+                    </Box>
+                </Typography>
                 <Link style={{color: '#000', fontSize: '18px'}} to={{
                     pathname: '/topic-discussion',
                     search: '?topic_name=' + props.item.topic_name,
                 }}>
                     <Typography className={classes.text} noWrap={true} variant={'subtitle1'}>
-                        <Box textAlign="center" lineHeight={2} m={1}>
-                            #{props.item.topic_name}#
-                        </Box>
+                        #{props.item.topic_name}#
                     </Typography>
                 </Link>
-                <ListItemText className={classes.secondaryText} secondary={props.item.heat}/>
+                <Typography className={classes.secondaryText} noWrap={true} variant={'body2'}>
+                    {props.item.heat}
+                </Typography>
                 {props.item.heat > 10000 ?
                     <Chip
                         className={classes.chip}
