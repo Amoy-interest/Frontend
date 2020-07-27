@@ -190,7 +190,7 @@ class CommentItem extends React.Component {
                             </React.Fragment>
                         }
                         title={comment.nickname}
-                        subheader={comment.comment_time}
+                        subheader={new Date(comment.comment_time).Format("yyyy-MM-dd hh:mm:ss")}
                     />
                     <CardContent style={{height: ''}}>
                         <Typography variant="body1" color="textSecondary" component="p">

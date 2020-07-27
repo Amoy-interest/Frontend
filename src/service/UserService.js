@@ -1,7 +1,8 @@
-import {localUrl, apiUrl, APIModules} from "../utils/constants";
+import {localUrl, apiUrl, APIModules, MsgType} from "../utils/constants";
 import {getRequest, postRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";
+import PubSub from "pubsub-js";
 
 export const login = (data, callback) => {
     console.log(data);
@@ -13,8 +14,12 @@ export const logout = () => {
     console.log("logout");
     const url = `${apiUrl}${APIModules.USER}/logout`;
 
-    const callback = () => {
-        console.log("logout callback");
+    const callback = (data) => {
+        console.log("logout callback", data);
+        if (data.status !== 0) {
+            PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data.msg});
+        }
+        PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data.msg, type: 'success'});
         store.dispatch(removeToken());
         store.dispatch(removeUser());
     };

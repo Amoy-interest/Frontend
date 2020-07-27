@@ -54,7 +54,7 @@ class ForwardCard extends React.Component {
                                 </Link>
                             }
                             title={post.nickname}
-                            subheader={post.blog_time}
+                            subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
                         <Link style={{color: grey[50]}} to={{
                             pathname: '/post-detail',

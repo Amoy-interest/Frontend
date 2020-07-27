@@ -58,6 +58,16 @@ function RegisterForm(props){
         text: '',
         type: 'warning'
     });
+    const sex = [
+        {
+            value: 0,
+            name: "女"
+        },
+        {
+            value: 1,
+            name: "男"
+        }
+    ]
 
     const callback = (data) => {
         console.log(data)
@@ -84,16 +94,33 @@ function RegisterForm(props){
         userService.register(values, callback)
     }
 
-    const sex = [
-        {
-            value: 0,
-            name: "女"
-        },
-        {
-            value: 1,
-            name: "男"
+
+    const validate = values => {
+        const errors = {};
+
+        // username
+        if (!values.username) { errors.username = '用户名不能为空！';}
+        else if (values.username.length > 20) { errors.username = '用户名不能大于20位！';}
+
+        // password
+        if (!values.password) { errors.password = '密码不能为空！';}
+        else if (!/^[0-9a-zA-Z]{6,20}$/i.test(values.password)) {
+            errors.password = '密码由6-20位的字母和数字组成！';}
+
+        // nickname
+        if (!values.nickname) { errors.nickname = '昵称不能为空！';}
+
+        // email
+        if (!values.email) { errors.email = '邮箱不能为空！';}
+        else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Invalid email address';
         }
-    ]
+
+        // address
+        if (!values.address) { errors.address = '地址不能为空！';}
+
+        return errors;
+    };
 
 
     return (
@@ -115,6 +142,7 @@ function RegisterForm(props){
                         email: '',
                         address: ''
                     }}
+                    validate={validate}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
@@ -130,7 +158,7 @@ function RegisterForm(props){
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
                                 <AITextField sm={6} name="nickname" label="昵称"/>
                                 <AIPickerField sm={6} name="sex" label="性别" array={sex}/>
-                                <AITextField sm={12} name="email" label="邮箱"/>
+                                <AITextField sm={12} name="email" label="邮箱" type="email"/>
                                 <AITextField sm={12} name="address" label="地址"/>
                                 <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
                             </Grid>

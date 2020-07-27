@@ -7,7 +7,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {message} from 'antd';
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
@@ -15,7 +14,6 @@ import * as userService from "../../service/UserService";
 import {useHistory} from "react-router";
 import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
-import Message from "../commen/Message";
 import PubSub from "pubsub-js";
 import {MsgType} from "../../utils/constants";
 
@@ -60,7 +58,7 @@ function LoginForm(props){
             if (data.status !== 0) {
                 console.log(data.msg);
                 PubSub.publish(MsgType.SET_MESSAGE, {
-                    open: true, text: data.msg, type: 'warning'});
+                    open: true, text: data.msg, type: 'error'});
                 return;
             }
             PubSub.publish(MsgType.SET_MESSAGE, {
@@ -69,6 +67,21 @@ function LoginForm(props){
             history.push('/home');
         });
         props.closeModal();
+    };
+
+    const validate = values => {
+        const errors = {};
+
+        // username
+        if (!values.username) { errors.username = '用户名不能为空！';}
+        else if (values.username.length > 20) { errors.username = '用户名不大于20位！';}
+
+        // password
+        if (!values.password) { errors.password = '密码不能为空！';}
+        else if (!/^[0-9a-zA-Z]{6,20}$/i.test(values.password)) {
+            errors.password = '密码由6-20位的字母和数字组成！';}
+
+        return errors;
     };
 
     return (
@@ -86,6 +99,7 @@ function LoginForm(props){
                         username: '',
                         password: '',
                     }}
+                    validate={validate}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
