@@ -43,9 +43,8 @@ export const editPost=(data,callback)=>{
 };
 
 export const reportPost=(id,callback)=>{
-    const url = `${apiUrl}${APIModules.BLOG}/report`;
-    const params = {blog_id: id};
-    postRequest_json(url, params, callback);
+    const url = `${apiUrl}${APIModules.BLOG}/report?blog_id=${id}`;
+    postRequest_json(url, null, callback);
 };
 
 export const searchPosts=(params,callback)=>{
