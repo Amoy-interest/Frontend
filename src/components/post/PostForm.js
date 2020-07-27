@@ -87,16 +87,17 @@ class PostForm extends React.Component{
                         initialValues={{
                             content: ''
                         }}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
+                                resetForm();
                                 if(this.props.type === PostType.FORWARD)
                                     this.submitForward(values);
                                 else this.submitOwn(values);
                             }, 500);
                         }}
                     >
-                        {({ submitForm, isSubmitting }) => (
+                        {({ submitForm, isSubmitting, handleReset }) => (
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
                                     <AITextField sm={12} name="content" label="博文内容" multiline/>

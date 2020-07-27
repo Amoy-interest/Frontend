@@ -30,9 +30,10 @@ export default function CommentForm(props){
                 initialValues={{
                     comment: ''
                 }}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting,resetForm }) => {
                     setTimeout(() => {
                         setSubmitting(false);
+                        resetForm();
                         console.log(values);
                         submit(values);
                     }, 500);
