@@ -6,14 +6,14 @@ import PubSub from "pubsub-js";
 
 export const login = (data, callback) => {
     console.log(data);
-    const url = `${localUrl}${APIModules.USER}/login`;
+    const url = `${apiUrl}${APIModules.USER}/login`;
 
     postRequest_json(url, data, callback);
 };
 
 export const logout = () => {
     console.log("logout");
-    const url = `${localUrl}${APIModules.USER}/logout`;
+    const url = `${apiUrl}${APIModules.USER}/logout`;
 
     const callback = (data) => {
         console.log("logout callback", data);
@@ -30,7 +30,7 @@ export const logout = () => {
 export const register = (data, callback) => {
     console.log(data);
 
-    const url = `${localUrl}${APIModules.USER}/register`;
+    const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url, data, callback);
 };
 

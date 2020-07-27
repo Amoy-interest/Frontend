@@ -90,7 +90,6 @@ class PostForm extends React.Component{
                         onSubmit={(values, { setSubmitting }) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                alert(JSON.stringify(values, null, 2));
                                 if(this.props.type === PostType.FORWARD)
                                     this.submitForward(values);
                                 else this.submitOwn(values);
