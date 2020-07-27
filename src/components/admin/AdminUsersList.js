@@ -25,6 +25,8 @@ import {InputAdornment} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
+import {amber} from "@material-ui/core/colors";
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -246,7 +248,12 @@ export default class AdminUsersList extends Component {
                                                     onChange={() => this.setChecked(index)}
                                                 />
                                             </StyledTableCell>
-                                            <StyledTableCell>{user.nickname}</StyledTableCell>
+                                            <StyledTableCell>
+                                                <Link style={{color: 'black'}} to={{
+                                                    pathname: '/personal-info',
+                                                    search: '?id=' + user.user_id,
+                                                }}>{user.nickname}</Link>
+                                            </StyledTableCell>
                                             <StyledTableCell>{user.credits}</StyledTableCell>
                                             <StyledTableCell>
                                                 <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>

@@ -73,6 +73,7 @@ class TopicCard extends React.Component {
 
     getTopicInfo(topic_name){
         const callback=(data)=>{
+            console.log(data);
             this.setState({topic:data.data});
         };
         getTopic(topic_name,callback);
@@ -80,16 +81,12 @@ class TopicCard extends React.Component {
     componentDidMount() {
         const arr = this.props.location.search.split('&');
         const topic_name = arr[0].substr(12);
-        const heat = this.props.location.state.heat;
-        this.setState({heat: heat});
         this.getTopicInfo(topic_name);
     }
 
     componentWillReceiveProps(newProps) {
         const arr = newProps.location.search.split('&');
         const topic_name = arr[0].substr(12);
-        const heat = newProps.location.state.heat;
-        this.setState({heat: heat});
         this.getTopicInfo(topic_name);
     }
 
@@ -99,8 +96,8 @@ class TopicCard extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {topic, heat, expanded} = this.state;
-        console.log(this.props);
+        const {topic, expanded} = this.state;
+
         if (topic)
             return (
                 <Card className={classes.root}>
@@ -118,13 +115,13 @@ class TopicCard extends React.Component {
                                     <div style={{marginTop: '10px', marginLeft: '20px'}}>
                                         <Typography variant="h5" color="textPrimary" component="p" align='left'>
                                             #{topic.name}#
-                                            {heat > 10000 ?
+                                            {topic.topic_heat > 10000 ?
                                                 <Chip
                                                     className={classes.chip}
                                                     icon={<WhatshotIcon/>}
                                                     label='爆'
                                                     color="secondary"
-                                                /> : heat > 1000 ?
+                                                /> : topic.topic_heat > 1000 ?
                                                     <Chip
                                                         className={classes.chip}
                                                         icon={<WhatshotIcon/>}

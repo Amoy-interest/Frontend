@@ -82,10 +82,12 @@ class PostCardList extends Component {
                 params.topic_name = topic_name;
                 console.log(params);
                 getTopicPosts(params, callback);
+                break;
             case PostType.SEARCH:
                 params.keyword = this.props.location.state.keyword;
                 console.log(params);
                 searchPosts(params,callback);
+
         }
     }
 
@@ -121,6 +123,7 @@ class PostCardList extends Component {
                 params.topic_name = topic_name;
                 console.log(params);
                 getTopicPosts(params, callback);
+                break;
             case PostType.SEARCH:
                 params.keyword = newProps.location.state.keyword;
                 console.log(params);

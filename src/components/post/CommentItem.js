@@ -68,8 +68,9 @@ class CommentItem extends React.Component {
         };
     };
 
-    handleVote = (comment) => {
-        let param = {blog_id: -1, comment_id: comment.comment_id};
+    handleVote(comment) {
+        let param = {blog_id: 0, comment_id: comment.comment_id};
+        console.log(param);
         const count = this.state.voteCount;
         const callback2 = (data) => {
             console.log(data);
@@ -168,7 +169,7 @@ class CommentItem extends React.Component {
                         }
                         action={
                             <React.Fragment>
-                                <IconButton aria-label="vote" onClick={this.handleVote}>
+                                <IconButton aria-label="vote" onClick={() => this.handleVote(comment)}>
                                     <ThumbUpAltIcon style={{color: voted ? amber[200] : null}}/>
                                     <Typography variant="body1" color="textSecondary" component="p">
                                         {voteCount}
@@ -216,7 +217,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post.blog_id} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init"/>}
                                 </CardContent>
 
                         </Collapse>

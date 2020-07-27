@@ -117,7 +117,7 @@ class PostCard extends React.Component {
     handleVote = (post) => {
         if (this.props.user.user === null) this.setState({messageOpen: true});
         else {
-            let param = {blog_id: post.blog_id, comment_id: -1};
+            let param = {blog_id: post.blog_id, comment_id: 0};
             let count = this.state.voteCount;
             const callback1 = (data) => {
                 console.log(data);
@@ -272,8 +272,8 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem><MicOffIcon color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem><BlockIcon color={"secondary"}/>封号</MenuItem>
+                    <MenuItem onClick={() => this.props.handleBan(post.user_id)}><MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem onClick={() => this.props.handleForbid(post.user_id)}><BlockIcon color={"secondary"}/>封号</MenuItem>
                 </Menu> : null
 
         );
