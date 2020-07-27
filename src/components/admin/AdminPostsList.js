@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {checkReportedBlog, getReportedPosts, searchReportedPosts} from '../../service/AdminService';
+import {
+    banReportedUser,
+    checkReportedBlog,
+    forbidReportedUser,
+    getReportedPosts,
+    searchReportedPosts
+} from '../../service/AdminService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,6 +31,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+import {InputAdornment, TextField} from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -64,8 +71,12 @@ class AdminPostsList extends Component {
             page: 0,
             rowsPerPage: 10,
             totalLength: 0,
-            keyword: null
+            keyword: null,
+            showBanDialog: false,
+            showForbidDialog: false,
         };
+        this.handleBan = this.handleBan.bind(this);
+        this.handleForbid = this.handleForbid.bind(this);
     }
 
     componentDidMount() {
@@ -225,6 +236,57 @@ class AdminPostsList extends Component {
         }))
     };
 
+    cancelBan = () => {
+        this.setState({showBanDialog: false});
+    };
+
+    confirmBan = () => {
+        this.setState({showBanDialog: false});
+        let banTime = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": banTime};
+        console.log(data);
+        banReportedUser(data, ((res)=> {
+            console.log(res.data);
+            //this.updateUsers(0, 10);
+        }))
+    };
+
+    cancelForbid = () => {
+        this.setState({showForbidDialog: false});
+    };
+
+    confirmForbid = () => {
+        this.setState({showForbidDialog: false});
+        let forbidTime = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": forbidTime};
+        console.log(data);
+        forbidReportedUser(data, ((res)=> {
+            console.log(res.data);
+            //this.updateUsers(0, 10);
+        }))
+    };
+
+    handleYearChange = (e) => {
+        this.setState({year: e.target.value});
+    };
+
+    handleDayChange = (e) => {
+        this.setState({day: e.target.value});
+    };
+
+    handleHourChange = (e) => {
+        this.setState({hour: e.target.value});
+    };
+
+    handleBan(userId) {
+        console.log(userId);
+        this.setState({showBanDialog: true, userId: userId});
+    };
+
+    handleForbid(userId) {
+        this.setState({showForbidDialog: true, userId: userId});
+    };
+
     render() {
         return (
             <div>
@@ -291,7 +353,7 @@ class AdminPostsList extends Component {
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
                                             <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
-                                                <PostCard post={blog} index={0}/>
+                                                <PostCard post={blog} index={0} handleBan={this.handleBan} handleForbid={this.handleForbid}/>
                                             </Collapse>
                                         </TableCell>
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
@@ -344,6 +406,60 @@ class AdminPostsList extends Component {
                         </Button>
                         <Button onClick={this.confirmDelete} color="primary">
                             确认删除
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+                    <DialogTitle id="form-dialog-title">禁言</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写禁言时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                            <TextField  onChange={this.handleYearChange}  variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleDayChange}  variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleHourChange} variant="outlined" style={{marginLeft: '8px', width: 100}}  InputProps={{
+                                endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                            }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelBan} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmBan} color="primary">
+                            确认禁言
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showForbidDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+                    <DialogTitle id="form-dialog-title">封号</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写封号时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                            <TextField  onChange={this.handleYearChange} variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleDayChange} variant="outlined" style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                            }}/>
+                            <TextField  onChange={this.handleHourChange} variant="outlined" style={{marginLeft: '8px', width: 100}}  InputProps={{
+                                endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                            }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelForbid} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmForbid} color="primary">
+                            确认封号
                         </Button>
                     </DialogActions>
                 </Dialog>

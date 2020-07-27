@@ -55,8 +55,10 @@ const UserSearchBar = (props) => {
     };
 
     const goto=()=>{
-        if(keyword)
+        if(keyword) {
             history.push('/search',{keyword:keyword});
+            setKeyword(null);
+        }
     };
     return (
         <div className={classes.search}>
@@ -64,7 +66,7 @@ const UserSearchBar = (props) => {
                 <SearchIcon/>
             </div>
             <InputBase
-                placeholder="请输入关键词"
+                placeholder="发现更精彩的世界"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,

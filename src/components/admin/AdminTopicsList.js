@@ -21,6 +21,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -200,9 +201,6 @@ export default class AdminTopicsList extends Component{
                     <Button variant="contained" color="secondary">
                         删除所选话题
                     </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        调整话题位置
-                    </Button>
                 </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
@@ -231,7 +229,12 @@ export default class AdminTopicsList extends Component{
                                                     onChange={() => this.setChecked(index)}
                                                 />
                                             </StyledTableCell>
-                                            <StyledTableCell>{topic.name}</StyledTableCell>
+                                            <StyledTableCell>
+                                                <Link style={{color: 'black'}}  to={{
+                                                    pathname: '/topic-discussion',
+                                                    search: '?topic_name=' + topic.name,
+                                                }} >{topic.name}</Link>
+                                            </StyledTableCell>
                                             <StyledTableCell>{topic.time}</StyledTableCell>
                                             <StyledTableCell>{topic.report_count}</StyledTableCell>
                                             <StyledTableCell>
