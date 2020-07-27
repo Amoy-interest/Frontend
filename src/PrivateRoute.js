@@ -21,12 +21,12 @@ class PrivateRoute extends React.Component{
     }
 
     componentDidMount() {
-        console.log(this.props)
+        //console.log(this.props)
         this.checkAuth(this.props.token);
     }
 
     checkAuth = (token) => {
-        console.log(token);
+        //console.log(token);
 
         if (token === '') this.setState({hasAuth: true});
         else this.setState({
@@ -36,7 +36,7 @@ class PrivateRoute extends React.Component{
     };
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.keyword);
+        //console.log(nextProps.keyword);
         this.setState({keyword: nextProps.keyword});
     }
 

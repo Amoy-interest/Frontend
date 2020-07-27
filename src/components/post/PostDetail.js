@@ -35,7 +35,7 @@ class PostDetail extends Component {
             post: null,
         };
 
-        console.log("props", props);
+        //console.log("props", props);
         //this.loadMore = this.loadMore.bind(this);
     }
 

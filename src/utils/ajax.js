@@ -100,8 +100,34 @@ const putRequest_json = (url, json, callback) => {
 };
 
 // delete json data
-const deleteRequest_json = (url, json, callback) => {
-    Request_json(url, json, callback, 'DELETE')
+const deleteRequest_json = (url, params, callback) => {
+    if (params) {
+        let paramsArray = [];
+        Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&')
+        } else {
+            url += '&' + paramsArray.join('&')
+        }
+    }
+    let opts = {
+        method: "DELETE",
+        headers: {
+            'token': store.getState().tokenReducer,
+        },
+        credentials: "include"
+    };
+
+    fetch(url,opts)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            callback(data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 export {postRequest_form, postRequest_json, getRequest,

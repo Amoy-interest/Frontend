@@ -87,7 +87,7 @@ class ProfileCard extends React.Component {
 
     componentWillReceiveProps(newProps) {
 
-        const param = this.props.location.search.split('&');
+        const param = newProps.location.search.split('&');
         const user_id=param[0].substr(4);
 ;
         const callback=(data)=>{

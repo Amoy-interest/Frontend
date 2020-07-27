@@ -59,12 +59,12 @@ class CommentList extends Component {
             key: props.key ? props.key : 0
         };
 
-        console.log("props", props);
+        //console.log("props", props);
         this.loadMore = this.loadMore.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.props);
+        //console.log(this.props);
     }
 
     componentWillUnmount = () => {
@@ -81,7 +81,7 @@ class CommentList extends Component {
                 // key: Math.random().toString(36).substr(2)
             });
             PubSub.publish(MsgType.ADD_COMMENT);
-            console.log(this.state);
+            //console.log(this.state);
         };
         if (this.props.type === CommentListType.PRIMARY) {
             let param = {
@@ -108,7 +108,7 @@ class CommentList extends Component {
             key: this.state.key + 1
         });
         PubSub.publish(MsgType.ADD_COMMENT);
-        console.log(this.state.comments);
+        //console.log(this.state.comments);
     };
 
     handleDeleteItem = (index) => {
@@ -119,7 +119,7 @@ class CommentList extends Component {
 
     loadMore() {
         const callback = (data) => {
-            console.log("loadMore data", this.state);
+            //onsole.log("loadMore data", this.state);
             this.setState({
                 comments: [...this.state.comments, ...data.data.list],
                 hasMoreItems: (data.data.totalPage > this.state.nextHref),
@@ -137,7 +137,7 @@ class CommentList extends Component {
             const params = {
                 pageNum: this.state.nextHref,
                 pageSize: this.state.pageSize,
-                root_comment_id: 1
+                root_comment_id: this.props.comment.comment_id
                 //this.props.comment.comment_id
             };
             getMultiLevelComments(params, callback);

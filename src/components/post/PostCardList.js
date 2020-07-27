@@ -33,6 +33,7 @@ class PostCardList extends Component {
         super(props);
         this.state = {
             posts: [],
+            user_id:0,
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
@@ -72,20 +73,19 @@ class PostCardList extends Component {
             case PostType.OWN:
                 const param = this.props.location.search.split('&');
                 const user_id = param[0].substr(4);
-                params.user_id=user_id;
-                console.log(params);
+                params.user_id = user_id;
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:
                 const arr = this.props.location.search.split('&');
                 const topic_name = arr[0].substr(12);
                 params.topic_name = topic_name;
-                console.log(params);
                 getTopicPosts(params, callback);
+                break;
             case PostType.SEARCH:
                 params.keyword = this.props.location.state.keyword;
-                console.log(params);
                 searchPosts(params,callback);
+                break;
         }
     }
 
@@ -110,7 +110,7 @@ class PostCardList extends Component {
                 getRandomPosts(params, callback);
                 break;
             case PostType.OWN:
-                const param = this.props.location.search.split('&');
+                const param = newProps.location.search.split('&');
                 const user_id = param[0].substr(4);
                 params.user_id=user_id;
                 getOwnPosts(params, callback);
@@ -121,10 +121,12 @@ class PostCardList extends Component {
                 params.topic_name = topic_name;
                 console.log(params);
                 getTopicPosts(params, callback);
+                break;
             case PostType.SEARCH:
                 params.keyword = newProps.location.state.keyword;
                 console.log(params);
                 searchPosts(params,callback);
+                break;
         }
     }
 
@@ -143,11 +145,13 @@ class PostCardList extends Component {
 
 
     addPost = (newPost) => {
-        console.log(newPost);
-        this.setState({
-            posts: [newPost, ...this.state.posts],
-            key: this.state.key + 1
-        });
+        const param = this.props.location.search.split('&');
+        const user_id = param[0].substr(4);
+        if(!(this.props.user.user.user_id!==user_id&&this.props.index===PostType.OWN))
+            this.setState({
+                posts: [newPost, ...this.state.posts],
+                key: this.state.key + 1
+            });
     };
 
     deletePost = (index) => {
@@ -157,7 +161,6 @@ class PostCardList extends Component {
     };
 
     render() {
-
         return (
             <div className={this.props.classes.root}>
                 <InfiniteScroll

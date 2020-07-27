@@ -69,18 +69,15 @@ class CommentItem extends React.Component {
     };
 
     handleVote = (comment) => {
-        let param = {blog_id: -1, comment_id: comment.comment_id};
+        let param = {blog_id: 0, comment_id: comment.comment_id};
         const count = this.state.voteCount;
         const callback2 = (data) => {
-            console.log(data);
             this.setState({voted: false});
             this.setState({voteCount: count - 1});
         };
         const callback1 = (data) => {
-            console.log(data);
             this.setState({voted: true});
             this.setState({voteCount: count + 1});
-            console.log(this.state.voteCount);
         };
         this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
     };
@@ -105,6 +102,7 @@ class CommentItem extends React.Component {
 
     handleDeleteComment = () => {
         let param = {comment_id: this.state.comment.comment_id};
+        console.log(param);
         const callback = () => {
             this.props.deleteComment(this.props.index);
         };
@@ -189,7 +187,7 @@ class CommentItem extends React.Component {
                                 </IconButton>
                             </React.Fragment>
                         }
-                        title={comment.nickname}
+                        title={type===CommentItemType.SECONDARY?`${comment.nickname} @ ${comment.reply_user_nickname}`:comment.nickname}
                         subheader={new Date(comment.comment_time).Format("yyyy-MM-dd hh:mm:ss")}
                     />
                     <CardContent style={{height: ''}}>
@@ -216,7 +214,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post.blog_id} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init"/>}
                                 </CardContent>
 
                         </Collapse>

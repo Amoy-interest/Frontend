@@ -29,15 +29,15 @@ class HotSearchList extends React.Component{
         this.state = {
             hotList: [],
         };
-        console.log("props", props);
+        //console.log("props", props);
         //this.loadMore = this.loadMore.bind(this);
     }
 
     componentDidMount() {
         const callback=(data)=>{
-            console.log("data", data);
+            //console.log("data", data);
             this.setState({hotList: data.data.list});
-            console.log(this.state.hotList);
+            //console.log(this.state.hotList);
         };
         getHotList(callback);
     }
