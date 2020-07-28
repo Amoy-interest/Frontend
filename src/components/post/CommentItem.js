@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Avatar1 from "../../assets/avatar1.jpeg";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -22,6 +21,10 @@ import {connect} from "react-redux";
 import {grey} from "@material-ui/core/colors";
 import CommentForm from "./CommentForm";
 import {Divider} from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import CommentList, {CommentListType} from "./CommentList";
+import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
     root: {
@@ -45,11 +48,12 @@ function mapStateToProps(state) {
     }
 };
 
-export const CommentItemType={
-    CARD:0,
-    PRIMARY:1,
-    SECONDARY:2
+export const CommentItemType = {
+    CARD: 0,
+    PRIMARY: 1,
+    SECONDARY: 2
 };
+
 @withStyles(styles)
 class CommentItem extends React.Component {
     constructor(props) {
@@ -58,61 +62,51 @@ class CommentItem extends React.Component {
             voted: false,
             voteCount: this.props.comment.vote_count,
             comment: this.props.comment,
-            secondaryComment: null,
+            secondaryComment: [],
             expanded: false,
             anchorEl: null
         };
     };
 
     handleVote = (comment) => {
-        let param = {blog_id: -1, comment_id: comment.comment_id};
+        let param = {blog_id: 0, comment_id: comment.comment_id};
         const count = this.state.voteCount;
         const callback2 = (data) => {
-            console.log(data);
             this.setState({voted: false});
             this.setState({voteCount: count - 1});
         };
         const callback1 = (data) => {
-            console.log(data);
             this.setState({voted: true});
             this.setState({voteCount: count + 1});
-            console.log(this.state.voteCount);
         };
         this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
     };
 
     submitComment = (text) => {
         let param = {
-            "blog_id": -1,
-            "nickname": "binnie",
-            "reply_comment_nickname": this.props.user.user.nickname,
-            "root_comment_id": this.state.comment_id,
-            "text": text.comment
+            blog_id: this.props.post.blog_id,
+            reply_user_id: this.state.comment.user_id,
+            root_comment_id: this.props.type===CommentItemType.SECONDARY?this.props.root_comment_id:this.state.comment.comment_id,
+            text: text.comment
         };
-        let comment = {
-            "_deleted": false,
-            "blog_id": -1,
-            "comment_id": this.state.comment_id,
-            "comment_level": 2,
-            "comment_text": text.comment,
-            "comment_time": Date(),
-            "nickname": this.props.user.user.nickname,
-            "reply_comment_nickname": this.state.comment.nickname,
-            "root_comment_id": -1,
-            "vote_count": 0
-        };
-        console.log(comment);
-        const callback = () => {
+        const callback = (data) => {
             this.setState({expanded: false});
-            this.setState({secondaryComment: comment});
+            let newSecondaryComment = [data.data, ...this.state.secondaryComment];
+            this.setState({secondaryComment: newSecondaryComment});
+            if(this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD) {
+                console.log(data.data);
+                this.props.submit(data.data);
+            }
         };
         postComment(param, callback);
     };
 
     handleDeleteComment = () => {
         let param = {comment_id: this.state.comment.comment_id};
+        //console.log(param);
         const callback = () => {
             this.props.deleteComment(this.props.index);
+
         };
         deleteComment(param, callback);
     };
@@ -130,7 +124,7 @@ class CommentItem extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, type} = this.props;
         const {expanded, voted, voteCount, comment, anchorEl, secondaryComment} = this.state;
         const menuId = 'report-menu';
         const isMenuOpen = Boolean(anchorEl);
@@ -162,14 +156,19 @@ class CommentItem extends React.Component {
         );
         return (
             <React.Fragment>
-                <Card className={classes.root} elevation={0} variant="">
+                <Card className={classes.root} elevation={0}>
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="comment" src={comment.avatar_path}/>
+                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                pathname: '/personal-info',
+                                search: '?id=' + comment.user_id,
+                            }}>
+                                <Avatar aria-label="comment" src={comment.avatar_path}/>
+                            </Link>
                         }
                         action={
                             <React.Fragment>
-                                <IconButton aria-label="vote" onClick={this.handleVote}>
+                                <IconButton aria-label="vote" onClick={() => this.handleVote(comment)}>
                                     <ThumbUpAltIcon style={{color: voted ? amber[200] : null}}/>
                                     <Typography variant="body1" color="textSecondary" component="p">
                                         {voteCount}
@@ -190,23 +189,36 @@ class CommentItem extends React.Component {
                                 </IconButton>
                             </React.Fragment>
                         }
-                        title={comment.nickname}
-                        subheader={comment.comment_time}
+                        title={type===CommentItemType.SECONDARY?`${comment.nickname} @ ${comment.reply_user_nickname}`:comment.nickname}
+                        subheader={new Date(comment.comment_time).Format("yyyy-MM-dd hh:mm:ss")}
                     />
                     <CardContent style={{height: ''}}>
                         <Typography variant="body1" color="textSecondary" component="p">
                             {comment.comment_text}
                         </Typography>
-                        {secondaryComment === null ? null :
-                            <Typography variant="body2" color="textSecondary" component="p"
-                                        style={{backgroundColor: grey[50], marginTop: '10px'}}>
-                                {secondaryComment.nickname} 回复 {comment.nickname}: {secondaryComment.comment_text}
-                            </Typography>
+                        {type === CommentItemType.CARD ?
+                            secondaryComment.length === 0 ? null :
+                                <List>
+                                    {secondaryComment.map((item, index) => {
+                                        return (
+                                            <ListItem key={index}>
+                                                <Typography variant="body2" color="textSecondary" component="p"
+                                                            style={{backgroundColor: grey[50], marginTop: '10px'}}>
+                                                    {item.nickname} 回复 {comment.nickname}: {item.comment_text}
+                                                </Typography>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List>
+                            : null
                         }
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent style={{backgroundColor: grey[50]}}>
-                                <CommentForm secondary commentId={comment} submit={this.submitComment}/>
-                            </CardContent>
+                                <CardContent style={{backgroundColor: grey[50]}}>
+                                    {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
+                                    <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init" root_comment_id={this.props.root_comment_id}/>}
+                                </CardContent>
+
                         </Collapse>
                         <Divider style={{marginTop: '20px'}}/>
                     </CardContent>

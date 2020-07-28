@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {getSensWords, postSensWord, putSensWord, deleteSensWord} from '../../service/KeyWordService';
+import {getSensWords, postSensWord, putSensWord, deleteSensWord,searchSensWords} from '../../service/KeyWordService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,8 +26,8 @@ import {getReportedTopics} from "../../service/AdminService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#b3e5fc',
+        color: '#616161',
     },
     body: {
         fontSize: 14,
@@ -35,6 +35,7 @@ const StyledTableCell = withStyles((theme) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         maxWidth: '130px',
+        //padding:theme.spacing(1)
     },
 }))(TableCell);
 
@@ -62,7 +63,8 @@ class AdminSensWordsList extends Component {
             deleteWord: null,
             page: 0,
             rowsPerPage: 20,
-            totalLength: 0
+            totalLength: 0,
+            keyword: null
         };
     }
 
@@ -84,21 +86,38 @@ class AdminSensWordsList extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("sensWord page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateSensWords(0, 10);
+        });
     }
 
     updateSensWords(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getSensWords(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                sensWords: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getSensWords(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    sensWords: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchSensWords(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    sensWords: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {
@@ -201,19 +220,11 @@ class AdminSensWordsList extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <div style={{marginTop: '30px', marginBottom: '30px'}}>
-                    <Button variant="contained" color="secondary" onClick={this.handleAdd}>
-                        添加敏感词
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        删除所选敏感词
-                    </Button>
-                </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                <StyledTableCell style={{paddingLeft:'35px'}} onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
@@ -238,6 +249,7 @@ class AdminSensWordsList extends Component {
                                                         tabIndex={-1}
                                                         disableRipple
                                                         onChange={() => this.setChecked(index)}
+                                                        style={{paddingLeft:'35px'}}
                                                     />
                                                 </StyledTableCell>
                                                 <StyledTableCell>{sensWord.keyword}</StyledTableCell>
@@ -297,6 +309,14 @@ class AdminSensWordsList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
+                    <div style={{ marginBottom: '10px'}}>
+                        <Button variant="contained" color="secondary" onClick={this.handleAdd} style={{marginLeft: 690}}>
+                            添加敏感词
+                        </Button>
+                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
+                            删除全部
+                        </Button>
+                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">Add</DialogTitle>

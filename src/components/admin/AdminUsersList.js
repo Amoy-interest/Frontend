@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
-import {getReportedUsers, banReportedUser, forbidReportedUser, getReportedPosts} from "../../service/AdminService";
+import {getReportedUsers, banReportedUser, forbidReportedUser, searchReportedUsers} from "../../service/AdminService";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Table from '@material-ui/core/Table';
@@ -25,11 +25,13 @@ import {InputAdornment} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
+import {amber} from "@material-ui/core/colors";
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#b3e5fc',
+        color: '#616161',
     },
     body: {
         fontSize: 14,
@@ -37,15 +39,16 @@ const StyledTableCell = withStyles((theme) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         maxWidth: '130px',
+        //padding:theme.spacing(2)
     },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
+    // root: {
+    //     '&:nth-of-type(odd)': {
+    //         backgroundColor: theme.palette.action.hover,
+    //     },
+    // },
 }))(TableRow);
 
 export default class AdminUsersList extends Component {
@@ -89,21 +92,38 @@ export default class AdminUsersList extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("user page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateUsers(0, 10);
+        });
     }
 
     updateUsers(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getReportedUsers(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                users: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getReportedUsers(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    users: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchReportedUsers(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    users: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {
@@ -194,19 +214,11 @@ export default class AdminUsersList extends Component {
     render() {
         return (
             <div>
-                <div style={{marginTop:'30px',marginBottom:'30px'}}>
-                    <Button variant="contained" color="secondary">
-                        禁言所选用户
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        封号所选用户
-                    </Button>
-                </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                <StyledTableCell style={{paddingLeft:'35px'}} onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>用户</StyledTableCell>
@@ -227,9 +239,15 @@ export default class AdminUsersList extends Component {
                                                     tabIndex={-1}
                                                     disableRipple
                                                     onChange={() => this.setChecked(index)}
+                                                    style={{paddingLeft:'35px'}}
                                                 />
                                             </StyledTableCell>
-                                            <StyledTableCell>{user.nickname}</StyledTableCell>
+                                            <StyledTableCell>
+                                                <Link style={{color: 'black'}} to={{
+                                                    pathname: '/personal-info',
+                                                    search: '?id=' + user.user_id,
+                                                }}>{user.nickname}</Link>
+                                            </StyledTableCell>
                                             <StyledTableCell>{user.credits}</StyledTableCell>
                                             <StyledTableCell>
                                                 <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
@@ -267,6 +285,14 @@ export default class AdminUsersList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
+                    <div style={{marginBottom:'10px'}}>
+                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
+                            禁言全部
+                        </Button>
+                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
+                            封号全部
+                        </Button>
+                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">禁言</DialogTitle>

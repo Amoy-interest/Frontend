@@ -2,6 +2,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import React, {useState} from "react";
 import {fade, makeStyles} from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -43,23 +45,28 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const SearchBar = (props) => {
+const UserSearchBar = (props) => {
     const classes = useStyles();
     const [keyword, setKeyword] = useState(null);
+    const history=useHistory();
     const handleChange = (e) => {
         console.log(e.target.value);
         setKeyword(e.target.value);
     };
-    const handleSearch = () => {
-        props.handleSearch(keyword);
+
+    const goto=()=>{
+        if(keyword) {
+            history.push('/search',{keyword:keyword});
+            setKeyword(null);
+        }
     };
     return (
         <div className={classes.search}>
-            <div className={classes.searchIcon} onClick={handleSearch}>
+            <div className={classes.searchIcon} onClick={goto.bind(this)}>
                 <SearchIcon/>
             </div>
             <InputBase
-                placeholder="请输入关键词"
+                placeholder="发现更精彩的世界"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
@@ -71,4 +78,4 @@ const SearchBar = (props) => {
         </div>
     );
 };
-export default SearchBar;
+export default UserSearchBar;

@@ -52,19 +52,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function HeaderPre() {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
+    const classes = useStyles();
+    // const [modalStyle] = React.useState(getModalStyle);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const isMenuOpen = Boolean(anchorEl);
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
 
     const handleModalOpen = () => {
-        setOpen(true);
+        setModalOpen(true);
     };
 
     const handleModalClose = () => {
-        setOpen(false);
+        setModalOpen(false);
     };
 
     const handleMenuOpen = (event) => {
@@ -124,7 +124,7 @@ export default function HeaderPre() {
                 </Toolbar>
             </AppBar>
             {renderMenu}
-            <Modal open={open} onClose={handleModalClose}>
+            <Modal open={modalOpen} onClose={handleModalClose}>
                 <div style={getModalStyle()} className={classes.paper}>
                     <LoginForm closeModal={handleModalClose}/>
                 </div>

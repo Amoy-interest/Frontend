@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import {getReportedTopics, checkReportedTopic} from "../../service/AdminService";
+import {getReportedTopics, checkReportedTopic, searchReportedTopics} from "../../service/AdminService";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -21,11 +21,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
+import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#b3e5fc',
+        color: '#616161',
     },
     body: {
         fontSize: 14,
@@ -33,15 +34,16 @@ const StyledTableCell = withStyles((theme) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         maxWidth: '130px',
+        //padding:theme.spacing(1)
     },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
+    // root: {
+    //     '&:nth-of-type(odd)': {
+    //         backgroundColor: theme.palette.action.hover,
+    //     },
+    // },
 }))(TableRow);
 
 export default class AdminTopicsList extends Component{
@@ -82,21 +84,38 @@ export default class AdminTopicsList extends Component{
 
     componentWillReceiveProps(nextProps) {
         console.log("topic page finally get keyword");
-        console.log(nextProps.keyword);
+        this.setState({keyword: nextProps.keyword}, () => {
+            this.updateTopics(0, 10);
+        });
     }
 
     updateTopics(page, rowsPerPage) {
-        const params = {
-            pageNum: page,
-            pageSize: rowsPerPage
-        };
-        getReportedTopics(params, ((res) => {
-            console.log(res.data);
-            this.setState({
-                topics: res.data.list,
-                totalLength: res.data.total
-            });
-        }));
+        if (this.state.keyword === null) {
+            const params = {
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            getReportedTopics(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    topics: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        } else {
+            const params = {
+                keyword: this.state.keyword,
+                pageNum: page,
+                pageSize: rowsPerPage
+            };
+            searchReportedTopics(params, ((res) => {
+                console.log(res.data);
+                this.setState({
+                    topics: res.data.list,
+                    totalLength: res.data.total
+                });
+            }));
+        }
     };
 
     handleChangePage = (e, newPage) => {
@@ -179,19 +198,11 @@ export default class AdminTopicsList extends Component{
     render() {
         return (
             <div>
-                <div style={{marginTop:'30px',marginBottom:'30px'}}>
-                    <Button variant="contained" color="secondary">
-                        删除所选话题
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        调整话题位置
-                    </Button>
-                </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                <StyledTableCell style={{paddingLeft:'35px'}} onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>话题</StyledTableCell>
@@ -212,10 +223,16 @@ export default class AdminTopicsList extends Component{
                                                     tabIndex={-1}
                                                     disableRipple
                                                     onChange={() => this.setChecked(index)}
+                                                    style={{paddingLeft:'35px'}}
                                                 />
                                             </StyledTableCell>
-                                            <StyledTableCell>{topic.name}</StyledTableCell>
-                                            <StyledTableCell>{topic.time}</StyledTableCell>
+                                            <StyledTableCell>
+                                                <Link style={{color: 'black'}}  to={{
+                                                    pathname: '/topic-discussion',
+                                                    search: '?topic_name=' + topic.name,
+                                                }} >{topic.name}</Link>
+                                            </StyledTableCell>
+                                            <StyledTableCell>{new Date(topic.time).Format("yyyy-MM-dd hh:mm:ss")}</StyledTableCell>
                                             <StyledTableCell>{topic.report_count}</StyledTableCell>
                                             <StyledTableCell>
                                                 <Tooltip title={"通过"} onClick={() => {this.checkTopic(topic.name, 1)}}>
@@ -248,6 +265,14 @@ export default class AdminTopicsList extends Component{
                             </TableRow>
                         </TableFooter>
                     </Table>
+                    <div style={{marginBottom:'10px'}}>
+                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
+                            删除全部
+                        </Button>
+                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
+                            调整话题位置
+                        </Button>
+                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Pass</DialogTitle>

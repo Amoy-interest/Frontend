@@ -14,6 +14,7 @@ import {AITextField, AICheckField, AIPickerField} from "../commen/AIField";
 import {setToken, setUser} from "../../redux/actions";
 import {connect} from "react-redux";
 import * as userService from "../../service/UserService";
+import Message from "../commen/Message";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -52,18 +53,11 @@ function mapDispatchToProps(dispatch) {
 function RegisterForm(props){
     const classes = useStyles();
     const history = useHistory();
-
-    const callback = (data) => {
-        console.log(data)
-        props.onLogin(data.data.user, data.data.token)
-        history.push('/home');
-    }
-
-    const submit = (values) => {
-        console.log(values);
-        userService.register(values, callback)
-    }
-
+    const [message, setMessage] = React.useState({
+        open: false,
+        text: '',
+        type: 'warning'
+    });
     const sex = [
         {
             value: 0,
@@ -74,6 +68,59 @@ function RegisterForm(props){
             name: "男"
         }
     ]
+
+    const callback = (data) => {
+        console.log(data)
+        if (data.status !== 0){
+            setMessage({
+                text: data.msg,
+                type: 'error',
+                open: true
+            });
+            return;
+        }
+        console.log(data.data.user, data.data.token)
+        setMessage({
+            text: data.msg,
+            type: 'success',
+            open: true
+        })
+        props.onLogin(data.data.user, data.data.token)
+        history.push('/home');
+    }
+
+    const submit = (values) => {
+        console.log(values);
+        userService.register(values, callback)
+    }
+
+
+    const validate = values => {
+        const errors = {};
+
+        // username
+        if (!values.username) { errors.username = '用户名不能为空！';}
+        else if (values.username.length > 20) { errors.username = '用户名不能大于20位！';}
+
+        // password
+        if (!values.password) { errors.password = '密码不能为空！';}
+        else if (!/^[0-9a-zA-Z]{6,20}$/i.test(values.password)) {
+            errors.password = '密码由6-20位的字母和数字组成！';}
+
+        // nickname
+        if (!values.nickname) { errors.nickname = '昵称不能为空！';}
+
+        // email
+        if (!values.email) { errors.email = '邮箱不能为空！';}
+        else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Invalid email address';
+        }
+
+        // address
+        if (!values.address) { errors.address = '地址不能为空！';}
+
+        return errors;
+    };
 
 
     return (
@@ -95,10 +142,10 @@ function RegisterForm(props){
                         email: '',
                         address: ''
                     }}
+                    validate={validate}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
-                            alert(JSON.stringify(values, null, 2));
                             submit(values);
                         }, 500);
                     }}
@@ -110,7 +157,7 @@ function RegisterForm(props){
                                 <AITextField sm={12} name="password" label="密码" type="password"/>
                                 <AITextField sm={6} name="nickname" label="昵称"/>
                                 <AIPickerField sm={6} name="sex" label="性别" array={sex}/>
-                                <AITextField sm={12} name="email" label="邮箱"/>
+                                <AITextField sm={12} name="email" label="邮箱" type="email"/>
                                 <AITextField sm={12} name="address" label="地址"/>
                                 <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
                             </Grid>
@@ -134,6 +181,12 @@ function RegisterForm(props){
                     )}
                 </Formik>
             </Paper>
+            <Message
+                messageOpen={message.open}
+                handleClose={() => setMessage({open:false})}
+                type={message.type}
+                text={message.text}
+            />
         </Container>
     );
 }

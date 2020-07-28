@@ -10,12 +10,11 @@ import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import grey from "@material-ui/core/colors/grey";
-import CardActions from '@material-ui/core/CardActions';
 
 const styles = (theme => ({
-    root:{
-        backgroundColor:grey[50],
-        paddingBottom:'30px'
+    root: {
+        backgroundColor: grey[50],
+        paddingBottom: '30px'
     }
 }));
 
@@ -41,28 +40,35 @@ class ForwardCard extends React.Component {
 
         if (this.state.post !== null)
             return (
-                <Link style={{color: grey[50]}} to={{
-                    pathname: '/post-detail',
-                    search: '?id=' + post.blog_id
-                }}>
+
                 <div>
-                        <Card className={classes.root} style={{width: this.props.size}} elevation={0}>
-                            <CardHeader
-                                avatar={
+                    <Card className={classes.root} style={{width: this.props.size}} elevation={0}>
+                        <CardHeader
+                            avatar={
+                                <Link style={{color: amber[200], fontSize: '18px'}}
+                                      to={{
+                                          pathname: '/personal-info',
+                                          search: '?id=' + post.user_id,
+                                      }}>
                                     <Avatar src={post.avatar_path}/>
-                                }
-                                title={post.nickname}
-                                subheader={post.blog_time}
-                            />
+                                </Link>
+                            }
+                            title={post.nickname}
+                            subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
+                        />
+                        <Link style={{color: grey[50]}} to={{
+                            pathname: '/post-detail',
+                            search: '?id=' + post.blog_id
+                        }}>
                             <CardContent>
                                 <Typography variant="body1" color="textPrimary" component="p">
                                     {post.blog_content.text}
                                 </Typography>
                             </CardContent>
                             <PostImage image={post.blog_content.images}/>
-                        </Card>
+                        </Link>
+                    </Card>
                 </div>
-                </Link>
             );
         else return <div>Loading</div>;
     }

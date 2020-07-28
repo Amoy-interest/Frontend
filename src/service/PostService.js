@@ -96,13 +96,11 @@ export const searchPosts=(params,callback)=>{
 };
 
 export const getRecommendPosts = (params,callback) => {
-    console.log("executing getRecommendPosts");
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;
     getRequest(url,params,callback);
 };
 
 export const getRandomPosts = (params,callback) => {
-    console.log("executing getRandomPosts");
     const url = `${apiUrl}${APIModules.BLOG}/beforeLogin`;
     getRequest(url,params,callback);
 };
@@ -143,12 +141,10 @@ export const getMultiLevelComments=(params,callback)=>{
 
 export const postComment=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/comments`;
-    console.log(data);
     postRequest_json(url, data, callback);
 };
 
 export const deleteComment=(data,callback)=>{
-    console.log(data);
-    const url = `${apiUrl}${APIModules.BLOG}/comments?comment_id=${data.comment_id}`;
+    const url = `${apiUrl}${APIModules.BLOG}/comments`;
     deleteRequest_json(url, data, callback);
 };

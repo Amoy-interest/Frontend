@@ -47,7 +47,7 @@ const theme_admin = createMuiTheme({
             main:indigo[400],
         },
         secondary: {
-            main: blue[200],
+            main: '#b3e5fc',
         },
     },
 });
