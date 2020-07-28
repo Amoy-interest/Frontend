@@ -43,6 +43,7 @@ export default class Uploader extends React.Component{
         }
         this.props.uploadFiles(fileList);
 
+        // if the number of images > limits
         if (fileList.length >= this.state.limits)
             this.setState({uploaderDisabled: true});
         else this.setState({uploaderDisabled: false});
@@ -50,9 +51,6 @@ export default class Uploader extends React.Component{
         console.log(this.state);
     };
 
-    // handleClick = () => {
-    //     console.log(this.state.uploaderDisabled);
-    // };
 
     render() {
         const { dialogImageUrl, dialogVisible } = this.state;

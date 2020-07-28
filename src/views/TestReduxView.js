@@ -17,16 +17,20 @@ function mapDispatchToProps(dispatch) {
             let user = {
                 name: 'bess',
                 userType: 0
-            }
+            };
             dispatch(setUser(user));
             dispatch(setToken('zyw token'));
         }
     }
 }
 
+function sleep(ms) {
+    return new Promise(function(resolve, reject) {
+        setTimeout(resolve, ms);
+    })
+}
 
-
-class TestView extends Component{
+class TestReduxView extends Component{
     constructor(props) {
         super(props);
 
@@ -66,21 +70,23 @@ class TestView extends Component{
         userService.loadMore(this.state.pageSize, this.state.nextHref, callback);
     }
 
-    render() {
-        let items = [];
-        this.state.tracks.map((track, i) => {
-            items.push(
-                <div className="track" key={i}>
-                    <Typography variant="body2" color="textSecondary" component="p" align='center'>
-                        {track.title} number {i}
-                    </Typography>
-                </div>
-            );
+    asyncFunction = async () => {
+        let promise = new Promise(function(resolve, reject){
+            console.log("AAA");
+            sleep(1000);
+            resolve("1234")
         });
+        let value = await promise;
+        console.log(value);
+        console.log("CCC");
+    };
 
+    render() {
+        const classes = this.props.classes;
         return (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 TestView page!
+                <button onClick={this.asyncFunction}>asyncFunction</button>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <button onClick={this.loadMore}>loadMore</button>
                     <button onClick={this.handleGetStore}>GetStore</button>
@@ -95,7 +101,15 @@ class TestView extends Component{
                         useWindow={false}
                     >
                         <div className="tracks">
-                            {items}
+                            {this.state.tracks.map((track, i) => {
+                            return (
+                            <div className="track" key={i}>
+                            <Typography variant="body2" color="textSecondary" component="p" align='center'>
+                            {track.title} number {i}
+                            </Typography>
+                            </div>
+                            );
+                        })}
                         </div>
                     </InfiniteScroll>
                 </div>
@@ -107,4 +121,4 @@ class TestView extends Component{
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TestView)
+)(TestReduxView)
