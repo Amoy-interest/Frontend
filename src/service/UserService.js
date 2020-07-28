@@ -45,13 +45,13 @@ export const loadMore = (pageSize, pageIndex, callback) => {
 
 export const follow = (id, callback) => {
     const data = {follow_id:id};
-    const url = `${apiUrl}${APIModules.USER}/follow`;
+    const url = `${apiUrl}${APIModules.USER}/follow?follow_id=${id}`;
     postRequest_json(url, data, callback);
 };
 
 export const unfollow = (id, callback) => {
     const data = {follow_id:id};
-    const url = `${apiUrl}${APIModules.USER}/unfollow`;
+    const url = `${apiUrl}${APIModules.USER}/unfollow?follow_id=${id}`;
     postRequest_json(url, data, callback);
 };
 
@@ -60,3 +60,14 @@ export const getUserInfo = (id, callback) => {
     const url = `${apiUrl}${APIModules.USER}`;
     getRequest(url, data, callback);
 };
+
+export const getFans = (params, callback) => {
+    const url = `${apiUrl}${APIModules.USER}/fans`;
+    getRequest(url, params, callback);
+};
+
+export const getFollows = (params, callback) => {
+    const url = `${apiUrl}${APIModules.USER}/follow`;
+    getRequest(url, params, callback);
+};
+

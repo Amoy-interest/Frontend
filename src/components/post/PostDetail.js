@@ -44,6 +44,7 @@ class PostDetail extends Component {
         const blogId = arr[0].substr(4);
         const callback=(data)=>{
             this.setState({post: data.data});
+            //console.log(data);
         };
         getPost(blogId,callback);
     }

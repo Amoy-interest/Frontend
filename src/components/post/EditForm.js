@@ -30,10 +30,10 @@ export default function EditForm(props){
                 initialValues={{
                     comment: props.post_content
                 }}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting, resetForm }) => {
                     setTimeout(() => {
                         setSubmitting(false);
-                        alert(JSON.stringify(values, null, 2));
+                        resetForm();
                         console.log(values);
                         submit(values);
                     }, 500);

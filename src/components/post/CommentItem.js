@@ -86,7 +86,7 @@ class CommentItem extends React.Component {
         let param = {
             blog_id: this.props.post.blog_id,
             reply_user_id: this.state.comment.user_id,
-            root_comment_id: this.state.comment.comment_id,
+            root_comment_id: this.props.type===CommentItemType.SECONDARY?this.props.root_comment_id:this.state.comment.comment_id,
             text: text.comment
         };
         const callback = (data) => {
@@ -94,6 +94,7 @@ class CommentItem extends React.Component {
             let newSecondaryComment = [data.data, ...this.state.secondaryComment];
             this.setState({secondaryComment: newSecondaryComment});
             if(this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD) {
+                console.log(data.data);
                 this.props.submit(data.data);
             }
         };
@@ -102,9 +103,10 @@ class CommentItem extends React.Component {
 
     handleDeleteComment = () => {
         let param = {comment_id: this.state.comment.comment_id};
-        console.log(param);
+        //console.log(param);
         const callback = () => {
             this.props.deleteComment(this.props.index);
+
         };
         deleteComment(param, callback);
     };
@@ -166,7 +168,7 @@ class CommentItem extends React.Component {
                         }
                         action={
                             <React.Fragment>
-                                <IconButton aria-label="vote" onClick={this.handleVote}>
+                                <IconButton aria-label="vote" onClick={() => this.handleVote(comment)}>
                                     <ThumbUpAltIcon style={{color: voted ? amber[200] : null}}/>
                                     <Typography variant="body1" color="textSecondary" component="p">
                                         {voteCount}
@@ -214,7 +216,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init" root_comment_id={this.props.root_comment_id}/>}
                                 </CardContent>
 
                         </Collapse>

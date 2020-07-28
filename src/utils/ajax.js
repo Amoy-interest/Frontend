@@ -110,6 +110,7 @@ const deleteRequest_json = (url, params, callback) => {
             url += '&' + paramsArray.join('&')
         }
     }
+    console.log(url);
     let opts = {
         method: "DELETE",
         headers: {

@@ -75,6 +75,7 @@ class CommentList extends Component {
 
     submitComment = (text) => {
         const callback = (data) => {
+            console.log(data);
             this.setState({
                 comments: [data.data, ...this.state.comments],
                 key: this.state.key + 1
@@ -98,6 +99,7 @@ class CommentList extends Component {
                 root_comment_id: this.props.comment.comment_id,
                 text: text.comment
             };
+            console.log(param);
             postComment(param, callback);
         }
     };
@@ -115,6 +117,7 @@ class CommentList extends Component {
         let arr = this.state.comments;
         arr.splice(index, 1);
         this.setState({comments: arr, key: this.state.key + 1});
+        PubSub.publish(MsgType.DELETE_COMMENT);
     };
 
     loadMore() {
@@ -169,6 +172,7 @@ class CommentList extends Component {
                                                  submit={this.addComment}
                                                  index={index} deleteComment={this.handleDeleteItem}
                                                  post={this.props.post}
+                                                 root_comment_id={this.props.type === CommentListType.PRIMARY ?item.comment_id:this.props.root_comment_id}
                                     />
                                 </ListItem>
                             );

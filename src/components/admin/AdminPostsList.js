@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
-import {checkReportedBlog, getReportedPosts, searchReportedPosts} from '../../service/AdminService';
+import {
+    banReportedUser,
+    checkReportedBlog,
+    forbidReportedUser,
+    getReportedPosts,
+    searchReportedPosts
+} from '../../service/AdminService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,11 +31,13 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+import {InputAdornment, TextField} from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#b3e5fc',
+        color: '#616161',
+        //opacity:'70%',
     },
     body: {
         fontSize: 14,
@@ -37,6 +45,7 @@ const StyledTableCell = withStyles((theme) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         maxWidth: '130px',
+        //padding:theme.spacing(1)
     },
 }))(TableCell);
 
@@ -64,8 +73,12 @@ class AdminPostsList extends Component {
             page: 0,
             rowsPerPage: 10,
             totalLength: 0,
-            keyword: null
+            keyword: null,
+            showBanDialog: false,
+            showForbidDialog: false,
         };
+        this.handleBan = this.handleBan.bind(this);
+        this.handleForbid = this.handleForbid.bind(this);
     }
 
     componentDidMount() {
@@ -75,7 +88,7 @@ class AdminPostsList extends Component {
         };
         getReportedPosts(params, ((res) => {
             console.log(res.data);
-            for (let i=0; i<res.data.list.length; i++) {
+            for (let i = 0; i < res.data.list.length; i++) {
                 this.state.open.push(false);
                 this.state.checked.push(false);
             }
@@ -149,7 +162,7 @@ class AdminPostsList extends Component {
 
     setCheckAll() {
         let tmp = this.state.checked;
-        for (let i=0; i<tmp.length; i++) {
+        for (let i = 0; i < tmp.length; i++) {
             tmp[i] = !this.state.checkAll;
         }
         this.setState({
@@ -177,11 +190,11 @@ class AdminPostsList extends Component {
         tmp.sort((a, b) => {
             if (this.state.hotOrder === "desc") {
                 this.setState({hotOrder: "asc"});
-                return b.blog_count.vote_count+b.blog_count.comment_count+b.blog_count.forward_count -
+                return b.blog_count.vote_count + b.blog_count.comment_count + b.blog_count.forward_count -
                     a.blog_count.vote_count - a.blog_count.comment_count - a.blog_count.forward_count;
             } else {
                 this.setState({hotOrder: "desc"});
-                return a.blog_count.vote_count+a.blog_count.comment_count+a.blog_count.forward_count -
+                return a.blog_count.vote_count + a.blog_count.comment_count + a.blog_count.forward_count -
                     b.blog_count.vote_count - b.blog_count.comment_count - b.blog_count.forward_count;
             }
         })
@@ -225,22 +238,65 @@ class AdminPostsList extends Component {
         }))
     };
 
+    cancelBan = () => {
+        this.setState({showBanDialog: false});
+    };
+
+    confirmBan = () => {
+        this.setState({showBanDialog: false});
+        let banTime = this.state.year * 365 * 86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": banTime};
+        console.log(data);
+        banReportedUser(data, ((res) => {
+            console.log(res.data);
+            //this.updateUsers(0, 10);
+        }))
+    };
+
+    cancelForbid = () => {
+        this.setState({showForbidDialog: false});
+    };
+
+    confirmForbid = () => {
+        this.setState({showForbidDialog: false});
+        let forbidTime = this.state.year * 365 * 86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": forbidTime};
+        console.log(data);
+        forbidReportedUser(data, ((res) => {
+            console.log(res.data);
+            //this.updateUsers(0, 10);
+        }))
+    };
+
+    handleYearChange = (e) => {
+        this.setState({year: e.target.value});
+    };
+
+    handleDayChange = (e) => {
+        this.setState({day: e.target.value});
+    };
+
+    handleHourChange = (e) => {
+        this.setState({hour: e.target.value});
+    };
+
+    handleBan(userId) {
+        console.log(userId);
+        this.setState({showBanDialog: true, userId: userId});
+    };
+
+    handleForbid(userId) {
+        this.setState({showForbidDialog: true, userId: userId});
+    };
+
     render() {
         return (
             <div>
-                <div style={{marginTop: '30px', marginBottom: '30px'}}>
-                    <Button variant="contained" color="secondary">
-                        屏蔽所选博文
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        删除所选博文
-                    </Button>
-                </div>
                 <TableContainer component={Paper}>
-                    <Table aria-label="customized table">
-                        <TableHead>
+                    <Table aria-label="customized table" >
+                        <TableHead color={"primary"}>
                             <TableRow>
-                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                <StyledTableCell style={{paddingLeft:'35px'}} onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>发帖人</StyledTableCell>
@@ -251,54 +307,65 @@ class AdminPostsList extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {
-                        this.state.posts.map((blog, index) => {
-                            return (
-                                <React.Fragment key={index}>
-                                    <StyledTableRow>
-                                        <StyledTableCell component="th" scope="row">
-                                            <Checkbox
-                                                edge="start"
-                                                checked={this.state.checked[index]}
-                                                tabIndex={-1}
-                                                disableRipple
-                                                onChange={() => this.setChecked(index)}
-                                            />
-                                        </StyledTableCell>
-                                        <StyledTableCell>{blog.nickname}</StyledTableCell>
-                                        <StyledTableCell>
-                                            <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
-                                                {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                            </IconButton>
-                                            {blog.blog_content.text}
-                                        </StyledTableCell>
-                                        <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
-                                        <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
-                                        <StyledTableCell>
-                                            <Tooltip title={"通过"} onClick={() => {this.checkBlog(blog.blog_id, 1)}}>
-                                                <IconButton edge="end" aria-label="micoff">
-                                                    <DoubleArrowIcon/>
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title={"删除"} onClick={() => {this.checkBlog(blog.blog_id, 2)}}>
-                                                <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            </Tooltip>
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                    <TableRow>
-                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
-                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
-                                            <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
-                                                <PostCard post={blog} index={0}/>
-                                            </Collapse>
-                                        </TableCell>
-                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={1}> </TableCell>
-                                    </TableRow>
-                                </React.Fragment>
-                            );
-                        })}
+                            {
+                                this.state.posts.map((blog, index) => {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <StyledTableRow>
+                                                <StyledTableCell component="th" scope="row">
+                                                    <Checkbox
+                                                        edge="start"
+                                                        checked={this.state.checked[index]}
+                                                        tabIndex={-1}
+                                                        disableRipple
+                                                        onChange={() => this.setChecked(index)}
+                                                        style={{paddingLeft:'35px'}}
+                                                    />
+                                                </StyledTableCell>
+                                                <StyledTableCell>{blog.nickname}</StyledTableCell>
+                                                <StyledTableCell>
+                                                    <IconButton aria-label="expand row" size="small"
+                                                                onClick={() => this.setOpen(index)}>
+                                                        {this.state.open[index] ? <KeyboardArrowUpIcon/> :
+                                                            <KeyboardArrowDownIcon/>}
+                                                    </IconButton>
+                                                    {blog.blog_content.text}
+                                                </StyledTableCell>
+                                                <StyledTableCell>{blog.blog_count.forward_count + blog.blog_count.comment_count + blog.blog_count.vote_count}</StyledTableCell>
+                                                <StyledTableCell>{blog.blog_count.report_count}</StyledTableCell>
+                                                <StyledTableCell>
+                                                    <Tooltip title={"通过"} onClick={() => {
+                                                        this.checkBlog(blog.blog_id, 1)
+                                                    }}>
+                                                        <IconButton edge="end" aria-label="micoff">
+                                                            <DoubleArrowIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title={"删除"} onClick={() => {
+                                                        this.checkBlog(blog.blog_id, 2)
+                                                    }}>
+                                                        <IconButton edge="end" aria-label="ban"
+                                                                    style={{marginLeft: '8px'}}>
+                                                            <DeleteIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                            <TableRow>
+                                                <TableCell style={{paddingBottom: 0, paddingTop: 0}}
+                                                           colSpan={1}> </TableCell>
+                                                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={4}>
+                                                    <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
+                                                        <PostCard post={blog} index={0} handleBan={this.handleBan}
+                                                                  handleForbid={this.handleForbid}/>
+                                                    </Collapse>
+                                                </TableCell>
+                                                <TableCell style={{paddingBottom: 0, paddingTop: 0}}
+                                                           colSpan={1}> </TableCell>
+                                            </TableRow>
+                                        </React.Fragment>
+                                    );
+                                })}
                         </TableBody>
                         <TableFooter>
                             <TableRow>
@@ -310,10 +377,18 @@ class AdminPostsList extends Component {
                                     page={this.state.page}
                                     onChangePage={this.handleChangePage}
                                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                    />
+                                />
                             </TableRow>
                         </TableFooter>
                     </Table>
+                    <div style={{marginBottom: '10px'}}>
+                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
+                            通过全部
+                        </Button>
+                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
+                            删除全部
+                        </Button>
+                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Pass</DialogTitle>
@@ -344,6 +419,68 @@ class AdminPostsList extends Component {
                         </Button>
                         <Button onClick={this.confirmDelete} color="primary">
                             确认删除
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs"
+                        fullWidth="true">
+                    <DialogTitle id="form-dialog-title">禁言</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写禁言时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                            <TextField onChange={this.handleYearChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                            }}/>
+                            <TextField onChange={this.handleDayChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                            }}/>
+                            <TextField onChange={this.handleHourChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                            }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelBan} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmBan} color="primary">
+                            确认禁言
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.showForbidDialog} aria-labelledby="form-dialog-title" maxWidth="xs"
+                        fullWidth="true">
+                    <DialogTitle id="form-dialog-title">封号</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            请填写封号时长
+                        </DialogContentText>
+                        <form noValidate autoComplete="off">
+                            <TextField onChange={this.handleYearChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">年</InputAdornment>,
+                            }}/>
+                            <TextField onChange={this.handleDayChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">天</InputAdornment>,
+                            }}/>
+                            <TextField onChange={this.handleHourChange} variant="outlined"
+                                       style={{marginLeft: '8px', width: 100}} InputProps={{
+                                endAdornment: <InputAdornment position="start">时</InputAdornment>,
+                            }}/>
+                        </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.cancelForbid} color="primary">
+                            取消
+                        </Button>
+                        <Button onClick={this.confirmForbid} color="primary">
+                            确认封号
                         </Button>
                     </DialogActions>
                 </Dialog>

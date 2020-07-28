@@ -33,7 +33,6 @@ class PostCardList extends Component {
         super(props);
         this.state = {
             posts: [],
-            user_id:0,
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
@@ -45,8 +44,8 @@ class PostCardList extends Component {
 
     loadMore() {
         const callback = (data) => {
-            console.log("loadMore data", data);
-            console.log("state", this.state);
+            //console.log("loadMore data", data);
+            //console.log("state", this.state);
             this.setState({
                 posts: [...this.state.posts, ...data.data.list],
                 hasMoreItems: (data.data.totalPage > this.state.nextHref),
@@ -84,14 +83,14 @@ class PostCardList extends Component {
                 break;
             case PostType.SEARCH:
                 params.keyword = this.props.location.state.keyword;
-                searchPosts(params,callback);
+                searchPosts(params, callback);
                 break;
         }
     }
 
     componentWillReceiveProps(newProps) {
         const callback = (data) => {
-            this.setState({posts: []});
+            this.setState({posts: [], nextHref: 0});
             this.setState({
                 posts: [...this.state.posts, ...data.data.list],
                 hasMoreItems: (data.data.totalPage > this.state.nextHref),
@@ -112,27 +111,27 @@ class PostCardList extends Component {
             case PostType.OWN:
                 const param = newProps.location.search.split('&');
                 const user_id = param[0].substr(4);
-                params.user_id=user_id;
+                params.user_id = user_id;
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:
                 const arr = newProps.location.search.split('&');
                 const topic_name = arr[0].substr(12);
                 params.topic_name = topic_name;
-                console.log(params);
+                //console.log(params);
                 getTopicPosts(params, callback);
                 break;
             case PostType.SEARCH:
                 params.keyword = newProps.location.state.keyword;
-                console.log(params);
-                searchPosts(params,callback);
+                //console.log(params);
+                searchPosts(params, callback);
                 break;
         }
     }
 
     componentWillMount() {
         PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
-            console.log(msg, data);
+            //console.log(msg, data);
             this.addPost(data);
         });
     };
@@ -143,15 +142,21 @@ class PostCardList extends Component {
         };
     };
 
-
     addPost = (newPost) => {
-        const param = this.props.location.search.split('&');
-        const user_id = param[0].substr(4);
-        if(!(this.props.user.user.user_id!==user_id&&this.props.index===PostType.OWN))
-            this.setState({
-                posts: [newPost, ...this.state.posts],
-                key: this.state.key + 1
-            });
+        if (this.props.location) {
+            const param = this.props.location.search.split('&');
+            const user_id = param[0].substr(4);
+            if (!(this.props.user.user.user_id !== user_id && this.props.index === PostType.OWN)) {
+                this.setState({
+                    posts: [newPost, ...this.state.posts],
+                    key: this.state.key + 1
+                });
+            }
+        }
+        else this.setState({
+            posts: [newPost, ...this.state.posts],
+            key: this.state.key + 1
+        });
     };
 
     deletePost = (index) => {
@@ -173,7 +178,7 @@ class PostCardList extends Component {
                     <List>
                         {this.state.posts.map((item, value) => {
                             const nickname = item.nickname;
-                            console.log(value, nickname);
+                            //console.log(value, nickname);
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?

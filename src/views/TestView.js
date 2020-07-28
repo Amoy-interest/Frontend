@@ -25,7 +25,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-
 class TestView extends Component{
     constructor(props) {
         super(props);

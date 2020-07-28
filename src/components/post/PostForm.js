@@ -53,7 +53,10 @@ class PostForm extends React.Component{
 
         const callbackOwn = (data) => {
             console.log("callback_own", data);
-            PubSub.publish(MsgType.ADD_POST, data.data);
+            if (!data.status) PubSub.publish(MsgType.ADD_POST, data.data);
+            else PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'warning'});
+
         };
         makePost(values.content, images, callbackOwn);
     };
@@ -66,7 +69,9 @@ class PostForm extends React.Component{
 
             // data display....
             this.props.closeModal();
-            this.props.submit(data.data);
+            if (!data.status) this.props.submit(data.data);
+            else PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'warning'});
         };
         forwardPost(this.props.postId, values.content, 0, callbackForward);
     };
@@ -87,17 +92,17 @@ class PostForm extends React.Component{
                         initialValues={{
                             content: ''
                         }}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                alert(JSON.stringify(values, null, 2));
+                                resetForm();
                                 if(this.props.type === PostType.FORWARD)
                                     this.submitForward(values);
                                 else this.submitOwn(values);
                             }, 500);
                         }}
                     >
-                        {({ submitForm, isSubmitting }) => (
+                        {({ submitForm, isSubmitting, handleReset }) => (
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
                                     <AITextField sm={12} name="content" label="博文内容" multiline/>

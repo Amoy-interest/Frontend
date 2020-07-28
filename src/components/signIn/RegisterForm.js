@@ -146,7 +146,6 @@ function RegisterForm(props){
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false);
-                            alert(JSON.stringify(values, null, 2));
                             submit(values);
                         }, 500);
                     }}

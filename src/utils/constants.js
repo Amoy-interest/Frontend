@@ -47,7 +47,8 @@ const PostType = {
 const MsgType = {
     ADD_POST: "addPost",
     SET_MESSAGE: "setMessage",
-    ADD_COMMENT:"addComment"
+    ADD_COMMENT:"addComment",
+    DELETE_COMMENT:"deleteComment"
 };
 
 export {apiUrl, mockUrl, devUrl, localUrl,

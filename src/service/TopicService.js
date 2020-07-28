@@ -9,6 +9,7 @@ export const getHotList = (callback) => {
 export const getTopic = (name,callback) => {
     let param={topic_name:name};
     const url = `${apiUrl}${APIModules.TOPIC}`;
+    //console.log(param);
     getRequest(url,param,callback);
 };
 
