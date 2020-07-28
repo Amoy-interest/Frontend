@@ -68,20 +68,16 @@ class CommentItem extends React.Component {
         };
     };
 
-    handleVote(comment) {
+    handleVote = (comment) => {
         let param = {blog_id: 0, comment_id: comment.comment_id};
-        console.log(param);
         const count = this.state.voteCount;
         const callback2 = (data) => {
-            console.log(data);
             this.setState({voted: false});
             this.setState({voteCount: count - 1});
         };
         const callback1 = (data) => {
-            console.log(data);
             this.setState({voted: true});
             this.setState({voteCount: count + 1});
-            console.log(this.state.voteCount);
         };
         this.state.voted ? cancelVote(param, callback2) : vote(param, callback1);
     };
@@ -90,7 +86,7 @@ class CommentItem extends React.Component {
         let param = {
             blog_id: this.props.post.blog_id,
             reply_user_id: this.state.comment.user_id,
-            root_comment_id: this.state.comment.comment_id,
+            root_comment_id: this.props.type===CommentItemType.SECONDARY?this.props.root_comment_id:this.state.comment.comment_id,
             text: text.comment
         };
         const callback = (data) => {
@@ -98,6 +94,7 @@ class CommentItem extends React.Component {
             let newSecondaryComment = [data.data, ...this.state.secondaryComment];
             this.setState({secondaryComment: newSecondaryComment});
             if(this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD) {
+                console.log(data.data);
                 this.props.submit(data.data);
             }
         };
@@ -106,8 +103,10 @@ class CommentItem extends React.Component {
 
     handleDeleteComment = () => {
         let param = {comment_id: this.state.comment.comment_id};
+        //console.log(param);
         const callback = () => {
             this.props.deleteComment(this.props.index);
+
         };
         deleteComment(param, callback);
     };
@@ -190,8 +189,8 @@ class CommentItem extends React.Component {
                                 </IconButton>
                             </React.Fragment>
                         }
-                        title={comment.nickname}
-                        subheader={comment.comment_time}
+                        title={type===CommentItemType.SECONDARY?`${comment.nickname} @ ${comment.reply_user_nickname}`:comment.nickname}
+                        subheader={new Date(comment.comment_time).Format("yyyy-MM-dd hh:mm:ss")}
                     />
                     <CardContent style={{height: ''}}>
                         <Typography variant="body1" color="textSecondary" component="p">
@@ -217,7 +216,7 @@ class CommentItem extends React.Component {
                                 <CardContent style={{backgroundColor: grey[50]}}>
                                     {this.props.type===CommentItemType.SECONDARY||this.props.type===CommentItemType.CARD?
                                     <CommentForm secondary commentId={comment} submit={this.submitComment}/>:
-                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init"/>}
+                                    <CommentList type={CommentListType.SECONDARY} comment={comment} post={this.props.post} key="init" root_comment_id={this.props.root_comment_id}/>}
                                 </CardContent>
 
                         </Collapse>

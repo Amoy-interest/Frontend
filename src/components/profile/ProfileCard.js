@@ -80,7 +80,7 @@ class ProfileCard extends React.Component {
         const param = this.props.location.search.split('&');
         const user_id=param[0].substr(4);
         const callback=(data)=>{
-            console.log(data);
+            //console.log(data);
             this.setState({userInfo:data.data,followed:data.data._follow});
         };
         getUserInfo(user_id,callback);
@@ -88,10 +88,8 @@ class ProfileCard extends React.Component {
 
     componentWillReceiveProps(newProps) {
 
-        const param = this.props.location.search.split('&');
-
+        const param = newProps.location.search.split('&');
         const user_id=param[0].substr(4);
-
         const callback=(data)=>{
             this.setState({userInfo:data.data,followed:data.data._follow});
         };
@@ -110,8 +108,6 @@ class ProfileCard extends React.Component {
         this.handleMenuClose();
     };
     handleFollow=()=>{
-        console.log("testing");
-        //console.log(this.props);
         const callback=()=> {
             this.setState({followed: true});
         };

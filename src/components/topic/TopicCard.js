@@ -73,7 +73,7 @@ class TopicCard extends React.Component {
 
     getTopicInfo(topic_name){
         const callback=(data)=>{
-            console.log(data);
+            //console.log(data);
             this.setState({topic:data.data});
         };
         getTopic(topic_name,callback);

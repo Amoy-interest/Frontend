@@ -30,13 +30,13 @@ class ProfileView extends Component {
             <div className={classes.root}>
                 <Paper elevation={0}>
                     <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                            <SideBarForProfile/>
+                        <Grid item xs={9}>
+                            <SideBarForProfile {...this.props}/>
                         </Grid>
-                        <Grid item xs={7}>
-                            <ProfileCard {...this.props}/>
-                            <PostCardList index={PostType.OWN} {...this.props}/>
-                        </Grid>
+                        {/*<Grid item xs={7}>*/}
+                        {/*    <ProfileCard {...this.props}/>*/}
+                        {/*    <PostCardList index={PostType.OWN} {...this.props}/>*/}
+                        {/*</Grid>*/}
                         <Grid item xs>
                             <HotSearchList/>
                         </Grid>

@@ -26,8 +26,8 @@ import {getReportedTopics} from "../../service/AdminService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#b3e5fc',
+        color: '#616161',
     },
     body: {
         fontSize: 14,
@@ -35,6 +35,7 @@ const StyledTableCell = withStyles((theme) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         maxWidth: '130px',
+        //padding:theme.spacing(1)
     },
 }))(TableCell);
 
@@ -219,19 +220,11 @@ class AdminSensWordsList extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <div style={{marginTop: '30px', marginBottom: '30px'}}>
-                    <Button variant="contained" color="secondary" onClick={this.handleAdd}>
-                        添加敏感词
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                        删除所选敏感词
-                    </Button>
-                </div>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell onClick={() => this.setCheckAll()}>
+                                <StyledTableCell style={{paddingLeft:'35px'}} onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
@@ -256,6 +249,7 @@ class AdminSensWordsList extends Component {
                                                         tabIndex={-1}
                                                         disableRipple
                                                         onChange={() => this.setChecked(index)}
+                                                        style={{paddingLeft:'35px'}}
                                                     />
                                                 </StyledTableCell>
                                                 <StyledTableCell>{sensWord.keyword}</StyledTableCell>
@@ -315,6 +309,14 @@ class AdminSensWordsList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
+                    <div style={{ marginBottom: '10px'}}>
+                        <Button variant="contained" color="secondary" onClick={this.handleAdd} style={{marginLeft: 690}}>
+                            添加敏感词
+                        </Button>
+                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
+                            删除全部
+                        </Button>
+                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">Add</DialogTitle>

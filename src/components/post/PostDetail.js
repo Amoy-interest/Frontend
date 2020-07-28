@@ -35,7 +35,7 @@ class PostDetail extends Component {
             post: null,
         };
 
-        console.log("props", props);
+        //console.log("props", props);
         //this.loadMore = this.loadMore.bind(this);
     }
 
@@ -44,6 +44,7 @@ class PostDetail extends Component {
         const blogId = arr[0].substr(4);
         const callback=(data)=>{
             this.setState({post: data.data});
+            //console.log(data);
         };
         getPost(blogId,callback);
     }
