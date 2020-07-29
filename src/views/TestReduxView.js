@@ -47,7 +47,7 @@ class TestReduxView extends Component{
     }
 
     handleGetStore(){
-        console.log(this.props.value);
+        console.log(this.props);
     }
 
     handleDispatch(){
@@ -93,25 +93,25 @@ class TestReduxView extends Component{
                     <button onClick={this.handleDispatch}>Dispatch</button>
                 </div>
                 <div style={{height: 600, overflow:'auto'}}>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.loadMore}
-                        hasMore={this.state.hasMoreItems}
-                        loader={<div className="loader" key={0}>Loading ...</div>}
-                        useWindow={false}
-                    >
-                        <div className="tracks">
-                            {this.state.tracks.map((track, i) => {
-                            return (
-                            <div className="track" key={i}>
-                            <Typography variant="body2" color="textSecondary" component="p" align='center'>
-                            {track.title} number {i}
-                            </Typography>
-                            </div>
-                            );
-                        })}
-                        </div>
-                    </InfiniteScroll>
+                    {/*<InfiniteScroll*/}
+                    {/*    pageStart={0}*/}
+                    {/*    loadMore={this.loadMore}*/}
+                    {/*    hasMore={this.state.hasMoreItems}*/}
+                    {/*    loader={<div className="loader" key={0}>Loading ...</div>}*/}
+                    {/*    useWindow={false}*/}
+                    {/*>*/}
+                    {/*    <div className="tracks">*/}
+                    {/*        {this.state.tracks.map((track, i) => {*/}
+                    {/*        return (*/}
+                    {/*        <div className="track" key={i}>*/}
+                    {/*        <Typography variant="body2" color="textSecondary" component="p" align='center'>*/}
+                    {/*        {track.title} number {i}*/}
+                    {/*        </Typography>*/}
+                    {/*        </div>*/}
+                    {/*        );*/}
+                    {/*    })}*/}
+                    {/*    </div>*/}
+                    {/*</InfiniteScroll>*/}
                 </div>
             </div>
         );

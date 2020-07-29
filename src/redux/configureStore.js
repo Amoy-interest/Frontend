@@ -8,6 +8,8 @@ import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { composeWithDevTools } from 'redux-devtools-extension';//devToolsEnhancer,
 
+import {history} from "../utils/history";
+import { routerMiddleware } from 'connected-react-router'
 
 // redux-persist
 const persistConfig = {
@@ -18,8 +20,11 @@ const persistConfig = {
 const myPersistReducer = persistReducer(persistConfig, reducers);
 
 // redux Middleware
-const loggerMiddleware = createLogger({collapsed:true});
-const middleWareEnhancer = applyMiddleware(thunkMiddleware, loggerMiddleware);
+const middleWareEnhancer = applyMiddleware(
+    thunkMiddleware,
+    routerMiddleware(history),
+    createLogger({collapsed:true})
+);
 
 // redux-devtools
 const enhancer = composeWithDevTools(middleWareEnhancer);

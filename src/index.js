@@ -6,6 +6,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {store, persist} from './redux/configureStore'
 import {PersistGate} from 'redux-persist/lib/integration/react';
+import { ConnectedRouter } from 'connected-react-router'
+import {history} from "./utils/history";
 
 class AppComplete extends Component {
 
@@ -13,9 +15,11 @@ class AppComplete extends Component {
         return (
             <React.Fragment>
                 <Provider store={store}>
-                    <PersistGate loading={null} persistor={persist}>
-                        <App />
-                    </PersistGate>
+                    <ConnectedRouter history={history}>
+                        <PersistGate loading={null} persistor={persist}>
+                            <App />
+                        </PersistGate>
+                    </ConnectedRouter>
                 </Provider>
             </React.Fragment>
         );
