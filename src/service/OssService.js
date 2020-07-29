@@ -44,13 +44,27 @@ export default class OssApi {
         })
     };
 
-    putObject = (file) => {
+    putObjects = (files) => {
         return new Promise(async function(resolve, reject) {
+            let urls = [];
+            if(files.length === 0) {
+                resolve(urls);
+                return;
+            }
+
             let oss = await getSTS();
-            console.log(file);
             if(oss === null) reject(oss);
-            let result = await oss.put(getPath(file.name), file);
-            resolve(result);
+
+            try {
+                for (let i = 0; i < files.length; ++i){
+                    let result = await oss.put(getPath(files[i].name), files[i]);
+                    urls.push(result.url);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+
+            resolve(urls);
         })
     };
 

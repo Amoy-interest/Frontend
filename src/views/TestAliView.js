@@ -16,7 +16,7 @@ const styles = ((theme) => ({
     },
     images: {
         width: '80%',
-        height: 500,
+        height: 100,
         backgroundColor: '#cfe8fc'
     },
     img: {
@@ -34,15 +34,6 @@ function getBase64(file) {
     });
 }
 
-// async function put (client, name, file) {
-//     try {
-//         let result = await client.put(name, file);
-//         console.log(result);
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-
 const oss = new OssApi();
 
 @withStyles(styles)
@@ -58,9 +49,7 @@ class TestAliView extends Component{
         this.changeImg = this.changeImg.bind(this);
     }
 
-
     putFile = async () => {
-        // put('test0.jpg', this.state.files[0]).then();
         try {
             let files = this.state.files;
             for (let i = 0; i < files.length; ++i){
@@ -92,7 +81,19 @@ class TestAliView extends Component{
                     {
                         this.state.images.map((item, value) => {
                             return (
-                                <img src={item} key={'img' + value} className={classes.img}/>
+                                <img
+                                    src={item}
+                                    key={'img' + value}
+                                    id={value}
+                                    className={classes.img}
+                                    // onClick={e => {
+                                    //     let id = console.log(e.currentTarget.id);
+                                    //     this.setState({
+                                    //         files: this.state.files.splice(id, 1),
+                                    //         images: this.state.images.splice(id, 1)
+                                    //     })
+                                    // }}
+                                />
                             )
                     })
                     }
@@ -116,16 +117,17 @@ class TestAliView extends Component{
                         multiple
                         type="file"
                         onChange={async (e) =>{
-                            console.log(e.currentTarget.files);
-                            this.setState({files: [...this.state.files, ...e.currentTarget.files]});
-                            let images = [];
-                            for(let i = 0; i < this.state.files.length; i++){
-                                let result = await getBase64(this.state.files[i]);
-                                // console.log(result);
+                            let files = e.currentTarget.files;
+                            let images = this.state.images;
+                            for(let i = 0; i < files.length; i++){
+                                let result = await getBase64(files[i]);
                                 images.push(result);
                             }
 
-                            this.setState({images: images});
+                            this.setState({
+                                files: [...this.state.files, ...files],
+                                images: images
+                            });
                         }}
                     />
                     <label htmlFor="contained-button-file">

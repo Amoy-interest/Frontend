@@ -11,6 +11,11 @@ import Uploader from "../commen/Uploader";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
 import {MsgType, PostType} from "../../utils/constants";
+import Upload from "../commen/Upload";
+import OssApi from "../../service/OssService";
+import PostImage from "./PostImage";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = ((theme) => ({
     paper: {
@@ -21,16 +26,21 @@ const styles = ((theme) => ({
         marginBottom:theme.spacing(1),
         marginTop:theme.spacing(1),
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
     },
-    submit: {
-        // margin: theme.spacing(),
-        // marginLeft: theme.spacing(1)
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 }));
-
+const oss = new OssApi();
 
 @withStyles(styles)
 class PostForm extends React.Component{
@@ -38,28 +48,32 @@ class PostForm extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            fileList: []
+            fileList: [],
+            images: [],
+            isUploading: false
         };
     }
 
-    submitOwn = (values) => {
-        // let images = [];
-        // let files = this.state.fileList;
-        // for (let i = 0; i < files.length; ++i){
-        //     images.push(files[i].base64);
-        // }
+    submitOwn = async (values, resetForm) => {
+        this.setState({isUploading: true});
 
-        const callbackOwn = (data) => {
+        let urls = await oss.putObjects(this.state.fileList);
+        console.log(urls);
+        makePost(values.content, urls, (data) => {
             console.log("callback_own", data);
-            if (!data.status) PubSub.publish(MsgType.ADD_POST, data.data);
-            else PubSub.publish(MsgType.SET_MESSAGE, {
+            if (data.status !== 0) PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'warning'});
-
-        };
-        makePost(values.content, this.state.fileList, callbackOwn);
+            else {
+                resetForm();
+                this.setState({images: [], isUploading: false});
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: data.msg, type: 'success'});
+                PubSub.publish(MsgType.ADD_POST, data.data);
+            }
+        });
     };
 
-    submitForward = (values) => {
+    submitForward = (values, resetForm) => {
 
         const callbackForward = (data) => {
             console.log("callback_forward", data);
@@ -73,6 +87,13 @@ class PostForm extends React.Component{
         forwardPost(this.props.postId, values.content, 0, callbackForward);
     };
 
+    uploadFiles = (files, images) => {
+        this.setState({
+            fileList: files,
+            images: images
+        });
+    };
+
     render() {
         const classes = this.props.classes;
         const type = this.props.type ? this.props.type : PostType.OWN;
@@ -80,6 +101,9 @@ class PostForm extends React.Component{
         return (
             <Container component="main" maxWidth="lg">
                 <CssBaseline />
+                <Backdrop className={classes.backdrop} open={this.state.isUploading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <Paper elevation={type === PostType.OWN? 3: 0} className={classes.paper}>
                     <Formik
                         initialValues={{
@@ -88,10 +112,10 @@ class PostForm extends React.Component{
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                resetForm();
+                                // resetForm();
                                 if(this.props.type === PostType.FORWARD)
-                                    this.submitForward(values);
-                                else this.submitOwn(values);
+                                    this.submitForward(values, resetForm);
+                                else this.submitOwn(values, resetForm);
                             }, 500);
                         }}
                     >
@@ -99,18 +123,18 @@ class PostForm extends React.Component{
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
                                     <AITextField sm={12} name="content" label="博文内容" multiline/>
-                                    {/*<input sm={12} name="file" label="文件" type="file"/>*/}
-                                    {
-                                        type === PostType.OWN ?
-                                            <Grid item xs={12} sm={12}>
-                                                <Uploader uploadFiles={(files) => this.setState({fileList: files})}/>
-                                            </Grid> : null
-                                    }
-                                    {/*<Grid item xs={12} sm={4}/>*/}
-                                    {/*<Grid item xs={12} sm={4}/>*/}
-                                    <Grid item xs={12} sm={9}/>
-                                    <Grid item xs={12} sm={3}>
-                                        <Button
+                                    <Grid item xs={12} sm={12}>
+                                        <PostImage image={this.state.images}/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}/>
+                                    <Grid item xs={12} sm={4}>
+                                        <div className={classes.buttons}>
+                                            {
+                                                type === PostType.OWN ?
+                                                    <Upload uploadFiles={this.uploadFiles}/>
+                                                    : null
+                                            }
+                                            <Button
                                             variant="contained"
                                             color="primary"
                                             disabled={isSubmitting}
@@ -120,6 +144,8 @@ class PostForm extends React.Component{
                                         >
                                             确定发布
                                         </Button>
+                                        </div>
+
                                     </Grid>
                                 </Grid>
 

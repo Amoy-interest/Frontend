@@ -9,52 +9,8 @@ export const makePost = (text, images, callback) => {
         topic_id: 0,
         user_id: 0
     };
-    console.log("params", params);
     postRequest_json(url,null, params, callback);
 };
-
-function upload (file, oss) {
-    return new Promise(function(resolve, reject) {
-        let key = `${oss.dir}/${file.name}`;
-        let opts = {
-            method: "POST",
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                // 'origin': oss.host,
-                // 'Access-Control-Request-Headers':'xxx'
-            },
-            body: {
-                policy: oss.policy,
-                signature: oss.signature,
-                key: key,
-                ossaccessKeyId: oss.accessKeyId,
-                dir: oss.dir,
-                host: oss.host,
-                callback: null,
-                file: file.base64
-            },
-            // 'mode': 'no-cors'
-        };
-
-        // resolve(opts);
-        console.log(opts);
-
-        fetch(oss.host,opts)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                console.log(data);
-                resolve(data);
-            })
-            .catch((error) => {
-                console.log(error);
-                reject(error);
-            });
-    })
-
-};
-
 
 export const forwardPost = (reply_blog_id, text, topic_id, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/forward`;
@@ -67,6 +23,7 @@ export const forwardPost = (reply_blog_id, text, topic_id, callback) => {
     postRequest_json(url,null, json, callback);
 };
 
+
 export const getPost = (id, callback) => {
     const params = {blog_id: id};
     const url = `${apiUrl}${APIModules.BLOG}`;
@@ -74,10 +31,9 @@ export const getPost = (id, callback) => {
 };
 
 export const deletePost=(id, callback) => {
-    const params = {blog_id: id};
-    console.log(params);
-    const url = `${apiUrl}${APIModules.BLOG}?blog_id=${id}`;
-    deleteRequest_json(url, null,null, callback);
+    const query = {blog_id: id};
+    const url = `${apiUrl}${APIModules.BLOG}`;
+    deleteRequest_json(url, query,null, callback);
 };
 
 export const editPost=(data,callback)=>{
@@ -107,13 +63,10 @@ export const getRandomPosts = (params,callback) => {
 
 export const getOwnPosts = (params,callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/users`;
-    console.log(params);
     getRequest(url,params,callback);
 };
 
 export const getFollowPosts = (params,callback) => {
-    console.log("executing getFollowPosts");
-    console.log(params);
     const url = `${apiUrl}${APIModules.BLOG}/follow`;
     getRequest(url, params,callback);
 };
@@ -130,7 +83,6 @@ export const cancelVote=(data,callback)=>{
 
 export const getComments=(params,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}${APIModules.COMMENTS}/level1`;
-    console.log(params);
     getRequest(url,params,callback);
 };
 
