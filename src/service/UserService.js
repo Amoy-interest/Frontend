@@ -8,7 +8,7 @@ export const login = (data, callback) => {
     console.log(data);
     const url = `${apiUrl}${APIModules.USER}/login`;
 
-    postRequest_json(url, data, callback);
+    postRequest_json(url, null, data, callback);
 };
 
 export const logout = () => {
@@ -31,7 +31,7 @@ export const register = (data, callback) => {
     console.log(data);
 
     const url = `${apiUrl}${APIModules.USER}/register`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url,null, data, callback);
 };
 
 export const loadMore = (pageSize, pageIndex, callback) => {
@@ -41,19 +41,19 @@ export const loadMore = (pageSize, pageIndex, callback) => {
         pageIndex: pageIndex
     };
 
-    postRequest_json(url, json, callback);
+    postRequest_json(url, null,json, callback);
 };
 
 export const follow = (id, callback) => {
     const data = {follow_id:id};
     const url = `${apiUrl}${APIModules.USER}/follow?follow_id=${id}`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url,null, data, callback);
 };
 
 export const unfollow = (id, callback) => {
     const data = {follow_id:id};
     const url = `${apiUrl}${APIModules.USER}/unfollow?follow_id=${id}`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url, null,data, callback);
 };
 
 export const getUserInfo = (id, callback) => {

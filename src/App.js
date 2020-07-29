@@ -80,7 +80,7 @@ function App(props) {
         type: 'warning'
     });
     PubSub.subscribe(MsgType.SET_MESSAGE, function (msg, data) {
-        console.log(data);
+        //console.log(data);
         setMessage(data);
     });
 
