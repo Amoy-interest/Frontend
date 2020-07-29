@@ -10,7 +10,7 @@ export const makePost = (text, images, callback) => {
         user_id: 0
     };
     console.log("params", params);
-    postRequest_json(url, params, callback);
+    postRequest_json(url,null, params, callback);
 };
 
 function upload (file, oss) {
@@ -64,7 +64,7 @@ export const forwardPost = (reply_blog_id, text, topic_id, callback) => {
         topic_id: topic_id
     };
 
-    postRequest_json(url, json, callback);
+    postRequest_json(url,null, json, callback);
 };
 
 export const getPost = (id, callback) => {
@@ -77,17 +77,17 @@ export const deletePost=(id, callback) => {
     const params = {blog_id: id};
     console.log(params);
     const url = `${apiUrl}${APIModules.BLOG}?blog_id=${id}`;
-    deleteRequest_json(url, null, callback);
+    deleteRequest_json(url, null,null, callback);
 };
 
 export const editPost=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}`;
-    putRequest_json(url,data,callback);
+    putRequest_json(url,null,data,callback);
 };
 
 export const reportPost=(id,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/report?blog_id=${id}`;
-    postRequest_json(url, null, callback);
+    postRequest_json(url, null, null,callback);
 };
 
 export const searchPosts=(params,callback)=>{
@@ -120,12 +120,12 @@ export const getFollowPosts = (params,callback) => {
 
 export const vote=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/vote`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url, null,data, callback);
 };
 
 export const cancelVote=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/vote`;
-    deleteRequest_json(url, data, callback);
+    deleteRequest_json(url, null,data, callback);
 };
 
 export const getComments=(params,callback)=>{
@@ -141,10 +141,10 @@ export const getMultiLevelComments=(params,callback)=>{
 
 export const postComment=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/comments`;
-    postRequest_json(url, data, callback);
+    postRequest_json(url, null,data, callback);
 };
 
 export const deleteComment=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/comments`;
-    deleteRequest_json(url, data, callback);
+    deleteRequest_json(url,null, callback);
 };

@@ -46,6 +46,12 @@ class PostCardList extends Component {
         const callback = (data) => {
             //console.log("loadMore data", data);
             //console.log("state", this.state);
+            if (data.status !== 0) {
+                console.log(data);
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    open: true, text: data.msg, type: 'error'});
+                return;
+            }
             this.setState({
                 posts: [...this.state.posts, ...data.data.list],
                 hasMoreItems: (data.data.totalPage > this.state.nextHref),
@@ -89,6 +95,7 @@ class PostCardList extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        console.log('newProps');
         const callback = (data) => {
             this.setState({posts: [], nextHref: 0});
             this.setState({
@@ -118,7 +125,7 @@ class PostCardList extends Component {
                 const arr = newProps.location.search.split('&');
                 const topic_name = arr[0].substr(12);
                 params.topic_name = topic_name;
-                //console.log(params);
+                console.log(params);
                 getTopicPosts(params, callback);
                 break;
             case PostType.SEARCH:

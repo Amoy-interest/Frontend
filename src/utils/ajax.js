@@ -1,11 +1,26 @@
-// import {message} from 'antd';
 import {store} from "../redux/configureStore";
+import {removeToken, removeUser, setToken} from "../redux/actions";
+import PubSub from "pubsub-js";
+import {MsgType} from "./constants";
+
+function parseQuery(url, query) {
+    if (query) {
+        let paramsArray = [];
+        Object.keys(query).forEach(key => paramsArray.push(key + '=' + query[key]))
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&')
+        } else {
+            url += '&' + paramsArray.join('&')
+        }
+        return url;
+    } else return url;
+};
 
 const Request_form = (url, data, callback, method) => {
     let formData = new FormData();
 
-    for (let p in data){
-        if(data.hasOwnProperty(p))
+    for (let p in data) {
+        if (data.hasOwnProperty(p))
             formData.append(p, data[p]);
     }
 
@@ -18,7 +33,7 @@ const Request_form = (url, data, callback, method) => {
         credentials: "include"
     };
 
-    fetch(url,opts)
+    fetch(url, opts)
         .then((response) => {
             return response.json()
         })
@@ -31,106 +46,77 @@ const Request_form = (url, data, callback, method) => {
 };
 
 const Request_json = (url, json, callback, method) => {
+    let needToken = !(url.match("/login") || url.match("/register")||url.match("/beforeLogin")||url.match("/hotList"));
+    let needBody = !(method === 'GET');
 
-    let opts = {
+    let opts = needBody ? {
         method: method,
         body: JSON.stringify(json),
-        headers: {
-            'token': store.getState().tokenReducer,
+        headers: needToken ? {
+            'Authorization': store.getState().tokenReducer,
+            'Content-Type': 'application/json'
+        } : {
             'Content-Type': 'application/json'
         },
-        credentials: "include"
+        //credentials: "include"
+    } : {
+        method: method,
+        headers: needToken ?{
+            'Authorization': store.getState().tokenReducer,
+        }:{},
+        //credentials: "include"
     };
 
-    fetch(url,opts)
+    fetch(url, opts)
         .then((response) => {
+            let token = response.headers.get('Authorization');
+            //console.log(token);
+            if (token) {
+                store.dispatch(setToken(token));
+            }
             return response.json()
         })
         .then((data) => {
+            if (data.status === 401) {
+                store.dispatch(removeToken());
+                store.dispatch(removeUser());
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    open: true, text: data.msg, type: 'error'
+                });
+                return;
+            }
             callback(data);
         })
         .catch((error) => {
             console.log(error);
         });
-};
-
-// post form data
-const postRequest_form = (url, data, callback) => {
-    Request_form(url, data, callback, 'POST');
 };
 
 // post json data
-const postRequest_json = (url, json, callback) => {
+const postRequest_json = (url, query, json, callback) => {
+    url = parseQuery(url, query);
     Request_json(url, json, callback, 'POST');
 };
 
-const getRequest = (url, params, callback) => {
-    if (params) {
-        let paramsArray = [];
-        Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
-        if (url.search(/\?/) === -1) {
-            url += '?' + paramsArray.join('&')
-        } else {
-            url += '&' + paramsArray.join('&')
-        }
-    }
-    let opts = {
-        method: "GET",
-        headers: {
-            'token': store.getState().tokenReducer,
-        },
-        credentials: "include"
-    };
-
-    fetch(url,opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+// get json data
+const getRequest = (url, query, callback) => {
+    url = parseQuery(url, query);
+    Request_json(url, null, callback, 'GET');
 };
 
 // put json data
-const putRequest_json = (url, json, callback) => {
-    Request_json(url, json, callback, 'PUT')
+const putRequest_json = (url, query, json, callback) => {
+    url = parseQuery(url, query);
+    Request_json(url, json, callback, 'PUT');
 };
 
 // delete json data
-const deleteRequest_json = (url, params, callback) => {
-    if (params) {
-        let paramsArray = [];
-        Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
-        if (url.search(/\?/) === -1) {
-            url += '?' + paramsArray.join('&')
-        } else {
-            url += '&' + paramsArray.join('&')
-        }
-    }
-    console.log(url);
-    let opts = {
-        method: "DELETE",
-        headers: {
-            'token': store.getState().tokenReducer,
-        },
-        credentials: "include"
-    };
-
-    fetch(url,opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+const deleteRequest_json = (url, query, json, callback) => {
+    url = parseQuery(url, query);
+    Request_json(url, json, callback, 'DELETE');
 };
 
-export {postRequest_form, postRequest_json, getRequest,
+export {
+    postRequest_json, getRequest,
     putRequest_json, deleteRequest_json
 };

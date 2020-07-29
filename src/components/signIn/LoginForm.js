@@ -40,9 +40,8 @@ const useStyles = makeStyles((theme) => ({
 
 function mapDispatchToProps(dispatch) {
     return {
-        onLogin: (user, token) => {
+        onLogin: (user) => {
             dispatch(setUser(user));
-            dispatch(setToken(token));
         }
     }
 }
@@ -55,7 +54,7 @@ function LoginForm(props){
         console.log(values);
         userService.login(values, (data) => {
             console.log(data);
-            if (data.status !== 0) {
+            if (data.status !== 200) {
                 console.log(data.msg);
                 PubSub.publish(MsgType.SET_MESSAGE, {
                     open: true, text: data.msg, type: 'error'});
@@ -63,7 +62,7 @@ function LoginForm(props){
             }
             PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'success'});
-            props.onLogin(data.data.user, data.data.token);
+            props.onLogin(data.data);
             history.push('/home');
         });
         props.closeModal();
