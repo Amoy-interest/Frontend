@@ -33,7 +33,7 @@ import Paper from "@material-ui/core/Paper";
 import {MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
-import EditForm from "./EditForm";
+import EditPostForm from "./EditPostForm";
 import PubSub from "pubsub-js";
 
 const styles = (theme => ({
@@ -408,11 +408,11 @@ class PostCard extends React.Component {
                     <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.editModal}>
-                                <EditForm type={PostType.FORWARD}
-                                          postId={post.blog_id}
-                                          closeModal={this.handleEditModalClose}
-                                          submit={this.submitEdit}
-                                          post_content={post.blog_content.text}
+                                <EditPostForm type={PostType.FORWARD}
+                                              postId={post.blog_id}
+                                              closeModal={this.handleEditModalClose}
+                                              submit={this.submitEdit}
+                                              post_content={post.blog_content.text}
                                 />
                                 {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
                                     <PostImage image={post.blog_child.blog_content.images}/>}

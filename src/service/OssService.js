@@ -1,6 +1,8 @@
-import {localUrl, APIModules} from "../utils/constants";
+import {localUrl, APIModules, MsgType} from "../utils/constants";
 import {getRequest} from "../utils/ajax";
 import OSS from 'ali-oss';
+import {nlNL} from "@material-ui/core/locale";
+import PubSub from "pubsub-js";
 
 function getSTS() {
     return new Promise(function(resolve, reject) {
@@ -15,7 +17,9 @@ function getSTS() {
                     stsToken: data.data.securityToken,
                     bucket: data.data.bucket
             }));
-            else reject(data);
+            else {
+                reject(data);
+            }
         })
     })
 };
@@ -34,6 +38,10 @@ function getPath(name) {
     return path;
 }
 
+function errorUpload (msg) {
+    PubSub.publish(MsgType.ERROR_UPLOAD, msg);
+};
+
 export default class OssApi {
     listObject = () => {
         return new Promise(async function(resolve, reject) {
@@ -47,13 +55,22 @@ export default class OssApi {
     putObjects = (files) => {
         return new Promise(async function(resolve, reject) {
             let urls = [];
+            let oss = null;
+
+            // if there is no image, then no need oss
             if(files.length === 0) {
                 resolve(urls);
                 return;
             }
 
-            let oss = await getSTS();
-            if(oss === null) reject(oss);
+            try {
+                oss = await getSTS();
+            } catch (e) {
+                console.log(e);
+                errorUpload(e.msg);
+                reject(e);
+                return;
+            }
 
             try {
                 for (let i = 0; i < files.length; ++i){
@@ -62,6 +79,9 @@ export default class OssApi {
                 }
             } catch (e) {
                 console.log(e);
+                errorUpload("上传图片失败！");
+                reject(e);
+                return;
             }
 
             resolve(urls);

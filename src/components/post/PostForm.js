@@ -7,7 +7,6 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
-import Uploader from "../commen/Uploader";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
 import {MsgType, PostType} from "../../utils/constants";
@@ -54,11 +53,18 @@ class PostForm extends React.Component{
         };
     }
 
+    componentWillMount(){
+        PubSub.subscribe(MsgType.ERROR_UPLOAD, (msg, data) => {
+            PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data, type: 'error'});
+            this.setState({isUploading: false});
+        });
+    }
+
     submitOwn = async (values, resetForm) => {
         this.setState({isUploading: true});
 
         let urls = await oss.putObjects(this.state.fileList);
-        console.log(urls);
+        console.log("urls", urls);
         makePost(values.content, urls, (data) => {
             console.log("callback_own", data);
             if (data.status !== 200) PubSub.publish(MsgType.SET_MESSAGE, {
@@ -73,7 +79,7 @@ class PostForm extends React.Component{
         });
     };
 
-    submitForward = (values, resetForm) => {
+    submitForward = (values) => {
 
         const callbackForward = (data) => {
             console.log("callback_forward", data);
@@ -115,7 +121,7 @@ class PostForm extends React.Component{
                                 // resetForm();
                                 if(this.props.type === PostType.FORWARD)
                                     this.submitForward(values, resetForm);
-                                else this.submitOwn(values, resetForm);
+                                else this.submitOwn(values);
                             }, 500);
                         }}
                     >
@@ -135,15 +141,15 @@ class PostForm extends React.Component{
                                                     : null
                                             }
                                             <Button
-                                            variant="contained"
-                                            color="primary"
-                                            disabled={isSubmitting}
-                                            fullWidth
-                                            onClick={submitForm}
-                                            className={classes.submit}
-                                        >
-                                            确定发布
-                                        </Button>
+                                                variant="contained"
+                                                color="primary"
+                                                disabled={isSubmitting}
+                                                fullWidth
+                                                onClick={submitForm}
+                                                className={classes.submit}
+                                            >
+                                                确定发布
+                                            </Button>
                                         </div>
 
                                     </Grid>
