@@ -14,7 +14,7 @@ import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {editTopicIntro, getTopic, editTopicLogo} from "../../service/TopicService";
+import {editTopicIntro, getTopic, editTopicLogo, reportTopic} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -23,11 +23,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {connect} from "react-redux";
 import MicNoneIcon from '@material-ui/icons/MicNone';
-import {UserType} from "../../utils/constants";
+import {MessageType, MsgType, UserType} from "../../utils/constants";
 import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
 import TopicEditForm from "./TopicEditForm";
+import {reportPost} from "../../service/PostService";
+import PubSub from "pubsub-js";
 
 const styles = ((theme) => ({
     background: {
@@ -150,6 +152,19 @@ class TopicCard extends React.Component {
         this.setState({editModalOpen: false});
     }
 
+    handleReport=()=>{
+        const callback = (data) => {
+            if(data.status===200){
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    text: "举报成功！", type: MessageType.SUCCESS});
+                this.handleMenuClose();
+            }
+        };
+        const data={topic_name:this.state.topic.name}
+        console.log(data);
+        reportTopic(data,callback)
+    }
+
     submitEdit = (data) => {
         console.log(data);
 
@@ -199,7 +214,7 @@ class TopicCard extends React.Component {
             >
                 {this.props.role === UserType.ADMIN ?
                     <MenuItem onClick={this.handleEditClick}><CreateIcon color='primary'/>编辑</MenuItem> :
-                    <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                    <MenuItem onClick={this.handleReport}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
                 }
             </Menu>
         );

@@ -79,7 +79,7 @@ const Request_json = (url, json, callback, method) => {
                 store.dispatch(removeToken());
                 store.dispatch(removeUser());
                 PubSub.publish(MsgType.SET_MESSAGE, {
-                    text: data.msg, type: MessageType.ERROR
+                    text: "登陆过期，请重新登陆！", type: MessageType.ERROR
                 });
             }
             else callback(data);

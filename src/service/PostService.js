@@ -1,12 +1,13 @@
 import {apiUrl, APIModules} from "../utils/constants";
 import {deleteRequest_json, getRequest, postRequest_json, putRequest_json} from "../utils/ajax";
 
-export const makePost = (text, images, callback) => {
+export const makePost = (text, images, tag, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}`;
     const params = {
         text: text,
         images: images,
         topic_id: 0,
+        topic_name: tag,
         user_id: 0
     };
     postRequest_json(url,null, params, callback);
