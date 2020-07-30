@@ -5,19 +5,18 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import {AITextField} from "../commen/AIField";
 import {makeStyles} from "@material-ui/core/styles";
+import PostImage from "./PostImage";
+import Uploader from "../commen/Uploader";
 
 const useStyles = makeStyles((theme) => ({
-    submit_primary: {
+    submit: {
         // width: 90,
         height: 54,
         marginLeft: theme.spacing(1)
-    },
-    submit_secondary: {
-        height: 40
     }
 }));
 
-export default function EditPostForm(props){
+export default function PostEditForm(props){
     const classes = useStyles();
 
     const submit = (values) => {
@@ -28,13 +27,11 @@ export default function EditPostForm(props){
         <Container component="main" maxWidth="lg">
             <Formik
                 initialValues={{
-                    comment: props.post_content
+                    text: props.post_content
                 }}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
+                onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
                         setSubmitting(false);
-                        resetForm();
-                        console.log(values);
                         submit(values);
                     }, 500);
                 }}
@@ -42,18 +39,14 @@ export default function EditPostForm(props){
                 {({ submitForm, isSubmitting }) => (
                     <Form style={{marginBottom:'20px',marginTop:'20px'}}>
                         <Grid container spacing={1}>
-                            <AITextField sm={9} name="comment"
-                                         variant={props.secondary?"standard" : "outlined"}
-                                         size={props.secondary?"small" : "medium"}
-                                         multiline label="博文"/>
+                            <AITextField sm={9} name="text" multiline label="博文"/>
                             <Grid item xs sm={3}>
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     disabled={isSubmitting}
                                     onClick={submitForm}
-                                    className={props.secondary?
-                                        classes.submit_secondary : classes.submit_primary}
+                                    className={classes.submit}
                                 >
                                     确定更改
                                 </Button>

@@ -52,6 +52,29 @@ export default class OssApi {
         })
     };
 
+    putObject = (file) => {
+        return new Promise(async function(resolve, reject) {
+            let url = null;
+            let oss = await getSTS();
+            if (oss === null) {
+                errorUpload("上传图片失败！");
+                reject(oss);
+                return;
+            }
+
+            try {
+                url = await oss.put(getPath(file.name), file);
+            } catch (e) {
+                console.log(e);
+                errorUpload("上传图片失败！");
+                reject(e);
+                return;
+            }
+
+            resolve(url);
+        })
+    };
+
     putObjects = (files) => {
         return new Promise(async function(resolve, reject) {
             let urls = [];
@@ -67,7 +90,7 @@ export default class OssApi {
                 oss = await getSTS();
             } catch (e) {
                 console.log(e);
-                errorUpload(e.msg);
+                errorUpload("上传图片失败！");
                 reject(e);
                 return;
             }

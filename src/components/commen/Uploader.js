@@ -39,14 +39,14 @@ function getBase64(file) {
 
 
 @withStyles(styles)
-class Upload extends Component{
+class Uploader extends Component{
     constructor(props) {
         super(props);
 
         this.state = {
             files: [],
             images: [],
-            limits: 9
+            limits: (props.limits? props.limits:9)
         };
 
         this.onChange = this.onChange.bind(this);
@@ -69,7 +69,7 @@ class Upload extends Component{
         // limit file number
         if (total > this.state.limits){
             PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: "图片数量不超过9张！",type:'warning'
+                open: true, text: `图片数量不超过${this.state.limits}张！`,type:'warning'
             });
             return;
         }
@@ -118,4 +118,4 @@ class Upload extends Component{
     }
 }
 
-export default Upload;
+export default Uploader;

@@ -10,7 +10,7 @@ import {AITextField} from "../commen/AIField";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
 import {MsgType, PostType} from "../../utils/constants";
-import Upload from "../commen/Upload";
+import Uploader from "../commen/Uploader";
 import OssApi from "../../service/OssService";
 import PostImage from "./PostImage";
 import Backdrop from '@material-ui/core/Backdrop';
@@ -141,7 +141,7 @@ class PostForm extends React.Component{
                                         <div className={classes.buttons}>
                                             {
                                                 type === PostType.OWN ?
-                                                    <Upload uploadFiles={this.uploadFiles}/>
+                                                    <Uploader uploadFiles={this.uploadFiles}/>
                                                     : null
                                             }
                                             <Button
