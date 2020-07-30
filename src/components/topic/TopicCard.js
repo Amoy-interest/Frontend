@@ -1,5 +1,4 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -12,16 +11,23 @@ import {amber, red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Background from '../../assets/img/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
-import PostImage1 from "../../assets/img/post1.png";
 import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
-import FaceIcon from "@material-ui/icons/Face";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getTopic} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
-import ListItem from "@material-ui/core/ListItem";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import CardHeader from "@material-ui/core/CardHeader";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import {connect} from "react-redux";
+import PanToolIcon from '@material-ui/icons/PanTool';
+import MicNoneIcon from '@material-ui/icons/MicNone';
+import {UserType} from "../../utils/constants";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = ((theme) => ({
     background: {
@@ -32,14 +38,16 @@ const styles = ((theme) => ({
         width: 660,
         marginLeft: theme.spacing(2)
     },
+    header:{
+        height:'8px'
+    },
     content: {
-        paddingTop: 40,
+        //paddingTop: 40,
     },
     media: {
-        height: 70,
-        width: 100,
+        height: 80,
+        width: 120,
         marginLeft: 5
-        //paddingTop: '56.25%', // 16:9
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -60,6 +68,11 @@ const styles = ((theme) => ({
     }
 }));
 
+function mapStateToProps(state) {
+    return {
+        role: state.userReducer.role
+    }
+};
 @withStyles(styles)
 class TopicCard extends React.Component {
     constructor(props) {
@@ -67,17 +80,19 @@ class TopicCard extends React.Component {
         this.state = {
             topic: null,
             expanded: false,
+            anchorEl:null,
             heat: 0
         };
     }
 
-    getTopicInfo(topic_name){
-        const callback=(data)=>{
+    getTopicInfo(topic_name) {
+        const callback = (data) => {
             //console.log(data);
-            this.setState({topic:data.data});
+            this.setState({topic: data.data});
         };
-        getTopic(topic_name,callback);
+        getTopic(topic_name, callback);
     }
+
     componentDidMount() {
         const arr = this.props.location.search.split('&');
         const topic_name = arr[0].substr(12);
@@ -92,27 +107,58 @@ class TopicCard extends React.Component {
 
     handleExpandClick = () => {
         this.setState({expanded: !this.state.expanded});
+    }
+    handleTopicMenuOpen = (event) => {
+        this.setState({anchorEl:event.currentTarget});
+    };
+
+    handleMenuClose = () => {
+        this.setState({anchorEl:null});
     };
 
     render() {
         const {classes} = this.props;
-        const {topic, expanded} = this.state;
-
+        const {topic, expanded,anchorEl} = this.state;
+        const isMenuOpen = Boolean(anchorEl);
+        const menuId = 'topic-menu';
+        const renderMenu = (
+            <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                id={menuId}
+                keepMounted
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                open={isMenuOpen}
+                onClose={this.handleMenuClose}
+            >
+                {this.props.role === UserType.ADMIN ?
+                    <MenuItem><CreateIcon color='primary'/>编辑</MenuItem> :
+                    <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                }
+            </Menu>
+        );
         if (topic)
             return (
                 <Card className={classes.root}>
                     <div className={classes.background}>
+                        <CardHeader className={classes.header}
+                            action={
+                                <IconButton onClick={this.handleTopicMenuOpen} aria-label="settings">
+                                    <MoreVertIcon/>
+                                </IconButton>
+                            }
+                        />
                         <CardContent className={classes.content}>
                             <Grid container spacing={1}>
                                 <Grid item xs={2}>
                                     <CardMedia
                                         className={classes.media}
                                         image={topic.logo_path}
-                                        title="沙滩"
+                                        title={topic.name}
                                     />
                                 </Grid>
                                 <Grid item xs>
-                                    <div style={{marginTop: '10px', marginLeft: '20px'}}>
+                                    <div style={{marginTop: '10px', marginLeft: '40px'}}>
                                         <Typography variant="h5" color="textPrimary" component="p" align='left'>
                                             #{topic.name}#
                                             {topic.topic_heat > 10000 ?
@@ -142,22 +188,29 @@ class TopicCard extends React.Component {
                             </Grid>
                         </CardContent>
                         <CardActions disableSpacing>
-                            <IconButton aria-label="add to favorites" style={{marginLeft: '10px'}}>
-                                <FavoriteIcon/>
-                            </IconButton>
-                            <IconButton aria-label="share">
-                                <VisibilityIcon/>
-                            </IconButton>
-                            <IconButton
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: expanded,
-                                })}
-                                onClick={this.handleExpandClick}
-                                aria-expanded={expanded}
-                                aria-label="show more"
-                            >
-                                <CreateIcon/>
-                            </IconButton>
+                            {/*<IconButton aria-label="add to favorites" style={{marginLeft: '10px'}}>*/}
+                            {/*    <FavoriteIcon/>*/}
+                            {/*</IconButton>*/}
+                            {/*<IconButton aria-label="share">*/}
+                            {/*    <VisibilityIcon/>*/}
+                            {/*</IconButton>*/}
+                            <Tooltip title="成为主持人">
+                                <IconButton aria-label="handup">
+                                    <MicNoneIcon/>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title={"发博"}>
+                                <IconButton
+                                    className={clsx(classes.expand, {
+                                        [classes.expandOpen]: expanded,
+                                    })}
+                                    onClick={this.handleExpandClick}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                >
+                                    <CreateIcon/>
+                                </IconButton>
+                            </Tooltip>
                         </CardActions>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent>
@@ -165,9 +218,11 @@ class TopicCard extends React.Component {
                             </CardContent>
                         </Collapse>
                     </div>
+                    {renderMenu}
                 </Card>)
         else return <div>Loading...</div>
     }
 }
 
-export default TopicCard;
+export default connect
+(mapStateToProps, null)(TopicCard);

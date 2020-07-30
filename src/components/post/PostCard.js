@@ -112,7 +112,7 @@ class PostCard extends React.Component {
         super(props);
         const {blog_count} = this.props.post;
         this.state = {
-            voted:this.props._vote,
+            voted:this.props.post._vote,
             forward: false,
             voteCount: blog_count.vote_count,
             commentCount: blog_count.comment_count,

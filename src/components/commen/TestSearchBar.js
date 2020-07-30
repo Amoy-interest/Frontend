@@ -118,7 +118,7 @@ function TestSearchBar(props) {
                             //margin="normal"
                             variant="standard"
                             size="small"
-                            InputProps={{ ...params.InputProps, type: 'search',style:{height:'34px'} }}
+                            InputProps={{ ...params.InputProps, type: 'search',style:{height:'30px'} }}
                         />
                     )}
                 />

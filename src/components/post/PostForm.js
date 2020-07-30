@@ -120,8 +120,8 @@ class PostForm extends React.Component{
                                 setSubmitting(false);
                                 // resetForm();
                                 if(this.props.type === PostType.FORWARD)
-                                    this.submitForward(values, resetForm);
-                                else this.submitOwn(values);
+                                    this.submitForward(values);
+                                else this.submitOwn(values,resetForm);
                             }, 500);
                         }}
                     >
