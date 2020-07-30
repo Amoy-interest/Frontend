@@ -25,7 +25,6 @@ import {InputAdornment} from "@material-ui/core";
 import {TextField} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
-import {amber} from "@material-ui/core/colors";
 import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({

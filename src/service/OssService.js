@@ -1,7 +1,6 @@
 import {localUrl, APIModules, MsgType} from "../utils/constants";
 import {getRequest} from "../utils/ajax";
 import OSS from 'ali-oss';
-import {nlNL} from "@material-ui/core/locale";
 import PubSub from "pubsub-js";
 
 function getSTS() {

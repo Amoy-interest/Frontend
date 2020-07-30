@@ -5,8 +5,6 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import {AITextField} from "../commen/AIField";
 import {makeStyles} from "@material-ui/core/styles";
-import PostImage from "./PostImage";
-import Uploader from "../commen/Uploader";
 
 const useStyles = makeStyles((theme) => ({
     submit: {

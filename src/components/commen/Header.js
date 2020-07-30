@@ -55,43 +55,12 @@ function mapStateToProps(state) {
 
 function Header(props) {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
-    const isMenuOpen = Boolean(anchorEl);
+    // const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleProfile = () => {
-        handleMenuClose();
-        history.replace('/personal-info?id=1');
-    };
-
-    const handleLogout = () => {
-        handleMenuClose();
-        userService.logout();
-        history.replace('/');
-    };
-
-    const openPostsView = () => {
-        handleMenuClose();
-        history.replace('/posts');
-    };
-
-    const openHomeView = () => {
-        handleMenuClose();
-        history.replace('/home');
-    };
-
-    const openUsersManageView = () => {
-        handleMenuClose();
-        history.replace('/users-manage');
-    };
+    // const handleMenuClose = () => {
+    //     setAnchorEl(null);
+    // };
 
     // const renderMenu = (
     //     <Menu
@@ -109,6 +78,23 @@ function Header(props) {
     //
     //     </Menu>
     // );
+
+    const handleLogout = () => {
+        userService.logout();
+        history.replace('/');
+    };
+
+    const openPostsView = () => {
+        history.replace('/posts');
+    };
+
+    const openHomeView = () => {
+        history.replace('/home');
+    };
+
+    const openUsersManageView = () => {
+        history.replace('/users-manage');
+    };
 
     const handleSearch = (keyword) => {
         console.log(keyword);

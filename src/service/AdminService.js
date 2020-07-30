@@ -1,5 +1,5 @@
 import {apiUrl, APIModules} from "../utils/constants";
-import {getRequest, putRequest_json, postRequest_json, deleteRequest_json} from "../utils/ajax";
+import {getRequest, putRequest_json} from "../utils/ajax";
 
 export const getReportedPosts = (params, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.BLOG}/reported/`;

@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
 import * as userService from "../../service/UserService";
 import {useHistory} from "react-router";
-import {setToken, setUser} from "../../redux/actions";
+import { setUser} from "../../redux/actions";
 import {connect} from "react-redux";
 import PubSub from "pubsub-js";
 import {MsgType} from "../../utils/constants";

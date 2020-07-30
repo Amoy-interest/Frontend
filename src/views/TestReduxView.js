@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {setToken, setUser} from "../redux/actions";
 import { connect } from 'react-redux'
-import * as userService from "../service/UserService"
-import InfiniteScroll from 'react-infinite-scroller';
-import Typography from "@material-ui/core/Typography";
+import * as userService from "../service/UserService";
+// import InfiniteScroll from 'react-infinite-scroller';
+// import Typography from "@material-ui/core/Typography";
 
 function mapStateToProps(state) {
     return {
@@ -82,7 +82,7 @@ class TestReduxView extends Component{
     };
 
     render() {
-        const classes = this.props.classes;
+        // const classes = this.props.classes;
         return (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 TestView page!

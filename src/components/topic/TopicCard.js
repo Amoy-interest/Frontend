@@ -1,5 +1,4 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -12,16 +11,13 @@ import {amber, red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Background from '../../assets/img/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
-import PostImage1 from "../../assets/img/post1.png";
 import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
-import FaceIcon from "@material-ui/icons/Face";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getTopic} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
-import ListItem from "@material-ui/core/ListItem";
 
 const styles = ((theme) => ({
     background: {

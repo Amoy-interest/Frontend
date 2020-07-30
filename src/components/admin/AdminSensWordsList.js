@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withStyles, makeStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from "@material-ui/core/Button";
 import {getSensWords, postSensWord, putSensWord, deleteSensWord,searchSensWords} from '../../service/KeyWordService';
@@ -22,7 +22,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
-import {getReportedTopics} from "../../service/AdminService";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
