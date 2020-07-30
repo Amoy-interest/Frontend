@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function EditForm(props){
+export default function EditPostForm(props){
     const classes = useStyles();
 
     const submit = (values) => {

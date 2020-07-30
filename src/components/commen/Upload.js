@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';import {withStyles} from "@material-ui/styles";
-import PostImage from "../post/PostImage";
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import {withStyles} from "@material-ui/styles";
+import PubSub from "pubsub-js";
+import {MsgType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -44,7 +46,7 @@ class Upload extends Component{
         this.state = {
             files: [],
             images: [],
-            limits: 4
+            limits: 9
         };
 
         this.onChange = this.onChange.bind(this);
@@ -53,6 +55,16 @@ class Upload extends Component{
 
     onChange = async (e) => {
         let newFiles = e.currentTarget.files;
+        let total = newFiles.length + this.state.files.length;
+
+        // limit file number
+        if (total > this.state.limits){
+            PubSub.publish(MsgType.SET_MESSAGE, {
+                open: true, text: "图片数量不超过9张！",type:'warning'
+            });
+            return;
+        }
+
         let allFiles = [...this.state.files, ...newFiles];
         let images = this.state.images;
         for(let i = 0; i < newFiles.length; i++){
@@ -72,25 +84,26 @@ class Upload extends Component{
         const classes = this.props.classes;
         return (
             <div className={classes.root}>
-                <div className="input-file">
-                    <input
-                        accept="image/*"
-                        name='inputFile'
-                        className={classes.input}
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        onChange={this.onChange}
-                    />
-                    <label htmlFor="contained-button-file">
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                            <PhotoCamera />
-                        </IconButton>
-                        {/*<Button variant="contained" color="primary" component="span">*/}
-                        {/*    Upload*/}
-                        {/*</Button>*/}
-                    </label>
-                </div>
+                {
+                    this.state.files.length < this.state.limits ?
+                        (<div className="input-file">
+                            <input
+                                accept="image/*"
+                                name='inputFile'
+                                className={classes.input}
+                                id="contained-button-file"
+                                multiple
+                                type="file"
+                                onChange={this.onChange}
+                            />
+                            <label htmlFor="contained-button-file">
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <PhotoCamera />
+                                </IconButton>
+                            </label>
+                        </div>) : null
+                }
+
             </div>
         );
     }
