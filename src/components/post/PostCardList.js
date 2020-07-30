@@ -44,8 +44,6 @@ class PostCardList extends Component {
 
     loadMore() {
         const callback = (data) => {
-            //console.log("loadMore data", data);
-            //console.log("state", this.state);
             if (data.status !== 200) {
                 console.log(data);
                 PubSub.publish(MsgType.SET_MESSAGE, {
@@ -65,10 +63,6 @@ class PostCardList extends Component {
         };
 
         switch (this.props.index) {
-            case PostType.RANDOM:
-            default:
-                getRandomPosts(params, callback);
-                break;
             case PostType.RECOMMEND:
                 getRecommendPosts(params, callback);
                 break;
@@ -91,50 +85,20 @@ class PostCardList extends Component {
                 params.keyword = this.props.location.state.keyword;
                 searchPosts(params, callback);
                 break;
+            case PostType.RANDOM: default:
+                getRandomPosts(params, callback);
+                break;
         }
     }
 
-    // componentWillReceiveProps(newProps) {
-    //     console.log('newProps');
-    //     const callback = (data) => {
-    //         this.setState({posts: [], nextHref: 0});
-    //         this.setState({
-    //             posts: [...this.state.posts, ...data.data.list],
-    //             hasMoreItems: (data.data.totalPage > this.state.nextHref),
-    //             nextHref: this.state.nextHref + 1
-    //         })
-    //     };
-    //
-    //     const params = {
-    //         pageNum: this.state.nextHref,
-    //         pageSize: this.state.pageSize
-    //     };
-    //
-    //     switch (this.props.index) {
-    //         case PostType.RANDOM:
-    //         default:
-    //             getRandomPosts(params, callback);
-    //             break;
-    //         case PostType.OWN:
-    //             const param = newProps.location.search.split('&');
-    //             const user_id = param[0].substr(4);
-    //             params.user_id = user_id;
-    //             getOwnPosts(params, callback);
-    //             break;
-    //         case PostType.TOPIC:
-    //             const arr = newProps.location.search.split('&');
-    //             const topic_name = arr[0].substr(12);
-    //             params.topic_name = topic_name;
-    //             console.log(params);
-    //             getTopicPosts(params, callback);
-    //             break;
-    //         case PostType.SEARCH:
-    //             params.keyword = newProps.location.state.keyword;
-    //             //console.log(params);
-    //             searchPosts(params, callback);
-    //             break;
-    //     }
-    // }
+    componentWillReceiveProps(nextProps, nextContext): void {
+        this.setState({
+            posts: [],
+            hasMoreItems: true,
+            nextHref: 0,
+            key: this.state.key + 1
+        })
+    }
 
     componentWillMount() {
         PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {

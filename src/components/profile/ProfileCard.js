@@ -78,8 +78,8 @@ class ProfileCard extends React.Component {
         };
     }
 
-    componentDidMount() {
-        const param = this.props.location.search.split('&');
+    update(props){
+        const param = props.location.search.split('&');
         const user_id = param[0].substr(4);
         getUserInfo(user_id, (data)=>{
             console.log(data);
@@ -87,14 +87,12 @@ class ProfileCard extends React.Component {
         });
     }
 
-    componentWillReceiveProps(newProps) {
+    componentDidMount() {
+        this.update(this.props);
+    }
 
-        const param = newProps.location.search.split('&');
-        const user_id=param[0].substr(4);
-        const callback=(data)=>{
-            this.setState({userInfo:data.data.user,followed:data.data.user_follow});
-        };
-        getUserInfo(user_id,callback);
+    componentWillReceiveProps(nextProps, nextContext): void {
+        this.update(nextProps);
     }
 
     handleProfileMenuOpen = (event) => {
