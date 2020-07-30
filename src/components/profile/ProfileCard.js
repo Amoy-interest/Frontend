@@ -83,7 +83,7 @@ class ProfileCard extends React.Component {
         const user_id=param[0].substr(4);
         const callback=(data)=>{
             //console.log(data);
-            this.setState({userInfo:data.data,followed:data.data._follow});
+            this.setState({userInfo:data.data.user,followed:data.data.user._follow});
         };
         getUserInfo(user_id,callback);
     }

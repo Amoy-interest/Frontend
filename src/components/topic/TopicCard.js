@@ -8,15 +8,13 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {amber, red} from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Background from '../../assets/img/topicbackground.jpeg'
 import Grid from "@material-ui/core/Grid";
 import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import withStyles from "@material-ui/core/styles/withStyles";
-import {getTopic} from "../../service/TopicService";
+import {editTopicIntro, getTopic, editTopicLogo} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -24,16 +22,12 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {connect} from "react-redux";
-import PanToolIcon from '@material-ui/icons/PanTool';
 import MicNoneIcon from '@material-ui/icons/MicNone';
-import {PostType, UserType} from "../../utils/constants";
+import {UserType} from "../../utils/constants";
 import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
-import PostEditForm from "../post/PostEditForm";
-import PostImage from "../post/PostImage";
 import Modal from "@material-ui/core/Modal";
 import TopicEditForm from "./TopicEditForm";
-import {editPost} from "../../service/PostService";
 
 const styles = ((theme) => ({
     background: {
@@ -77,7 +71,7 @@ const styles = ((theme) => ({
     },
     editModal: {
         padding: theme.spacing(1),
-        width:500
+        width: 500
     }
 }));
 
@@ -85,7 +79,7 @@ function mapStateToProps(state) {
     return {
         role: state.userReducer.role
     }
-};
+}
 
 function getModalStyle() {
     const top = 50;
@@ -95,10 +89,11 @@ function getModalStyle() {
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
     };
-};
+}
 
 @withStyles(styles)
 class TopicCard extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -113,7 +108,6 @@ class TopicCard extends React.Component {
 
     getTopicInfo(topic_name) {
         const callback = (data) => {
-            //console.log(data);
             this.setState({topic: data.data, image: data.data.logo_path, introduction: data.data.topic_intro});
         };
         getTopic(topic_name, callback);
@@ -134,38 +128,59 @@ class TopicCard extends React.Component {
     handleExpandClick = () => {
         this.setState({expanded: !this.state.expanded});
     }
+
     handleTopicMenuOpen = (event) => {
-        this.setState({anchorEl: event.currentTarget});
+        this.setState({anchorEl: event.currentTarget})
     };
 
     handleMenuClose = () => {
         this.setState({anchorEl: null});
-    };
-    handleEditClick=()=>{
+    }
+
+    handleEditClick = () => {
         this.handleEditModalOpen();
         this.handleMenuClose();
     }
+
     handleEditModalOpen = () => {
         this.setState({editModalOpen: true});
-    };
+    }
 
     handleEditModalClose = () => {
         this.setState({editModalOpen: false});
-    };
+    }
 
     submitEdit = (data) => {
-        // const callback = () => {
-        //     this.setState({text: text.text});
-        //     this.handleEditModalClose();
-        // };
-        // let data = {
-        //     blog_id: this.state.post.blog_id,
-        //     images: this.state.post.blog_content.images,
-        //     text: text.text
-        // };
-        // editPost(data, callback);
         console.log(data);
-    };
+
+        const callback1 = (data) => {
+            console.log(data);
+            this.setState({topic: data.data, intro: data.data.topic_intro});
+            this.handleEditModalClose();
+        };
+
+        const callback2 = (data) => {
+            this.setState({topic: data.data, image: data.data.logo_path});
+            this.handleEditModalClose();
+        };
+
+        if (data.text !== this.state.introduction) {
+            let intro = {
+                topic_name: this.state.topic.name,
+                topic_intro: data.text
+            };
+            editTopicIntro(intro, callback1)
+        }
+
+        if (data.url.url !== this.state.image) {
+            let logo = {
+                topic_name: this.state.topic.name,
+                logo_path: data.url.url
+            };
+            editTopicLogo(logo, callback2)
+        }
+        if (!this.state.editModalOpen) this.handleEditModalClose();
+    }
 
     render() {
         const {classes} = this.props;
@@ -267,7 +282,7 @@ class TopicCard extends React.Component {
                             </CardActions>
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <CardContent>
-                                    <PostForm/>
+                                    <PostForm tag={topic.name}/>
                                 </CardContent>
                             </Collapse>
                         </div>
@@ -277,7 +292,7 @@ class TopicCard extends React.Component {
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.editModal}>
                                 <TopicEditForm closeModal={this.handleEditModalClose} text={introduction}
-                                               image={[image]} submit={this.submitEdit}/>
+                                               image={image} submit={this.submitEdit}/>
                             </Paper>
                         </div>
                     </Modal>
