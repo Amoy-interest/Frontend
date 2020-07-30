@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import {AITextField} from "../commen/AIField";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
-import {MsgType, PostType} from "../../utils/constants";
+import {MessageType, MsgType, PostType} from "../../utils/constants";
 import Uploader from "../commen/Uploader";
 import OssApi from "../../service/OssService";
 import PostImage from "./PostImage";
@@ -64,11 +64,10 @@ class PostForm extends React.Component{
         this.setState({isUploading: true});
 
         let urls = await oss.putObjects(this.state.fileList);
-        console.log("urls", urls);
-        makePost(values.content, urls, (data) => {
+        makePost(values.content, urls, values.tag, (data) => {
             console.log("callback_own", data);
-            if (data.status !== 200) PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: data.msg, type: 'warning'});
+            if (data.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "发博失败！", type: MessageType.ERROR});
             else {
                 // clear form and upload
                 resetForm();
@@ -76,15 +75,13 @@ class PostForm extends React.Component{
                 PubSub.publish(MsgType.CLEAR_UPLOAD, null);
 
                 // send messages and display new post
-                PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: data.msg, type: 'success'});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "发博成功！", type: MessageType.SUCCESS});
                 PubSub.publish(MsgType.ADD_POST, data.data);
             }
         });
     };
 
     submitForward = (values) => {
-
         const callbackForward = (data) => {
             console.log("callback_forward", data);
 
@@ -107,6 +104,7 @@ class PostForm extends React.Component{
     render() {
         const classes = this.props.classes;
         const type = this.props.type ? this.props.type : PostType.OWN;
+        const tag = this.props.tag ? this.props.tag : '';
 
         return (
             <Container component="main" maxWidth="lg">
@@ -117,7 +115,8 @@ class PostForm extends React.Component{
                 <Paper elevation={type === PostType.OWN? 3: 0} className={classes.paper}>
                     <Formik
                         initialValues={{
-                            content: ''
+                            content: '',
+                            tag: tag
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
@@ -132,7 +131,12 @@ class PostForm extends React.Component{
                         {({ submitForm, isSubmitting, handleReset }) => (
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
-                                    <AITextField sm={12} name="content" label="博文内容" multiline/>
+                                    <AITextField sm={10} name="content" label="博文内容" multiline/>
+                                    {
+                                        type === PostType.OWN ?
+                                            <AITextField sm={2} name="tag" label="标签" multiline/>
+                                            : null
+                                    }
                                     <Grid item xs={12} sm={12}>
                                         <PostImage image={this.state.images}/>
                                     </Grid>

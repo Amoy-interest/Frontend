@@ -1,4 +1,4 @@
-import {localUrl, apiUrl, APIModules, MsgType} from "../utils/constants";
+import {localUrl, apiUrl, APIModules, MsgType, MessageType} from "../utils/constants";
 import {getRequest, postRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";
@@ -12,19 +12,16 @@ export const login = (data, callback) => {
 };
 
 export const logout = () => {
-    console.log("logout");
     const url = `${apiUrl}${APIModules.USER}/logout`;
-
-    const callback = (data) => {
-        console.log("logout callback", data);
-        if (data.status !== 0) {
-            PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data.msg});
+    getRequest(url, null, (data) => {
+        if (data.status !== 200) {
+            PubSub.publish(MsgType.SET_MESSAGE, {text: "登出失败！", type: MessageType.ERROR});
+            return;
         }
-        PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data.msg, type: 'success'});
+        PubSub.publish(MsgType.SET_MESSAGE, { text: "登出成功！", type: MessageType.SUCCESS});
         store.dispatch(removeToken());
         store.dispatch(removeUser());
-    };
-    getRequest(url, null, callback);
+    });
 };
 
 export const register = (data, callback) => {
