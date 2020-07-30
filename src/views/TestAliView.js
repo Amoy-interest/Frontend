@@ -86,6 +86,7 @@ class TestAliView extends Component{
                                     key={'img' + value}
                                     id={value}
                                     className={classes.img}
+                                    alt={'img' + value}
                                     // onClick={e => {
                                     //     let id = console.log(e.currentTarget.id);
                                     //     this.setState({

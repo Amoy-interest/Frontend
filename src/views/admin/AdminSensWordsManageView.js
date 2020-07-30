@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
 import AdminSensWordsList from "../../components/admin/AdminSensWordsList";
-import AdminTopicsList from "../../components/admin/AdminTopicsList";
 
 const styles =((theme) => ({
     root: {

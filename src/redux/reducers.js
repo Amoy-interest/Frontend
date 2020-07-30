@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import {UserActionType, TokenActionType, UserType} from "../utils/constants";
 import {history} from "../utils/history";
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { connectRouter } from 'connected-react-router'
 
 function userReducer(
     state = {

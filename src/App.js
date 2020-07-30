@@ -15,7 +15,7 @@ import AdminTopicsManageView from "./views/admin/AdminTopicsManageView";
 import AdminSensWordsManageView from './views/admin/AdminSensWordsManageView';
 import TestReduxView from "./views/TestReduxView";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
-import {amber, blue, indigo} from "@material-ui/core/colors";
+import {amber, indigo} from "@material-ui/core/colors";
 import {connect} from "react-redux";
 import HeaderAfterLogIn from "./components/commen/Header";
 import Container from "@material-ui/core/Container";

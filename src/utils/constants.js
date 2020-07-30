@@ -50,6 +50,7 @@ const MsgType = {
     SET_MESSAGE: "setMessage",
     ADD_COMMENT:"addComment",
     DELETE_COMMENT:"deleteComment",
+    CLEAR_UPLOAD: 'clearUpload',
     ERROR_UPLOAD: 'errorUpload'
 };
 

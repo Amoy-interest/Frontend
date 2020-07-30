@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
-import {getComments, getPost, postComment} from "../../service/PostService";
+import { getPost } from "../../service/PostService";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import CommentList, {CommentListType} from "./CommentList";
-import {getUserInfo} from "../../service/UserService";
 
 const styles = ((theme) => ({
     root: {

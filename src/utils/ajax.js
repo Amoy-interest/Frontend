@@ -16,34 +16,34 @@ function parseQuery(url, query) {
     } else return url;
 };
 
-const Request_form = (url, data, callback, method) => {
-    let formData = new FormData();
-
-    for (let p in data) {
-        if (data.hasOwnProperty(p))
-            formData.append(p, data[p]);
-    }
-
-    let opts = {
-        method: method,
-        body: formData,
-        headers: {
-            'token': store.getState().tokenReducer,
-        },
-        credentials: "include"
-    };
-
-    fetch(url, opts)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            callback(data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
+// const Request_form = (url, data, callback, method) => {
+//     let formData = new FormData();
+//
+//     for (let p in data) {
+//         if (data.hasOwnProperty(p))
+//             formData.append(p, data[p]);
+//     }
+//
+//     let opts = {
+//         method: method,
+//         body: formData,
+//         headers: {
+//             'token': store.getState().tokenReducer,
+//         },
+//         credentials: "include"
+//     };
+//
+//     fetch(url, opts)
+//         .then((response) => {
+//             return response.json()
+//         })
+//         .then((data) => {
+//             callback(data);
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//         });
+// };
 
 const Request_json = (url, json, callback, method) => {
     let needToken = !(url.match("/login") || url.match("/register")||url.match("/beforeLogin")||url.match("/hotList"));

@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
-import CommentList, {CommentListType} from "../post/CommentList";
-import {getPost} from "../../service/PostService";
 import {getHotList} from "../../service/TopicService";
 import Box from "@material-ui/core/Box";
 

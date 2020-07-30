@@ -26,8 +26,14 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {connect} from "react-redux";
 import PanToolIcon from '@material-ui/icons/PanTool';
 import MicNoneIcon from '@material-ui/icons/MicNone';
-import {UserType} from "../../utils/constants";
+import {PostType, UserType} from "../../utils/constants";
 import Tooltip from "@material-ui/core/Tooltip";
+import Paper from "@material-ui/core/Paper";
+import PostEditForm from "../post/PostEditForm";
+import PostImage from "../post/PostImage";
+import Modal from "@material-ui/core/Modal";
+import TopicEditForm from "./TopicEditForm";
+import {editPost} from "../../service/PostService";
 
 const styles = ((theme) => ({
     background: {
@@ -38,8 +44,8 @@ const styles = ((theme) => ({
         width: 660,
         marginLeft: theme.spacing(2)
     },
-    header:{
-        height:'8px'
+    header: {
+        height: '8px'
     },
     content: {
         //paddingTop: 40,
@@ -73,6 +79,17 @@ function mapStateToProps(state) {
         role: state.userReducer.role
     }
 };
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+};
+
 @withStyles(styles)
 class TopicCard extends React.Component {
     constructor(props) {
@@ -80,8 +97,8 @@ class TopicCard extends React.Component {
         this.state = {
             topic: null,
             expanded: false,
-            anchorEl:null,
-            heat: 0
+            anchorEl: null,
+            editModalOpen: false,
         };
     }
 
@@ -109,16 +126,32 @@ class TopicCard extends React.Component {
         this.setState({expanded: !this.state.expanded});
     }
     handleTopicMenuOpen = (event) => {
-        this.setState({anchorEl:event.currentTarget});
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleMenuClose = () => {
-        this.setState({anchorEl:null});
+        this.setState({anchorEl: null});
+    };
+    handleEditModalClose = () => {
+        this.setState({editModalOpen: false});
+    };
+
+    submitEdit=(text)=>{
+        const callback=()=>{
+            this.setState({text:text.text});
+            this.handleEditModalClose();
+        };
+        let data={
+            blog_id: this.state.post.blog_id,
+            images:this.state.post.blog_content.images,
+            text:text.text
+        };
+        editPost(data,callback);
     };
 
     render() {
         const {classes} = this.props;
-        const {topic, expanded,anchorEl} = this.state;
+        const {topic, expanded, anchorEl, editModalOpen} = this.state;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'topic-menu';
         const renderMenu = (
@@ -142,11 +175,11 @@ class TopicCard extends React.Component {
                 <Card className={classes.root}>
                     <div className={classes.background}>
                         <CardHeader className={classes.header}
-                            action={
-                                <IconButton onClick={this.handleTopicMenuOpen} aria-label="settings">
-                                    <MoreVertIcon/>
-                                </IconButton>
-                            }
+                                    action={
+                                        <IconButton onClick={this.handleTopicMenuOpen} aria-label="settings">
+                                            <MoreVertIcon/>
+                                        </IconButton>
+                                    }
                         />
                         <CardContent className={classes.content}>
                             <Grid container spacing={1}>
@@ -218,6 +251,13 @@ class TopicCard extends React.Component {
                             </CardContent>
                         </Collapse>
                     </div>
+                    <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.editModal}>
+                                <TopicEditForm closeModal={this.handleEditModalClose} submit=/>
+                            </Paper>
+                        </div>
+                    </Modal>
                     {renderMenu}
                 </Card>)
         else return <div>Loading...</div>

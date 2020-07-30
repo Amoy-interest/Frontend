@@ -10,7 +10,7 @@ import {AITextField} from "../commen/AIField";
 import {withStyles} from "@material-ui/styles";
 import {forwardPost, makePost} from "../../service/PostService";
 import {MsgType, PostType} from "../../utils/constants";
-import Upload from "../commen/Upload";
+import Uploader from "../commen/Uploader";
 import OssApi from "../../service/OssService";
 import PostImage from "./PostImage";
 import Backdrop from '@material-ui/core/Backdrop';
@@ -70,8 +70,12 @@ class PostForm extends React.Component{
             if (data.status !== 200) PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'warning'});
             else {
+                // clear form and upload
                 resetForm();
-                this.setState({images: [], isUploading: false});
+                this.setState({fileList: [],images: [], isUploading: false});
+                PubSub.publish(MsgType.CLEAR_UPLOAD, null);
+
+                // send messages and display new post
                 PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'success'});
                 PubSub.publish(MsgType.ADD_POST, data.data);
@@ -137,7 +141,7 @@ class PostForm extends React.Component{
                                         <div className={classes.buttons}>
                                             {
                                                 type === PostType.OWN ?
-                                                    <Upload uploadFiles={this.uploadFiles}/>
+                                                    <Uploader uploadFiles={this.uploadFiles}/>
                                                     : null
                                             }
                                             <Button

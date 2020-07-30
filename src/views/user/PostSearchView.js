@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
-import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
 import {PostType} from "../../utils/constants";

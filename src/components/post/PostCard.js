@@ -33,7 +33,7 @@ import Paper from "@material-ui/core/Paper";
 import {MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
-import EditPostForm from "./EditPostForm";
+import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 
 const styles = (theme => ({
@@ -90,7 +90,7 @@ Date.prototype.Format = function (fmt) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ?
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ?
                 (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
@@ -190,13 +190,13 @@ class PostCard extends React.Component {
 
     submitEdit=(text)=>{
         const callback=()=>{
-            this.setState({text:text.comment});
+            this.setState({text:text.text});
             this.handleEditModalClose();
         };
         let data={
             blog_id: this.state.post.blog_id,
             images:this.state.post.blog_content.images,
-            text:text.comment
+            text:text.text
         };
         editPost(data,callback);
     };
@@ -408,7 +408,7 @@ class PostCard extends React.Component {
                     <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.editModal}>
-                                <EditPostForm type={PostType.FORWARD}
+                                <PostEditForm type={PostType.FORWARD}
                                               postId={post.blog_id}
                                               closeModal={this.handleEditModalClose}
                                               submit={this.submitEdit}

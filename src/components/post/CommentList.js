@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
-import {getComments, getMultiLevelComments, getPost, postComment} from "../../service/PostService";
+import {getComments, getMultiLevelComments, postComment} from "../../service/PostService";
 import {Divider, List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";

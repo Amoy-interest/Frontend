@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
 import AdminPostsList from "../../components/admin/AdminPostsList";
-import AdminTopicsList from "../../components/admin/AdminTopicsList";
 
 const styles = ((theme) => ({
     root: {

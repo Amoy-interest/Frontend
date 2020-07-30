@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import SideBarForProfile from "../../components/profile/PofileSideBar";
-import PostCardList from "../../components/post/PostCardList";
-import ProfileCard from "../../components/profile/ProfileCard";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
-import {PostType} from "../../utils/constants";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles =((theme) => ({
