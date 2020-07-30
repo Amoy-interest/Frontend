@@ -104,12 +104,12 @@ class TopicCard extends React.Component {
                                     <CardMedia
                                         className={classes.media}
                                         image={topic.logo_path}
-                                        title="沙滩"
+                                        title={topic.name}
                                     />
                                 </Grid>
                                 <Grid item xs>
                                     <div style={{marginTop: '10px', marginLeft: '20px'}}>
-                                        <Typography variant="h5" color="textPrimary" component="p" align='left'>
+                                        <Typography variant="h5" color="textPrimary" align='left'>
                                             #{topic.name}#
                                             {topic.topic_heat > 10000 ?
                                                 <Chip

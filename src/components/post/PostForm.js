@@ -131,10 +131,10 @@ class PostForm extends React.Component{
                         {({ submitForm, isSubmitting, handleReset }) => (
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
-                                    <AITextField sm={10} name="content" label="博文内容" multiline/>
+                                    <AITextField sm={type === PostType.OWN ? 9:12} name="content" label="博文内容" multiline/>
                                     {
                                         type === PostType.OWN ?
-                                            <AITextField sm={2} name="tag" label="标签" multiline/>
+                                            <AITextField sm={3} name="tag" label="标签" multiline/>
                                             : null
                                     }
                                     <Grid item xs={12} sm={12}>
