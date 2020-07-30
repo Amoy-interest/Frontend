@@ -48,7 +48,8 @@ class TopicEditForm extends React.Component{
 
     submit = async (values) => {
         this.setState({isUploading: true});
-        values.url = await oss.putObjects(this.state.fileList);
+        if (this.state.file === null) values.url = this.state.images;
+        else values.url = await oss.putObject(this.state.file);
         this.setState({isUploading: false});
 
         console.log("values", values);
@@ -58,7 +59,7 @@ class TopicEditForm extends React.Component{
     uploadFiles = (files, images) => {
         this.setState({
             file: files[0],
-            images: images[0]
+            image: images[0]
         });
     };
 
