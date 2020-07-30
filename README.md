@@ -6,13 +6,12 @@ Created on Jul 8th, 2020.
 
 - 全局的*Message*放在```App.js```中，其余组件只需要用```PubSub```发送一个```SET_MESSAGE```信号（在```constant.js```中可以直接引入）以及需要发送的内容即可发送一条*Message*
 
-- Message 类型主要四种：```error, info, success, warning```
+- Message 类型主要四种：```error, info, success, warning``` （在```constant.js```中可以直接引入）
 
 - 使用方式：
 
      ```
-     PubSub.publish(MsgType.SET_MESSAGE, {
-     	open: true, text: data.msg, type: 'warning'});
+     PubSub.publish(MsgType.SET_MESSAGE, {text: "登陆失败！", type: MessageType.ERROR});
      ```
 
 

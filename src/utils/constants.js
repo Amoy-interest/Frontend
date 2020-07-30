@@ -54,9 +54,16 @@ const MsgType = {
     ERROR_UPLOAD: 'errorUpload'
 };
 
+const MessageType = {
+    ERROR: 'error',
+    SUCCESS: 'success',
+    WARNING: 'warning',
+    INFO: 'info'
+};
+
 export {apiUrl, mockUrl, devUrl, localUrl,
     UserActionType, TokenActionType, APIModules,
     UserType, AuthorityLevel,PostType,
-    MsgType
+    MsgType, MessageType
 };
 

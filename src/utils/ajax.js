@@ -1,7 +1,7 @@
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser, setToken} from "../redux/actions";
 import PubSub from "pubsub-js";
-import {MsgType} from "./constants";
+import {MessageType, MsgType} from "./constants";
 
 function parseQuery(url, query) {
     if (query) {
@@ -74,21 +74,15 @@ const Request_json = (url, json, callback, method) => {
             return response.json()
         })
         .then((data) => {
+            console.log(data)
             if (data.status === 401) {
                 store.dispatch(removeToken());
                 store.dispatch(removeUser());
                 PubSub.publish(MsgType.SET_MESSAGE, {
-                    open: true, text: data.msg, type: 'error'
+                    text: data.msg, type: MessageType.ERROR
                 });
-                return;
             }
-            else if (data.status !== 200) {
-                PubSub.publish(MsgType.SET_MESSAGE, {
-                    open: true, text: data.msg, type: 'error'
-                });
-                return;
-            }
-            callback(data);
+            else callback(data);
         })
         .catch((error) => {
             console.log(error);
