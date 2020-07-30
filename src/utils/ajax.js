@@ -58,7 +58,6 @@ const Request_json = (url, json, callback, method) => {
         } : {
             'Content-Type': 'application/json'
         },
-        //credentials: "include"
     } : {
         method: method,
         headers: needToken ?{
@@ -69,14 +68,12 @@ const Request_json = (url, json, callback, method) => {
     fetch(url, opts)
         .then((response) => {
             let token = response.headers.get('Authorization');
-            //console.log(token);
             if (token) {
                 store.dispatch(setToken(token));
             }
             return response.json()
         })
         .then((data) => {
-            console.log(data);
             if (data.status === 401) {
                 store.dispatch(removeToken());
                 store.dispatch(removeUser());
@@ -85,12 +82,12 @@ const Request_json = (url, json, callback, method) => {
                 });
                 return;
             }
-            // else if (data.status !== 200) {
-            //     PubSub.publish(MsgType.SET_MESSAGE, {
-            //         open: true, text: data.msg, type: 'error'
-            //     });
-            //     // return;
-            // }
+            else if (data.status !== 200) {
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    open: true, text: data.msg, type: 'error'
+                });
+                return;
+            }
             callback(data);
         })
         .catch((error) => {

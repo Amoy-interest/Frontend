@@ -8,8 +8,8 @@ function getSTS() {
     return new Promise(function(resolve, reject) {
         const url = `${localUrl}${APIModules.ALI}/sts/oss/tokens`;
         getRequest(url, null, (data) =>{
-            console.log(data);
-            if (data.status === 0) resolve(
+            console.log(data)
+            if (data.status === 200) resolve(
                 new OSS({
                     region: data.data.region,
                     accessKeyId: data.data.accessKeyId,

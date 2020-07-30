@@ -9,7 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import {useHistory} from 'react-router-dom'
 import Modal from '@material-ui/core/Modal';
 import LoginForm from "../signIn/LoginForm";
-import SearchBar from "./SearchBar";
+import TestSearchBar from "./TestSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "./Logo";
 
@@ -105,7 +105,7 @@ export default function HeaderPre() {
             <AppBar position="static">
                 <Toolbar>
                     <Logo title="Amoy Interest"/>
-                    <SearchBar/>
+                    <TestSearchBar/>
                     <div className={classes.blank}/>
                     <div className={classes.sectionDesktop}>
                         <Tooltip title="登陆">

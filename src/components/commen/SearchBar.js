@@ -53,6 +53,7 @@ const SearchBar = (props) => {
     const handleSearch = () => {
         props.handleSearch(keyword);
     };
+
     return (
         <div className={classes.search}>
             <div className={classes.searchIcon} onClick={handleSearch}>
