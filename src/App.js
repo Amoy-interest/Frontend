@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) =>
             minHeight: '85vh',
         }
     })
-)
+);
 
 function App(props) {
     const classes = useStyles();
@@ -80,8 +80,11 @@ function App(props) {
         type: 'warning'
     });
     PubSub.subscribe(MsgType.SET_MESSAGE, function (msg, data) {
-        //console.log(data);
-        setMessage(data);
+        setMessage({
+            open: true,
+            text: data.text,
+            type: data.type
+        });
     });
 
     const renderMergedProps = (component, ...rest) => {
@@ -150,6 +153,7 @@ function App(props) {
                 </Router>
                 <Message
                     messageOpen={message.open}
+                    autoHideDuration={1000}
                     handleClose={() => setMessage({open:false})}
                     type={message.type}
                     text={message.text}

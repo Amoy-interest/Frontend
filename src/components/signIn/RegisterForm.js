@@ -11,10 +11,11 @@ import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik';
 import Paper from '@material-ui/core/Paper';
 import {AITextField, AICheckField, AIPickerField} from "../commen/AIField";
-import {setToken, setUser} from "../../redux/actions";
+import { setUser} from "../../redux/actions";
 import {connect} from "react-redux";
 import * as userService from "../../service/UserService";
-import Message from "../commen/Message";
+import PubSub from "pubsub-js";
+import {MessageType, MsgType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,9 +44,8 @@ const useStyles = makeStyles((theme) => ({
 
 function mapDispatchToProps(dispatch) {
     return {
-        onLogin: (user, token) => {
+        onLogin: (user) => {
             dispatch(setUser(user));
-            dispatch(setToken(token));
         }
     }
 }
@@ -53,11 +53,6 @@ function mapDispatchToProps(dispatch) {
 function RegisterForm(props){
     const classes = useStyles();
     const history = useHistory();
-    const [message, setMessage] = React.useState({
-        open: false,
-        text: '',
-        type: 'warning'
-    });
     const sex = [
         {
             value: 0,
@@ -67,32 +62,24 @@ function RegisterForm(props){
             value: 1,
             name: "男"
         }
-    ]
-
-    const callback = (data) => {
-        console.log(data)
-        if (data.status !== 0){
-            setMessage({
-                text: data.msg,
-                type: 'error',
-                open: true
-            });
-            return;
-        }
-        console.log(data.data.user, data.data.token)
-        setMessage({
-            text: data.msg,
-            type: 'success',
-            open: true
-        })
-        props.onLogin(data.data.user, data.data.token)
-        history.push('/home');
-    }
+    ];
 
     const submit = (values) => {
         console.log(values);
-        userService.register(values, callback)
-    }
+        userService.register(values, (data) => {
+            console.log(data);
+            if (data.status !== 200){
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    text: "注册失败！", type: MessageType.ERROR});
+                return;
+            }
+
+            PubSub.publish(MsgType.SET_MESSAGE, {
+                text: "注册成功！", type: MessageType.SUCCESS});
+            props.onLogin(data.data);
+            history.push('/home');
+        })
+    };
 
 
     const validate = values => {
@@ -181,12 +168,6 @@ function RegisterForm(props){
                     )}
                 </Formik>
             </Paper>
-            <Message
-                messageOpen={message.open}
-                handleClose={() => setMessage({open:false})}
-                type={message.type}
-                text={message.text}
-            />
         </Container>
     );
 }

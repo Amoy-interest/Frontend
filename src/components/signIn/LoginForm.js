@@ -15,7 +15,7 @@ import {useHistory} from "react-router";
 import { setUser} from "../../redux/actions";
 import {connect} from "react-redux";
 import PubSub from "pubsub-js";
-import {MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -57,11 +57,11 @@ function LoginForm(props){
             if (data.status !== 200) {
                 console.log(data.msg);
                 PubSub.publish(MsgType.SET_MESSAGE, {
-                    open: true, text: data.msg, type: 'error'});
+                    text: "登陆失败！", type: MessageType.ERROR});
                 return;
             }
             PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: data.msg, type: 'success'});
+                text: "登陆成功！", type: MessageType.SUCCESS});
             props.onLogin(data.data);
             history.push('/home');
         });

@@ -28,8 +28,6 @@ export const logout = () => {
 };
 
 export const register = (data, callback) => {
-    console.log(data);
-
     const url = `${apiUrl}${APIModules.USER}/register`;
     postRequest_json(url,null, data, callback);
 };
