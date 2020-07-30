@@ -121,8 +121,8 @@ class TopicCard extends React.Component {
         this.getTopicInfo(topic_name);
     }
 
-    componentWillReceiveProps(newProps) {
-        const arr = newProps.location.search.split('&');
+    componentWillReceiveProps(nextProps, nextContext): void {
+        const arr = nextProps.location.search.split('&');
         const topic_name = arr[0].substr(12);
         this.getTopicInfo(topic_name);
     }

@@ -126,16 +126,12 @@ class PostCard extends React.Component {
             editModalOpen: false,
             reportMessageOpen: false
         };
-    };
 
-    componentWillMount() {
         PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
-            //console.log(msg);
-            this.setState({commentCount: this.state.commentCount + 1});
+            this.setState({commentCount:this.state.commentCount+1});
         });
         PubSub.subscribe(MsgType.DELETE_COMMENT, (msg) => {
-            //console.log(msg);
-            this.setState({commentCount: this.state.commentCount - 1});
+            this.setState({commentCount:this.state.commentCount-1});
         });
     };
 
