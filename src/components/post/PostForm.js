@@ -61,7 +61,7 @@ class PostForm extends React.Component{
         console.log(urls);
         makePost(values.content, urls, (data) => {
             console.log("callback_own", data);
-            if (data.status !== 0) PubSub.publish(MsgType.SET_MESSAGE, {
+            if (data.status !== 200) PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'warning'});
             else {
                 resetForm();

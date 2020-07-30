@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
         width: '100%',
-        height: '100%'
+        height: '100%',
     }
 }));
 export default function PostImage(props) {
@@ -28,7 +28,7 @@ export default function PostImage(props) {
                                 (imageCount === 1 && 12) || (imageCount >= 2 && imageCount <= 4 && 6) ||
                                 (imageCount >= 5 && imageCount <= 9 && 4)
                             }>
-                                <img className={classes.image} src={item} alt={''}/>
+                                <img className={classes.image}  src={item} alt={''}/>
                             </Grid>
                         );
                     })}

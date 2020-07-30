@@ -73,6 +73,7 @@ export const getFollowPosts = (params,callback) => {
 
 export const vote=(data,callback)=>{
     const url = `${apiUrl}${APIModules.BLOG}/vote`;
+    console.log("vote");
     postRequest_json(url, null,data, callback);
 };
 

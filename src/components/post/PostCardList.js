@@ -46,7 +46,7 @@ class PostCardList extends Component {
         const callback = (data) => {
             //console.log("loadMore data", data);
             //console.log("state", this.state);
-            if (data.status !== 0) {
+            if (data.status !== 200) {
                 console.log(data);
                 PubSub.publish(MsgType.SET_MESSAGE, {
                     open: true, text: data.msg, type: 'error'});
@@ -125,7 +125,7 @@ class PostCardList extends Component {
                 const arr = newProps.location.search.split('&');
                 const topic_name = arr[0].substr(12);
                 params.topic_name = topic_name;
-                console.log(params);
+                //console.log(params);
                 getTopicPosts(params, callback);
                 break;
             case PostType.SEARCH:

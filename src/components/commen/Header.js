@@ -3,11 +3,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import CameraIcon from '@material-ui/icons/Camera';
 import {Link, useHistory} from 'react-router-dom';
-import Avatar1 from "../../assets/img/avatar1.jpeg";
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -19,7 +16,7 @@ import {UserType} from "../../utils/constants";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
-import UserSearchBar from "./UserSearchBar";
+import FreeSolo from "./TestSearchBar";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -123,7 +120,7 @@ function Header(props) {
             <AppBar position="static">
                 <Toolbar>
                     <Logo title={'Amoy Interest'}/>
-                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<UserSearchBar/>}
+                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<FreeSolo/>}
                     <div className={classes.blank}/>
                     {props.role === UserType.CUSTOMER ?
                         <Tooltip title="发现">
