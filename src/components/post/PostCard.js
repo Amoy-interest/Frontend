@@ -55,7 +55,7 @@ const styles = (theme => ({
     },
     editModal: {
         padding: theme.spacing(1),
-        width:500
+        width: 500
     }
 }));
 
@@ -112,12 +112,12 @@ class PostCard extends React.Component {
         super(props);
         const {blog_count} = this.props.post;
         this.state = {
-            voted:this.props._vote,
+            voted: this.props.post._vote,
             forward: false,
             voteCount: blog_count.vote_count,
             commentCount: blog_count.comment_count,
             forwardCount: blog_count.forward_count,
-            text:this.props.post.blog_content.text,
+            text: this.props.post.blog_content.text,
             post: this.props.post,
             anchorEl: null,
             expanded: false,
@@ -131,11 +131,11 @@ class PostCard extends React.Component {
     componentWillMount() {
         PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
             //console.log(msg);
-            this.setState({commentCount:this.state.commentCount+1});
+            this.setState({commentCount: this.state.commentCount + 1});
         });
         PubSub.subscribe(MsgType.DELETE_COMMENT, (msg) => {
             //console.log(msg);
-            this.setState({commentCount:this.state.commentCount-1});
+            this.setState({commentCount: this.state.commentCount - 1});
         });
     };
 
@@ -188,17 +188,17 @@ class PostCard extends React.Component {
         this.setState({editModalOpen: false});
     };
 
-    submitEdit=(text)=>{
-        const callback=()=>{
-            this.setState({text:text.text});
+    submitEdit = (text) => {
+        const callback = () => {
+            this.setState({text: text.text});
             this.handleEditModalClose();
         };
-        let data={
+        let data = {
             blog_id: this.state.post.blog_id,
-            images:this.state.post.blog_content.images,
-            text:text.text
+            images: this.state.post.blog_content.images,
+            text: text.text
         };
-        editPost(data,callback);
+        editPost(data, callback);
     };
 
     addComment = () => {
@@ -257,7 +257,7 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, forward,text, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen, editModalOpen} = this.state;
+        const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen, editModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
@@ -297,8 +297,10 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem onClick={() => this.props.handleBan(post.user_id)}><MicOffIcon color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem onClick={() => this.props.handleForbid(post.user_id)}><BlockIcon color={"secondary"}/>封号</MenuItem>
+                    <MenuItem onClick={() => this.props.handleBan(post.user_id)}><MicOffIcon
+                        color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem onClick={() => this.props.handleForbid(post.user_id)}><BlockIcon
+                        color={"secondary"}/>封号</MenuItem>
                 </Menu> : null
 
         );
@@ -336,7 +338,8 @@ class PostCard extends React.Component {
                             </CardContent>
                         </Link>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                            <ForwardCard post={post.blog_child} size={'100%'}/>}
+                            post.blog_child === null ? <div>博文已经被删除</div> :
+                                <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
                             <IconButton aria-label="vote" onClick={() => {
                                 this.handleVote(post)
@@ -394,12 +397,12 @@ class PostCard extends React.Component {
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.forwardModal}>
                                 <PostForm type={PostType.FORWARD}
-                                          postId={post.blog_type === 0 ? post.blog_id : post.blog_child.blog_id}
+                                          postId={post.blog_type === 0||post.blog_child === null ? post.blog_id : post.blog_child.blog_id}
                                           closeModal={this.handleModalClose}
                                           submit={this.submitForward}
                                 />
                                 <ForwardCard
-                                    post={post.blog_type === 0 ? post : post.blog_child}
+                                    post={post.blog_type === 0||post.blog_child === null ? post : post.blog_child}
                                     size={500}
                                 />
                             </Paper>
@@ -415,7 +418,7 @@ class PostCard extends React.Component {
                                               post_content={post.blog_content.text}
                                 />
                                 {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                                    <PostImage image={post.blog_child.blog_content.images}/>}
+                                    post.blog_child === null ? <div>博文已经被删除</div>:<PostImage image={post.blog_child.blog_content.images}/>}
                             </Paper>
                         </div>
                     </Modal>

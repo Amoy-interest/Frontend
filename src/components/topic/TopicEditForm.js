@@ -34,7 +34,7 @@ class TopicEditForm extends React.Component{
         super(props);
         this.state = {
             file: null,
-            image: props.image,
+            image: [props.image],
             isUploading: false
         }
     };
@@ -48,7 +48,7 @@ class TopicEditForm extends React.Component{
 
     submit = async (values) => {
         this.setState({isUploading: true});
-        if (this.state.file === null) values.url = this.state.images;
+        if (this.state.file === null) values.url = this.state.image[0];
         else values.url = await oss.putObject(this.state.file);
         this.setState({isUploading: false});
 
@@ -59,7 +59,7 @@ class TopicEditForm extends React.Component{
     uploadFiles = (files, images) => {
         this.setState({
             file: files[0],
-            image: images[0]
+            image: images
         });
     };
 
@@ -100,7 +100,7 @@ class TopicEditForm extends React.Component{
                                     <PostImage image={this.state.image}/>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <Uploader uploadFiles={this.uploadFiles}/>
+                                    <Uploader uploadFiles={this.uploadFiles} limits={1}/>
                                 </Grid>
                             </Grid>
                         </Form>

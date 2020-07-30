@@ -16,6 +16,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {follow, getUserInfo, unfollow} from "../../service/UserService";
 import {connect} from "react-redux";
+import {UserType} from "../../utils/constants";
+import MicOffIcon from "@material-ui/icons/MicOff";
+import BlockIcon from "@material-ui/icons/Block";
 
 const styles = ((theme) => ({
     background: {
@@ -59,7 +62,8 @@ const styles = ((theme) => ({
 
 function mapStateToProps(state) {
     return {
-        user: state.userReducer
+        user: state.userReducer,
+        role: state.userReducer.role
     }
 };
 
@@ -102,6 +106,7 @@ class ProfileCard extends React.Component {
     handleEdit = () => {
         this.handleMenuClose();
     };
+
     handleFollow=()=>{
         const callback=()=> {
             this.setState({followed: true});
@@ -131,7 +136,13 @@ class ProfileCard extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
+                {this.props.role===UserType.ADMIN?
+                <React.Fragment>
+                    <MenuItem ><MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem ><BlockIcon color={"secondary"}/>封号</MenuItem>
+                </React.Fragment>
+                    :<MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
+                }
             </Menu>
         );
         if(this.state.userInfo===null) return <div>Loading</div>;
