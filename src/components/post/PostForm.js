@@ -70,8 +70,12 @@ class PostForm extends React.Component{
             if (data.status !== 200) PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'warning'});
             else {
+                // clear form and upload
                 resetForm();
-                this.setState({images: [], isUploading: false});
+                this.setState({fileList: [],images: [], isUploading: false});
+                PubSub.publish(MsgType.CLEAR_UPLOAD, null);
+
+                // send messages and display new post
                 PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: data.msg, type: 'success'});
                 PubSub.publish(MsgType.ADD_POST, data.data);
@@ -120,8 +124,8 @@ class PostForm extends React.Component{
                                 setSubmitting(false);
                                 // resetForm();
                                 if(this.props.type === PostType.FORWARD)
-                                    this.submitForward(values, resetForm);
-                                else this.submitOwn(values);
+                                    this.submitForward(values);
+                                else this.submitOwn(values,resetForm);
                             }, 500);
                         }}
                     >

@@ -53,6 +53,15 @@ class Upload extends Component{
 
     }
 
+    componentWillMount(){
+        PubSub.subscribe(MsgType.CLEAR_UPLOAD, () => {
+            this.setState({
+                files: [],
+                images: []
+            })
+        });
+    }
+
     onChange = async (e) => {
         let newFiles = e.currentTarget.files;
         let total = newFiles.length + this.state.files.length;
