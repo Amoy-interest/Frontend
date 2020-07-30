@@ -71,6 +71,13 @@ const styles = ((theme) => ({
     chip: {
         marginLeft: theme.spacing(3),
         marginBottom: 10
+    },
+    paper: {
+        position: 'absolute',
+    },
+    editModal: {
+        padding: theme.spacing(1),
+        width:500
     }
 }));
 
@@ -82,7 +89,7 @@ function mapStateToProps(state) {
 
 function getModalStyle() {
     const top = 50;
-    const left = 50;
+    const left = 47;
     return {
         top: `${top}%`,
         left: `${left}%`,
@@ -96,6 +103,8 @@ class TopicCard extends React.Component {
         super(props);
         this.state = {
             topic: null,
+            image: null,
+            introduction: null,
             expanded: false,
             anchorEl: null,
             editModalOpen: false,
@@ -105,7 +114,7 @@ class TopicCard extends React.Component {
     getTopicInfo(topic_name) {
         const callback = (data) => {
             //console.log(data);
-            this.setState({topic: data.data});
+            this.setState({topic: data.data, image: data.data.logo_path, introduction: data.data.topic_intro});
         };
         getTopic(topic_name, callback);
     }
@@ -132,26 +141,35 @@ class TopicCard extends React.Component {
     handleMenuClose = () => {
         this.setState({anchorEl: null});
     };
+    handleEditClick=()=>{
+        this.handleEditModalOpen();
+        this.handleMenuClose();
+    }
+    handleEditModalOpen = () => {
+        this.setState({editModalOpen: true});
+    };
+
     handleEditModalClose = () => {
         this.setState({editModalOpen: false});
     };
 
-    submitEdit=(text)=>{
-        const callback=()=>{
-            this.setState({text:text.text});
-            this.handleEditModalClose();
-        };
-        let data={
-            blog_id: this.state.post.blog_id,
-            images:this.state.post.blog_content.images,
-            text:text.text
-        };
-        editPost(data,callback);
+    submitEdit = (data) => {
+        // const callback = () => {
+        //     this.setState({text: text.text});
+        //     this.handleEditModalClose();
+        // };
+        // let data = {
+        //     blog_id: this.state.post.blog_id,
+        //     images: this.state.post.blog_content.images,
+        //     text: text.text
+        // };
+        // editPost(data, callback);
+        console.log(data);
     };
 
     render() {
         const {classes} = this.props;
-        const {topic, expanded, anchorEl, editModalOpen} = this.state;
+        const {topic, image, introduction, expanded, anchorEl, editModalOpen} = this.state;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'topic-menu';
         const renderMenu = (
@@ -165,101 +183,105 @@ class TopicCard extends React.Component {
                 onClose={this.handleMenuClose}
             >
                 {this.props.role === UserType.ADMIN ?
-                    <MenuItem><CreateIcon color='primary'/>编辑</MenuItem> :
+                    <MenuItem onClick={this.handleEditClick}><CreateIcon color='primary'/>编辑</MenuItem> :
                     <MenuItem><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
                 }
             </Menu>
         );
         if (topic)
             return (
-                <Card className={classes.root}>
-                    <div className={classes.background}>
-                        <CardHeader className={classes.header}
-                                    action={
-                                        <IconButton onClick={this.handleTopicMenuOpen} aria-label="settings">
-                                            <MoreVertIcon/>
-                                        </IconButton>
-                                    }
-                        />
-                        <CardContent className={classes.content}>
-                            <Grid container spacing={1}>
-                                <Grid item xs={2}>
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={topic.logo_path}
-                                        title={topic.name}
-                                    />
-                                </Grid>
-                                <Grid item xs>
-                                    <div style={{marginTop: '10px', marginLeft: '40px'}}>
-                                        <Typography variant="h5" color="textPrimary" component="p" align='left'>
-                                            #{topic.name}#
-                                            {topic.topic_heat > 10000 ?
-                                                <Chip
-                                                    className={classes.chip}
-                                                    icon={<WhatshotIcon/>}
-                                                    label='爆'
-                                                    color="secondary"
-                                                /> : topic.topic_heat > 1000 ?
+                <div>
+                    <Card className={classes.root}>
+                        <div className={classes.background}>
+                            <CardHeader className={classes.header}
+                                        action={
+                                            <IconButton onClick={this.handleTopicMenuOpen} aria-label="settings">
+                                                <MoreVertIcon/>
+                                            </IconButton>
+                                        }
+                            />
+                            <CardContent className={classes.content}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={2}>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={image}
+                                            title={topic.name}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <div style={{marginTop: '10px', marginLeft: '40px'}}>
+                                            <Typography variant="h5" color="textPrimary" component="p" align='left'>
+                                                #{topic.name}#
+                                                {topic.topic_heat > 10000 ?
                                                     <Chip
                                                         className={classes.chip}
                                                         icon={<WhatshotIcon/>}
-                                                        label='热'
-                                                        color="primary"
-                                                    /> :
-                                                    <Chip
-                                                        className={classes.chip}
-                                                        icon={<WhatshotIcon/>}
-                                                        label='沸'
-                                                    />}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p" align='left'>
-                                            {topic.topic_intro}
-                                        </Typography>
-                                    </div>
+                                                        label='爆'
+                                                        color="secondary"
+                                                    /> : topic.topic_heat > 1000 ?
+                                                        <Chip
+                                                            className={classes.chip}
+                                                            icon={<WhatshotIcon/>}
+                                                            label='热'
+                                                            color="primary"
+                                                        /> :
+                                                        <Chip
+                                                            className={classes.chip}
+                                                            icon={<WhatshotIcon/>}
+                                                            label='沸'
+                                                        />}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p"
+                                                        align='left'>
+                                                {introduction}
+                                            </Typography>
+                                        </div>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </CardContent>
-                        <CardActions disableSpacing>
-                            {/*<IconButton aria-label="add to favorites" style={{marginLeft: '10px'}}>*/}
-                            {/*    <FavoriteIcon/>*/}
-                            {/*</IconButton>*/}
-                            {/*<IconButton aria-label="share">*/}
-                            {/*    <VisibilityIcon/>*/}
-                            {/*</IconButton>*/}
-                            <Tooltip title="成为主持人">
-                                <IconButton aria-label="handup">
-                                    <MicNoneIcon/>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title={"发博"}>
-                                <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expanded,
-                                    })}
-                                    onClick={this.handleExpandClick}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <CreateIcon/>
-                                </IconButton>
-                            </Tooltip>
-                        </CardActions>
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent>
-                                <PostForm/>
                             </CardContent>
-                        </Collapse>
-                    </div>
+                            <CardActions disableSpacing>
+                                {/*<IconButton aria-label="add to favorites" style={{marginLeft: '10px'}}>*/}
+                                {/*    <FavoriteIcon/>*/}
+                                {/*</IconButton>*/}
+                                {/*<IconButton aria-label="share">*/}
+                                {/*    <VisibilityIcon/>*/}
+                                {/*</IconButton>*/}
+                                <Tooltip title="成为主持人">
+                                    <IconButton aria-label="handup">
+                                        <MicNoneIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={"发博"}>
+                                    <IconButton
+                                        className={clsx(classes.expand, {
+                                            [classes.expandOpen]: expanded,
+                                        })}
+                                        onClick={this.handleExpandClick}
+                                        aria-expanded={expanded}
+                                        aria-label="show more"
+                                    >
+                                        <CreateIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            </CardActions>
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <PostForm/>
+                                </CardContent>
+                            </Collapse>
+                        </div>
+                        {renderMenu}
+                    </Card>
                     <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.editModal}>
-                                <TopicEditForm closeModal={this.handleEditModalClose} submit=/>
+                                <TopicEditForm closeModal={this.handleEditModalClose} text={introduction}
+                                               image={[image]} submit={this.submitEdit}/>
                             </Paper>
                         </div>
                     </Modal>
-                    {renderMenu}
-                </Card>)
+                </div>)
         else return <div>Loading...</div>
     }
 }

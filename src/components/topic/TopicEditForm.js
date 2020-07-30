@@ -48,7 +48,7 @@ class TopicEditForm extends React.Component{
 
     submit = async (values) => {
         this.setState({isUploading: true});
-        values.url = await oss.putObjects(this.state.fileList);
+        values.url = await oss.putObject(this.state.file);
         this.setState({isUploading: false});
 
         console.log("values", values);
