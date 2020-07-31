@@ -35,6 +35,7 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
+import grey from "@material-ui/core/colors/grey";
 
 const styles = (theme => ({
     expand: {
@@ -56,6 +57,15 @@ const styles = (theme => ({
     editModal: {
         padding: theme.spacing(1),
         width: 500
+    },
+    delete:{
+        backgroundColor:grey[50],
+        display:'flex',
+        flexDirection:'row',
+        alignItems: 'center',
+        justifyContent:'center',
+        width:'100%',
+        height:50
     }
 }));
 
@@ -334,7 +344,7 @@ class PostCard extends React.Component {
                             </CardContent>
                         </Link>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                            post.blog_child === null ? <div>博文已经被删除</div> :
+                            post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
                             <IconButton aria-label="vote" onClick={() => {
@@ -414,7 +424,7 @@ class PostCard extends React.Component {
                                               post_content={post.blog_content.text}
                                 />
                                 {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                                    post.blog_child === null ? <div>博文已经被删除</div>:<PostImage image={post.blog_child.blog_content.images}/>}
+                                    post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div>:<PostImage image={post.blog_child.blog_content.images}/>}
                             </Paper>
                         </div>
                     </Modal>

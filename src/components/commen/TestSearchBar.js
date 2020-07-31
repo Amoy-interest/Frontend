@@ -1,14 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {fade, makeStyles} from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import {fade} from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import {useHistory} from "react-router";
 import {connect} from "react-redux";
 import {MsgType, UserType} from "../../utils/constants";
 import PubSub from "pubsub-js";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {getPreSearch} from "../../service/SearchService";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import {amber} from "@material-ui/core/colors";
+import {Link} from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -19,14 +25,14 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
         marginLeft: 0,
         width: '500px',
-        height:'45px',
+        height: '45px',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing(3),
             width: 'auto',
         },
-        display:'flex',
-        flexDirection:'column',
-        alignItems:'baseline'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'baseline'
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -53,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             width: '25ch',
         },
+    },
+    avatar:{
+        width:30,
+        height:30
     }
 }));
 
@@ -61,83 +71,132 @@ function mapStateToProps(state) {
         role: state.userReducer.role,
     }
 }
-function TestSearchBar(props) {
-    const classes = useStyles();
-    const [keyword, setKeyword] = useState(null);
-    const history=useHistory();
-    const [inputValue, setInputValue] = React.useState('发现更精彩的世界');
 
-    const handleChange=(event, newInputValue) => {
-        setInputValue(newInputValue);
-        setKeyword(newInputValue);
+@withStyles(styles)
+class TestSearchBar extends React.Component {
+
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            keyword:null,
+            inputValue:'发现更精彩的世界',
+            keywords:[]
+        };
+        this.goto=this.goto.bind(this);
+    }
+    handleChange = (event, newInputValue) => {
+        this.setState({keyword:newInputValue,inputValue:newInputValue})
+        const params = {
+            pageNum: 1,
+            pageSize: 4,
+            keyword:newInputValue
+        };
+        const callback=(data)=>{
+            this.setState({keywords:data.data.list});
+            console.log(this.state.keywords);
+        }
+        if(params.keyword!==''&&this.props.role !== UserType.VISITOR)
+            getPreSearch(params,callback);
     };
 
-    const goto=()=>{
-        if(props.role===UserType.VISITOR){
+    goto = () => {
+        if (this.props.role === UserType.VISITOR) {
             PubSub.publish(MsgType.SET_MESSAGE, {
                 open: true, text: "请先登陆", type: 'warning'
             });
             return;
-        }
-        else if(keyword) {
-            setInputValue('');
-            history.push('/search',{keyword:keyword});
+        } else if (this.state.keyword) {
+            this.setState({inputValue:null});
+            console.log(this.props);
+            this.props.history.push({pathname:'/search', state:{keyword: this.state.keyword}});
         }
     };
+    render() {
+        const {classes}=this.props;
+        const {inputValue,keywords}=this.state;
 
-    const options = keywords.map((option) => {
-        const type = option.type;
-        return {
-            firstLetter: type,
-            ...option,
-        };
-    });
-    return (
-        <div className={classes.search}>
-            <div className={classes.searchIcon} onClick={goto.bind(this)}>
-                <SearchIcon/>
+        const blogOptions = keywords.map((option) => {
+            return {
+                type:'相关博文',
+                ...option,
+            };
+        });
+        const userOptions = keywords.map((option) => {
+            return {
+                type:'相关用户',
+                ...option,
+            };
+        });
+
+        const options=[...blogOptions,...userOptions];
+
+        return (
+            <div className={classes.search}>
+                <div className={classes.searchIcon} onClick={this.goto}>
+                    <SearchIcon/>
+                </div>
+                <div>
+                    <Autocomplete
+                        inputValue={inputValue}
+                        onInputChange={this.handleChange}
+                        freeSolo
+                        id="search"
+                        disableClearable
+                        options={options.sort((a, b) => -b.type.localeCompare(a.type))}
+                        groupBy={(option) => option.type}
+                        getOptionLabel={(option) => option.user.nickname}
+                        renderOption={(option) => (
+                            option.type==='相关用户'?
+                            <React.Fragment>
+                                <Link style={{color: '#ffff', fontSize: '18px'}} to={{
+                                    pathname: '/personal-info',
+                                    search: '?id=' + option.user.user_id,
+                                }}>
+                                <IconButton
+                                    aria-label="account of current user"
+                                    color="inherit"
+                                >
+                                    <Avatar className={classes.avatar} src={option.user.avatar}/>
+                                </IconButton>
+                                </Link>
+                                <Typography variant="subtitle2" >{option.user.nickname}</Typography>
+                                <Typography variant="body2"style={{marginLeft:'4px',marginRight:'2px',fontSize:'10px'}}>粉丝: {option.userCount.fan_count}</Typography>
+                            </React.Fragment>:
+                                <Typography variant="h8"style={{marginLeft:'6px'}}>{option.user.nickname}</Typography>
+
+                        )}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                className={
+                                    classes.input
+                                }
+                                placeholder="发现更精彩的世界"
+                                variant="standard"
+                                size="small"
+                                InputProps={{...params.InputProps, type: 'search', style: {height: '30px'}}}
+                            />
+                        )}
+                    />
+                </div>
             </div>
-            <div>
-                <Autocomplete
-                    inputValue={inputValue}
-                    onInputChange={handleChange}
-                    freeSolo
-                    id="search"
-                    disableClearable
-                    options={options.sort((a, b) => -b.type.localeCompare(a.type))}
-                    groupBy={(option) => option.type}
-                    getOptionLabel={(option) => option.title}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            className={
-                                classes.input
-                            }
-                            //style={{height:'20px'}}
-                            placeholder="发现更精彩的世界"
-                            //margin="normal"
-                            variant="standard"
-                            size="small"
-                            InputProps={{ ...params.InputProps, type: 'search',style:{height:'30px'} }}
-                        />
-                    )}
-                />
-            </div>
-        </div>
-    );
+        );
+    }
 }
 
 const keywords = [
-    { title: '最强之鲁迅', type: '用户'},
-    { title: 'Binnie', type: '用户' },
-    { title: 'Boz', type: '用户' },
-    { title: '大蒜', type: '用户' },
-    { title: 'Mok', type: '用户'},
-    { title: "hello", type: '博文' },
-    { title: 'test', type: '博文' },
-    { title: '高考加油', type: '博文' },
-    { title: 'test2', type: '博文' },
+    {title: '最强之鲁迅', type: '用户'},
+    {title: 'Binnie', type: '用户'},
+    {title: 'Boz', type: '用户'},
+    {title: '大蒜', type: '用户'},
+    {title: 'Mok', type: '用户'},
+    {title: "hello", type: '博文'},
+    {title: 'test', type: '博文'},
+    {title: '高考加油', type: '博文'},
+    {title: 'test2', type: '博文'},
 ];
+
 export default connect(
     mapStateToProps,
     null

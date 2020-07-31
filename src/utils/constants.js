@@ -20,7 +20,8 @@ const APIModules = {
     TOPIC: '/topics',
     COMMENTS:'/comments',
     SENSITIVEWORD: '/keywords',
-    ALI: '/aliyun'
+    ALI: '/aliyun',
+    SEARCH: '/search'
 };
 
 const UserType = {

@@ -23,7 +23,8 @@ import BlockIcon from "@material-ui/icons/Block";
 const styles = ((theme) => ({
     background: {
         backgroundImage: `url(${Background})`,
-        backgroundColor: amber[100]
+        backgroundColor: amber[100],
+        width:'100%'
     },
     root: {
         width: 660,
@@ -35,7 +36,6 @@ const styles = ((theme) => ({
     media: {
         height: 70,
         width: 120,
-        //paddingTop: '56.25%', // 16:9
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -91,7 +91,7 @@ class ProfileCard extends React.Component {
         this.update(this.props);
     }
 
-    componentWillReceiveProps(nextProps, nextContext): void {
+    componentWillReceiveProps(nextProps, nextContext){
         this.update(nextProps);
     }
 
@@ -106,7 +106,6 @@ class ProfileCard extends React.Component {
     handleEdit = () => {
         this.handleMenuClose();
     };
-
     handleFollow=()=>{
         const callback=()=> {
             this.setState({followed: true});
@@ -136,19 +135,13 @@ class ProfileCard extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                {this.props.role===UserType.ADMIN?
-                <React.Fragment>
-                    <MenuItem ><MicOffIcon color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem ><BlockIcon color={"secondary"}/>封号</MenuItem>
-                </React.Fragment>
-                    :<MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
-                }
+                <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
             </Menu>
         );
         if(this.state.userInfo===null) return <div>Loading</div>;
         else
         {return (
-            <Card className={classes.root}>
+            <Card className={classes.root} >
                 <div className={classes.background}>
                     <CardHeader
                         action={

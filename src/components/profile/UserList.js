@@ -55,9 +55,12 @@ class UserList extends Component {
     };
 
     loadMore() {
+        const param = this.props.location.search.split('&');
+        const user_id = param[0].substr(4);
         const params = {
             pageNum: this.state.nextHref,
             pageSize: this.state.pageSize,
+            user_id: user_id
         };
         const callback = (data) => {
             this.setState({
@@ -67,8 +70,17 @@ class UserList extends Component {
             })
         };
         if (this.props.type === UserListType.FAN)
-            getFans(params,callback);
+            getFans(params, callback);
         else getFollows(params, callback);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext){
+        this.setState({
+            users: [],
+            hasMoreItems: true,
+            nextHref: 0,
+            key: this.state.key + 1
+        })
     }
 
     render() {

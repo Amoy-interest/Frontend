@@ -159,6 +159,11 @@ class TopicCard extends React.Component {
                     text: "举报成功！", type: MessageType.SUCCESS});
                 this.handleMenuClose();
             }
+            else{
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    text: "举报失败！", type: MessageType.ERROR});
+                this.handleMenuClose();
+            }
         };
         const data={topic_name:this.state.topic.name}
         console.log(data);
