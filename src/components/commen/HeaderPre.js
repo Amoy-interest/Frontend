@@ -1,17 +1,16 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {useHistory} from 'react-router-dom'
 import Modal from '@material-ui/core/Modal';
 import LoginForm from "../signIn/LoginForm";
 import TestSearchBar from "./TestSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "./Logo";
+import {withStyles} from "@material-ui/styles";
 
 function getModalStyle() {
     const top = 50;
@@ -23,7 +22,7 @@ function getModalStyle() {
     };
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     grow: {
         width: '100%',
         flexGrow: 1,
@@ -51,84 +50,88 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function HeaderPre() {
-    const history = useHistory();
-    const classes = useStyles();
-    // const [modalStyle] = React.useState(getModalStyle);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const isMenuOpen = Boolean(anchorEl);
+@withStyles(styles)
+class HeaderPre extends React.Component{
 
-    const handleModalOpen = () => {
-        setModalOpen(true);
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            anchorEl: null,
+            modalOpen: false
+        }
+    }
+
+    handleModalOpen = () => this.setState({modalOpen: true});
+
+    handleModalClose = () => this.setState({modalOpen: false});
+
+    handleMenuOpen = (event) => this.setState({anchorEl: event.currentTarget});
+
+    handleMenuClose = () => this.setState({anchorEl: null});
+
+    handleSignUp = () => {
+        this.handleMenuClose();
+        this.props.history.push('/register');
     };
 
-    const handleModalClose = () => {
-        setModalOpen(false);
+    handleSignIn = () => {
+        this.handleMenuClose();
+        this.handleModalOpen();
     };
 
-    const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    render() {
+        const {history, classes} = this.props;
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
+        const renderMenu = (
+            <Menu
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                id="sign-menu"
+                keepMounted
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                open={Boolean(this.state.anchorEl)}
+                onClose={this.handleMenuClose}
+            >
+                <MenuItem onClick={this.handleSignUp}>注册</MenuItem>
+                <MenuItem onClick={this.handleSignIn}>登陆</MenuItem>
+            </Menu>
+        );
 
-    const handleSignUp = () => {
-        handleMenuClose();
-        history.push('/register');
-    };
-
-    const handleSignIn = () => {
-        handleMenuClose();
-        handleModalOpen();
-    };
-
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-            id="sign-menu"
-            keepMounted
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleSignUp}>注册</MenuItem>
-            <MenuItem onClick={handleSignIn}>登陆</MenuItem>
-        </Menu>
-    );
-
-    return (
-        <div className={classes.grow}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Logo title="Amoy Interest"/>
-                    <TestSearchBar/>
-                    <div className={classes.blank}/>
-                    <div className={classes.sectionDesktop}>
-                        <Tooltip title="登陆">
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls="sign-menu"
-                                aria-haspopup="true"
-                                onClick={handleMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle/>
-                            </IconButton>
-                        </Tooltip>
+        return (
+            <div className={classes.grow}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Logo title="Amoy Interest"/>
+                        <TestSearchBar history={history}/>
+                        <div className={classes.blank}/>
+                        <div className={classes.sectionDesktop}>
+                            <Tooltip title="登陆">
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    aria-controls="sign-menu"
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle/>
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                {renderMenu}
+                <Modal open={this.state.modalOpen} onClose={this.handleModalClose}>
+                    <div style={getModalStyle()} className={classes.paper}>
+                        <LoginForm closeModal={this.handleModalClose}/>
                     </div>
-                </Toolbar>
-            </AppBar>
-            {renderMenu}
-            <Modal open={modalOpen} onClose={handleModalClose}>
-                <div style={getModalStyle()} className={classes.paper}>
-                    <LoginForm closeModal={handleModalClose}/>
-                </div>
-            </Modal>
-        </div>
-    );
+                </Modal>
+            </div>
+        );
+    }
+
+
 }
+
+export default HeaderPre;

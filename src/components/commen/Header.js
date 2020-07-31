@@ -16,9 +16,10 @@ import {UserType} from "../../utils/constants";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
-import FreeSolo from "./TestSearchBar";
+import TestSearchBar from "./TestSearchBar";
+import {withStyles} from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     grow: {
         width: '100%',
         flexGrow: 1,
@@ -53,129 +54,113 @@ function mapStateToProps(state) {
     }
 }
 
-function Header(props) {
-    const classes = useStyles();
-    const history = useHistory();
-    // const [anchorEl, setAnchorEl] = React.useState(null);
+@withStyles(styles)
+class Header extends React.Component{
 
-    // const handleMenuClose = () => {
-    //     setAnchorEl(null);
-    // };
-
-    // const renderMenu = (
-    //     <Menu
-    //         anchorEl={anchorEl}
-    //         anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-    //         id="personal-info-menu"
-    //         keepMounted
-    //         transformOrigin={{vertical: 'top', horizontal: 'right'}}
-    //         open={isMenuOpen}
-    //         onClose={handleMenuClose}
-    //     >
-    //         {props.role === UserType.CUSTOMER ?
-    //             <MenuItem onClick={handleProfile}>个人资料</MenuItem> : null}
-    //         <MenuItem onClick={handleLogout}>退出登陆</MenuItem>
-    //
-    //     </Menu>
-    // );
-
-    const handleLogout = () => {
+    handleLogout = () => {
         userService.logout();
-        history.replace('/');
+        this.props.history.replace('/');
     };
 
-    const openPostsView = () => {
-        history.replace('/posts');
+    openPostsView = () => {
+        this.props.history.replace('/posts');
     };
 
-    const openHomeView = () => {
-        history.replace('/home');
+    openHomeView = () => {
+        this.props.history.replace('/home');
     };
 
-    const openUsersManageView = () => {
-        history.replace('/users-manage');
+    openUsersManageView = () => {
+        this.props.history.replace('/users-manage');
     };
 
-    const handleSearch = (keyword) => {
+    handleSearch = (keyword) => {
         console.log(keyword);
-        props.handleSearch(keyword);
+        this.props.handleSearch(keyword);
     };
 
-    return (
-        <div className={classes.grow}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Logo title={'Amoy Interest'}/>
-                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<FreeSolo/>}
-                    <div className={classes.blank}/>
-                    {props.role === UserType.CUSTOMER ?
-                        <Tooltip title="发现">
-                            <IconButton
-                                edge="start"
-                                className={classes.menuButton}
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={openPostsView}
-                            >
-                                <ExploreIcon/>
-                            </IconButton>
-                        </Tooltip> :
-                        <Tooltip title="管理">
-                            <IconButton
-                                edge="start"
-                                className={classes.menuButton}
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={openUsersManageView}
-                            >
-                                <TrackChangesIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                    <Tooltip title="主页">
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={openHomeView}
-                        >
-                            <CameraIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="退出">
-                        <IconButton
-                            edge="start"
-                            aria-label="exit"
-                            onClick={handleLogout}
-                            className={classes.menuButton}
-                            color="inherit"
-                        >
-                            <ExitToAppIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Link style={{color: amber[200], fontSize: '18px'}} to={{
-                        pathname: '/personal-info',
-                        search: '?id=' + props.user.user.user_id,
-                    }}>
-                        <div className={classes.sectionDesktop}>
-                            <Tooltip title="个人">
+    render() {
+        const {classes, history, role, user} = this.props;
+
+        return (
+            <div className={classes.grow}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Logo title={'Amoy Interest'}/>
+                        {role === UserType.ADMIN?
+                            <SearchBar handleSearch={this.handleSearch}/>:
+                            <TestSearchBar history={history}/>}
+                        <div className={classes.blank}/>
+                        {role === UserType.CUSTOMER ?
+                            <Tooltip title="发现">
                                 <IconButton
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-controls="personal-info-menu"
-                                    aria-haspopup="true"
+                                    edge="start"
+                                    className={classes.menuButton}
                                     color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={this.openPostsView}
                                 >
-                                    <Avatar className={classes.avatar} src={props.user.user.avatar}/>
+                                    <ExploreIcon/>
+                                </IconButton>
+                            </Tooltip> :
+                            <Tooltip title="管理">
+                                <IconButton
+                                    edge="start"
+                                    className={classes.menuButton}
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={this.openUsersManageView}
+                                >
+                                    <TrackChangesIcon/>
                                 </IconButton>
                             </Tooltip>
-                        </div>
-                    </Link>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
+                        }
+                        <Tooltip title="主页">
+                            <IconButton
+                                edge="start"
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={this.openHomeView}
+                            >
+                                <CameraIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="退出">
+                            <IconButton
+                                edge="start"
+                                aria-label="exit"
+                                onClick={this.handleLogout}
+                                className={classes.menuButton}
+                                color="inherit"
+                            >
+                                <ExitToAppIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                            pathname: '/personal-info',
+                            search: '?id=' + user.user.user_id,
+                        }}>
+                            <div className={classes.sectionDesktop}>
+                                <Tooltip title="个人">
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="account of current user"
+                                        aria-controls="personal-info-menu"
+                                        aria-haspopup="true"
+                                        color="inherit"
+                                    >
+                                        <Avatar className={classes.avatar} src={user.user.avatar}/>
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        </Link>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        );
+    }
+
 }
 
 export default connect(

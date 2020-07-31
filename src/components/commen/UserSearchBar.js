@@ -48,15 +48,15 @@ const useStyles = makeStyles((theme) => ({
 const UserSearchBar = (props) => {
     const classes = useStyles();
     const [keyword, setKeyword] = useState(null);
-    const history=useHistory();
+    const history = useHistory();
     const handleChange = (e) => {
         console.log(e.target.value);
         setKeyword(e.target.value);
     };
 
-    const goto=()=>{
-        if(keyword) {
-            history.push('/search',{keyword:keyword});
+    const goto = () => {
+        if (keyword) {
+            history.push('/search', {keyword: keyword});
             setKeyword(null);
         }
     };

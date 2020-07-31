@@ -88,6 +88,7 @@ class ProfileCard extends React.Component {
     }
 
     componentDidMount() {
+        console.log("ProfileCard componentDidMount", this.props.history);
         this.update(this.props);
     }
 
