@@ -29,6 +29,6 @@ export const editTopicLogo = (data,callback) => {
 
 export const reportTopic = (data,callback) => {
     const url = `${apiUrl}${APIModules.TOPIC}/report`;
-    postRequest_json(url,null,data,callback);
+    postRequest_json(url,data,null,callback);
 };
 

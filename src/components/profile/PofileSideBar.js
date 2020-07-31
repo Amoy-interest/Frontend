@@ -7,8 +7,9 @@ import PostCardList from "../../components/post/PostCardList";
 import ProfileCard from "../../components/profile/ProfileCard";
 import {PostType} from "../../utils/constants";
 import UserList, {UserListType} from "./UserList";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-const useStyles = makeStyles((theme) => ({
+const styles = ((theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
@@ -51,42 +52,55 @@ function a11yProps(index) {
         'aria-controls': `vertical-tabpanel-${index}`,
     };
 }
-export default function SideBarForProfile(props) {
-    const classes = useStyles();
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+@withStyles(styles)
+class SideBarForProfile extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            value:0
+        };
+    }
+
+    handleChange = (event, newValue) => {
+        this.setState({value:newValue})
     };
 
-    return (
-        <div className={classes.root}>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs example"
-                className={classes.tabs}
-            >
-                <Tab label="个人资料" {...a11yProps(0)} />
-                <Tab label="粉丝列表" {...a11yProps(1)} />
-                <Tab label="关注列表" {...a11yProps(2)} />
-                {/*<Tab label="设置" {...a11yProps(3)} />*/}
-            </Tabs>
-            <TabPanel value={value} index={0}>
-                <ProfileCard {...props}/>
-                <PostCardList index={PostType.OWN} {...props}/>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <UserList type={UserListType.FAN}/>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <UserList type={UserListType.FOLLOW}/>
-            </TabPanel>
-            {/*<TabPanel value={value} index={3}>*/}
-            {/*    Settings*/}
-            {/*</TabPanel>*/}
-        </div>
-    );
+    componentWillReceiveProps(nextProps, nextContext){
+        this.setState({value:0})
+    }
+
+    render() {
+        const {classes}=this.props;
+        const {value}=this.state;
+        return (
+            <div className={classes.root}>
+                <Tabs
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={value}
+                    onChange={this.handleChange}
+                    aria-label="Vertical tabs example"
+                    className={classes.tabs}
+                >
+                    <Tab label="个人资料" {...a11yProps(0)} />
+                    <Tab label="粉丝列表" {...a11yProps(1)} />
+                    <Tab label="关注列表" {...a11yProps(2)} />
+                    {/*<Tab label="设置" {...a11yProps(3)} />*/}
+                </Tabs>
+                <TabPanel value={value} index={0}>
+                    <ProfileCard {...this.props}/>
+                    <PostCardList index={PostType.OWN} {...this.props}/>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <UserList type={UserListType.FAN} {...this.props}/>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <UserList type={UserListType.FOLLOW}{...this.props}/>
+                </TabPanel>
+            </div>
+        );
+    }
 }
+export default SideBarForProfile

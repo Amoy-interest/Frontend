@@ -91,7 +91,7 @@ class PostCardList extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, nextContext): void {
+    componentWillReceiveProps(nextProps, nextContext){
         this.setState({
             posts: [],
             hasMoreItems: true,
