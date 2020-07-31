@@ -105,7 +105,7 @@ export default function HeaderPre() {
             <AppBar position="static">
                 <Toolbar>
                     <Logo title="Amoy Interest"/>
-                    <TestSearchBar/>
+                    <TestSearchBar history={history}/>
                     <div className={classes.blank}/>
                     <div className={classes.sectionDesktop}>
                         <Tooltip title="登陆">

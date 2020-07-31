@@ -17,6 +17,7 @@ import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
 import FreeSolo from "./TestSearchBar";
+import TestSearchBar from "./TestSearchBar";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -106,7 +107,7 @@ function Header(props) {
             <AppBar position="static">
                 <Toolbar>
                     <Logo title={'Amoy Interest'}/>
-                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<FreeSolo/>}
+                    {props.role === UserType.ADMIN?<SearchBar handleSearch={handleSearch}/>:<TestSearchBar history={history}/>}
                     <div className={classes.blank}/>
                     {props.role === UserType.CUSTOMER ?
                         <Tooltip title="发现">

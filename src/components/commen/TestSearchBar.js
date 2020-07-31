@@ -10,8 +10,7 @@ import PubSub from "pubsub-js";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getPreSearch} from "../../service/SearchService";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import {amber} from "@material-ui/core/colors";
+import Icon from '@material-ui/core/Icon';
 import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
@@ -60,9 +59,9 @@ const styles = ((theme) => ({
             width: '25ch',
         },
     },
-    avatar:{
-        width:30,
-        height:30
+    avatar: {
+        width: 30,
+        height: 30
     }
 }));
 
@@ -79,25 +78,26 @@ class TestSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            keyword:null,
-            inputValue:'发现更精彩的世界',
-            keywords:[]
+            keyword: null,
+            inputValue: '发现更精彩的世界',
+            keywords: []
         };
-        this.goto=this.goto.bind(this);
+        this.goto = this.goto.bind(this);
     }
+
     handleChange = (event, newInputValue) => {
-        this.setState({keyword:newInputValue,inputValue:newInputValue})
+        this.setState({keyword: newInputValue, inputValue: newInputValue})
         const params = {
             pageNum: 1,
             pageSize: 4,
-            keyword:newInputValue
+            keyword: newInputValue
         };
-        const callback=(data)=>{
-            this.setState({keywords:data.data.list});
+        const callback = (data) => {
+            this.setState({keywords: data.data.list});
             console.log(this.state.keywords);
         }
-        if(params.keyword!==''&&this.props.role !== UserType.VISITOR)
-            getPreSearch(params,callback);
+        if (params.keyword !== '' && this.props.role !== UserType.VISITOR)
+            getPreSearch(params, callback);
     };
 
     goto = () => {
@@ -107,33 +107,34 @@ class TestSearchBar extends React.Component {
             });
             return;
         } else if (this.state.keyword) {
-            this.setState({inputValue:null});
             console.log(this.props);
-            this.props.history.push({pathname:'/search', state:{keyword: this.state.keyword}});
+            this.props.history.push({pathname: '/search', state: {keyword: this.state.keyword}});
+            this.setState({inputValue: ''});
         }
     };
+
     render() {
-        const {classes}=this.props;
-        const {inputValue,keywords}=this.state;
+        const {classes} = this.props;
+        const {inputValue, keywords} = this.state;
 
         const blogOptions = keywords.map((option) => {
             return {
-                type:'相关博文',
+                type: '相关博文',
                 ...option,
             };
         });
         const userOptions = keywords.map((option) => {
             return {
-                type:'相关用户',
+                type: '相关用户',
                 ...option,
             };
         });
 
-        const options=[...blogOptions,...userOptions];
+        const options = [...blogOptions, ...userOptions];
 
         return (
             <div className={classes.search}>
-                <div className={classes.searchIcon} onClick={this.goto}>
+                <div className={classes.searchIcon} onClick={this.goto.bind(this)}>
                     <SearchIcon/>
                 </div>
                 <div>
@@ -147,23 +148,27 @@ class TestSearchBar extends React.Component {
                         groupBy={(option) => option.type}
                         getOptionLabel={(option) => option.user.nickname}
                         renderOption={(option) => (
-                            option.type==='相关用户'?
-                            <React.Fragment>
-                                <Link style={{color: '#ffff', fontSize: '18px'}} to={{
-                                    pathname: '/personal-info',
-                                    search: '?id=' + option.user.user_id,
-                                }}>
-                                <IconButton
-                                    aria-label="account of current user"
-                                    color="inherit"
-                                >
-                                    <Avatar className={classes.avatar} src={option.user.avatar}/>
-                                </IconButton>
-                                </Link>
-                                <Typography variant="subtitle2" >{option.user.nickname}</Typography>
-                                <Typography variant="body2"style={{marginLeft:'4px',marginRight:'2px',fontSize:'10px'}}>粉丝: {option.userCount.fan_count}</Typography>
-                            </React.Fragment>:
-                                <Typography variant="h8"style={{marginLeft:'6px'}}>{option.user.nickname}</Typography>
+                            option.type === '相关用户' ?
+                                <React.Fragment>
+                                    <Link style={{color: '#ffff', fontSize: '18px'}} to={{
+                                        pathname: '/personal-info',
+                                        search: '?id=' + option.user.user_id,
+                                    }}>
+                                        <Icon
+                                            aria-label="account of current user"
+                                            color="inherit"
+                                        >
+                                            <Avatar className={classes.avatar} src={option.user.avatar}/>
+                                        </Icon>
+                                    </Link>
+                                        <Typography variant="subtitle2"style={{marginLeft: '8px'}}>{option.user.nickname}</Typography>
+                                        <Typography variant="body2" style={{
+                                            marginLeft: '4px',
+                                            marginRight: '2px',
+                                            fontSize: '10px'
+                                        }}>粉丝: {option.userCount.fan_count}</Typography>
+                                </React.Fragment> :
+                                <Typography variant="subtitle2" style={{marginLeft: '6px'}}>{option.user.nickname}</Typography>
 
                         )}
                         renderInput={(params) => (
