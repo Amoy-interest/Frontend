@@ -1,10 +1,9 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CameraIcon from '@material-ui/icons/Camera';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Avatar from "@material-ui/core/Avatar";
 import ExploreIcon from '@material-ui/icons/Explore';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -80,7 +79,7 @@ class Header extends React.Component{
     };
 
     render() {
-        const {classes, history, role, user} = this.props;
+        const {classes, role, user} = this.props;
 
         return (
             <div className={classes.grow}>
@@ -89,7 +88,7 @@ class Header extends React.Component{
                         <Logo title={'Amoy Interest'}/>
                         {role === UserType.ADMIN?
                             <SearchBar handleSearch={this.handleSearch}/>:
-                            <TestSearchBar history={history}/>}
+                            <TestSearchBar/>}
                         <div className={classes.blank}/>
                         {role === UserType.CUSTOMER ?
                             <Tooltip title="发现">

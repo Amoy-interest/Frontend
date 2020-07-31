@@ -189,17 +189,17 @@ class TestSearchBar extends React.Component {
     }
 }
 
-const keywords = [
-    {title: '最强之鲁迅', type: '用户'},
-    {title: 'Binnie', type: '用户'},
-    {title: 'Boz', type: '用户'},
-    {title: '大蒜', type: '用户'},
-    {title: 'Mok', type: '用户'},
-    {title: "hello", type: '博文'},
-    {title: 'test', type: '博文'},
-    {title: '高考加油', type: '博文'},
-    {title: 'test2', type: '博文'},
-];
+// const keywords = [
+//     {title: '最强之鲁迅', type: '用户'},
+//     {title: 'Binnie', type: '用户'},
+//     {title: 'Boz', type: '用户'},
+//     {title: '大蒜', type: '用户'},
+//     {title: 'Mok', type: '用户'},
+//     {title: "hello", type: '博文'},
+//     {title: 'test', type: '博文'},
+//     {title: '高考加油', type: '博文'},
+//     {title: 'test2', type: '博文'},
+// ];
 
 export default connect(
     mapStateToProps,

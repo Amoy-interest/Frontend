@@ -16,9 +16,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {follow, getUserInfo, unfollow} from "../../service/UserService";
 import {connect} from "react-redux";
-import {UserType} from "../../utils/constants";
-import MicOffIcon from "@material-ui/icons/MicOff";
-import BlockIcon from "@material-ui/icons/Block";
 
 const styles = ((theme) => ({
     background: {

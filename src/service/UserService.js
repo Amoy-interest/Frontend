@@ -1,4 +1,4 @@
-import {localUrl, apiUrl, APIModules, MsgType, MessageType} from "../utils/constants";
+import { apiUrl, APIModules, MsgType, MessageType} from "../utils/constants";
 import {getRequest, postRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";

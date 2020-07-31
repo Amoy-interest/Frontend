@@ -81,7 +81,7 @@ class HeaderPre extends React.Component{
     };
 
     render() {
-        const {history, classes} = this.props;
+        const { classes} = this.props;
 
         const renderMenu = (
             <Menu
@@ -103,7 +103,7 @@ class HeaderPre extends React.Component{
                 <AppBar position="static">
                     <Toolbar>
                         <Logo title="Amoy Interest"/>
-                        <TestSearchBar history={history}/>
+                        <TestSearchBar/>
                         <div className={classes.blank}/>
                         <div className={classes.sectionDesktop}>
                             <Tooltip title="登陆">
