@@ -42,12 +42,18 @@ class TestReduxView extends Component{
         };
 
         this.handleGetStore = this.handleGetStore.bind(this);
+        this.handleGetProps = this.handleGetProps.bind(this);
         this.handleDispatch = this.handleDispatch.bind(this);
         this.loadMore = this.loadMore.bind(this);
     }
 
     handleGetStore(){
         console.log(this.props);
+    }
+
+    handleGetProps(){
+        console.log(this.props.history);
+        this.props.history.push({ pathname: '/test-ali', state: { data: 'test' } });
     }
 
     handleDispatch(){
@@ -90,6 +96,7 @@ class TestReduxView extends Component{
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <button onClick={this.loadMore}>loadMore</button>
                     <button onClick={this.handleGetStore}>GetStore</button>
+                    <button onClick={this.handleGetProps}>GetHistory</button>
                     <button onClick={this.handleDispatch}>Dispatch</button>
                 </div>
                 <div style={{height: 600, overflow:'auto'}}>

@@ -47,6 +47,7 @@ class TestAliView extends Component{
         };
 
         this.changeImg = this.changeImg.bind(this);
+        this.getProps = this.getProps.bind(this);
     }
 
     putFile = async () => {
@@ -70,6 +71,10 @@ class TestAliView extends Component{
         }
 
         this.setState({images: images});
+    };
+
+    getProps () {
+        console.log(this.props);
     };
 
     render() {
@@ -141,6 +146,7 @@ class TestAliView extends Component{
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <Button onClick={this.putFile}>putFile</Button>
                     <Button onClick={this.changeImg}>changeImg</Button>
+                    <Button onClick={this.getProps}>getProps</Button>
                 </div>
             </div>
         );

@@ -28,7 +28,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
 import TopicEditForm from "./TopicEditForm";
-import {reportPost} from "../../service/PostService";
 import PubSub from "pubsub-js";
 
 const styles = ((theme) => ({
@@ -106,30 +105,30 @@ class TopicCard extends React.Component {
             anchorEl: null,
             editModalOpen: false,
         };
-    }
+    };
 
     getTopicInfo(topic_name) {
         const callback = (data) => {
             this.setState({topic: data.data, image: data.data.logo_path, introduction: data.data.topic_intro});
         };
         getTopic(topic_name, callback);
-    }
+    };
 
     componentDidMount() {
         const arr = this.props.location.search.split('&');
         const topic_name = arr[0].substr(12);
         this.getTopicInfo(topic_name);
-    }
+    };
 
-    componentWillReceiveProps(nextProps, nextContext): void {
+    componentWillReceiveProps(nextProps, nextContext){
         const arr = nextProps.location.search.split('&');
         const topic_name = arr[0].substr(12);
         this.getTopicInfo(topic_name);
-    }
+    };
 
     handleExpandClick = () => {
         this.setState({expanded: !this.state.expanded});
-    }
+    };
 
     handleTopicMenuOpen = (event) => {
         this.setState({anchorEl: event.currentTarget})
@@ -137,20 +136,20 @@ class TopicCard extends React.Component {
 
     handleMenuClose = () => {
         this.setState({anchorEl: null});
-    }
+    };
 
     handleEditClick = () => {
         this.handleEditModalOpen();
         this.handleMenuClose();
-    }
+    };
 
     handleEditModalOpen = () => {
         this.setState({editModalOpen: true});
-    }
+    };
 
     handleEditModalClose = () => {
         this.setState({editModalOpen: false});
-    }
+    };
 
     handleReport=()=>{
         const callback = (data) => {
@@ -168,7 +167,7 @@ class TopicCard extends React.Component {
         const data={topic_name:this.state.topic.name}
         console.log(data);
         reportTopic(data,callback)
-    }
+    };
 
     submitEdit = (data) => {
         console.log(data);
@@ -200,7 +199,7 @@ class TopicCard extends React.Component {
             editTopicLogo(logo, callback2)
         }
         if (!this.state.editModalOpen) this.handleEditModalClose();
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -316,10 +315,10 @@ class TopicCard extends React.Component {
                             </Paper>
                         </div>
                     </Modal>
-                </div>)
+                </div>);
         else return <div>Loading...</div>
-    }
-}
+    };
+};
 
 export default connect
 (mapStateToProps, null)(TopicCard);

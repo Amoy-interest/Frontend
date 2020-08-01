@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import {AITextField} from "../commen/AIField";
-import {makeStyles} from "@material-ui/core/styles";
 import {withStyles} from "@material-ui/styles";
 import PostImage from "../post/PostImage";
 import Uploader from "../commen/Uploader";
