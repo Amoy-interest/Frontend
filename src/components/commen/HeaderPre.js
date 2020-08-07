@@ -28,10 +28,9 @@ const styles = ((theme) => ({
         flexGrow: 1,
         zIndex: 1,
         opacity: 0.70,
-        //position:'fixed'
     },
     blank: {
-        flexGrow: 1,
+        width:550,
     },
     sectionDesktop: {
         display: 'none',

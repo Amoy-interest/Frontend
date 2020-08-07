@@ -24,6 +24,7 @@ const styles = ((theme) => ({
         flexGrow: 1,
         zIndex: 1,
         opacity: 0.70,
+        //marginLeft:theme.spacing(6)
         //position:'fixed'
     },
     blank: {

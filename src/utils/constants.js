@@ -1,7 +1,8 @@
 const devUrl = 'http://52.90.204.208:8080';
+const serverUrl='http://120.55.194.144:8082/';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
 const localUrl = 'http://localhost:8080';
-const apiUrl = localUrl;
+const apiUrl = serverUrl;
 
 const UserActionType = {
     SET_USER: 'set user',
