@@ -10,7 +10,7 @@ import PubSub from "pubsub-js";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getPreSearch} from "../../service/SearchService";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
+import Icon from '@material-ui/core/Icon';
 import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
@@ -81,7 +81,6 @@ class TestSearchBar extends React.Component {
             keywords: []
         };
         this.goto = this.goto.bind(this);
-        console.log("TestSearchBar constructor", this.props);
     }
 
     handleChange = (event, newInputValue) => {
@@ -106,9 +105,9 @@ class TestSearchBar extends React.Component {
             });
             return;
         } else if (this.state.keyword) {
-            this.setState({inputValue: null});
             console.log(this.props);
             this.props.history.push({pathname: '/search', state: {keyword: this.state.keyword}});
+            this.setState({inputValue: ''});
         }
     };
 
@@ -133,7 +132,7 @@ class TestSearchBar extends React.Component {
 
         return (
             <div className={classes.search}>
-                <div className={classes.searchIcon} onClick={this.goto}>
+                <div className={classes.searchIcon} onClick={this.goto.bind(this)}>
                     <SearchIcon/>
                 </div>
                 <div>
@@ -153,21 +152,21 @@ class TestSearchBar extends React.Component {
                                         pathname: '/personal-info',
                                         search: '?id=' + option.user.user_id,
                                     }}>
-                                        <IconButton
+                                        <Icon
                                             aria-label="account of current user"
                                             color="inherit"
                                         >
                                             <Avatar className={classes.avatar} src={option.user.avatar}/>
-                                        </IconButton>
+                                        </Icon>
                                     </Link>
-                                    <Typography variant="subtitle2">{option.user.nickname}</Typography>
-                                    <Typography variant="body2" style={{
-                                        marginLeft: '4px',
-                                        marginRight: '2px',
-                                        fontSize: '10px'
-                                    }}>粉丝: {option.userCount.fan_count}</Typography>
+                                        <Typography variant="subtitle2"style={{marginLeft: '8px'}}>{option.user.nickname}</Typography>
+                                        <Typography variant="body2" style={{
+                                            marginLeft: '4px',
+                                            marginRight: '2px',
+                                            fontSize: '10px'
+                                        }}>粉丝: {option.userCount.fan_count}</Typography>
                                 </React.Fragment> :
-                                <Typography variant="h8" style={{marginLeft: '6px'}}>{option.user.nickname}</Typography>
+                                <Typography variant="subtitle2" style={{marginLeft: '6px'}}>{option.user.nickname}</Typography>
 
                         )}
                         renderInput={(params) => (
