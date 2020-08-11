@@ -17,6 +17,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
 import TestSearchBar from "./TestSearchBar";
 import {withStyles} from "@material-ui/styles";
+import Background from "../../assets/img/background1.png";
 
 const styles = ((theme) => ({
     grow: {
@@ -59,7 +60,7 @@ class Header extends React.Component{
 
     handleLogout = () => {
         userService.logout();
-        this.props.history.replace('/');
+        this.props.history.replace('/public');
     };
 
     openPostsView = () => {
@@ -89,7 +90,7 @@ class Header extends React.Component{
                         <Logo title={'Amoy Interest'}/>
                         {role === UserType.ADMIN?
                             <SearchBar handleSearch={this.handleSearch}/>:
-                            <TestSearchBar/>}
+                            <TestSearchBar history={this.props.history}/>}
                         <div className={classes.blank}/>
                         {role === UserType.CUSTOMER ?
                             <Tooltip title="发现">

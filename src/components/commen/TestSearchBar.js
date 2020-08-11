@@ -17,9 +17,9 @@ const styles = ((theme) => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: fade(theme.palette.common.white, 0.55),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: fade(theme.palette.common.white, 0.65),
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
@@ -80,7 +80,7 @@ class TestSearchBar extends React.Component {
             inputValue: '发现更精彩的世界',
             keywords: []
         };
-        this.goto = this.goto.bind(this);
+        //this.goto = this.goto.bind(this);
     }
 
     handleChange = (event, newInputValue) => {

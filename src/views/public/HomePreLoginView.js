@@ -10,7 +10,7 @@ import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        //flexGrow: 1,
     },
 }));
 
@@ -19,19 +19,21 @@ function HomeLayout() {
 
     return (
         <div >
+            <Carousel/>
             <Paper elevation={0} className={classes.root}>
+                <div>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBar/>
                     </Grid>
-                    <Grid item xs={7} className={classes.content}>
-                        <Carousel/>
+                    <Grid item xs={7}>
                         <PostCardList index={PostType.RANDOM}/>
                     </Grid>
                     <Grid item xs>
                         <HotSearchList/>
                     </Grid>
                 </Grid>
+                </div>3
             </Paper>
         </div>
     );

@@ -20,12 +20,12 @@ function HomeLayout() {
     return (
         <div>
             <Paper elevation={0} className={classes.root}>
+                <Carousel/>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBar/>
                     </Grid>
                     <Grid item xs={7}>
-                        <Carousel/>
                         <PostCardList index={PostType.RECOMMEND}/>
                     </Grid>
                     <Grid item xs>

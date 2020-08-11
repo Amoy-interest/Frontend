@@ -12,7 +12,7 @@ import Box from "@material-ui/core/Box";
 const styles =((theme) => ({
     root: {
         width: '300',
-        position:'fixed',
+        //position:'fixed',
         color: theme.palette.text.primary,
     },
     title: {

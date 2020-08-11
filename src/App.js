@@ -62,11 +62,11 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
+            padding: theme.spacing(2),
         },
         container: {
             //backgroundColor: '#cfe8fc',
-            minHeight: '85vh',
+            minHeight: '100vh',
         }
     })
 );
@@ -113,7 +113,7 @@ function App(props) {
                 <Router>
                     <PropsRoute
                         path={[
-                            '/',
+                            '/public',
                             '/home',
                             '/personal-info',
                             '/posts',
@@ -131,7 +131,7 @@ function App(props) {
                     <Container className={classes.container} maxWidth="lg">
                         <main className={classes.content}>
                             <Switch>
-                                <Route exact path='/' component={HomePreLoginView}/>
+                                <Route exact path='/public' component={HomePreLoginView}/>
                                 <Route path='/register' component={RegisterView}/>
                                 <Route path='/test-redux' component={TestReduxView}/>
                                 <Route path='/test-ali' component={TestAliView}/>

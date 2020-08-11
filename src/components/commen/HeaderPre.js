@@ -11,6 +11,7 @@ import TestSearchBar from "./TestSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "./Logo";
 import {withStyles} from "@material-ui/styles";
+import Background from "../../assets/img/background4.png";
 
 function getModalStyle() {
     const top = 50;
@@ -29,8 +30,18 @@ const styles = ((theme) => ({
         zIndex: 1,
         opacity: 0.70,
     },
+    bar:{
+        //backgroundImage: `url(${Background})`,
+        //height:'8vh',
+        display:'flex',
+        justifyContent:'center',
+        //padding:theme.spacing(1)
+        //flexDirection:'row',
+        //opacity: 0.70,
+        //alignItems:'center'
+    },
     blank: {
-        width:550,
+        flexGrow: 1,
     },
     sectionDesktop: {
         display: 'none',
@@ -99,10 +110,10 @@ class HeaderPre extends React.Component{
 
         return (
             <div className={classes.grow}>
-                <AppBar position="static">
+                <AppBar position="static" className={classes.bar}>
                     <Toolbar>
                         <Logo title="Amoy Interest"/>
-                        <TestSearchBar/>
+                        <TestSearchBar history={this.props.history}/>
                         <div className={classes.blank}/>
                         <div className={classes.sectionDesktop}>
                             <Tooltip title="登陆">
