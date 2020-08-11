@@ -1,11 +1,11 @@
-import {localUrl, APIModules, MsgType} from "../utils/constants";
+import {apiUrl, APIModules, MsgType} from "../utils/constants";
 import {getRequest} from "../utils/ajax";
 import OSS from 'ali-oss';
 import PubSub from "pubsub-js";
 
 function getSTS() {
     return new Promise(function(resolve, reject) {
-        const url = `${localUrl}${APIModules.ALI}/sts/oss/tokens`;
+        const url = `${apiUrl}${APIModules.ALI}/sts/oss/tokens`;
         getRequest(url, null, (data) =>{
             console.log(data)
             if (data.status === 200) resolve(
@@ -111,7 +111,7 @@ export default class OssApi {
     };
 
     getPolicy = (callback) => {
-        const url = `${localUrl}${APIModules.ALI}/oss/policy`;
+        const url = `${apiUrl}${APIModules.ALI}/oss/policy`;
         getRequest(url, null, callback);
     };
 }

@@ -12,8 +12,8 @@ import PubSub from "pubsub-js";
 const styles = ((theme) => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(2),
-        overflow: 'auto'
+        //marginTop: theme.spacing(2),
+        //overflow: 'auto'
     },
     item: {
         width: '100%'
