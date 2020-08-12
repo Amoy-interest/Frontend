@@ -216,7 +216,7 @@ class AdminSensWordsList extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        // const { classes } = this.props;
         return (
             <div>
                 <TableContainer component={Paper}>
@@ -291,6 +291,7 @@ class AdminSensWordsList extends Component {
                                             </StyledTableRow>
                                         )
                                     }
+                                    else return null;
                                 })
                             }
                         </TableBody>

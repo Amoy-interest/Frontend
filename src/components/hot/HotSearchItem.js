@@ -3,11 +3,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import Chip from '@material-ui/core/Chip';
-import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Box from '@material-ui/core/Box';
-import {MsgType, UserType} from "../../utils/constants";
-import PubSub from "pubsub-js";
 import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

@@ -74,7 +74,6 @@ const Request_json = (url, json, callback, method) => {
             return response.json()
         })
         .then((data) => {
-            console.log(data)
             if (data.status === 401) {
                 store.dispatch(removeToken());
                 store.dispatch(removeUser());

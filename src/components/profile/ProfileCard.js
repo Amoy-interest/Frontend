@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {amber, red} from '@material-ui/core/colors';
+import {amber} from '@material-ui/core/colors';
 import Background from '../../assets/img/background8.png'
 import Grid from "@material-ui/core/Grid";
 import CreateIcon from '@material-ui/icons/Create';

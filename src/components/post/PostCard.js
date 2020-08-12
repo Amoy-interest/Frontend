@@ -89,6 +89,7 @@ function mapStateToProps(state) {
     }
 };
 
+// eslint-disable-next-line no-extend-native
 Date.prototype.Format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1,                 //月份

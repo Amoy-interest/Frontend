@@ -1,14 +1,10 @@
 import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import Typography from '@material-ui/core/Typography';
 import { FixedSizeList } from 'react-window';
 import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getHotList} from "../../service/TopicService";
-import Box from "@material-ui/core/Box";
-import Background from "../../assets/img/background7.png";
 import title from '../../assets/img/title.png';
 import {amber} from "@material-ui/core/colors";
 
@@ -77,7 +73,7 @@ class HotSearchList extends React.Component{
                     {/*    热门话题*/}
                     {/*    </Box>*/}
                     {/*</Typography>*/}
-                    <img className={classes.image} src={title}/>
+                    <img alt={''} className={classes.image} src={title}/>
                 </div>
                 <FixedSizeList height={360} width={287} itemSize={50} itemCount={hotList.length}>
                     {renderRow}
