@@ -112,8 +112,8 @@ function App(props) {
             <ThemeProvider theme={props.role === UserType.ADMIN ? theme_admin: theme_user}>
                 <Router>
                     <PropsRoute
-                        path={[
-                            '/public',
+                        exact path={[
+                            '/',
                             '/home',
                             '/personal-info',
                             '/posts',
@@ -121,7 +121,9 @@ function App(props) {
                             '/users-manage',
                             '/posts-manage',
                             '/topics-manage',
-                            '/sensWords-manage'
+                            '/sensWords-manage',
+                            '/post-detail',
+                            '/search'
                         ]}
                         component={
                             (props.role === UserType.VISITOR && HeaderPre) || HeaderAfterLogIn
@@ -131,7 +133,7 @@ function App(props) {
                     <Container className={classes.container} maxWidth="lg">
                         <main className={classes.content}>
                             <Switch>
-                                <Route exact path='/public' component={HomePreLoginView}/>
+                                <Route exact path='/' component={HomePreLoginView}/>
                                 <Route path='/register' component={RegisterView}/>
                                 <Route path='/test-redux' component={TestReduxView}/>
                                 <Route path='/test-ali' component={TestAliView}/>

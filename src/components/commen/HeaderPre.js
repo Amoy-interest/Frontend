@@ -11,7 +11,7 @@ import TestSearchBar from "./TestSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "./Logo";
 import {withStyles} from "@material-ui/styles";
-import Background from "../../assets/img/background4.png";
+import Background from "../../assets/img/background6.png";
 
 function getModalStyle() {
     const top = 50;
@@ -28,11 +28,11 @@ const styles = ((theme) => ({
         width: '100%',
         flexGrow: 1,
         zIndex: 1,
-        opacity: 0.70,
+        opacity: 0.85,
     },
     bar:{
-        //backgroundImage: `url(${Background})`,
-        //height:'8vh',
+        backgroundImage: `url(${Background})`,
+        height:'8vh',
         display:'flex',
         justifyContent:'center',
         //padding:theme.spacing(1)

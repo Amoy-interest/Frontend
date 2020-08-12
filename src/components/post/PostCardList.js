@@ -76,8 +76,7 @@ class PostCardList extends Component {
                 getOwnPosts(params, callback);
                 break;
             case PostType.TOPIC:
-                const arr = this.props.location.search.split('&');
-                const topic_name = arr[0].substr(12);
+                const topic_name = this.props.location.state.topic_name;
                 params.topic_name = topic_name;
                 getTopicPosts(params, callback);
                 break;

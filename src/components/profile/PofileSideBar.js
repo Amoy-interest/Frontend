@@ -13,12 +13,16 @@ const styles = ((theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: 'flex',
+        marginTop:theme.spacing(1)
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
         fontSize:'36px',
         fullWidth:true
     },
+    tab:{
+        fontSize:'16px',
+    }
 }));
 
 function TabPanel(props) {
@@ -83,9 +87,9 @@ class SideBarForProfile extends React.Component{
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
                 >
-                    <Tab label="个人资料" {...a11yProps(0)} />
-                    <Tab label="粉丝列表" {...a11yProps(1)} />
-                    <Tab label="关注列表" {...a11yProps(2)} />
+                    <Tab className={classes.tab} label="个人资料" {...a11yProps(0)} />
+                    <Tab className={classes.tab} label="粉丝列表" {...a11yProps(1)} />
+                    <Tab className={classes.tab} label="关注列表" {...a11yProps(2)} />
                     {/*<Tab label="设置" {...a11yProps(3)} />*/}
                 </Tabs>
                 <TabPanel value={value} index={0}>

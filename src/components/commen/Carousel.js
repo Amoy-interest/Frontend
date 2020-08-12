@@ -11,29 +11,35 @@ import ChildrenImage from '../../assets/img/children.png';
 import AnimalImage from '../../assets/img/animal.png';
 import FunImage from '../../assets/img/fun.png';
 import YummyImage from '../../assets/img/yummy.png';
+import NewsImage from '../../assets/img/news.png';
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = ((theme) => ({
     root: {
         width: '95%',
-        marginLeft:'4%'
+        marginLeft:'2.5%'
     },
     image:{
         width: '100%',
         height:'350px'
     },
     title: {
-        color: theme.palette.primary.light,
+        color: '#000'
+        //theme.palette.primary.light,
     },
     titleBar: {
         opacity:'70%',
-        height: '70px',
+        height: '60px',
         background:
             'linear-gradient(to top, rgba(105,105,105,0.7) 0%, rgba(190,190,190,0.3) 70%, rgba(0,0,0,0) 100%)',
     },
 }));
 
 const items = [{
+        image: NewsImage,
+        title: '二十四节气:立秋',
+        link: 'https://github.com/Amoy-interest'
+    },{
     image: FunImage,
     title: '娱乐',
     link: 'https://github.com/Amoy-interest'

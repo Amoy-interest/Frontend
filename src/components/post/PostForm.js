@@ -23,7 +23,7 @@ const styles = ((theme) => ({
         alignItems: 'center',
         padding: theme.spacing(2),
         marginBottom:theme.spacing(1),
-        marginTop:theme.spacing(1),
+        marginTop:theme.spacing(2),
     },
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,

@@ -17,16 +17,26 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
 import TestSearchBar from "./TestSearchBar";
 import {withStyles} from "@material-ui/styles";
-import Background from "../../assets/img/background1.png";
+import Background from "../../assets/img/background6.png";
 
 const styles = ((theme) => ({
     grow: {
         width: '100%',
         flexGrow: 1,
         zIndex: 1,
-        opacity: 0.70,
+        opacity: 0.85,
         //marginLeft:theme.spacing(6)
         //position:'fixed'
+    },
+    bar:{
+        backgroundImage: `url(${Background})`,
+        height:'8vh',
+        display:'flex',
+        justifyContent:'center',
+        //padding:theme.spacing(1)
+        //flexDirection:'row',
+        //opacity: 0.70,
+        //alignItems:'center'
     },
     blank: {
         flexGrow: 1,
@@ -45,6 +55,9 @@ const styles = ((theme) => ({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
+    },
+    avatar: {
+        backgroundColor: theme.palette.primary.main
     }
 }));
 
@@ -60,7 +73,7 @@ class Header extends React.Component{
 
     handleLogout = () => {
         userService.logout();
-        this.props.history.replace('/public');
+        this.props.history.replace('/');
     };
 
     openPostsView = () => {
@@ -86,7 +99,7 @@ class Header extends React.Component{
         return (
             <div className={classes.grow}>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar className={classes.bar}>
                         <Logo title={'Amoy Interest'}/>
                         {role === UserType.ADMIN?
                             <SearchBar handleSearch={this.handleSearch}/>:
