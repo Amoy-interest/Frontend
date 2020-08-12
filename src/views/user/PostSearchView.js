@@ -10,7 +10,11 @@ import {withStyles} from "@material-ui/styles";
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        minHeight:700
+        minHeight:700,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding:theme.spacing(1)
     },
 }));
 

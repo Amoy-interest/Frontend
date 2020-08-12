@@ -10,7 +10,10 @@ import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        //flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding:theme.spacing(1)
     },
 }));
 
@@ -21,7 +24,6 @@ function HomeLayout() {
         <div >
             <Carousel/>
             <Paper elevation={0} className={classes.root}>
-                <div>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
                         <SideBar/>
@@ -33,7 +35,6 @@ function HomeLayout() {
                         <HotSearchList/>
                     </Grid>
                 </Grid>
-                </div>3
             </Paper>
         </div>
     );

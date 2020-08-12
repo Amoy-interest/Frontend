@@ -10,7 +10,6 @@ import {PostType} from "../../utils/constants";
 const styles = (theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom:theme.spacing(1)
     }
 });
 

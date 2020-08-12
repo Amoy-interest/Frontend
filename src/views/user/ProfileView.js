@@ -8,7 +8,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 const styles =((theme) => ({
     root: {
         flexGrow: 1,
-        marginBottom: theme.spacing(1)
+        marginBottom: theme.spacing(1),
+        //alignItems: 'center',
+        //padding:theme.spacing(1)
     },
     paper: {
         textAlign: 'center',

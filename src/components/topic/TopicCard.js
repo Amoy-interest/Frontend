@@ -8,7 +8,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {amber, red} from '@material-ui/core/colors';
-import Background from '../../assets/img/topicbackground.jpeg'
+import Background from '../../assets/img/background7.png'
 import Grid from "@material-ui/core/Grid";
 import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
@@ -37,7 +37,8 @@ const styles = ((theme) => ({
     },
     root: {
         width: 660,
-        marginLeft: theme.spacing(2)
+        marginLeft: theme.spacing(2),
+        marginTop:theme.spacing(2)
     },
     header: {
         height: '8px'
@@ -115,14 +116,12 @@ class TopicCard extends React.Component {
     };
 
     componentDidMount() {
-        const arr = this.props.location.search.split('&');
-        const topic_name = arr[0].substr(12);
+        const topic_name =  this.props.location.state.topic_name;
         this.getTopicInfo(topic_name);
     };
 
     componentWillReceiveProps(nextProps, nextContext){
-        const arr = nextProps.location.search.split('&');
-        const topic_name = arr[0].substr(12);
+        const topic_name =  this.props.location.state.topic_name;
         this.getTopicInfo(topic_name);
     };
 

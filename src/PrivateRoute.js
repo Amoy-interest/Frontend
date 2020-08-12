@@ -51,7 +51,7 @@ class PrivateRoute extends React.Component{
             (this.state.isAuth && this.props.role >= this.props.authority ) ?
                 (<Component {...props} keyword={this.state.keyword}/>) : (
                     <Redirect to={{
-                        pathname: '/public',
+                        pathname: '/',
                         state: {from: props.location}
                 }}/>)
         )}/>

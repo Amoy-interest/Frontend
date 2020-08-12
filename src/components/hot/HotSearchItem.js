@@ -6,6 +6,9 @@ import Chip from '@material-ui/core/Chip';
 import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Box from '@material-ui/core/Box';
+import {MsgType, UserType} from "../../utils/constants";
+import PubSub from "pubsub-js";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         color:theme.palette.text.secondary
     },
     text: {
-        width: 70,
+        width: 90,
         marginLeft:'10px',
     },
     secondaryText: {
@@ -32,25 +35,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HotSearchItem(props) {
     const classes = useStyles();
-
+    const history = useHistory();
+    const goto = () => {
+        history.push({pathname: '/topic-discussion', state: {topic_name: props.item.topic_name}});
+    };
     return (
-        <div>
-            <ListItem button className={classes.root}>
+            <ListItem button style={props.style} className={classes.root} onClick={goto.bind(this)}>
                 <Typography className={classes.number} noWrap={true} variant={'h6'}
                 style={{color:props.index===0?'#ef5350':props.index===1?'#ef6c00':props.index===2?'#ffd54f':null}}>
                     <Box fontWeight="fontWeightBold" m={1}>
                         {props.index + 1}
                     </Box>
                 </Typography>
-                <Link style={{color: '#000', fontSize: '18px'}} to={{
-                    pathname: '/topic-discussion',
-                    search: '?topic_name=' + props.item.topic_name,
-                    state:{heat:props.item.heat}
-                }}>
                     <Typography className={classes.text} noWrap={true} variant={'subtitle1'}>
-                        {props.item.topic_name}
+                        #{props.item.topic_name}#
                     </Typography>
-                </Link>
                 <Typography className={classes.secondaryText} noWrap={true} variant={'body2'}>
                     {props.item.heat}
                 </Typography>
@@ -73,7 +72,6 @@ export default function HotSearchItem(props) {
                             label='沸'
                         />}
             </ListItem>
-        </div>
     );
 
 

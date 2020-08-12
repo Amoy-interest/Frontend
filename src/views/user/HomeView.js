@@ -10,7 +10,11 @@ import {PostType} from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        //flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding:theme.spacing(1)
     },
 }));
 

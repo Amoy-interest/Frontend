@@ -66,6 +66,9 @@ const styles = (theme => ({
         justifyContent:'center',
         width:'100%',
         height:50
+    },
+    avatar: {
+        backgroundColor: theme.palette.primary.main
     }
 }));
 
@@ -322,7 +325,7 @@ class PostCard extends React.Component {
                                     pathname: '/personal-info',
                                     search: '?id=' + post.user_id,
                                 }}>
-                                    <Avatar src={post.avatar_path}/>
+                                    <Avatar className={classes.avatar} src={post.avatar_path}/>
                                 </Link>
                             }
                             action={

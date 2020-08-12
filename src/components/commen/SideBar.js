@@ -8,16 +8,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        //marginTop:theme.spacing(3),
-        backgroundColor: theme.palette.background.paper,
-        display: 'flex',
+        marginTop:theme.spacing(2),
+        //backgroundColor: theme.palette.background.paper,
+        //display: 'flex',
         //position:'fixed'
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
-        fontSize:'36px',
         fullWidth:true
     },
+    tab:{
+        fontSize:'17px',
+    }
 }));
 
 @withStyles(styles)
@@ -42,20 +44,20 @@ class SideBar extends React.Component{
             <div className={classes.root}>
                 <Tabs
                     orientation="vertical"
-                    variant="scrollable"
+                    //variant="scrollable"
                     value={value}
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
                 >
-                    <Tab label="热门" />
-                    <Tab label="社会" />
-                    <Tab label="明星" />
-                    <Tab label="搞笑" />
-                    <Tab label="读书" />
-                    <Tab label="摄影"  />
-                    <Tab label="体育" />
-                    <Tab label="动漫" />
+                    <Tab className={classes.tab} label="热门" />
+                    <Tab className={classes.tab} label="社会" />
+                    <Tab className={classes.tab} label="明星" />
+                    <Tab className={classes.tab} label="搞笑" />
+                    <Tab className={classes.tab} label="读书" />
+                    <Tab className={classes.tab} label="摄影"  />
+                    <Tab className={classes.tab} label="体育" />
+                    <Tab className={classes.tab}label="动漫" />
                 </Tabs>
             </div>
         );

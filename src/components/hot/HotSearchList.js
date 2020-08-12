@@ -8,15 +8,27 @@ import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getHotList} from "../../service/TopicService";
 import Box from "@material-ui/core/Box";
+import Background from "../../assets/img/background7.png";
+import title from '../../assets/img/title.png';
+import {amber} from "@material-ui/core/colors";
 
 const styles =((theme) => ({
     root: {
+        marginTop:theme.spacing(2),
         width: '300',
         //position:'fixed',
         color: theme.palette.text.primary,
+        rounded:true
     },
     title: {
-        marginTop:10
+        marginBottom:10,
+        padding:theme.spacing(2),
+        //backgroundImage: `url(${Background})`,
+        backgroundColor: amber[100],
+        opacity:0.80
+    },
+    image:{
+        width: '40%'
     }
 }));
 
@@ -48,9 +60,7 @@ class HotSearchList extends React.Component{
             const { index, style } = props;
 
             return (
-                <ListItem button style={style} key={index}>
-                    <HotSearchItem index={index} item={hotList[index]}/>
-                </ListItem>
+                <HotSearchItem style={style} index={index} item={hotList[index]}/>
             );
         }
 
@@ -60,13 +70,16 @@ class HotSearchList extends React.Component{
         };
         if(hotList.length!==0)
         return (
-            <Paper className={classes.root}>
-                <Typography className={classes.title} variant="h5">
-                    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>
-                    热门话题
-                    </Box>
-                </Typography>
-                <FixedSizeList height={360} width={280} itemSize={50} itemCount={hotList.length}>
+            <Paper elevation={1}className={classes.root}>
+                <div className={classes.title}>
+                    {/*<Typography variant="h5">*/}
+                    {/*    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>*/}
+                    {/*    热门话题*/}
+                    {/*    </Box>*/}
+                    {/*</Typography>*/}
+                    <img className={classes.image} src={title}/>
+                </div>
+                <FixedSizeList height={360} width={287} itemSize={50} itemCount={hotList.length}>
                     {renderRow}
                 </FixedSizeList>
             </Paper>
