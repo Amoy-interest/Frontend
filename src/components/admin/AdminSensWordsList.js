@@ -220,7 +220,7 @@ class AdminSensWordsList extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        // const { classes } = this.props;
         return (
             <div>
                 <Fab color="primary" onClick={this.handleAdd} style={{marginRight: 900,marginBottom: 10}}>
@@ -298,6 +298,7 @@ class AdminSensWordsList extends Component {
                                             </StyledTableRow>
                                         )
                                     }
+                                    else return null;
                                 })
                             }
                         </TableBody>

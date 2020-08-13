@@ -4,9 +4,6 @@ import 'element-theme-default';
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ReactSwiper from 'reactjs-swiper';
-import TravelImage from '../../assets/img/travel.png';
 import ChildrenImage from '../../assets/img/children.png';
 import AnimalImage from '../../assets/img/animal.png';
 import FunImage from '../../assets/img/fun.png';
@@ -69,7 +66,7 @@ class NewsCarousel extends React.Component{
                         items.map((item, index) => {
                             return (
                                 <Carousel.Item key={index}  className={classes.item}>
-                                    <img src={item.image}  className={classes.image}/>
+                                    <img alt='' src={item.image}  className={classes.image}/>
                                     <GridListTileBar
                                         title={`#${item.title}#`}
                                         //titlePosition="top"

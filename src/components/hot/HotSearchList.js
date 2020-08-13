@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import title from '../../assets/img/title.png';
 import {getHotList} from "../../service/TopicService";
-import {amber} from "@material-ui/core/colors";
+//import {amber} from "@material-ui/core/colors";
 
 const styles =((theme) => ({
     root: {
@@ -72,7 +72,7 @@ class HotSearchList extends React.Component{
                     {/*    热门话题*/}
                     {/*    </Box>*/}
                     {/*</Typography>*/}
-                    <img className={classes.image} src={title}/>
+                    <img alt={''} className={classes.image} src={title}/>
                 </div>
                 <FixedSizeList height={360} width={287} itemSize={50} itemCount={hotList.length}>
                     {renderRow}
