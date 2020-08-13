@@ -85,13 +85,18 @@ class PostForm extends React.Component{
         const callbackForward = (data) => {
             console.log("callback_forward", data);
 
-            // data display....
+            // close modal
             this.props.closeModal();
-            if (!data.status) this.props.submit(data.data);
-            else PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: data.msg, type: 'warning'});
+
+            if (data.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "转发失败！", type: MessageType.ERROR});
+            else {
+                // send messages and display new post
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "转发成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADD_POST, data.data);
+            }
         };
-        forwardPost(this.props.postId, values.content, 0, callbackForward);
+        forwardPost(this.props.postId, values.content, callbackForward);
     };
 
     uploadFiles = (files, images) => {
