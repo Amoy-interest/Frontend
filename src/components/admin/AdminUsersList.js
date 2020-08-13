@@ -26,11 +26,14 @@ import {TextField} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
 import {Link} from "react-router-dom";
+import MicOffIcon from "@material-ui/icons/MicOff";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: '#b3e5fc',
-        color: '#616161',
+        color: '#000',
+        fontSize:'16px',
+        paddingTop:theme.spacing(3),
+        paddingBottom:theme.spacing(3)
     },
     body: {
         fontSize: 14,
@@ -223,7 +226,7 @@ export default class AdminUsersList extends Component {
                                 <StyledTableCell>用户</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByCredits}>信用值</StyledTableCell>
                                 <StyledTableCell>举报原因</StyledTableCell>
-                                <StyledTableCell> </StyledTableCell>
+                                <StyledTableCell style={{paddingLeft:'30px'}}> 禁言 封号</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -249,20 +252,20 @@ export default class AdminUsersList extends Component {
                                             </StyledTableCell>
                                             <StyledTableCell>{user.credits}</StyledTableCell>
                                             <StyledTableCell>
-                                                <IconButton aria-label="expand row" size="small" onClick={() => this.setOpen(index)}>
-                                                    {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                                </IconButton>
+                                                {/*<IconButton aria-label="expand row" size="small" >*/}
+                                                {/*    {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
+                                                {/*</IconButton>*/}
                                                 低俗，暴力，色情
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <Tooltip title={"禁言"} onClick={() => {this.setState({showBanDialog: true, userId: user.user_id})}}>
                                                     <IconButton edge="end" aria-label="ban" style={{marginLeft: '8px'}}>
-                                                        <BlockIcon/>
+                                                        <MicOffIcon/>
                                                     </IconButton>
                                                 </Tooltip>
                                                 <Tooltip title={"封号"} onClick={() => {this.setState({showForbidDialog: true, userId: user.user_id})}}>
                                                     <IconButton edge="end" aria-label="micoff">
-                                                        <DeleteIcon/>
+                                                        <BlockIcon/>
                                                     </IconButton>
                                                 </Tooltip>
                                             </StyledTableCell>
@@ -284,14 +287,6 @@ export default class AdminUsersList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
-                    <div style={{marginBottom:'10px'}}>
-                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
-                            禁言全部
-                        </Button>
-                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                            封号全部
-                        </Button>
-                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showBanDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">禁言</DialogTitle>

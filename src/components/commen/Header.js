@@ -99,8 +99,10 @@ class Header extends React.Component{
         return (
             <div className={classes.grow}>
                 <AppBar position="static">
-                    <Toolbar className={classes.bar}>
-                        <Logo title={'Amoy Interest'}/>
+                    <Toolbar className={role === UserType.ADMIN?null:classes.bar}>
+                        {role === UserType.ADMIN?
+                            <Logo title={'Amoy Interest Management'}/>:
+                            <Logo title={'Amoy Interest'}/>}
                         {role === UserType.ADMIN?
                             <SearchBar handleSearch={this.handleSearch}/>:
                             <TestSearchBar history={this.props.history}/>}

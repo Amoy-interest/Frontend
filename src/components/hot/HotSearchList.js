@@ -4,15 +4,14 @@ import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {getHotList} from "../../service/TopicService";
 import title from '../../assets/img/title.png';
-import {amber} from "@material-ui/core/colors";
+import {getHotList} from "../../service/TopicService";
+//import {amber} from "@material-ui/core/colors";
 
 const styles =((theme) => ({
     root: {
         marginTop:theme.spacing(2),
         width: '300',
-        //position:'fixed',
         color: theme.palette.text.primary,
         rounded:true
     },
@@ -20,7 +19,7 @@ const styles =((theme) => ({
         marginBottom:10,
         padding:theme.spacing(2),
         //backgroundImage: `url(${Background})`,
-        backgroundColor: amber[100],
+        backgroundColor: theme.palette.primary.main,
         opacity:0.80
     },
     image:{

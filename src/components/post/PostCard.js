@@ -250,7 +250,7 @@ class PostCard extends React.Component {
 
     handleReportPost = () => {
         const callback = () => {
-            console.log('report success');
+            //console.log('report success');
             this.handleMenuClose();
             this.setState({reportMessageOpen: true})
         };
@@ -259,7 +259,7 @@ class PostCard extends React.Component {
 
     handleDeletePost = () => {
         const callback = () => {
-            console.log('delete success');
+            //console.log('delete success');
             this.handleMenuClose();
             this.props.delete(this.props.index);
         };
@@ -337,16 +337,27 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
-                        <Link style={{color: '#fff'}} to={{
-                            pathname: '/post-detail',
-                            search: '?id=' + post.blog_id
-                        }}>
                             <CardContent>
-                                <Typography variant="body1" color="textPrimary" component="p">
-                                    {text}
-                                </Typography>
+                                {post.topic_name===''?null:
+                                    <Link style={{color: '#fff'}} to={{
+                                        pathname: '/topic-discussion',
+                                        state:{topic_name:post.topic_name}}}>
+                                        <Typography variant="body1" color="primary" component="p">
+                                            {`#${post.topic_name}#`}
+                                        </Typography>
+                                    </Link>
+                                }
+                                <Link style={{color: '#fff'}} to={{
+                                    pathname: '/post-detail',
+                                    search: '?id=' + post.blog_id
+                                }}>
+                                    <Typography variant="body1" color="textPrimary"
+                                                //component="p"
+                                    >
+                                        {text}
+                                    </Typography>
+                                </Link>
                             </CardContent>
-                        </Link>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}

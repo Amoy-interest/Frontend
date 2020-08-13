@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        padding:theme.spacing(3),
+        padding:theme.spacing(1),
         marginBottom:theme.spacing(1)
     },
     paper: {
@@ -36,7 +36,7 @@ class AdminTopicsManageView extends Component{
         const {classes} = this.props;
         return (
             <div>
-                <Paper elevation={1} className={classes.root}>
+                <Paper elevation={0} className={classes.root}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
                             <AdminSideBar index={2}/>

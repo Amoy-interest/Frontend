@@ -7,9 +7,6 @@ import {getFans, getFollows} from "../../service/UserService";
 import UserItem from "./UserItem";
 
 const styles = ((theme) => ({
-    item: {
-        width: '100%'
-    },
     userContainer: {
         width: '100%',
         display: 'flex',
@@ -17,14 +14,14 @@ const styles = ((theme) => ({
         flexDirection: 'column',
         overflow: 'auto'
     },
-    list:{
-        width:'100%'
-    },
+    // list:{
+    //     width:'100%'
+    // },
 }));
 
 function mapStateToProps(state) {
     return {
-        user: state.userReducer
+        user: state.userReducer.user
     }
 }
 
@@ -33,13 +30,19 @@ export const UserListType = {
     FOLLOW: 1
 };
 
+export const UserListBelong = {
+    OTHERS: 0,
+    PERSONAL: 1
+};
+
 @withStyles(styles)
 class UserList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            user_id: null,
+            users:[],
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
@@ -85,6 +88,8 @@ class UserList extends Component {
 
     render() {
         const {classes} = this.props;
+        const param = this.props.location.search.split('&');
+        const profile_user_id = param[0].substr(4);
         return (
             <div className={classes.userContainer}>
                 <InfiniteScroll
@@ -93,11 +98,15 @@ class UserList extends Component {
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                     key={this.state.key}>
-                    <List className={classes.list}>
+                    <List >
                         {this.state.users.map((item, index) => {
                             return (
-                                <UserItem index={index} user={item}/>
-                            );
+                                <UserItem key={index} user={item} type={
+                                    profile_user_id===this.props.user.user_id.toString()?
+                                        UserListBelong.PERSONAL
+                                        :UserListBelong.OTHERS
+                                }/>
+                                )
                         })}
                     </List>
                 </InfiniteScroll>

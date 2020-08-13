@@ -25,8 +25,10 @@ import {Link} from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: '#b3e5fc',
-        color: '#616161',
+        color: '#000',
+        fontSize:'16px',
+        paddingTop:theme.spacing(3),
+        paddingBottom:theme.spacing(3)
     },
     body: {
         fontSize: 14,
@@ -208,7 +210,7 @@ export default class AdminTopicsList extends Component{
                                 <StyledTableCell>话题</StyledTableCell>
                                 <StyledTableCell>创建时间</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByReport}>举报数</StyledTableCell>
-                                <StyledTableCell> </StyledTableCell>
+                                <StyledTableCell style={{paddingLeft:'30px'}}> 通过 删除</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -265,14 +267,6 @@ export default class AdminTopicsList extends Component{
                             </TableRow>
                         </TableFooter>
                     </Table>
-                    <div style={{marginBottom:'10px'}}>
-                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
-                            删除全部
-                        </Button>
-                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                            调整话题位置
-                        </Button>
-                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Pass</DialogTitle>

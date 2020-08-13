@@ -7,6 +7,9 @@ import ProfileCard from "../../components/profile/ProfileCard";
 import {PostType} from "../../utils/constants";
 import UserList, {UserListType} from "./UserList";
 import withStyles from "@material-ui/core/styles/withStyles";
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 const styles = ((theme) => ({
     root: {
@@ -87,9 +90,9 @@ class SideBarForProfile extends React.Component{
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
                 >
-                    <Tab className={classes.tab} label="个人资料" {...a11yProps(0)} />
-                    <Tab className={classes.tab} label="粉丝列表" {...a11yProps(1)} />
-                    <Tab className={classes.tab} label="关注列表" {...a11yProps(2)} />
+                    <Tab className={classes.tab} label="个人资料" icon={<PermContactCalendarIcon/>}{...a11yProps(0)} />
+                    <Tab className={classes.tab} label="粉丝列表" icon={<SupervisedUserCircleIcon/>} {...a11yProps(1)} />
+                    <Tab className={classes.tab} label="关注列表" icon={<PeopleAltIcon/>} {...a11yProps(2)} />
                     {/*<Tab label="设置" {...a11yProps(3)} />*/}
                 </Tabs>
                 <TabPanel value={value} index={0}>

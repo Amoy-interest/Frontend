@@ -159,11 +159,11 @@ class CommentItem extends React.Component {
                 <Card className={classes.root} elevation={0}>
                     <CardHeader
                         avatar={
-                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                            <Link to={{
                                 pathname: '/personal-info',
                                 search: '?id=' + comment.user_id,
                             }}>
-                                <Avatar aria-label="comment" src={comment.avatar_path}/>
+                                <Avatar aria-label="comment" src={comment.avatar_path} style={{backgroundColor: amber[200]}}/>
                             </Link>
                         }
                         action={
@@ -203,7 +203,7 @@ class CommentItem extends React.Component {
                                         return (
                                             <ListItem key={index}>
                                                 <Typography variant="body2" color="textSecondary" component="p"
-                                                            style={{backgroundColor: grey[50], marginTop: '10px'}}>
+                                                            style={{backgroundColor: grey[50]}}>
                                                     {item.nickname} 回复 {comment.nickname}: {item.comment_text}
                                                 </Typography>
                                             </ListItem>

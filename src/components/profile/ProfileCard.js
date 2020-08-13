@@ -16,6 +16,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {follow, getUserInfo, unfollow} from "../../service/UserService";
 import {connect} from "react-redux";
+import {UserType} from "../../utils/constants";
+import MicOffIcon from "@material-ui/icons/MicOff";
+import BlockIcon from "@material-ui/icons/Block";
 
 const styles = ((theme) => ({
     background: {
@@ -29,7 +32,11 @@ const styles = ((theme) => ({
         marginTop:theme.spacing(1)
     },
     content: {
-        paddingTop: 20
+        paddingTop: 20,
+        // display:'flex',
+        // flexDirection:'column',
+        // alignItems:'center',
+        // justifyContent:'center'
     },
     media: {
         height: 70,
@@ -72,7 +79,8 @@ class ProfileCard extends React.Component {
         this.state = {
             userInfo: null,
             anchorEl:null,
-            followed:false
+            followed:false,
+            userCount:null
         };
     }
 
@@ -81,7 +89,7 @@ class ProfileCard extends React.Component {
         const user_id = param[0].substr(4);
         getUserInfo(user_id, (data)=>{
             console.log(data);
-            this.setState({userInfo:data.data.user, followed:data.data.user._follow});
+            this.setState({userInfo:data.data.user, followed:data.data.user._follow,userCount:data.data.userCount});
         });
     }
 
@@ -121,7 +129,7 @@ class ProfileCard extends React.Component {
 
     render() {
         const {classes}=this.props;
-        const {anchorEl,userInfo,followed}=this.state;
+        const {anchorEl,userInfo,followed,userCount}=this.state;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'primary-search-account-menu';
         const renderMenu = (
@@ -134,21 +142,30 @@ class ProfileCard extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>
+                {this.props.role === UserType.ADMIN ?
+                    <React.Fragment>
+                    <MenuItem onClick={() => this.props.handleBan(userInfo.user_id)}><MicOffIcon
+                        color={"secondary"}/>禁言</MenuItem>
+                    <MenuItem onClick={() => this.props.handleForbid(userInfo.user_id)}><BlockIcon
+                    color={"secondary"}/>封号</MenuItem>
+                    </React.Fragment>
+                        :
+                <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>}
             </Menu>
         );
-        if(this.state.userInfo===null) return <div>Loading</div>;
+        if(this.state.userInfo===null) return <div>Loading...</div>;
         else
         {return (
             <Card className={classes.root} >
                 <div className={classes.background}>
+                    {userInfo.user_id !== this.props.user.user.user_id&& this.props.role !== UserType.ADMIN?null:
                     <CardHeader
                         action={
                             <IconButton onClick={this.handleProfileMenuOpen} aria-label="settings">
                                 <MoreVertIcon/>
                             </IconButton>
                         }
-                    />
+                    />}
                     <CardContent className={classes.content}>
                         <Grid container spacing={1}>
                             <Grid item xs={4}>
@@ -163,14 +180,14 @@ class ProfileCard extends React.Component {
                             {userInfo.nickname}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p" align='center'>
-                            {userInfo.address}
+                            粉丝:{userCount.fan_count}        |       关注:{userCount.follow_count}
                         </Typography>
                         <div style={{marginTop: '10px'}}>
                             <Typography variant="body1" color="textPrimary" component="p" align='center'>
                                 简介: {userInfo.introduction}
                             </Typography>
                         </div>
-                        {userInfo.user_id === this.props.user.user.user_id ?null:
+                        {userInfo.user_id === this.props.user.user.user_id ||this.props.role === UserType.ADMIN? null:
                             <div style={{marginTop: '20px'}}>
                                 <Grid container spacing={2}>
                                     <Grid item xs>

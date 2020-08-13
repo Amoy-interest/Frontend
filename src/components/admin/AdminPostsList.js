@@ -35,9 +35,10 @@ import {InputAdornment, TextField} from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: '#b3e5fc',
-        color: '#616161',
-        //opacity:'70%',
+        color: '#000',
+        fontSize:'16px',
+        paddingTop:theme.spacing(3),
+        paddingBottom:theme.spacing(3)
     },
     body: {
         fontSize: 14,
@@ -292,7 +293,7 @@ class AdminPostsList extends Component {
     render() {
         return (
             <div>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} >
                     <Table aria-label="customized table" >
                         <TableHead color={"primary"}>
                             <TableRow>
@@ -303,7 +304,7 @@ class AdminPostsList extends Component {
                                 <StyledTableCell>博文内容</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByHot}>热度</StyledTableCell>
                                 <StyledTableCell onClick={this.sortByReportCount}>举报数</StyledTableCell>
-                                <StyledTableCell> </StyledTableCell>
+                                <StyledTableCell style={{paddingLeft:'30px'}}> 通过 删除</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -381,14 +382,6 @@ class AdminPostsList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
-                    <div style={{marginBottom: '10px'}}>
-                        <Button variant="contained" color="secondary" style={{marginLeft: 690}}>
-                            通过全部
-                        </Button>
-                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                            删除全部
-                        </Button>
-                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showPassDialog} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Pass</DialogTitle>
