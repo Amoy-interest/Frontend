@@ -29,6 +29,7 @@ import Message from "./components/commen/Message";
 import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
 import TestAliView from "./views/TestAliView";
+import TestComponentView from "./views/TestComponentView";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -137,6 +138,7 @@ function App(props) {
                                 <Route path='/register' component={RegisterView}/>
                                 <Route path='/test-redux' component={TestReduxView}/>
                                 <Route path='/test-ali' component={TestAliView}/>
+                                <Route path='/test-com' component={TestComponentView}/>
                                 <PrivateRoute path='/home' component={HomeView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/personal-info' component={ProfileView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>
