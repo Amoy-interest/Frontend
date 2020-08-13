@@ -22,11 +22,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: '#b3e5fc',
-        color: '#616161',
+        color: '#000',
+        fontSize:'16px',
+        paddingTop:theme.spacing(3),
+        paddingBottom:theme.spacing(3)
     },
     body: {
         fontSize: 14,
@@ -219,6 +223,9 @@ class AdminSensWordsList extends Component {
         const { classes } = this.props;
         return (
             <div>
+                <Fab color="primary" onClick={this.handleAdd} style={{marginRight: 900,marginBottom: 10}}>
+                    <AddIcon />
+                </Fab>
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                         <TableHead>
@@ -227,12 +234,12 @@ class AdminSensWordsList extends Component {
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
-                                <StyledTableCell> </StyledTableCell>
+                                <StyledTableCell style={{paddingLeft:'30px'}}>删除 修改</StyledTableCell>
                                 <StyledTableCell onClick={() => this.setCheckAll()}>
                                     全选
                                 </StyledTableCell>
                                 <StyledTableCell>敏感词</StyledTableCell>
-                                <StyledTableCell> </StyledTableCell>
+                                <StyledTableCell style={{paddingLeft:'30px'}}>删除 修改 </StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -308,14 +315,6 @@ class AdminSensWordsList extends Component {
                             </TableRow>
                         </TableFooter>
                     </Table>
-                    <div style={{ marginBottom: '10px'}}>
-                        <Button variant="contained" color="secondary" onClick={this.handleAdd} style={{marginLeft: 690}}>
-                            添加敏感词
-                        </Button>
-                        <Button variant="contained" color="secondary" style={{marginLeft: '20px'}}>
-                            删除全部
-                        </Button>
-                    </div>
                 </TableContainer>
                 <Dialog open={this.state.showAddDialog} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
                     <DialogTitle id="form-dialog-title">Add</DialogTitle>

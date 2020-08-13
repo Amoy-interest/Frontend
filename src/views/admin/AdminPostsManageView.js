@@ -8,7 +8,7 @@ import AdminPostsList from "../../components/admin/AdminPostsList";
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        padding:theme.spacing(3),
+        padding:theme.spacing(1),
         marginBottom:theme.spacing(1)
     },
     paper: {
@@ -36,7 +36,7 @@ class AdminPostsManageView extends Component{
         const {classes} = this.props;
         return (
             <div>
-                <Paper elevation={1} className={classes.root}>
+                <Paper elevation={0} className={classes.root}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
                             <AdminSideBar index={1}/>

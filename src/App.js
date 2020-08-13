@@ -15,7 +15,7 @@ import AdminTopicsManageView from "./views/admin/AdminTopicsManageView";
 import AdminSensWordsManageView from './views/admin/AdminSensWordsManageView';
 import TestReduxView from "./views/TestReduxView";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
-import {amber, indigo} from "@material-ui/core/colors";
+import {amber, blue} from "@material-ui/core/colors";
 import {connect} from "react-redux";
 import HeaderAfterLogIn from "./components/commen/Header";
 import Container from "@material-ui/core/Container";
@@ -44,7 +44,7 @@ const theme_user = createMuiTheme({
 const theme_admin = createMuiTheme({
     palette: {
         primary: {
-            main:indigo[400],
+            main:blue[700],
         },
         secondary: {
             main: '#b3e5fc',

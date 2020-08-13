@@ -15,6 +15,9 @@ const styles = (theme => ({
     root: {
         backgroundColor: grey[50],
         paddingBottom: '30px'
+    },
+    avatar: {
+        backgroundColor: theme.palette.primary.main
     }
 }));
 
@@ -50,7 +53,7 @@ class ForwardCard extends React.Component {
                                           pathname: '/personal-info',
                                           search: '?id=' + post.user_id,
                                       }}>
-                                    <Avatar src={post.avatar_path}/>
+                                    <Avatar src={post.avatar_path} className={classes.avatar}/>
                                 </Link>
                             }
                             title={post.nickname}

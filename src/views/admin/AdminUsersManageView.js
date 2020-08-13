@@ -8,7 +8,7 @@ import {withStyles} from "@material-ui/core";
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        padding:theme.spacing(3),
+        padding:theme.spacing(1),
         marginBottom:theme.spacing(1)
     },
     paper: {
@@ -37,7 +37,7 @@ class AdminUsersManageView extends Component{
         return (
             <div>
                 <div>
-                    <Paper elevation={1} className={classes.root}>
+                    <Paper elevation={0} className={classes.root}>
                         <Grid container spacing={1}>
                             <Grid item xs={2}>
                                 <AdminSideBar index={0}/>

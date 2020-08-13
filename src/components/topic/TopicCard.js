@@ -121,7 +121,7 @@ class TopicCard extends React.Component {
     };
 
     componentWillReceiveProps(nextProps, nextContext){
-        const topic_name =  this.props.location.state.topic_name;
+        const topic_name =  nextProps.location.state.topic_name;
         this.getTopicInfo(topic_name);
     };
 

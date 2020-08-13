@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {amber} from "@material-ui/core/colors";
 import {Link} from "react-router-dom";
+import {UserListBelong} from "./UserList";
 
 const styles = ((theme) => ({
     inline: {
@@ -19,8 +20,12 @@ const styles = ((theme) => ({
     },
     item:{
         marginTop:theme.spacing(1)
+    },
+    avatar:{
+        backgroundColor:theme.palette.primary.main
     }
 }));
+
 
 @withStyles(styles)
 class UserItem extends Component{
@@ -44,18 +49,19 @@ class UserItem extends Component{
         };
         unfollow(this.state.userInfo.user_id, callback);
     };
+
     render() {
         const {userInfo,followed}=this.state;
-        const {classes,index}=this.props;
-
+        const {classes,key,type}=this.props;
+        console.log(type);
         return (
-            <ListItem key={index} className={classes.item}>
+            <ListItem key={key} className={classes.item}>
                 <ListItemAvatar>
-                    <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                    <Link to={{
                         pathname: '/personal-info',
                         search: '?id=' + userInfo.user_id,
                     }}>
-                    <Avatar alt={userInfo.nickname} src={userInfo.avatar}/>
+                    <Avatar alt={userInfo.nickname} src={userInfo.avatar} className={classes.avatar}/>
                     </Link>
                 </ListItemAvatar>
                 <ListItemText
@@ -73,10 +79,11 @@ class UserItem extends Component{
                         </React.Fragment>
                     }
                 />
+                {type===UserListBelong.PERSONAL?
                 <Button className={classes.button} variant="outlined" color="secondary"
                         onClick={followed ? this.handleUnFollow : this.handleFollow}>
                     {followed ? "取消关注" : "关注"}
-                </Button>
+                </Button>:null}
                 <Divider/>
             {/*</ListItem>*/}
         </ListItem>);

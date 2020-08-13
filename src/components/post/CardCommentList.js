@@ -8,7 +8,8 @@ import CommentItem, {CommentItemType} from "./CommentItem";
 import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {getComments, postComment} from "../../service/PostService";
-import {Divider} from "@material-ui/core";
+import {Divider, List} from "@material-ui/core";
+import {CommentListType} from "./CommentList";
 
 const styles = ((theme) => ({
     root: {
@@ -52,7 +53,6 @@ class CardCommentList extends React.Component {
     componentDidMount() {
         const callback = (data) => {
             this.setState({comments: data.data.list});
-            console.log(this.state.comments);
         };
         let param = {blog_id: this.props.post.blog_id};
         getComments(param, callback)
@@ -73,47 +73,34 @@ class CardCommentList extends React.Component {
         };
         postComment(param, callback);
     };
-
+    handleDeleteItem = (index) => {
+        let arr = this.state.comments;
+        arr.splice(index, 1);
+        this.setState({comments: arr});
+        this.props.deleteComment();
+    };
+    addComment=()=>{
+        this.props.addComment();
+    };
 
     render() {
         const {classes,post} = this.props;
         const {comments} = this.state;
 
-        const handleDeleteItem = (index) => {
-            let arr = this.state.comments;
-            arr.splice(index, 1);
-            this.setState({comments: arr});
-            this.props.deleteComment();
-        };
-        const addComment=()=>{
-            console.log('add comment');
-            this.props.addComment();
-        };
-        function renderRow(itemProps) {
-            const {index, style} = itemProps;
-            return (
-                <ListItem button style={style} key={index}>
-                    <CommentItem comment={comments[index]} index={index} deleteComment={handleDeleteItem}
-                                 type={CommentItemType.CARD} post={post} submit={addComment}/>
-                </ListItem>
-            );
-        }
-
-        renderRow.propTypes = {
-            index: PropTypes.number.isRequired,
-            style: PropTypes.object.isRequired,
-        };
-
         return (
             <div className={classes.root}>
                 <CommentForm commentId={comments} style={classes} submit={this.submitComment}/>
                 <Divider style={{marginTop: '20px'}}/>
-                {comments.length === 0 ? <div>Loading</div> :
-                    <FixedSizeList className={classes.comment} style={{marginTop: '20px'}} height={300} width={600}
-                                   itemSize={170}
-                                   itemCount={comments.length}>
-                        {renderRow}
-                    </FixedSizeList>}
+                    <List>
+                        {this.state.comments.map((item, index) => {
+                            return (
+                                <ListItem key={index}>
+                                    <CommentItem comment={item} index={index} deleteComment={this.handleDeleteItem}
+                                                 type={CommentItemType.CARD} post={post} submit={this.addComment}/>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
             </div>
         );
     }
