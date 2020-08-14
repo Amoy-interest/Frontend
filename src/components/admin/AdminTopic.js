@@ -137,6 +137,15 @@ class AdminTopic extends React.Component{
             pageSize: 8,
             pageSizeOptions: [5, 8, 10, 15, 20]
         };
+        const localization = {
+            header: {
+                actions: "话题操作"
+            },
+            toolbar: {
+                searchTooltip: "搜索",
+                searchPlaceholder: "搜索话题..."
+            }
+        };
 
         return (
             <div>
@@ -146,7 +155,7 @@ class AdminTopic extends React.Component{
                     tableRef={tableRef}
                     title="话题管理"
                     data={this.loadData}
-                    localization={{header: {actions: "话题操作"}}}
+                    localization={localization}
                     columns={columns}
                     actions={actions}
                     options={options}

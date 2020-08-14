@@ -106,6 +106,15 @@ class AdminUser extends React.Component{
             pageSize: 8,
             pageSizeOptions: [5, 8, 10, 15, 20]
         };
+        const localization = {
+            header: {
+                actions: "用户操作"
+            },
+            toolbar: {
+                searchTooltip: "搜索",
+                searchPlaceholder: "搜索用户..."
+            }
+        };
 
         return (
             <div>
@@ -116,9 +125,9 @@ class AdminUser extends React.Component{
                     tableRef={tableRef}
                     columns={columns}
                     data={this.loadData}
-                    localization={{header: {actions: "用户操作"}}}
+                    localization={localization}
                     actions={actions}
-                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
+                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord}}
                     options={options}
                 />
             </div>
