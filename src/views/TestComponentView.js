@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ProfileEditForm from "../components/profile/ProfileEditForm";
-import Button from "@material-ui/core/Button";
 import {withStyles} from "@material-ui/core";
 import PositioningActionsColumn from "../components/commen/Table"
 const style = ((theme) => ({
@@ -37,15 +36,9 @@ class TestComponentView extends Component{
                 TestComponentView page!
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <PositioningActionsColumn/>
-                {/*<div className={classes.container}>*/}
-                {/*    <ProfileEditForm submit={this.getValues}/>*/}
-                {/*</div>*/}
-                {/*<div style={{display: 'flex', flexDirection: 'row'}}>*/}
-                {/*    <Button variant="contained" color="primary"*/}
-                {/*            onClick={this.handleGetProps}>*/}
-                {/*        Get Value*/}
-                {/*    </Button>*/}
-                {/*</div>*/}
+                <div className={classes.container}>
+                    <ProfileEditForm submit={this.getValues}/>
+                </div>
             </div>
         );
     }

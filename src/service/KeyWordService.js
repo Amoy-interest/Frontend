@@ -6,19 +6,29 @@ export const getSensWords = (params, callback) => {
     getRequest(url, params, callback);
 };
 
-export const putSensWord = (data, callback) => {
-    const url = `${apiUrl}${APIModules.SENSITIVEWORD}${data}`;
-    putRequest_json(url, null, callback);
+export const updateSensWord = (oldWord, newWord, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    const json = {
+        oldWord: oldWord,
+        newWord: newWord
+    };
+    putRequest_json(url, null, json, callback);
 };
 
-export const postSensWord = (data, callback) => {
-    const url = `${apiUrl}${APIModules.SENSITIVEWORD}${data}`;
-    postRequest_json(url, null, callback);
+export const addSensWord = (keyword, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    const json = {
+        keyword: keyword
+    };
+    postRequest_json(url, null, json, callback);
 };
 
-export const deleteSensWord = (data, callback) => {
-    const url = `${apiUrl}${APIModules.SENSITIVEWORD}${data}`;
-    deleteRequest_json(url, null, callback);
+export const deleteSensWord = (keyword, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    const json = {
+        keyword: keyword
+    };
+    deleteRequest_json(url, null, json, callback);
 };
 
 export const searchSensWords = (params, callback) => {

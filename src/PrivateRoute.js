@@ -35,7 +35,7 @@ class PrivateRoute extends React.Component{
         })
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         //console.log(nextProps.keyword);
         this.setState({keyword: nextProps.keyword});
     }

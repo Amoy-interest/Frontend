@@ -3,9 +3,7 @@ import { withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminSenseWordsList from "../../components/admin/old/AdminSenseWordsList";
 import AdminSenseWordList from "../../components/admin/AdminSenseWordList";
-// import AdminSenseWordsList from "../../components/admin/AdminSenseWordsList";
 
 const styles =((theme) => ({
     root: {
@@ -21,18 +19,6 @@ const styles =((theme) => ({
 
 @withStyles(styles)
 class AdminSensWordsManageView extends Component{
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            keyword: null
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps.keyword);
-        this.setState({keyword: nextProps.keyword})
-    }
 
     render() {
         const {classes} = this.props;

@@ -1,15 +1,11 @@
 import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
-// import {Link} from 'react-router-dom'
-import {FixedSizeList} from 'react-window';
-import PropTypes from "prop-types";
 import CommentForm from "./CommentForm";
 import CommentItem, {CommentItemType} from "./CommentItem";
 import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {getComments, postComment} from "../../service/PostService";
 import {Divider, List} from "@material-ui/core";
-import {CommentListType} from "./CommentList";
 
 const styles = ((theme) => ({
     root: {

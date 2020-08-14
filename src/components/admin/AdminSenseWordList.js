@@ -50,40 +50,20 @@ class AdminSenseWordList extends React.Component{
 
     AddWord = (newData) =>
         new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return { ...prevState, data };
-                });
-            }, 600);
+            resolve();
+            console.log(newData);
         });
 
     UpdateWord = (newData, oldData) =>
         new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                if (oldData) {
-                    this.setState((prevState) => {
-                        const data = [...prevState.data];
-                        data[data.indexOf(oldData)] = newData;
-                        return { ...prevState, data };
-                    });
-                }
-            }, 600);
+            resolve();
+            console.log(newData, oldData);
         });
 
     DeleteWord = (oldData) =>
         new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return { ...prevState, data };
-                });
-            }, 600);
+            resolve();
+            console.log(oldData);
         });
 
 
@@ -112,13 +92,23 @@ class AdminSenseWordList extends React.Component{
                 icon: 'add',
                 tooltip: '添加敏感词',
                 isFreeAction: true,
-                onClick: (event) => alert("You want to add a new row")
+                onClick: (event) => console.log(event)
             },
             {
                 icon: 'refresh',
                 tooltip: '刷新',
                 isFreeAction: true,
                 onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+            },
+            {
+                icon: 'delete',
+                tooltip: '删除敏感词',
+                onClick: (event, rowData) => console.log(event, rowData)
+            },
+            {
+                icon: 'edit',
+                tooltip: '编辑敏感词',
+                onClick: (event, rowData) => console.log(event, rowData)
             }
         ];
         const options = {
@@ -148,7 +138,7 @@ class AdminSenseWordList extends React.Component{
                     data={this.loadData}
                     localization={localization}
                     actions={actions}
-                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
+                    // editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
                     options={options}
                 />
             </div>

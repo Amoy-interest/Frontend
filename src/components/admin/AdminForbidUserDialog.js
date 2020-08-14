@@ -86,8 +86,7 @@ export default class AdminForbidUserDialog extends React.Component{
     render() {
         const {open, type} = this.state;
         return(
-            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs"
-                    fullWidth="true">
+            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth>
                 <DialogTitle id="form-dialog-title">{type === Type.BAN ? "禁言": "封号"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

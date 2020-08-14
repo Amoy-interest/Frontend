@@ -2,7 +2,6 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../utils/constants";
-import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
 import {getReportedUsers, searchReportedUsers} from "../../service/AdminService";
 import BlockIcon from "@material-ui/icons/Block";

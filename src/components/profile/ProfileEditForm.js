@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form} from 'formik';
 import {AIPickerField, AITextField} from "../commen/AIField";
 import {withStyles} from "@material-ui/styles";
-import PostImage from "../post/PostImage";
 import Uploader from "../commen/Uploader";
 import OssApi from "../../service/OssService";
 import CircularProgress from "@material-ui/core/CircularProgress";

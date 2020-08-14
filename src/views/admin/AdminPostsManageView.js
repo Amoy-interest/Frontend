@@ -20,18 +20,6 @@ const styles = ((theme) => ({
 @withStyles(styles)
 class AdminPostsManageView extends Component{
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            keyword: null
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps.keyword);
-        this.setState({keyword: nextProps.keyword})
-    }
-
     render() {
         const {classes} = this.props;
         return (
