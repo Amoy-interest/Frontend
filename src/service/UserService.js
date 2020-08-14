@@ -1,5 +1,5 @@
 import { apiUrl, APIModules, MsgType, MessageType} from "../utils/constants";
-import {getRequest, postRequest_json} from "../utils/ajax";
+import {getRequest, postRequest_json, putRequest_json} from "../utils/ajax";
 import {store} from "../redux/configureStore";
 import {removeToken, removeUser} from "../redux/actions";
 import PubSub from "pubsub-js";
@@ -65,5 +65,10 @@ export const getFans = (params, callback) => {
 export const getFollows = (params, callback) => {
     const url = `${apiUrl}${APIModules.USER}/follow`;
     getRequest(url, params, callback);
+};
+
+export const editProfile = (params, callback) => {
+    const url = `${apiUrl}${APIModules.USER}`;
+    putRequest_json(url, null,params, callback);
 };
 
