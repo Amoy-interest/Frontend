@@ -73,11 +73,11 @@ export function AIPickerField (props) {
                             className={classes.text}>
                     {props.label?props.label:null}</InputLabel>
                 <Field
-                    //varient="outlined"
+                    varient="outlined"
                     fullWidth
                     component={Select}
                     name={props.name}
-                    variant='filled'
+                    // variant='filled'
                     inputProps={{
                         id: 'id-' + props.name,
                     }}
