@@ -6,35 +6,70 @@ import {InputAdornment, TextField} from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {forbidReportedUser} from "../../service/AdminService";
+import {banReportedUser, forbidReportedUser} from "../../service/AdminService";
+import PubSub from "pubsub-js";
+import {MessageType, MsgType} from "../../utils/constants";
 
-export default class forbidUserDialog extends React.Component{
+const Type = {
+    BAN: 'ban',
+    FORBID: 'forbid'
+};
+
+export default class AdminForbidUserDialog extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            open: this.props.showForbidDialog,
-            user_id: this.props.user_id,
+            open: false,
+            userId: null,
+            type: Type.BAN,
             year:0,
             day:0,
             hour:0
-        }
+        };
+
+        PubSub.subscribe(MsgType.ADMIN.FORBID_USR, (msg, data) => {
+            this.setState({open: true, userId: data, type: Type.FORBID});
+        });
+        PubSub.subscribe(MsgType.ADMIN.BAN_USR, (msg, data) => {
+            this.setState({open: true, userId: data, type: Type.BAN});
+        });
     }
 
-    cancelForbid = () => {
-        this.setState({open: false});
+    cancel = () => {
+        this.setState({open: false, userId: null});
     };
 
-    confirmForbid = () => {
-        this.setState({open: false});
-        this.props.submitForbid();//change state of parent's state:showForbidDialog
-        let forbidTime = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
-        let data = {"user_id": this.state.userId, "time": forbidTime};
-        //console.log(data);
-        forbidReportedUser(data, ((res)=> {
-            //console.log(res.data);
-            this.props.updateUsers(0, 10);
+    confirm = () => {
+        this.setState({open: false, userId: null});
+
+        let time = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let data = {"user_id": this.state.userId, "time": time};
+
+        if (this.state.type === Type.BAN) this.BanUser(data);
+        else this.ForbidUser(data);
+    };
+
+    BanUser = (data) => {
+        banReportedUser(data, ((res)=> {
+            console.log(res);
+            if(res.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言失败！", type: MessageType.ERROR});
+            else
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言成功！", type: MessageType.SUCCESS});
         }))
     };
+
+    ForbidUser = (data) => {
+        forbidReportedUser(data, ((res)=> {
+            console.log(res);
+            if(res.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号失败！", type: MessageType.ERROR});
+            else
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号成功！", type: MessageType.SUCCESS});
+        }))
+    };
+
+
 
     handleYearChange = (e) => {
         this.setState({year: e.target.value});
@@ -49,14 +84,14 @@ export default class forbidUserDialog extends React.Component{
     };
 
     render() {
-        const {open}=this.state;
+        const {open, type} = this.state;
         return(
             <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs"
                     fullWidth="true">
-                <DialogTitle id="form-dialog-title">封号</DialogTitle>
+                <DialogTitle id="form-dialog-title">{type === Type.BAN ? "禁言": "封号"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        请填写封号时长
+                        {type === Type.BAN ? "请填写禁言时长": "请填写封号时长"}
                     </DialogContentText>
                     <form noValidate autoComplete="off">
                         <TextField onChange={this.handleYearChange} variant="outlined"
@@ -74,11 +109,11 @@ export default class forbidUserDialog extends React.Component{
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.cancelForbid} color="primary">
+                    <Button onClick={this.cancel} color="primary">
                         取消
                     </Button>
-                    <Button onClick={this.confirmForbid} color="primary">
-                        确认封号
+                    <Button onClick={this.confirm} color="primary">
+                        确认
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -53,7 +53,11 @@ const MsgType = {
     ADD_COMMENT:"addComment",
     DELETE_COMMENT:"deleteComment",
     CLEAR_UPLOAD: 'clearUpload',
-    ERROR_UPLOAD: 'errorUpload'
+    ERROR_UPLOAD: 'errorUpload',
+    ADMIN: {
+        FORBID_USR: 'forbidUser',
+        BAN_USR: 'banUser',
+    }
 };
 
 const MessageType = {

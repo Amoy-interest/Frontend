@@ -8,6 +8,7 @@ import {getReportedUsers, searchReportedUsers} from "../../service/AdminService"
 import BlockIcon from "@material-ui/icons/Block";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import {Link} from "react-router-dom";
+import AdminForbidUserDialog from "./AdminForbidUserDialog";
 
 const styles = ((theme) => ({
     number: {
@@ -53,7 +54,6 @@ class AdminUser extends React.Component{
 
 
     render() {
-        // const {classes} = this.props;
         const tableRef = React.createRef();
         const columns = [
             {
@@ -86,12 +86,12 @@ class AdminUser extends React.Component{
             {
                 icon: MicOffIcon,
                 tooltip: '禁言',
-                onClick: (event, rowData) => alert("禁言 " + rowData.nickname)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.BAN_USR, rowData.user_id)
             },
             {
                 icon: BlockIcon,
                 tooltip: '封号',
-                onClick: (event, rowData) => alert("封号 " + rowData.nickname)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.FORBID_USR, rowData.user_id)
             },
             {
                 icon: 'refresh',
@@ -130,6 +130,7 @@ class AdminUser extends React.Component{
                     editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord}}
                     options={options}
                 />
+                <AdminForbidUserDialog/>
             </div>
 
         )

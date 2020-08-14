@@ -33,22 +33,22 @@ export const searchReportedTopics = (params, callback) => {
 
 export const checkReportedTopic = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported/`;
-    putRequest_json(url, data, callback);
+    putRequest_json(url,null,  data, callback);
 };
 
 export const checkReportedBlog = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.BLOG}/reported/`;
-    putRequest_json(url, data, callback);
+    putRequest_json(url, null, data, callback);
 };
 
 export const banReportedUser = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/ban`;
-    putRequest_json(url, data, callback);
+    putRequest_json(url, null, data, callback);
 };
 
 export const forbidReportedUser = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/forbid`;
-    putRequest_json(url, data, callback);
+    putRequest_json(url, null, data, callback);
 };
 
 
