@@ -3,8 +3,8 @@ import { withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminSenseWordsList from "../../components/admin/AdminSenseWordsList";
-import AdminSenseWord from "../../components/admin/AdminSenseWord";
+import AdminSenseWordsList from "../../components/admin/old/AdminSenseWordsList";
+import AdminSenseWordList from "../../components/admin/AdminSenseWordList";
 // import AdminSenseWordsList from "../../components/admin/AdminSenseWordsList";
 
 const styles =((theme) => ({
@@ -44,7 +44,7 @@ class AdminSensWordsManageView extends Component{
                             <AdminSideBar index={3}/>
                         </Grid>
                         <Grid item xs>
-                            <AdminSenseWord/>
+                            <AdminSenseWordList/>
                         </Grid>
                     </Grid>
                 </Paper>

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminTopic from "../../components/admin/AdminTopic";
+import AdminTopicList from "../../components/admin/AdminTopicList";
 import Paper from "@material-ui/core/Paper";
 
 const styles = ((theme) => ({
@@ -42,7 +42,7 @@ class AdminTopicsManageView extends Component{
                             <AdminSideBar index={2}/>
                         </Grid>
                         <Grid item xs>
-                            <AdminTopic history={this.props.history}/>
+                            <AdminTopicList history={this.props.history}/>
                         </Grid>
                     </Grid>
                 </Paper>

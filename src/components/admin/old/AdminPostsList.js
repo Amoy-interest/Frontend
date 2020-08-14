@@ -8,7 +8,7 @@ import {
     forbidReportedUser,
     getReportedPosts,
     searchReportedPosts
-} from '../../service/AdminService';
+} from '../../../service/AdminService';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -22,7 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Collapse from '@material-ui/core/Collapse';
-import PostCard from "../post/PostCard";
+import PostCard from "../../post/PostCard";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";

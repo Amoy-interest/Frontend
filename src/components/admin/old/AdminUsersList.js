@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
-import {getReportedUsers, banReportedUser, forbidReportedUser, searchReportedUsers} from "../../service/AdminService";
+import {getReportedUsers, banReportedUser, forbidReportedUser, searchReportedUsers} from "../../../service/AdminService";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Table from '@material-ui/core/Table';

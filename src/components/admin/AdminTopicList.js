@@ -29,7 +29,7 @@ const styles = ((theme) => ({
 }));
 
 @withStyles(styles)
-class AdminTopic extends React.Component{
+class AdminTopicList extends React.Component{
     constructor(props) {
         super(props);
         this.goto = this.goto.bind(this);
@@ -165,4 +165,4 @@ class AdminTopic extends React.Component{
     }
 }
 
-export default AdminTopic;
+export default AdminTopicList;

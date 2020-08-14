@@ -2,9 +2,13 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../utils/constants";
-import {getSensWords, searchSensWords} from "../../service/KeyWordService";
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
+import {getReportedUsers, searchReportedUsers} from "../../service/AdminService";
+import BlockIcon from "@material-ui/icons/Block";
+import MicOffIcon from "@material-ui/icons/MicOff";
+import {Link} from "react-router-dom";
+import AdminForbidUserDialog from "./AdminForbidUserDialog";
 
 const styles = ((theme) => ({
     number: {
@@ -15,7 +19,7 @@ const styles = ((theme) => ({
 }));
 
 @withStyles(styles)
-class AdminSenseWord extends React.Component{
+class AdminUserList extends React.Component{
     loadData = query =>
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
@@ -23,7 +27,7 @@ class AdminSenseWord extends React.Component{
                 console.log(res);
                 if (res.status !== 200)
                     PubSub.publish(MsgType.SET_MESSAGE, {
-                        text: search? "搜索敏感词失败！": "获取敏感词失败！",
+                        text: search? "搜索用户失败！": "获取用户失败！",
                         type: MessageType.ERROR
                     });
                 else resolve({
@@ -34,85 +38,60 @@ class AdminSenseWord extends React.Component{
             };
 
             if (search) {
-                searchSensWords({
+                searchReportedUsers({
                     keyword: query.search,
                     pageNum: query.page,
                     pageSize: query.pageSize
                 }, callback);
             }
             else {
-                getSensWords({
+                getReportedUsers({
                     pageNum: query.page,
                     pageSize: query.pageSize
                 }, callback);
             }
         });
 
-    AddWord = (newData) =>
-        new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return { ...prevState, data };
-                });
-            }, 600);
-        });
-
-    UpdateWord = (newData, oldData) =>
-        new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                if (oldData) {
-                    this.setState((prevState) => {
-                        const data = [...prevState.data];
-                        data[data.indexOf(oldData)] = newData;
-                        return { ...prevState, data };
-                    });
-                }
-            }, 600);
-        });
-
-    DeleteWord = (oldData) =>
-        new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-                this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return { ...prevState, data };
-                });
-            }, 600);
-        });
-
-
 
     render() {
-        const {classes} = this.props;
         const tableRef = React.createRef();
         const columns = [
             {
-                title: '敏感词',
-                field: 'keyword'
+                title: '用户',
+                field: 'keyword',
+                align: 'left',
+                render: (user) => {
+                    return (
+                        <Link style={{color: 'black'}} to={{
+                            pathname: '/personal-info',
+                            search: '?id=' + user.user_id,
+                        }}>
+                            {user.nickname}
+                        </Link>
+                    )}
             },
             {
-                title: '敏感博文数量',
-                render: () => {
-                    return (
-                        <div className={classes.number}>
-                            <Typography variant="body1" color="textSecondary" component="p">
-                                100
-                            </Typography>
-                        </div>
-                    )}},
+                title: '信用值',
+                field: 'credits',
+                align: 'left',
+                type: 'numeric'
+            },
+            {
+                title: '举报原因',
+                align: 'left',
+                emptyValue: '低俗，暴力，色情'
+            },
         ];
         const actions = [
             {
-                icon: 'add',
-                tooltip: '添加敏感词',
-                isFreeAction: true,
-                onClick: (event) => alert("You want to add a new row")
+                icon: MicOffIcon,
+                tooltip: '禁言',
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.BAN_USR, rowData.user_id)
+            },
+            {
+                icon: BlockIcon,
+                tooltip: '封号',
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.FORBID_USR, rowData.user_id)
             },
             {
                 icon: 'refresh',
@@ -129,11 +108,11 @@ class AdminSenseWord extends React.Component{
         };
         const localization = {
             header: {
-                actions: "敏感词操作"
+                actions: "用户操作"
             },
             toolbar: {
                 searchTooltip: "搜索",
-                searchPlaceholder: "搜索敏感词..."
+                searchPlaceholder: "搜索用户..."
             }
         };
 
@@ -142,15 +121,16 @@ class AdminSenseWord extends React.Component{
                 {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <MaterialTable
-                    title="敏感词管理"
+                    title="用户管理"
                     tableRef={tableRef}
                     columns={columns}
                     data={this.loadData}
                     localization={localization}
                     actions={actions}
-                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
+                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord}}
                     options={options}
                 />
+                <AdminForbidUserDialog/>
             </div>
 
         )
@@ -158,4 +138,4 @@ class AdminSenseWord extends React.Component{
 
 }
 
-export default AdminSenseWord;
+export default AdminUserList;

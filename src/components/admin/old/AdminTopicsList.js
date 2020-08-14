@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import {getReportedTopics, checkReportedTopic, searchReportedTopics} from "../../service/AdminService";
+import {getReportedTopics, checkReportedTopic, searchReportedTopics} from "../../../service/AdminService";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';

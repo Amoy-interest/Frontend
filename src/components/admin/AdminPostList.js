@@ -23,7 +23,7 @@ const styles = ((theme) => ({
 }));
 
 @withStyles(styles)
-class AdminPost extends React.Component{
+class AdminPostList extends React.Component{
     loadData = query =>
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
@@ -181,4 +181,4 @@ class AdminPost extends React.Component{
 
 }
 
-export default AdminPost;
+export default AdminPostList;

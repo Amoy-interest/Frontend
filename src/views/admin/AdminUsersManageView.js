@@ -1,7 +1,7 @@
 import React, {Component}from 'react';
 import Grid from '@material-ui/core/Grid';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminUser from "../../components/admin/AdminUser";
+import AdminUserList from "../../components/admin/AdminUserList";
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core";
 
@@ -42,7 +42,7 @@ class AdminUsersManageView extends Component{
                                 <AdminSideBar index={0}/>
                             </Grid>
                             <Grid item xs>
-                                <AdminUser/>
+                                <AdminUserList/>
                             </Grid>
                         </Grid>
                     </Paper>
