@@ -17,21 +17,21 @@ import {connect} from "react-redux";
 
 const style = ((theme) => ({
     form: {
-        height: 500,
-        width: 500,
+        //height: 500,
+        width: 400,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     },
     avatar: {
         backgroundColor: theme.palette.primary.main,
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
         // marginBottom:10,
         // marginLeft:45
     },
     spacing: {
-        height: theme.spacing(6)
+        height: theme.spacing(1)
     },
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
@@ -40,7 +40,8 @@ const style = ((theme) => ({
     submit: {
         // width: 90,
         height: 54,
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(2),
+        marginTop:theme.spacing(1)
     }
 }));
 const oss = new OssApi();
@@ -129,16 +130,14 @@ class ProfileEditForm extends React.Component{
                         <Form style={{marginBottom:'20px',marginTop:'20px'}}>
                             <div className={classes.form}>
                             <Avatar aria-label="profile" className={classes.avatar} src={this.state.avatar}/>
+                            <Uploader uploadFiles={this.uploadFiles} limits={1}/>
                             <div className={classes.spacing}/>
-                            <Grid container spacing={3}>
+                            <Grid container spacing={1}>
                                 <AITextField sm={8} name="address" multiline label="地址"/>
                                 <AIPickerField sm={4} name="sex" label="性别" array={sex}/>
                                 <AITextField sm={12} name="introduction" multiline label="个人介绍"/>
                                 <Grid item xs={12} sm={8}/>
-                                <Grid item xs={12} sm={1}>
-                                    <Uploader uploadFiles={this.uploadFiles} limits={1}/>
-                                </Grid>
-                                <Grid item xs sm={3}>
+                                <Grid item xs sm={4}>
                                     <Button
                                         variant="contained"
                                         color="primary"
