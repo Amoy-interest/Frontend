@@ -51,7 +51,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 
-class AdminSensWordsList extends Component {
+class AdminSenseWordsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -385,6 +385,6 @@ class AdminSensWordsList extends Component {
     }
 }
 
-export default AdminSensWordsList;
+export default AdminSenseWordsList;
 
 

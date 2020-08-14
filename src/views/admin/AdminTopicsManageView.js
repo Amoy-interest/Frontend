@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminTopicsList from "../../components/admin/AdminTopicsList";
+import AdminTopic from "../../components/admin/AdminTopic";
 import Paper from "@material-ui/core/Paper";
 
 const styles = ((theme) => ({
@@ -24,10 +24,10 @@ class AdminTopicsManageView extends Component{
         super(props);
         this.state = {
             keyword: null
-        }
+        };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log(nextProps.keyword);
         this.setState({keyword: nextProps.keyword})
     }
@@ -42,7 +42,7 @@ class AdminTopicsManageView extends Component{
                             <AdminSideBar index={2}/>
                         </Grid>
                         <Grid item xs>
-                            <AdminTopicsList keyword={this.state.keyword}/>
+                            <AdminTopic history={this.props.history}/>
                         </Grid>
                     </Grid>
                 </Paper>

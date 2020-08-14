@@ -1,0 +1,159 @@
+import React from 'react';
+import MaterialTable from 'material-table';
+import {getReportedTopics, searchReportedTopics} from "../../service/AdminService";
+import PubSub from "pubsub-js";
+import {MessageType, MsgType} from "../../utils/constants";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import Typography from "@material-ui/core/Typography";
+import {withStyles} from "@material-ui/styles";
+
+const styles = ((theme) => ({
+    name: {
+        minWidth: 300,
+        // marginLeft:'10px',
+    },
+    time: {
+        minWidth: 200,
+        // marginLeft:'10px',
+    },
+    button: {
+        maxWidth: 20,
+        marginRight:'10px',
+    },
+    text: {
+        // width: 90,
+        marginLeft:'10px',
+    },
+
+}));
+
+@withStyles(styles)
+class AdminTopic extends React.Component{
+    constructor(props) {
+        super(props);
+        this.goto = this.goto.bind(this);
+    }
+
+    loadData = query =>
+        new Promise((resolve, reject) => {
+            let search = (query.search !== "");
+            const callback = (res) => {
+                console.log(res);
+                if (res.status !== 200)
+                    PubSub.publish(MsgType.SET_MESSAGE, {
+                        text: search? "搜索话题失败！": "获取话题失败！",
+                        type: MessageType.ERROR
+                    });
+                else resolve({
+                    data: res.data.list,
+                    page: res.data.pageNum,
+                    totalCount: res.data.total,
+                })
+            };
+
+            if (search) {
+                searchReportedTopics({
+                    keyword: query.search,
+                    pageNum: query.page,
+                    pageSize: query.pageSize
+                }, callback);
+            }
+            else {
+                getReportedTopics({
+                    pageNum: query.page,
+                    pageSize: query.pageSize
+                }, callback);
+            }
+        });
+
+    goto = (topic_name) => {
+        console.log(this.props, topic_name);
+        this.props.history.push({pathname: '/topic-discussion', state: {topic_name: topic_name}});
+    };
+
+
+    render() {
+        const {classes} = this.props;
+        const tableRef = React.createRef();
+        const columns = [
+            {
+                title: '话题',
+                field: 'name',
+                align: 'left',
+                render: rowData => {
+                    return(
+                        <div className={classes.name}>
+                            <Typography className={classes.text} noWrap={true} variant={'subtitle1'}
+                                        onClick={() => {this.goto(rowData.name)}}>
+                                #{rowData.name}#
+                            </Typography>
+                        </div>
+                    )
+                }
+            },
+            {
+                title: '创建时间',
+                field: 'time',
+                align: 'center',
+                // type: 'datetime'
+                render: rowData => {
+                    return (
+                        <div className={classes.time}>
+                            <Typography variant="body2" component="p">
+                                {new Date(rowData.time).Format("yyyy-MM-dd hh:mm:ss")}
+                            </Typography>
+                        </div>
+                    )}
+            },
+            {
+                title: '举报数',
+                field: 'report_count',
+                align: 'center',
+                type:'numeric'
+            }
+        ];
+        const actions = [
+            {
+                icon: DoubleArrowIcon,
+                tooltip: '通过话题',
+                onClick: (event, rowData) => alert("通过 " + rowData.name)
+            },
+            {
+                icon: DeleteIcon,
+                tooltip: '删除话题',
+                onClick: (event, rowData) => alert("删除 " + rowData.name)
+            },
+            {
+                icon: 'refresh',
+                tooltip: '刷新',
+                isFreeAction: true,
+                onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+            }
+        ];
+        const options = {
+            actionsColumnIndex: -1,
+            sorting: false,
+            pageSize: 8,
+            pageSizeOptions: [5, 8, 10, 15, 20]
+        };
+
+        return (
+            <div>
+                {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+                <MaterialTable
+                    tableRef={tableRef}
+                    title="话题管理"
+                    data={this.loadData}
+                    localization={{header: {actions: "话题操作"}}}
+                    columns={columns}
+                    actions={actions}
+                    options={options}
+                />
+            </div>
+        )
+    }
+}
+
+export default AdminTopic;

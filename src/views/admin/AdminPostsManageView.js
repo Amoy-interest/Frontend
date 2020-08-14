@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminPostsList from "../../components/admin/AdminPostsList";
+import AdminPost from "../../components/admin/AdminPost";
 
 const styles = ((theme) => ({
     root: {
@@ -42,7 +42,7 @@ class AdminPostsManageView extends Component{
                             <AdminSideBar index={1}/>
                         </Grid>
                         <Grid item xs>
-                            <AdminPostsList keyword={this.state.keyword}/>
+                            <AdminPost/>
                         </Grid>
                     </Grid>
                 </Paper>
