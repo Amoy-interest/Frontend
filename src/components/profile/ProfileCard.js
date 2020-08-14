@@ -16,9 +16,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {follow, getUserInfo, unfollow} from "../../service/UserService";
 import {connect} from "react-redux";
-import {UserType} from "../../utils/constants";
+import {MessageType, MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import BlockIcon from "@material-ui/icons/Block";
+import Paper from "@material-ui/core/Paper";
+import PostEditForm from "../post/PostEditForm";
+import PostImage from "../post/PostImage";
+import Modal from "@material-ui/core/Modal";
+import ProfileEditForm from "./ProfileEditForm";
+import * as userService from "../../service/UserService";
+import PubSub from "pubsub-js";
 
 const styles = ((theme) => ({
     background: {
@@ -62,7 +69,14 @@ const styles = ((theme) => ({
     chip: {
         marginLeft: theme.spacing(2),
         marginBottom: 10
-    }
+    },
+    editModal: {
+        padding: theme.spacing(1),
+        //width: 500
+    },
+    paper: {
+        position: 'absolute',
+    },
 }));
 
 function mapStateToProps(state) {
@@ -71,7 +85,15 @@ function mapStateToProps(state) {
         role: state.userReducer.role
     }
 };
-
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+};
 @withStyles(styles)
 class ProfileCard extends React.Component {
     constructor(props) {
@@ -80,7 +102,8 @@ class ProfileCard extends React.Component {
             userInfo: null,
             anchorEl:null,
             followed:false,
-            userCount:null
+            userCount:null,
+            editModalOpen: false,
         };
     }
 
@@ -88,13 +111,13 @@ class ProfileCard extends React.Component {
         const param = props.location.search.split('&');
         const user_id = param[0].substr(4);
         getUserInfo(user_id, (data)=>{
-            console.log(data);
+            //console.log(data);
             this.setState({userInfo:data.data.user, followed:data.data.user._follow,userCount:data.data.userCount});
         });
     }
 
     componentDidMount() {
-        console.log("ProfileCard componentDidMount", this.props.history);
+        //console.log("ProfileCard componentDidMount", this.props.history);
         this.update(this.props);
     }
 
@@ -112,7 +135,33 @@ class ProfileCard extends React.Component {
 
     handleEdit = () => {
         this.handleMenuClose();
+        this.setState({editModalOpen:true});
     };
+
+    handleModalClose=()=>{
+        this.setState({editModalOpen:false});
+    };
+
+    handleSubmit=(values)=>{
+        this.handleModalClose();
+        console.log(values);
+        userService.editProfile(values, (data) => {
+            console.log(data);
+            if (data.status !== 200) {
+                console.log(data.msg);
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    text: "修改失败！", type: MessageType.ERROR});
+                return;
+            }
+            PubSub.publish(MsgType.SET_MESSAGE, {
+                text: "修改成功！", type: MessageType.SUCCESS});
+            getUserInfo(this.state.userInfo.user_id, (data)=>{
+                this.setState({userInfo:data.data.user, followed:data.data.user._follow,userCount:data.data.userCount});
+            });
+            //this.setState({userInfo:data.user,userCount:data.userCount})
+        });
+    }
+
     handleFollow=()=>{
         const callback=()=> {
             this.setState({followed: true});
@@ -129,7 +178,7 @@ class ProfileCard extends React.Component {
 
     render() {
         const {classes}=this.props;
-        const {anchorEl,userInfo,followed,userCount}=this.state;
+        const {anchorEl,userInfo,followed,userCount,editModalOpen}=this.state;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'primary-search-account-menu';
         const renderMenu = (
@@ -209,6 +258,13 @@ class ProfileCard extends React.Component {
                         }
                     </CardContent>
                     {renderMenu}
+                    <Modal open={editModalOpen} onClose={this.handleModalClose}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.editModal}>
+                                <ProfileEditForm user={userInfo} submit={this.handleSubmit}/>
+                            </Paper>
+                        </div>
+                    </Modal>
                 </div>
             </Card>)}
     }
