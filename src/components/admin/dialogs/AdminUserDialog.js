@@ -2,20 +2,32 @@ import React from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import {InputAdornment, TextField} from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import {banReportedUser, forbidReportedUser} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../../utils/constants";
+import {Form, Formik} from "formik";
+import {AITextField} from "../../commen/AIField";
+import Grid from "@material-ui/core/Grid";
 
 const Type = {
     BAN: 'ban',
     FORBID: 'forbid'
 };
 
-export default class AdminUserDialog extends React.Component{
+function getSeconds(time) {
+    let nowDate = new Date();
+    let string = nowDate.toISOString().substring(0,16);
+    let afterDate = new Date(string);
+    let pickDate = new Date(time);
+    let seconds = (pickDate.getTime() - afterDate.getTime()) / 1000;
+    console.log("getSeconds: ", seconds);
+    return seconds;
+}
+
+class AdminUserDialog extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -39,10 +51,9 @@ export default class AdminUserDialog extends React.Component{
         this.setState({open: false, userId: null});
     };
 
-    confirm = () => {
+    confirm = (values) => {
         this.setState({open: false});
-
-        let time = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
+        let time = getSeconds(values.time);
         let data = {"user_id": this.state.userId, "time": time};
 
         if (this.state.type === Type.BAN) this.BanUser(data);
@@ -69,51 +80,74 @@ export default class AdminUserDialog extends React.Component{
         }))
     };
 
-    handleYearChange = (e) => {
-        this.setState({year: e.target.value});
+    validate = values => {
+        const errors = {};
+
+        let nowDate = new Date();
+        if (values.time < nowDate.toISOString()) errors.time = "时间不能早于当前时间！";
+
+        return errors;
     };
 
-    handleDayChange = (e) => {
-        this.setState({day: e.target.value});
-    };
-
-    handleHourChange = (e) => {
-        this.setState({hour: e.target.value});
-    };
+    // handleYearChange = (e) => {
+    //     this.setState({year: e.target.value});
+    // };
+    //
+    // handleDayChange = (e) => {
+    //     this.setState({day: e.target.value});
+    // };
+    //
+    // handleHourChange = (e) => {
+    //     this.setState({hour: e.target.value});
+    // };
 
     render() {
         const {open, type} = this.state;
+        const string = (new Date()).toISOString().substring(0,16);
+
         return(
             <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth>
-                <DialogTitle id="form-dialog-title">{type === Type.BAN ? "禁言": "封号"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {type === Type.BAN ? "请填写禁言时长": "请填写封号时长"}
-                    </DialogContentText>
-                    <form noValidate autoComplete="off">
-                        <TextField onChange={this.handleYearChange} variant="outlined"
-                                   style={{marginLeft: '8px', width: 100}} InputProps={{
-                            endAdornment: <InputAdornment position="start">年</InputAdornment>,
-                        }}/>
-                        <TextField onChange={this.handleDayChange} variant="outlined"
-                                   style={{marginLeft: '8px', width: 100}} InputProps={{
-                            endAdornment: <InputAdornment position="start">天</InputAdornment>,
-                        }}/>
-                        <TextField onChange={this.handleHourChange} variant="outlined"
-                                   style={{marginLeft: '8px', width: 100}} InputProps={{
-                            endAdornment: <InputAdornment position="start">时</InputAdornment>,
-                        }}/>
-                    </form>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.cancel} color="primary">
-                        取消
-                    </Button>
-                    <Button onClick={this.confirm} color="primary">
-                        确认
-                    </Button>
-                </DialogActions>
+                <Formik
+                    initialValues={{
+                        // time: '2017-05-24T10:30'
+                        time: string
+                    }}
+                    validate={this.validate}
+                    onSubmit={(values, { setSubmitting }) => {
+                        setTimeout(() => {
+                            setSubmitting(false);
+                            this.confirm(values);
+                        }, 500);
+                    }}
+                >
+                    {({ submitForm, isSubmitting }) => (
+                        <Form>
+                            <DialogTitle id="form-dialog-title">{type === Type.BAN ? "禁言": "封号"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    {type === Type.BAN ? "请选择禁言时长：": "请选择封号时长："}
+                                </DialogContentText>
+                                <Grid container spacing={2}>
+                                    <AITextField sm={12} name="time" label="时间" type='datetime-local'/>
+                                </Grid>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.cancel} color="primary">
+                                    取消
+                                </Button>
+                                <Button
+                                    disabled={isSubmitting}
+                                    onClick={submitForm}
+                                     color="primary">
+                                    确认
+                                </Button>
+                            </DialogActions>
+                        </Form>
+                    )}
+                </Formik>
             </Dialog>
         );
     }
 }
+
+export default AdminUserDialog;

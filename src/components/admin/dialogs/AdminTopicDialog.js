@@ -50,7 +50,6 @@ export default class AdminTopicDialog extends React.Component {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "通过失败！", type: MessageType.ERROR});
             else {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "已通过！", type: MessageType.SUCCESS});
-                this.props.updateTopic(0, 10);
             }
             this.setState({topic_name: null});
         }))
@@ -64,7 +63,6 @@ export default class AdminTopicDialog extends React.Component {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "删除失败！", type: MessageType.ERROR});
             else {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "已删除！", type: MessageType.SUCCESS});
-                this.props.updateTopic(0, 10);
             }
             this.setState({topic_name: null});
         }))
@@ -77,7 +75,7 @@ export default class AdminTopicDialog extends React.Component {
                 <DialogTitle id="form-dialog-title">操作确认</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {type === Type.PASS ? "是否确认该话题并无违规" : "是否确认删除该话题"}
+                        {type === Type.PASS ? "确认通过该话题？" : "确认删除该话题？"}
                         <br/>{this.state.topic_name}
                     </DialogContentText>
                 </DialogContent>

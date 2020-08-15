@@ -36,9 +36,8 @@ export default class AdminDeleteWordsDialog extends React.Component {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "删除失败！", type: MessageType.ERROR});
             else {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "删除成功！", type: MessageType.SUCCESS});
-                this.props.updateSenseWords(0, 10);
             }
-            this.setState({newWord:null,oldWord:null});
+            this.setState({keyword: null});
         })
     };
 

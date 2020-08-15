@@ -100,7 +100,7 @@ class AdminPostsList extends Component {
         }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("post page finally get keyword");
         this.setState({keyword: nextProps.keyword}, () => {
             this.updatePost(0, 10);

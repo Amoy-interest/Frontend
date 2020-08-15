@@ -92,7 +92,7 @@ export default class AdminUsersList extends Component {
         }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("user page finally get keyword");
         this.setState({keyword: nextProps.keyword}, () => {
             this.updateUsers(0, 10);

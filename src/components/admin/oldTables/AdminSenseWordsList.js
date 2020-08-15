@@ -87,7 +87,7 @@ class AdminSenseWordsList extends Component {
         }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("sensWord page finally get keyword");
         this.setState({keyword: nextProps.keyword}, () => {
             this.updateSensWords(0, 10);

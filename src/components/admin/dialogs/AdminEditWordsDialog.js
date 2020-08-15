@@ -19,7 +19,7 @@ export default class AdminEditWordsDialog extends React.Component {
             newWord: null
         };
         PubSub.subscribe(MsgType.ADMIN.EDIT_SENSE_WORD, (msg, data) => {
-            this.setState({open: true, oldWord: data});
+            this.setState({open: true, oldWord: data, newWord: data});
         });
     }
 
@@ -34,23 +34,22 @@ export default class AdminEditWordsDialog extends React.Component {
     confirmUpdate = () => {
         this.setState({open: false});
         let data = {newWord: this.state.newWord,oldWord: this.state.oldWord}
-        //console.log(data);
+        // console.log(data);
         editSenseWord(data,(res)=>{
-            console.log(res);
+            // console.log(res);
             if (res.status !== 200)
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "编辑失败！", type: MessageType.ERROR});
             else {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "编辑成功！", type: MessageType.SUCCESS});
-                this.props.updateSenseWords(0, 10);
             }
-            this.setState({newWord:null,oldWord:null});
+            this.setState({newWord: null,oldWord: null});
         })
     };
 
     render() {
         const {open} = this.state;
         return (
-            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth>
                 <DialogTitle id="form-dialog-title">Update</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

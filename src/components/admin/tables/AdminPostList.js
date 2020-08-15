@@ -30,7 +30,7 @@ class AdminPostList extends React.Component{
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
             const callback = (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status !== 200)
                     PubSub.publish(MsgType.SET_MESSAGE, {
                         text: search? "搜索博文失败！": "获取博文失败！",

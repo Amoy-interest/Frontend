@@ -84,7 +84,7 @@ export default class AdminTopicsList extends Component{
         }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("topic page finally get keyword");
         this.setState({keyword: nextProps.keyword}, () => {
             this.updateTopics(0, 10);

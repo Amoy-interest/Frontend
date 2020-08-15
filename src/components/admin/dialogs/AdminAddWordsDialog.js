@@ -32,8 +32,8 @@ export default class AdminAddWordsDialog extends React.Component {
 
     confirmAdd = () => {
         this.setState({open: false});
-        let data = {keyword:this.state.keyword}
-        //console.log(data);
+        let data = {keyword: this.state.keyword}
+        console.log(data);
         addSenseWord(data,(res)=>{
             console.log(res);
             if (res.status !== 200)
@@ -49,7 +49,7 @@ export default class AdminAddWordsDialog extends React.Component {
     render() {
         const {open} = this.state;
         return (
-            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth="true">
+            <Dialog open={open} aria-labelledby="form-dialog-title" maxWidth="xs" fullWidth>
                 <DialogTitle id="form-dialog-title">添加敏感词</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

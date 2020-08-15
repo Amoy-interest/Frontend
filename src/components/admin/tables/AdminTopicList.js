@@ -34,7 +34,7 @@ class AdminTopicList extends React.Component{
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
             const callback = (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status !== 200)
                     PubSub.publish(MsgType.SET_MESSAGE, {
                         text: search? "搜索话题失败！": "获取话题失败！",
@@ -78,12 +78,6 @@ class AdminTopicList extends React.Component{
                 align: 'left',
                 render: rowData => {
                     return(
-                        // <div className={classes.name}>
-                        //     <Typography className={classes.text} noWrap={true} variant={'subtitle1'}
-                        //                 onClick={() => {this.goto(rowData.name)}}>
-                        //         #{rowData.name}#
-                        //     </Typography>
-                        // </div>
                         <Link style={{color: '#fff'}} to={{
                             pathname: '/topic-discussion',
                             state:{topic_name: rowData.name}}}>
