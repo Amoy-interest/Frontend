@@ -4,7 +4,7 @@ import { getPost } from "../../service/PostService";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import CommentList, {CommentListType} from "./CommentList";
-import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
+import AdminUserDialog from "../admin/dialogs/AdminUserDialog";
 
 const styles = ((theme) => ({
     root: {
@@ -69,7 +69,7 @@ class PostDetail extends Component {
                         <PostCard post={post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS}/> : <PostCard post={post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
                 </div>
                 <CommentList post={this.state.post} type={CommentListType.PRIMARY}/>
-                <AdminActionsUserDialog/>
+                <AdminUserDialog/>
             </div>
         );
     }

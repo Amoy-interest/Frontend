@@ -7,7 +7,7 @@ import {getReportedUsers, searchReportedUsers} from "../../../service/AdminServi
 import BlockIcon from "@material-ui/icons/Block";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import {Link} from "react-router-dom";
-import AdminActionsUserDialog from "./AdminActionsUserDialog";
+import AdminUserDialog from "../dialogs/AdminUserDialog";
 
 const styles = ((theme) => ({
     number: {
@@ -129,7 +129,7 @@ class AdminUserList extends React.Component{
                     editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord}}
                     options={options}
                 />
-                <AdminActionsUserDialog/>
+                <AdminUserDialog/>
             </div>
 
         )

@@ -36,7 +36,6 @@ import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
-import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
 
 const styles = (theme => ({
     expand: {

@@ -5,14 +5,13 @@ import {MessageType, MsgType} from "../../../utils/constants";
 import {getSensWords, searchSensWords} from "../../../service/KeyWordService";
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
-import AdminActionsEditWordsDialog from "./AdminActionsEditWordsDialog";
-import AdminActionsDeleteWordsDialog from "./AdminActionsDeleteWordsDialog";
-import AdminActionsAddWordsDialog from "./AdminActionsAddWordsDialog";
+import AdminAddWordsDialog from "../dialogs/AdminAddWordsDialog";
+import AdminDeleteWordsDialog from "../dialogs/AdminDeleteWordsDialog";
+import AdminEditWordsDialog from "../dialogs/AdminEditWordsDialog";
 
 const styles = ((theme) => ({
     number: {
         minWidth: 200,
-        // marginLeft:'10px',
     },
 
 }));
@@ -144,9 +143,9 @@ class AdminSenseWordList extends React.Component{
                     // editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
                     options={options}
                 />
-                <AdminActionsEditWordsDialog/>
-                <AdminActionsDeleteWordsDialog/>
-                <AdminActionsAddWordsDialog/>
+                <AdminAddWordsDialog/>
+                <AdminDeleteWordsDialog/>
+                <AdminEditWordsDialog/>
             </div>
 
         )

@@ -32,27 +32,32 @@ const styles = ((theme) => ({
     },
 }));
 
-const items = [{
+const items = [
+    {
         image: NewsImage,
         title: '二十四节气:立秋',
         link: 'https://github.com/Amoy-interest'
-    },{
-    image: FunImage,
-    title: '娱乐',
-    link: 'https://github.com/Amoy-interest'
-}, {
-    image: ChildrenImage,
-    title: '自然',
-    link:'https://github.com/Amoy-interest'
-}, {
-    image: AnimalImage,
-    title: '动物',
-    link: 'https://github.com/Amoy-interest'
-}, {
-    image: YummyImage,
-    title: '美食',
-    link: 'https://github.com/Amoy-interest'
-}
+    },
+    {
+        image: FunImage,
+        title: '娱乐',
+        link: 'https://github.com/Amoy-interest'
+    },
+    {
+        image: ChildrenImage,
+        title: '自然',
+        link:'https://github.com/Amoy-interest'
+    },
+    {
+        image: AnimalImage,
+        title: '动物',
+        link: 'https://github.com/Amoy-interest'
+    },
+    {
+        image: YummyImage,
+        title: '美食',
+        link: 'https://github.com/Amoy-interest'
+    }
 ];
 
 @withStyles(styles)

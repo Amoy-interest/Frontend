@@ -5,16 +5,16 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {checkReportedBlog} from "../../service/AdminService";
+import {checkReportedBlog} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 
 const Type = {
     PASS: 'pass',
     DELETE: 'delete'
 };
 
-export default class AdminActionsPostDialog extends React.Component {
+export default class AdminPostDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

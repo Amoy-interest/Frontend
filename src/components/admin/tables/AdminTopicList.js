@@ -7,23 +7,17 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
-import AdminActionsTopicDialog from "./AdminActionsTopicDialog";
+import AdminTopicDialog from "../dialogs/AdminTopicDialog";
+import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
     name: {
         minWidth: 300,
-        // marginLeft:'10px',
     },
     time: {
         minWidth: 200,
-        // marginLeft:'10px',
-    },
-    button: {
-        maxWidth: 20,
-        marginRight:'10px',
     },
     text: {
-        // width: 90,
         marginLeft:'10px',
     },
 
@@ -84,12 +78,19 @@ class AdminTopicList extends React.Component{
                 align: 'left',
                 render: rowData => {
                     return(
-                        <div className={classes.name}>
-                            <Typography className={classes.text} noWrap={true} variant={'subtitle1'}
-                                        onClick={() => {this.goto(rowData.name)}}>
-                                #{rowData.name}#
+                        // <div className={classes.name}>
+                        //     <Typography className={classes.text} noWrap={true} variant={'subtitle1'}
+                        //                 onClick={() => {this.goto(rowData.name)}}>
+                        //         #{rowData.name}#
+                        //     </Typography>
+                        // </div>
+                        <Link style={{color: '#fff'}} to={{
+                            pathname: '/topic-discussion',
+                            state:{topic_name: rowData.name}}}>
+                            <Typography variant="body1" color="primary" component="p">
+                                {`#${rowData.name}#`}
                             </Typography>
-                        </div>
+                        </Link>
                     )
                 }
             },
@@ -161,7 +162,7 @@ class AdminTopicList extends React.Component{
                     actions={actions}
                     options={options}
                 />
-                <AdminActionsTopicDialog/>
+                <AdminTopicDialog/>
             </div>
         )
     }

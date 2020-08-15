@@ -120,7 +120,7 @@ class TopicCard extends React.Component {
         this.getTopicInfo(topic_name);
     };
 
-    componentWillReceiveProps(nextProps, nextContext){
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
         const topic_name =  nextProps.location.state.topic_name;
         this.getTopicInfo(topic_name);
     };
@@ -244,7 +244,7 @@ class TopicCard extends React.Component {
                                     </Grid>
                                     <Grid item xs>
                                         <div style={{marginTop: '10px', marginLeft: '40px'}}>
-                                            <Typography variant="h5" color="textPrimary" component="p" align='left'>
+                                            <Typography variant="h5" color="textPrimary" align='left'>
                                                 #{topic.name}#
                                                 {topic.topic_heat > 10000 ?
                                                     <Chip

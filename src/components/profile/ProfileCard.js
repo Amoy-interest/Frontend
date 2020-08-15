@@ -24,7 +24,6 @@ import Modal from "@material-ui/core/Modal";
 import ProfileEditForm from "./ProfileEditForm";
 import * as userService from "../../service/UserService";
 import PubSub from "pubsub-js";
-import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
 
 const styles = ((theme) => ({
     background: {

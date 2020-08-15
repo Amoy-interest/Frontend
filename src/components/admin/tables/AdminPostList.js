@@ -9,8 +9,8 @@ import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostCard from "../../post/PostCard";
 import {Link} from "react-router-dom";
-import AdminActionsPostDialog from "./AdminActionsPostDialog";
-import AdminActionsUserDialog from "./AdminActionsUserDialog";
+import AdminPostDialog from "../dialogs/AdminPostDialog";
+import AdminUserDialog from "../dialogs/AdminUserDialog";
 
 const styles = ((theme) => ({
     postcard: {
@@ -176,8 +176,8 @@ class AdminPostList extends React.Component{
                     options={options}
                     detailPanel={detailPanel}
                 />
-                <AdminActionsPostDialog/>
-                <AdminActionsUserDialog/>
+                <AdminPostDialog/>
+                <AdminUserDialog/>
             </div>
 
         )

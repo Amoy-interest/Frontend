@@ -8,7 +8,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import {getTopicPosts} from "../../service/TopicService";
 import {PostType, MsgType} from "../../utils/constants";
 import PubSub from "pubsub-js";
-import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
+import AdminUserDialog from "../admin/dialogs/AdminUserDialog";
 
 const styles = ((theme) => ({
     root: {
@@ -41,6 +41,10 @@ class PostCardList extends Component {
         };
 
         this.loadMore = this.loadMore.bind(this);
+        PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
+            //console.log(msg, data);
+            this.addPost(data);
+        });
     }
 
     loadMore() {
@@ -91,7 +95,7 @@ class PostCardList extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, nextContext){
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
         this.setState({
             posts: [],
             hasMoreItems: true,
@@ -99,13 +103,6 @@ class PostCardList extends Component {
             key: this.state.key + 1
         })
     }
-
-    componentWillMount() {
-        PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
-            //console.log(msg, data);
-            this.addPost(data);
-        });
-    };
 
     componentWillUnmount = () => {
         this.setState = (state, callback) => {
@@ -164,7 +161,7 @@ class PostCardList extends Component {
                         })}
                     </List>
                 </InfiniteScroll>
-                <AdminActionsUserDialog/>
+                <AdminUserDialog/>
             </div>
         );
     }

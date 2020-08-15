@@ -6,16 +6,16 @@ import {InputAdornment, TextField} from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {banReportedUser, forbidReportedUser} from "../../service/AdminService";
+import {banReportedUser, forbidReportedUser} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 
 const Type = {
     BAN: 'ban',
     FORBID: 'forbid'
 };
 
-export default class AdminActionsUserDialog extends React.Component{
+export default class AdminUserDialog extends React.Component{
     constructor(props) {
         super(props);
         this.state = {

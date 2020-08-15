@@ -5,12 +5,12 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {addSenseWord} from "../../service/AdminService";
+import {addSenseWord} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 import TextField from "@material-ui/core/TextField";
 
-export default class AdminActionsAddWordsDialog extends React.Component {
+export default class AdminAddWordsDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
