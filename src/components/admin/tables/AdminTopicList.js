@@ -7,6 +7,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
+import AdminActionsTopicDialog from "./AdminActionsTopicDialog";
 
 const styles = ((theme) => ({
     name: {
@@ -117,12 +118,12 @@ class AdminTopicList extends React.Component{
             {
                 icon: DoubleArrowIcon,
                 tooltip: '通过话题',
-                onClick: (event, rowData) => alert("通过 " + rowData.name)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.PASS_TOPIC, rowData.name)
             },
             {
                 icon: DeleteIcon,
                 tooltip: '删除话题',
-                onClick: (event, rowData) => alert("删除 " + rowData.name)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.DELETE_TOPIC, rowData.name)
             },
             {
                 icon: 'refresh',
@@ -160,6 +161,7 @@ class AdminTopicList extends React.Component{
                     actions={actions}
                     options={options}
                 />
+                <AdminActionsTopicDialog/>
             </div>
         )
     }

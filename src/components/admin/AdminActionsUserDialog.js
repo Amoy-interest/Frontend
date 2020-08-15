@@ -15,7 +15,7 @@ const Type = {
     FORBID: 'forbid'
 };
 
-export default class AdminForbidUserDialog extends React.Component{
+export default class AdminActionsUserDialog extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -40,7 +40,7 @@ export default class AdminForbidUserDialog extends React.Component{
     };
 
     confirm = () => {
-        this.setState({open: false, userId: null});
+        this.setState({open: false});
 
         let time = this.state.year * 365 *86400 + this.state.day * 86400 + this.state.hour * 3600;
         let data = {"user_id": this.state.userId, "time": time};
@@ -68,8 +68,6 @@ export default class AdminForbidUserDialog extends React.Component{
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "封号成功！", type: MessageType.SUCCESS});
         }))
     };
-
-
 
     handleYearChange = (e) => {
         this.setState({year: e.target.value});

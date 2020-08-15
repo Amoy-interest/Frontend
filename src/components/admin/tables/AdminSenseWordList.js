@@ -5,6 +5,9 @@ import {MessageType, MsgType} from "../../../utils/constants";
 import {getSensWords, searchSensWords} from "../../../service/KeyWordService";
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
+import AdminActionsEditWordsDialog from "./AdminActionsEditWordsDialog";
+import AdminActionsDeleteWordsDialog from "./AdminActionsDeleteWordsDialog";
+import AdminActionsAddWordsDialog from "./AdminActionsAddWordsDialog";
 
 const styles = ((theme) => ({
     number: {
@@ -92,7 +95,7 @@ class AdminSenseWordList extends React.Component{
                 icon: 'add',
                 tooltip: '添加敏感词',
                 isFreeAction: true,
-                onClick: (event) => console.log(event)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.ADD_SENSE_WORD, rowData.keyword)
             },
             {
                 icon: 'refresh',
@@ -103,12 +106,12 @@ class AdminSenseWordList extends React.Component{
             {
                 icon: 'delete',
                 tooltip: '删除敏感词',
-                onClick: (event, rowData) => console.log(event, rowData)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.DELETE_SENSE_WORD, rowData.keyword)
             },
             {
                 icon: 'edit',
                 tooltip: '编辑敏感词',
-                onClick: (event, rowData) => console.log(event, rowData)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.EDIT_SENSE_WORD, rowData.keyword)
             }
         ];
         const options = {
@@ -141,6 +144,9 @@ class AdminSenseWordList extends React.Component{
                     // editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
                     options={options}
                 />
+                <AdminActionsEditWordsDialog/>
+                <AdminActionsDeleteWordsDialog/>
+                <AdminActionsAddWordsDialog/>
             </div>
 
         )

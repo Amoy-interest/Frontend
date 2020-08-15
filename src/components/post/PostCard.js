@@ -36,6 +36,7 @@ import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
+import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
 
 const styles = (theme => ({
     expand: {
@@ -307,9 +308,9 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem onClick={() => this.props.handleBan(post.user_id)}><MicOffIcon
+                    <MenuItem onClick={() => {this.handleMenuClose();PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)}}><MicOffIcon
                         color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem onClick={() => this.props.handleForbid(post.user_id)}><BlockIcon
+                    <MenuItem onClick={() => {this.handleMenuClose();PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)}}><BlockIcon
                         color={"secondary"}/>封号</MenuItem>
                 </Menu> : null
 
@@ -443,7 +444,6 @@ class PostCard extends React.Component {
                             </Paper>
                         </div>
                     </Modal>
-
                     <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
                     <Message messageOpen={reportMessageOpen} handleClose={this.handleReportMessageClose}
                              type={'success'} text={"举报成功"}/>

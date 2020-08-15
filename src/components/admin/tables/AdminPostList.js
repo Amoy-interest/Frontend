@@ -9,6 +9,8 @@ import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostCard from "../../post/PostCard";
 import {Link} from "react-router-dom";
+import AdminActionsPostDialog from "./AdminActionsPostDialog";
+import AdminActionsUserDialog from "./AdminActionsUserDialog";
 
 const styles = ((theme) => ({
     postcard: {
@@ -112,12 +114,12 @@ class AdminPostList extends React.Component{
             {
                 icon: DoubleArrowIcon,
                 tooltip: '通过',
-                onClick: (event, rowData) => alert("通过 " + rowData.blog_content.text)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.PASS_POST, rowData.blog_id)
             },
             {
                 icon: DeleteIcon,
                 tooltip: '删除',
-                onClick: (event, rowData) => alert("删除 " + rowData.blog_content.text)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.DELETE_POST, rowData.blog_id)
             },
             {
                 icon: 'refresh',
@@ -174,6 +176,8 @@ class AdminPostList extends React.Component{
                     options={options}
                     detailPanel={detailPanel}
                 />
+                <AdminActionsPostDialog/>
+                <AdminActionsUserDialog/>
             </div>
 
         )

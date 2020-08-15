@@ -1,5 +1,5 @@
 import {apiUrl, APIModules} from "../utils/constants";
-import {getRequest, putRequest_json} from "../utils/ajax";
+import {getRequest, putRequest_json, deleteRequest_json, postRequest_json} from "../utils/ajax";
 
 export const getReportedPosts = (params, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.BLOG}/reported/`;
@@ -51,7 +51,20 @@ export const forbidReportedUser = (data, callback) => {
     putRequest_json(url, null, data, callback);
 };
 
+export const editSenseWord = (data, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    putRequest_json(url, null, data, callback);
+};
 
+export const deleteSenseWord = (data, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    deleteRequest_json(url, null, data, callback);
+};
+
+export const addSenseWord = (data, callback) => {
+    const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
+    postRequest_json(url, null, data, callback);
+};
 
 
 
