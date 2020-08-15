@@ -22,7 +22,7 @@ const APIModules = {
     COMMENTS:'/comments',
     SENSITIVEWORD: '/keywords',
     ALI: '/aliyun',
-    SEARCH: '/search'
+    SEARCH: '/search',
 };
 
 const UserType = {
@@ -57,6 +57,13 @@ const MsgType = {
     ADMIN: {
         FORBID_USR: 'forbidUser',
         BAN_USR: 'banUser',
+        DELETE_POST:'deletePost',
+        PASS_POST:'passPost',
+        PASS_TOPIC:'passTopic',
+        DELETE_TOPIC:'deleteTopic',
+        EDIT_SENSE_WORD:'editSenseWord',
+        DELETE_SENSE_WORD:'deleteSenseWord',
+        ADD_SENSE_WORD:'addSenseWord'
     }
 };
 

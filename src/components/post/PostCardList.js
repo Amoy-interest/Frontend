@@ -8,6 +8,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import {getTopicPosts} from "../../service/TopicService";
 import {PostType, MsgType} from "../../utils/constants";
 import PubSub from "pubsub-js";
+import AdminActionsUserDialog from "../admin/AdminActionsUserDialog";
 
 const styles = ((theme) => ({
     root: {
@@ -163,6 +164,7 @@ class PostCardList extends Component {
                         })}
                     </List>
                 </InfiniteScroll>
+                <AdminActionsUserDialog/>
             </div>
         );
     }
