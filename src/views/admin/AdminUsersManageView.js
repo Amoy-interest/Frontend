@@ -1,7 +1,7 @@
 import React, {Component}from 'react';
 import Grid from '@material-ui/core/Grid';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminUserList from "../../components/admin/AdminUserList";
+import AdminUserList from "../../components/admin/tables/AdminUserList";
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core";
 

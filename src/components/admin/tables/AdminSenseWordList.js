@@ -1,8 +1,8 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
-import {getSensWords, searchSensWords} from "../../service/KeyWordService";
+import {MessageType, MsgType} from "../../../utils/constants";
+import {getSensWords, searchSensWords} from "../../../service/KeyWordService";
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
 

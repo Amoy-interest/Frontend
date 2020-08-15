@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import ProfileEditForm from "../components/profile/ProfileEditForm";
 import {withStyles} from "@material-ui/core";
-import PositioningActionsColumn from "../components/commen/Table"
+
+
 const style = ((theme) => ({
     container: {
-        backgroundColor: '#cfe8fc'
+        backgroundColor: '#cfe8fc',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 }));
 
@@ -32,13 +35,9 @@ class TestComponentView extends Component{
     render() {
         const {classes} = this.props;
         return (
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div style={classes.container}>
                 TestComponentView page!
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-                <PositioningActionsColumn/>
-                <div className={classes.container}>
-                    <ProfileEditForm submit={this.getValues}/>
-                </div>
+
             </div>
         );
     }

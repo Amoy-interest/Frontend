@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminPostList from "../../components/admin/AdminPostList";
+import AdminPostList from "../../components/admin/tables/AdminPostList";
 
 const styles = ((theme) => ({
     root: {

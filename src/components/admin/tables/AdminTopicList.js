@@ -1,8 +1,8 @@
 import React from 'react';
 import MaterialTable from 'material-table';
-import {getReportedTopics, searchReportedTopics} from "../../service/AdminService";
+import {getReportedTopics, searchReportedTopics} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import Typography from "@material-ui/core/Typography";

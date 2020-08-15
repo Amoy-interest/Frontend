@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AdminSideBar from "../../components/admin/AdminSideBar";
-import AdminTopicList from "../../components/admin/AdminTopicList";
+import AdminTopicList from "../../components/admin/tables/AdminTopicList";
 import Paper from "@material-ui/core/Paper";
 
 const styles = ((theme) => ({

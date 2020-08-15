@@ -1,13 +1,13 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 import {withStyles} from "@material-ui/styles";
-import {getReportedUsers, searchReportedUsers} from "../../service/AdminService";
+import {getReportedUsers, searchReportedUsers} from "../../../service/AdminService";
 import BlockIcon from "@material-ui/icons/Block";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import {Link} from "react-router-dom";
-import AdminForbidUserDialog from "./AdminForbidUserDialog";
+import AdminForbidUserDialog from "../AdminForbidUserDialog";
 
 const styles = ((theme) => ({
     number: {

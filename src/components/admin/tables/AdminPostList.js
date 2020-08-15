@@ -1,13 +1,13 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../../utils/constants";
 import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
-import {getReportedPosts, searchReportedPosts} from "../../service/AdminService";
+import {getReportedPosts, searchReportedPosts} from "../../../service/AdminService";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import DeleteIcon from "@material-ui/icons/Delete";
-import PostCard from "../post/PostCard";
+import PostCard from "../../post/PostCard";
 import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
