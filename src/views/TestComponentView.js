@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
+import AdminTimePickerForm from "../components/admin/AdminTimePickerForm";
 
 
 const style = ((theme) => ({
@@ -17,27 +18,39 @@ class TestComponentView extends Component{
         super(props);
 
         this.state = {
-            values: null
+            time: null
         };
 
-        this.handleGetProps = this.handleGetProps.bind(this);
-        this.getValues = this.getValues.bind(this);
+        this.handleGetState = this.handleGetState.bind(this);
+        this.setTime = this.setTime.bind(this);
     }
 
-    getValues(values) {
-        this.setState({values: values});
+    setTime(time) {
+        this.setState({time: time});
     }
 
-    handleGetProps(){
+    handleGetState(){
         console.log(this.state);
+    }
+
+    handleGetTime(){
+        let date = new Date();
+        console.log(date);
+        console.log(date.toISOString())
     }
 
     render() {
         const {classes} = this.props;
         return (
-            <div style={classes.container}>
+            <div className={classes.container}>
                 TestComponentView page!
-
+                <div>
+                    <AdminTimePickerForm submit={this.setTime}/>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <button onClick={this.handleGetState}>handleGetState</button>
+                    <button onClick={this.handleGetTime}>handleGetTime</button>
+                </div>
             </div>
         );
     }
