@@ -55,6 +55,7 @@ const MsgType = {
     CLEAR_UPLOAD: 'clearUpload',
     ERROR_UPLOAD: 'errorUpload',
     ADMIN: {
+        REFRESH_TABLE: 'refreshTable',
         FORBID_USR: 'forbidUser',
         BAN_USR: 'banUser',
         DELETE_POST:'deletePost',

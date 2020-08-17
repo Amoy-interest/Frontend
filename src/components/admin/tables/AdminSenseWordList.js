@@ -15,9 +15,15 @@ const styles = ((theme) => ({
     },
 
 }));
+const tableRef = React.createRef();
 
 @withStyles(styles)
 class AdminSenseWordList extends React.Component{
+    constructor(props) {
+        super(props);
+        PubSub.subscribe(MsgType.ADMIN.REFRESH_TABLE, () => this.refresh());
+    }
+
     loadData = query =>
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
@@ -50,29 +56,10 @@ class AdminSenseWordList extends React.Component{
             }
         });
 
-    AddWord = (newData) =>
-        new Promise((resolve) => {
-            resolve();
-            console.log(newData);
-        });
-
-    UpdateWord = (newData, oldData) =>
-        new Promise((resolve) => {
-            resolve();
-            console.log(newData, oldData);
-        });
-
-    DeleteWord = (oldData) =>
-        new Promise((resolve) => {
-            resolve();
-            console.log(oldData);
-        });
-
-
+    refresh = () => tableRef.current && tableRef.current.onQueryChange();
 
     render() {
         const {classes} = this.props;
-        const tableRef = React.createRef();
         const columns = [
             {
                 title: '敏感词',
@@ -100,7 +87,7 @@ class AdminSenseWordList extends React.Component{
                 icon: 'refresh',
                 tooltip: '刷新',
                 isFreeAction: true,
-                onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                onClick: this.refresh,
             },
             {
                 icon: 'delete',

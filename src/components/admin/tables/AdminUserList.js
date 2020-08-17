@@ -16,9 +16,15 @@ const styles = ((theme) => ({
     },
 
 }));
+const tableRef = React.createRef();
 
 @withStyles(styles)
 class AdminUserList extends React.Component{
+    constructor(props) {
+        super(props);
+        PubSub.subscribe(MsgType.ADMIN.REFRESH_TABLE, () => this.refresh());
+    }
+
     loadData = query =>
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
@@ -51,9 +57,9 @@ class AdminUserList extends React.Component{
             }
         });
 
+    refresh = () => tableRef.current && tableRef.current.onQueryChange();
 
     render() {
-        const tableRef = React.createRef();
         const columns = [
             {
                 title: '用户',
@@ -96,7 +102,7 @@ class AdminUserList extends React.Component{
                 icon: 'refresh',
                 tooltip: '刷新',
                 isFreeAction: true,
-                onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                onClick: this.refresh,
             }
         ];
         const options = {

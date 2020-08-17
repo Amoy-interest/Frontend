@@ -47,9 +47,10 @@ export default class AdminPostDialog extends React.Component {
         checkReportedBlog(data, ((res) => {
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "通过失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "通过博文失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "已通过！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "已通过该博文！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({blogId: null});
         }))
@@ -60,9 +61,10 @@ export default class AdminPostDialog extends React.Component {
         checkReportedBlog(data, ((res) => {
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除博文失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "已删除！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "已删除该博文！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({blogId: null});
         }))

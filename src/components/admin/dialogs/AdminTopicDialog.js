@@ -47,9 +47,10 @@ export default class AdminTopicDialog extends React.Component {
         checkReportedTopic(data, ((res) => {
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "通过失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "通过话题失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "已通过！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "已通过该话题！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({topic_name: null});
         }))
@@ -60,9 +61,10 @@ export default class AdminTopicDialog extends React.Component {
         checkReportedTopic(data, ((res) => {
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除话题失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "已删除！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "已删除该话题！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({topic_name: null});
         }))

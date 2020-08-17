@@ -23,9 +23,15 @@ const styles = ((theme) => ({
     }
 
 }));
+const tableRef = React.createRef();
 
 @withStyles(styles)
 class AdminPostList extends React.Component{
+    constructor(props) {
+        super(props);
+        PubSub.subscribe(MsgType.ADMIN.REFRESH_TABLE, () => this.refresh());
+    }
+
     loadData = query =>
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
@@ -58,18 +64,10 @@ class AdminPostList extends React.Component{
             }
         });
 
-    BanPost() {
-        console.log('BanPost');
-    }
-
-    ForbidPost() {
-        console.log('ForbidPost');
-    }
-
+    refresh = () => tableRef.current && tableRef.current.onQueryChange();
 
     render() {
         const {classes} = this.props;
-        const tableRef = React.createRef();
         const columns = [
             {
                 title: '发帖人',
@@ -125,7 +123,7 @@ class AdminPostList extends React.Component{
                 icon: 'refresh',
                 tooltip: '刷新',
                 isFreeAction: true,
-                onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                onClick: this.refresh,
             }
         ];
         const options = {
@@ -143,18 +141,13 @@ class AdminPostList extends React.Component{
                 searchPlaceholder: "搜索博文..."
             }
         };
-
         const detailPanel = [
             {
                 tooltip: '博文详情',
                 render: blog => {
                     return (
                         <div className={classes.postcard}>
-                            <PostCard post={blog}
-                                      index={0}
-                                      handleBan={this.BanPost}
-                                      handleForbid={this.ForbidPost}
-                            />
+                            <PostCard post={blog} index={0}/>
                         </div>
                     )
                 }
@@ -172,7 +165,6 @@ class AdminPostList extends React.Component{
                     data={this.loadData}
                     localization={localization}
                     actions={actions}
-                    editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
                     options={options}
                     detailPanel={detailPanel}
                 />

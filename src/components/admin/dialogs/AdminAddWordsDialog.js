@@ -37,10 +37,10 @@ export default class AdminAddWordsDialog extends React.Component {
         addSenseWord(data,(res)=>{
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "添加失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "添加敏感词失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "添加成功！", type: MessageType.SUCCESS});
-                this.props.updateSenseWords(0, 10);
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "添加敏感词成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({newWord:null,oldWord:null});
         })

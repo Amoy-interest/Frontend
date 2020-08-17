@@ -33,9 +33,10 @@ export default class AdminDeleteWordsDialog extends React.Component {
         deleteSenseWord(data,(res)=>{
             console.log(res);
             if (res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除敏感词失败！", type: MessageType.ERROR});
             else {
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "删除敏感词成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
             this.setState({keyword: null});
         })

@@ -22,12 +22,14 @@ const styles = ((theme) => ({
     },
 
 }));
+const tableRef = React.createRef();
 
 @withStyles(styles)
 class AdminTopicList extends React.Component{
     constructor(props) {
         super(props);
         this.goto = this.goto.bind(this);
+        PubSub.subscribe(MsgType.ADMIN.REFRESH_TABLE, () => this.refresh());
     }
 
     loadData = query =>
@@ -62,6 +64,8 @@ class AdminTopicList extends React.Component{
             }
         });
 
+    refresh = () => tableRef.current && tableRef.current.onQueryChange();
+
     goto = (topic_name) => {
         console.log(this.props, topic_name);
         this.props.history.push({pathname: '/topic-discussion', state: {topic_name: topic_name}});
@@ -70,7 +74,6 @@ class AdminTopicList extends React.Component{
 
     render() {
         const {classes} = this.props;
-        const tableRef = React.createRef();
         const columns = [
             {
                 title: '话题',
@@ -124,7 +127,7 @@ class AdminTopicList extends React.Component{
                 icon: 'refresh',
                 tooltip: '刷新',
                 isFreeAction: true,
-                onClick: () => tableRef.current && tableRef.current.onQueryChange(),
+                onClick: this.refresh,
             }
         ];
         const options = {

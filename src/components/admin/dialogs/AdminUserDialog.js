@@ -64,9 +64,11 @@ class AdminUserDialog extends React.Component{
         banReportedUser(data, ((res)=> {
             console.log(res);
             if(res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言失败！", type: MessageType.ERROR});
-            else
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言用户失败！", type: MessageType.ERROR});
+            else{
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "禁言用户成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
+            }
         }))
     };
 
@@ -74,9 +76,11 @@ class AdminUserDialog extends React.Component{
         forbidReportedUser(data, ((res)=> {
             console.log(res);
             if(res.status !== 200)
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号失败！", type: MessageType.ERROR});
-            else
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号用户失败！", type: MessageType.ERROR});
+            else{
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "封号用户成功！", type: MessageType.SUCCESS});
+                PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
+            }
         }))
     };
 
