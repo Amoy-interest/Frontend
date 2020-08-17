@@ -11,16 +11,6 @@ export const searchReportedPosts = (params, callback) => {
     getRequest(url, params, callback);
 };
 
-export const getReportedUsers = (params, callback) => {
-    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/`;
-    getRequest(url, params, callback);
-};
-
-export const searchReportedUsers = (params, callback) => {
-    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/search`;
-    getRequest(url, params, callback);
-};
-
 export const getReportedTopics = (params, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.TOPIC}/reported/`;
     getRequest(url, params, callback);
@@ -39,6 +29,36 @@ export const checkReportedTopic = (data, callback) => {
 export const checkReportedBlog = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.BLOG}/reported/`;
     putRequest_json(url, null, data, callback);
+};
+
+export const getReportedUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/`;
+    getRequest(url, params, callback);
+};
+
+export const searchReportedUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/reported/search`;
+    getRequest(url, params, callback);
+};
+
+export const getBanUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/ban`;
+    getRequest(url, params, callback);
+};
+
+export const searchBanUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/ban/search`;
+    getRequest(url, params, callback);
+};
+
+export const getForbidUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/forbid`;
+    getRequest(url, params, callback);
+};
+
+export const searchForbidUsers = (params, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/forbid/search`;
+    getRequest(url, params, callback);
 };
 
 export const banReportedUser = (data, callback) => {

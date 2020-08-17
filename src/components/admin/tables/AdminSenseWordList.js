@@ -127,7 +127,6 @@ class AdminSenseWordList extends React.Component{
                     data={this.loadData}
                     localization={localization}
                     actions={actions}
-                    // editable={{onRowUpdate: this.UpdateWord, onRowDelete: this.DeleteWord,}}
                     options={options}
                 />
                 <AdminAddWordsDialog/>

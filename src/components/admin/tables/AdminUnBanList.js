@@ -1,34 +1,27 @@
 import React from 'react';
 import MaterialTable from 'material-table';
-import {getReportedTopics, searchReportedTopics} from "../../../service/AdminService";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../../utils/constants";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
-import AdminTopicDialog from "../dialogs/AdminTopicDialog";
+import {getBanUsers, searchBanUsers} from "../../../service/AdminService";
+import RestoreIcon from '@material-ui/icons/Restore';
 import {Link} from "react-router-dom";
+import AdminUserDialog from "../dialogs/AdminUserDialog";
+import Typography from "@material-ui/core/Typography";
 
 const styles = ((theme) => ({
-    name: {
-        minWidth: 300,
-    },
-    time: {
+    number: {
         minWidth: 200,
-    },
-    text: {
-        marginLeft:'10px',
+        // marginLeft:'10px',
     },
 
 }));
 const tableRef = React.createRef();
 
 @withStyles(styles)
-class AdminTopicList extends React.Component{
+class AdminUnBanList extends React.Component{
     constructor(props) {
         super(props);
-        this.goto = this.goto.bind(this);
         PubSub.subscribe(MsgType.ADMIN.REFRESH_TABLE, () => this.refresh());
     }
 
@@ -36,10 +29,10 @@ class AdminTopicList extends React.Component{
         new Promise((resolve, reject) => {
             let search = (query.search !== "");
             const callback = (res) => {
-                // console.log(res);
+                console.log(res);
                 if (res.status !== 200)
                     PubSub.publish(MsgType.SET_MESSAGE, {
-                        text: search? "搜索话题失败！": "获取话题失败！",
+                        text: search? "搜索被禁言用户失败！": "获取被禁言用户失败！",
                         type: MessageType.ERROR
                     });
                 else resolve({
@@ -50,14 +43,14 @@ class AdminTopicList extends React.Component{
             };
 
             if (search) {
-                searchReportedTopics({
+                searchBanUsers({
                     keyword: query.search,
                     pageNum: query.page,
                     pageSize: query.pageSize
                 }, callback);
             }
             else {
-                getReportedTopics({
+                getBanUsers({
                     pageNum: query.page,
                     pageSize: query.pageSize
                 }, callback);
@@ -66,62 +59,44 @@ class AdminTopicList extends React.Component{
 
     refresh = () => tableRef.current && tableRef.current.onQueryChange();
 
-    goto = (topic_name) => {
-        console.log(this.props, topic_name);
-        this.props.history.push({pathname: '/topic-discussion', state: {topic_name: topic_name}});
-    };
-
-
     render() {
-        const {classes} = this.props;
         const columns = [
             {
-                title: '话题',
-                field: 'name',
+                title: '用户',
+                field: 'keyword',
                 align: 'left',
-                render: rowData => {
-                    return(
-                        <Link style={{color: '#fff'}} to={{
-                            pathname: '/topic-discussion',
-                            state:{topic_name: rowData.name}}}>
-                            <Typography variant="body1" color="primary" component="p">
-                                {`#${rowData.name}#`}
-                            </Typography>
-                        </Link>
-                    )
-                }
-            },
-            {
-                title: '创建时间',
-                field: 'time',
-                align: 'center',
-                // type: 'datetime'
-                render: rowData => {
+                render: (user) => {
                     return (
-                        <div className={classes.time}>
-                            <Typography variant="body2">
-                                {new Date(rowData.time).Format("yyyy-MM-dd hh:mm:ss")}
-                            </Typography>
-                        </div>
+                        <Link style={{color: 'black'}} to={{
+                            pathname: '/personal-info',
+                            search: '?id=' + user.user_id,
+                        }}>
+                            {user.nickname}
+                        </Link>
                     )}
             },
             {
-                title: '举报数',
-                field: 'report_count',
-                align: 'center',
-                type:'numeric'
-            }
+                title: '禁言结束时间',
+                field: 'ban_time',
+                align: 'left',
+                render: rowData => {
+                    return (
+                        <Typography variant="body2">
+                            {new Date(rowData.ban_time).Format("yyyy-MM-dd hh:mm:ss")}
+                        </Typography>
+                    )}
+            },
+            {
+                title: '禁言原因（举报原因）',
+                align: 'left',
+                emptyValue: '低俗，暴力，色情'
+            },
         ];
         const actions = [
             {
-                icon: DoubleArrowIcon,
-                tooltip: '通过话题',
-                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.PASS_TOPIC, rowData.name)
-            },
-            {
-                icon: DeleteIcon,
-                tooltip: '删除话题',
-                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.DELETE_TOPIC, rowData.name)
+                icon: RestoreIcon,
+                tooltip: '解除禁言',
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.FORBID_USR, rowData.user_id)
             },
             {
                 icon: 'refresh',
@@ -138,11 +113,11 @@ class AdminTopicList extends React.Component{
         };
         const localization = {
             header: {
-                actions: "话题操作"
+                actions: "解除禁言"
             },
             toolbar: {
                 searchTooltip: "搜索",
-                searchPlaceholder: "搜索话题..."
+                searchPlaceholder: "搜索被禁言用户..."
             }
         };
 
@@ -151,18 +126,20 @@ class AdminTopicList extends React.Component{
                 {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <MaterialTable
+                    title="用户管理"
                     tableRef={tableRef}
-                    title="话题管理"
+                    columns={columns}
                     data={this.loadData}
                     localization={localization}
-                    columns={columns}
                     actions={actions}
                     options={options}
                 />
-                <AdminTopicDialog/>
+                <AdminUserDialog/>
             </div>
+
         )
     }
+
 }
 
-export default AdminTopicList;
+export default AdminUnBanList;
