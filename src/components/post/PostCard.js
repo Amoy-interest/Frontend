@@ -58,14 +58,14 @@ const styles = (theme => ({
         padding: theme.spacing(1),
         width: 500
     },
-    delete:{
-        backgroundColor:grey[50],
-        display:'flex',
-        flexDirection:'row',
+    delete: {
+        backgroundColor: grey[50],
+        display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'center',
-        width:'100%',
-        height:50
+        justifyContent: 'center',
+        width: '100%',
+        height: 50
     },
     avatar: {
         backgroundColor: theme.palette.primary.main
@@ -142,10 +142,10 @@ class PostCard extends React.Component {
         };
 
         PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
-            this.setState({commentCount:this.state.commentCount+1});
+            this.setState({commentCount: this.state.commentCount + 1});
         });
         PubSub.subscribe(MsgType.DELETE_COMMENT, (msg) => {
-            this.setState({commentCount:this.state.commentCount-1});
+            this.setState({commentCount: this.state.commentCount - 1});
         });
     };
 
@@ -307,9 +307,15 @@ class PostCard extends React.Component {
                     open={isMenuOpen}
                     onClose={this.handleMenuClose}
                 >
-                    <MenuItem onClick={() => {this.handleMenuClose();PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)}}><MicOffIcon
+                    <MenuItem onClick={() => {
+                        this.handleMenuClose();
+                        PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)
+                    }}><MicOffIcon
                         color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem onClick={() => {this.handleMenuClose();PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)}}><BlockIcon
+                    <MenuItem onClick={() => {
+                        this.handleMenuClose();
+                        PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)
+                    }}><BlockIcon
                         color={"secondary"}/>封号</MenuItem>
                 </Menu> : null
 
@@ -337,27 +343,28 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
-                            <CardContent>
-                                {post.topic_name===''?null:
-                                    <Link style={{color: '#fff'}} to={{
-                                        pathname: '/topic-discussion',
-                                        state:{topic_name:post.topic_name}}}>
-                                        <Typography variant="body1" color="primary" component="p">
-                                            {`#${post.topic_name}#`}
-                                        </Typography>
-                                    </Link>
-                                }
+                        <CardContent>
+                            {(post.topic_name === '' || post.topic_name === null) ? null :
                                 <Link style={{color: '#fff'}} to={{
-                                    pathname: '/post-detail',
-                                    search: '?id=' + post.blog_id
+                                    pathname: '/topic-discussion',
+                                    state: {topic_name: post.topic_name}
                                 }}>
-                                    <Typography variant="body1" color="textPrimary"
-                                                //component="p"
-                                    >
-                                        {text}
+                                    <Typography variant="body1" color="primary" component="p">
+                                        {`#${post.topic_name}#`}
                                     </Typography>
                                 </Link>
-                            </CardContent>
+                            }
+                            <Link style={{color: '#fff'}} to={{
+                                pathname: '/post-detail',
+                                search: '?id=' + post.blog_id
+                            }}>
+                                <Typography variant="body1" color="textPrimary"
+                                    //component="p"
+                                >
+                                    {text}
+                                </Typography>
+                            </Link>
+                        </CardContent>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
@@ -418,12 +425,12 @@ class PostCard extends React.Component {
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.forwardModal}>
                                 <PostForm type={PostType.FORWARD}
-                                          postId={post.blog_type === 0||post.blog_child === null ? post.blog_id : post.blog_child.blog_id}
+                                          postId={post.blog_type === 0 || post.blog_child === null ? post.blog_id : post.blog_child.blog_id}
                                           closeModal={this.handleModalClose}
                                           submit={this.submitForward}
                                 />
                                 <ForwardCard
-                                    post={post.blog_type === 0||post.blog_child === null ? post : post.blog_child}
+                                    post={post.blog_type === 0 || post.blog_child === null ? post : post.blog_child}
                                     size={500}
                                 />
                             </Paper>
@@ -439,7 +446,8 @@ class PostCard extends React.Component {
                                               post_content={post.blog_content.text}
                                 />
                                 {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
-                                    post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div>:<PostImage image={post.blog_child.blog_content.images}/>}
+                                    post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
+                                        <PostImage image={post.blog_child.blog_content.images}/>}
                             </Paper>
                         </div>
                     </Modal>
