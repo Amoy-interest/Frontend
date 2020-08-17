@@ -1,62 +1,95 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import ViewListIcon from '@material-ui/icons/ViewList';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
-import { useHistory } from 'react-router-dom';
+import List from '@material-ui/core/List';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import { MemoryRouter } from 'react-router';
+import SettingsIcon from '@material-ui/icons/Settings';
+
+const breadcrumbNameMap = {
+    '/users-manage': '用户管理',
+    "/users-manage/ban":'禁言封号',
+    '/users-manage/cancel_ban':'解除禁言',
+    '/users-manage/cancel_forbid':'解除封号',
+    '/posts-manage': '博文管理',
+    '/topics-manage': '话题管理',
+    '/sensWords-manage': '敏感词管理',
+};
+
+function ListItemLink(props) {
+    const { to, open, ...other } = props;
+    const primary = breadcrumbNameMap[to];
+
+    return (
+        <li>
+            <ListItem button to={to} {...other} >
+                <ListItemIcon ><SettingsIcon color='primary'/></ListItemIcon>
+                <Link href={to}>
+                    <ListItemText primary={primary} />
+                </Link>
+                {open != null ? open ? <ExpandLess style={{marginLeft:'8px'}} /> : <ExpandMore style={{marginLeft:'8px'}}/> : null}
+            </ListItem>
+        </li>
+    );
+}
+
+ListItemLink.propTypes = {
+    open: PropTypes.bool,
+    to: PropTypes.string.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
-        marginTop:theme.spacing(3),
-        backgroundColor: theme.palette.background.paper,
         display: 'flex',
+        flexDirection: 'column',
+        width: 190,
+        //marginTop:theme.spacing(1),
+        fontSize:'16px'
     },
-    tabs: {
-        borderRight: `1px solid ${theme.palette.divider}`,
-        fontSize:'36px',
-        fullWidth:true
+    lists: {
+        backgroundColor: theme.palette.background.paper,
+        //marginTop: theme.spacing(1),
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+        fontSize:'14px'
     },
 }));
 
-export default function AdminSideBar(props) {
+export default function RouterBreadcrumbs() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(props.index);
-    const history = useHistory();
+    const [open, setOpen] = React.useState(false);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleClick = () => {
+        setOpen((prevOpen) => !prevOpen);
     };
-    const openUsersManageView=()=>{
-        history.push('/users-manage');
-    };
-    const openPostsManageView=()=>{
-        history.push('/posts-manage');
-    };
-    const openTopicsManageView=()=>{
-        history.push('/topics-manage');
-    };
-    const openSensWordsManageView=()=>{
-        history.push('/sensWords-manage');
-    };
+
     return (
-        <div className={classes.root}>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs example"
-                className={classes.tabs}
-            >
-                <Tab label="用户管理" icon={<PeopleAltIcon/>} onClick={openUsersManageView}/>
-                <Tab label="博文管理" icon={<ViewListIcon/>} onClick={openPostsManageView}/>
-                <Tab label="话题管理" icon={<WhatshotIcon/>} onClick={openTopicsManageView}/>
-                <Tab label="敏感词管理" icon={<AcUnitIcon/>} onClick={openSensWordsManageView}/>
-            </Tabs>
-        </div>
+        <MemoryRouter initialEntries={['/posts-manage']} initialIndex={0}>
+            <div className={classes.root}>
+                <nav className={classes.lists} aria-label="mailbox folders">
+                    <List>
+                        <ListItemLink to="/users-manage" open={open} onClick={handleClick} />
+                        <Collapse component="li" in={open} timeout="auto" unmountOnExit>
+                            <List disablePadding>
+                                <ListItemLink to="/users-manage/ban" className={classes.nested} />
+                                <ListItemLink to="/users-manage/cancel_ban" className={classes.nested} />
+                                <ListItemLink to="/users-manage/cancel_forbid" className={classes.nested} />
+                            </List>
+                        </Collapse>
+                        <ListItemLink to="/posts-manage" />
+                        <ListItemLink to="/topics-manage" />
+                        <ListItemLink to="/sensWords-manage"/>
+                    </List>
+                </nav>
+            </div>
+        </MemoryRouter>
     );
 }
+

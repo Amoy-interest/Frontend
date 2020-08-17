@@ -57,6 +57,8 @@ const MsgType = {
     ADMIN: {
         FORBID_USR: 'forbidUser',
         BAN_USR: 'banUser',
+        UNBAN_USR:'unbanUser',
+        PERMIT_USR:'permitUser',
         DELETE_POST:'deletePost',
         PASS_POST:'passPost',
         PASS_TOPIC:'passTopic',
