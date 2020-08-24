@@ -71,6 +71,16 @@ export const forbidReportedUser = (data, callback) => {
     putRequest_json(url, null, data, callback);
 };
 
+export const permitBannedUser = (data, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/unban`;
+    putRequest_json(url, null, data, callback);
+};
+
+export const permitForbiddenUser = (data, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/permit`;
+    putRequest_json(url, null, data, callback);
+};
+
 export const editSenseWord = (data, callback) => {
     const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
     putRequest_json(url, null, data, callback);

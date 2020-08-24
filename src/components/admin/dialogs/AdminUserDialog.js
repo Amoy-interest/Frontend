@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 
 const Type = {
     BAN: 'ban',
-    FORBID: 'forbid'
+    FORBID: 'forbid',
 };
 
 function getSeconds(time) {
