@@ -36,6 +36,9 @@ import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
+import {ListItem} from "@material-ui/core";
+import CommentItem, {CommentItemType} from "./CommentItem";
+import {CommentListType} from "./CommentList";
 
 const styles = (theme => ({
     expand: {
@@ -338,15 +341,17 @@ class PostCard extends React.Component {
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
                             <CardContent>
-                                {post.topic_name===''?null:
-                                    <Link style={{color: '#fff'}} to={{
-                                        pathname: '/topic-discussion',
-                                        state:{topic_name:post.topic_name}}}>
-                                        <Typography variant="body1" color="primary" component="p">
-                                            {`#${post.topic_name}#`}
-                                        </Typography>
-                                    </Link>
-                                }
+                                {post.topics_name.length===0?null:
+                                    post.topics_name.map((item, index) => {
+                                        return (
+                                            <Link style={{color: '#fff'}} to={{
+                                                pathname: '/topic-discussion',
+                                                state:{topic_name:post.topic_name}}}>
+                                                <Typography variant="body1" color="primary" component="p">
+                                                    {`#${item}#`}
+                                                </Typography>
+                                            </Link>
+                                        );})}
                                 <Link style={{color: '#fff'}} to={{
                                     pathname: '/post-detail',
                                     search: '?id=' + post.blog_id

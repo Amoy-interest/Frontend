@@ -6,8 +6,7 @@ export const makePost = (text, images, tag, callback) => {
     const params = {
         text: text,
         images: images,
-        topic_id: 0,
-        topic_name: tag,
+        topic_name: [tag],
         user_id: 0
     };
     postRequest_json(url, null, params, callback);
