@@ -91,6 +91,7 @@ class TestSearchBar extends React.Component {
             keyword: newInputValue
         };
         const callback = (data) => {
+            console.log(data);
             this.setState({keywords: data.data.list});
             console.log(this.state.keywords);
         }
