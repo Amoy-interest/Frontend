@@ -53,7 +53,7 @@ class UserList extends Component {
 
     componentWillUnmount = () => {
         this.setState = (state, callback) => {
-            return;
+
         };
     };
 

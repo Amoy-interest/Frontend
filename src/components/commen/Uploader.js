@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {withStyles} from "@material-ui/styles";
 import PubSub from "pubsub-js";
-import {MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -39,21 +39,17 @@ function getBase64(file) {
 
 
 @withStyles(styles)
-class Uploader extends Component{
+class Uploader extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             files: [],
             images: [],
-            limits: (props.limits? props.limits:9)
+            limits: (props.limits ? props.limits : 9)
         };
 
         this.onChange = this.onChange.bind(this);
-
-    }
-
-    componentWillMount(){
         PubSub.subscribe(MsgType.CLEAR_UPLOAD, () => {
             this.setState({
                 files: [],
@@ -67,16 +63,16 @@ class Uploader extends Component{
         let total = newFiles.length + this.state.files.length;
 
         // limit file number
-        if (total > this.state.limits){
+        if (total > this.state.limits) {
             PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: `图片数量不超过${this.state.limits}张！`,type:'warning'
+                text: `图片数量不超过${this.state.limits}张！`, type: MessageType.WARNING
             });
             return;
         }
 
         let allFiles = [...this.state.files, ...newFiles];
         let images = this.state.images;
-        for(let i = 0; i < newFiles.length; i++){
+        for (let i = 0; i < newFiles.length; i++) {
             let result = await getBase64(newFiles[i]);
             images.push(result);
         }
@@ -107,7 +103,7 @@ class Uploader extends Component{
                             />
                             <label htmlFor="contained-button-file">
                                 <IconButton color="primary" aria-label="upload picture" component="span">
-                                    <PhotoCamera />
+                                    <PhotoCamera/>
                                 </IconButton>
                             </label>
                         </div>) : null

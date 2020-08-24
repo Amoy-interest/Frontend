@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Switch} from 'react-router-dom'
 import './App.css';
 import HomePreLoginView from "./views/public/HomePreLoginView";
@@ -30,8 +30,6 @@ import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
 import TestAliView from "./views/TestAliView";
 import TestComponentView from "./views/TestComponentView";
-import AdminUnBanList from "./components/admin/tables/AdminUnBanList";
-import AdminUnForbidList from "./components/admin/tables/AdminUnForbidList";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -147,7 +145,7 @@ function App(props) {
                                 <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/post-detail" component={PostDetailView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/search" component={PostSearchView} authority={AuthorityLevel.CUSTOMER}/>
-                                <PrivateRoute path='/users-manage' component={AdminUnForbidList} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/sensWords-manage' component={AdminSensWordsManageView} authority={AuthorityLevel.ADMIN}/>

@@ -51,9 +51,6 @@ class PostForm extends React.Component{
             images: [],
             isUploading: false
         };
-    }
-
-    componentWillMount(){
         PubSub.subscribe(MsgType.ERROR_UPLOAD, (msg, data) => {
             PubSub.publish(MsgType.SET_MESSAGE, {open: true, text: data, type: 'error'});
             this.setState({isUploading: false});
@@ -66,8 +63,10 @@ class PostForm extends React.Component{
         let urls = await oss.putObjects(this.state.fileList);
         makePost(values.content, urls, values.tag, (data) => {
             console.log("callback_own", data);
-            if (data.status !== 200)
+            if (data.status !== 200) {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "发博失败！", type: MessageType.ERROR});
+                this.setState({isUploading: false});
+            }
             else {
                 // clear form and upload
                 resetForm();

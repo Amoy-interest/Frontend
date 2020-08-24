@@ -1,58 +1,64 @@
 import React from 'react';
-import { FixedSizeList } from 'react-window';
+import {FixedSizeList} from 'react-window';
 import PropTypes from "prop-types";
 import HotSearchItem from "./HotSearchItem";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
 import title from '../../assets/img/title.png';
 import {getHotList} from "../../service/TopicService";
-//import {amber} from "@material-ui/core/colors";
+import PubSub from "pubsub-js";
+import {MessageType, MsgType} from "../../utils/constants";
 
-const styles =((theme) => ({
+const styles = ((theme) => ({
     root: {
-        marginTop:theme.spacing(2),
+        marginTop: theme.spacing(2),
         width: '300',
         color: theme.palette.text.primary,
-        rounded:true
+        rounded: true
     },
     title: {
-        marginBottom:10,
-        padding:theme.spacing(2),
+        marginBottom: 10,
+        padding: theme.spacing(2),
         //backgroundImage: `url(${Background})`,
         backgroundColor: theme.palette.primary.main,
-        opacity:0.80
+        opacity: 0.80
     },
-    image:{
+    image: {
         width: '40%'
     }
 }));
 
 @withStyles(styles)
-class HotSearchList extends React.Component{
+class HotSearchList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             hotList: [],
+            hasRequested: false
         };
         //console.log("props", props);
         //this.loadMore = this.loadMore.bind(this);
     }
 
     componentDidMount() {
-        const callback=(data)=>{
-            //console.log("data", data);
-            this.setState({hotList: data.data.list});
-            //console.log(this.state.hotList);
+        const callback = (data) => {
+            console.log("HotSearchList data", data);
+            if(data.status !== 200) {
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "获取热榜失败！", type: MessageType.ERROR});
+                this.setState({hasRequested: true});
+                return;
+            }
+            this.setState({hotList: data.data.list, hasRequested: true});
         };
         getHotList(callback);
     }
 
     render() {
-        const {classes}=this.props;
-        const {hotList}=this.state;
+        const {classes} = this.props;
+        const {hotList, hasRequested} = this.state;
 
         function renderRow(props) {
-            const { index, style } = props;
+            const {index, style} = props;
 
             return (
                 <HotSearchItem style={style} index={index} item={hotList[index]}/>
@@ -63,23 +69,24 @@ class HotSearchList extends React.Component{
             index: PropTypes.number.isRequired,
             style: PropTypes.object.isRequired,
         };
-        if(hotList.length!==0)
-        return (
-            <Paper elevation={1}className={classes.root}>
-                <div className={classes.title}>
-                    {/*<Typography variant="h5">*/}
-                    {/*    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>*/}
-                    {/*    热门话题*/}
-                    {/*    </Box>*/}
-                    {/*</Typography>*/}
-                    <img alt={''} className={classes.image} src={title}/>
-                </div>
-                <FixedSizeList height={360} width={287} itemSize={50} itemCount={hotList.length}>
-                    {renderRow}
-                </FixedSizeList>
-            </Paper>
-        );
+        if (hasRequested)
+            return (
+                <Paper elevation={1} className={classes.root}>
+                    <div className={classes.title}>
+                        {/*<Typography variant="h5">*/}
+                        {/*    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>*/}
+                        {/*    热门话题*/}
+                        {/*    </Box>*/}
+                        {/*</Typography>*/}
+                        <img alt={''} className={classes.image} src={title}/>
+                    </div>
+                    <FixedSizeList height={360} width={287} itemSize={50} itemCount={hotList.length}>
+                        {renderRow}
+                    </FixedSizeList>
+                </Paper>
+            );
         else return <div>Loading</div>
     }
 }
+
 export default HotSearchList
