@@ -17,13 +17,8 @@ export const getTopicPosts = (params,callback) => {
     getRequest(url,params,callback);
 };
 
-export const editTopicIntro = (data,callback) => {
-    const url = `${apiUrl}${APIModules.TOPIC}/intro`;
-    putRequest_json(url,null,data,callback);
-};
-
-export const editTopicLogo = (data,callback) => {
-    const url = `${apiUrl}${APIModules.TOPIC}/logo`;
+export const editTopic = (data,callback) => {
+    const url = `${apiUrl}${APIModules.TOPIC}`;
     putRequest_json(url,null,data,callback);
 };
 

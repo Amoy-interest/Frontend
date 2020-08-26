@@ -67,7 +67,6 @@ const Request_json = (url, json, callback, method) => {
 
     fetch(url, opts)
         .then((response) => {
-            // console.log(response);
             let token = response.headers.get('Authorization');
             if (token) {
                 store.dispatch(setToken(token));

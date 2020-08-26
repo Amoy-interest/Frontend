@@ -103,9 +103,7 @@ class Header extends React.Component{
                         {role === UserType.ADMIN?
                             <Logo title={'Amoy Interest Management'}/>:
                             <Logo title={'Amoy Interest'}/>}
-                        {role === UserType.ADMIN?
-                            <SearchBar handleSearch={this.handleSearch}/>:
-                            <TestSearchBar history={this.props.history}/>}
+                            <TestSearchBar history={this.props.history}/>
                         <div className={classes.blank}/>
                         {role === UserType.CUSTOMER ?
                             <Tooltip title="发现">

@@ -88,9 +88,12 @@ class AdminPostList extends React.Component{
                 field: 'blog_content.text',
                 align: 'left',
                 render: blog => (
-                    <Typography variant="body2" noWrap={true} component="p">
-                        {blog.blog_content.text}
-                    </Typography>
+                    <div style={{maxWidth: 300}}>
+                        <Typography variant="body2" noWrap={true}>
+                            {blog.blog_content.text}
+                        </Typography>
+                    </div>
+
                 )
             },
             {

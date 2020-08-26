@@ -12,6 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Backdrop from "@material-ui/core/Backdrop";
 import PubSub from "pubsub-js";
 import {MsgType} from "../../utils/constants";
+import Typography from "@material-ui/core/Typography";
 
 const style = ((theme) => ({
     backdrop: {
@@ -52,7 +53,13 @@ class TopicEditForm extends React.Component{
         this.setState({isUploading: false});
 
         console.log("values", values);
-        this.props.submit(values);
+        let info = {
+            logo_path: values.url.url,
+            topic_name: this.props.topicName,
+            topic_intro: values.text? values.text: ""
+        };
+        // console.log(info);
+        this.props.submit(info);
     };
 
     uploadFiles = (files, images) => {
@@ -83,7 +90,13 @@ class TopicEditForm extends React.Component{
                     {({ submitForm, isSubmitting }) => (
                         <Form style={{marginBottom:'20px',marginTop:'20px'}}>
                             <Grid container spacing={1}>
-                                <AITextField sm={9} name="text" multiline label="博文"/>
+                                <Grid item xs sm={12}>
+                                    <Typography style={{marginBottom:'10px',marginTop:'5px'}}
+                                                variant="h6" color="primary" align='center'>
+                                        #{this.props.topicName}#
+                                    </Typography>
+                                </Grid>
+                                <AITextField sm={9} name="text" multiline label="话题简介"/>
                                 <Grid item xs sm={3}>
                                     <Button
                                         variant="contained"

@@ -42,10 +42,7 @@ class PostCardList extends Component {
         };
 
         this.loadMore = this.loadMore.bind(this);
-        PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
-            //console.log(msg, data);
-            this.addPost(data);
-        });
+        PubSub.subscribe(MsgType.ADD_POST, () => {this.addPost();});
     }
 
     loadMore() {
@@ -58,7 +55,7 @@ class PostCardList extends Component {
             }
             this.setState({
                 posts: [...this.state.posts, ...data.data.list],
-                hasMoreItems: (data.data.totalPage > this.state.nextHref),
+                hasMoreItems: (data.data.totalPage > this.state.nextHref + 1),
                 nextHref: this.state.nextHref + 1
             })
         };
@@ -112,19 +109,17 @@ class PostCardList extends Component {
         };
     };
 
-    addPost = (newPost) => {
-        if (this.props.location) {
+    addPost = () => {
+        if (this.props.index === PostType.OWN) {
             const param = this.props.location.search.split('&');
             const user_id = param[0].substr(4);
-            if (!(this.props.user.user.user_id !== user_id && this.props.index === PostType.OWN)) {
+            if (this.props.user.user.user_id === user_id) {
                 this.setState({
-                    posts: [newPost, ...this.state.posts],
                     key: this.state.key + 1
                 });
             }
         }
         else this.setState({
-            posts: [newPost, ...this.state.posts],
             key: this.state.key + 1
         });
     };

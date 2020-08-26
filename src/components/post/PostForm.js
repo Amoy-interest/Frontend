@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import PubSub from "pubsub-js";
 import Container from '@material-ui/core/Container';
@@ -32,6 +31,10 @@ const styles = ((theme) => ({
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
+    },
+    imgContainer: {
+        height: 100
+
     },
     buttons: {
         display: 'flex',
@@ -75,7 +78,7 @@ class PostForm extends React.Component{
 
                 // send messages and display new post
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "发博成功！", type: MessageType.SUCCESS});
-                PubSub.publish(MsgType.ADD_POST, data.data);
+                PubSub.publish(MsgType.ADD_POST);
             }
         });
     };
@@ -92,7 +95,7 @@ class PostForm extends React.Component{
             else {
                 // send messages and display new post
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "转发成功！", type: MessageType.SUCCESS});
-                PubSub.publish(MsgType.ADD_POST, data.data);
+                PubSub.publish(MsgType.ADD_POST, null);
             }
         };
         forwardPost(this.props.postId, values.content, callbackForward);
@@ -112,7 +115,6 @@ class PostForm extends React.Component{
 
         return (
             <Container component="main" maxWidth="lg">
-                <CssBaseline />
                 <Backdrop className={classes.backdrop} open={this.state.isUploading}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
@@ -142,7 +144,9 @@ class PostForm extends React.Component{
                                             : null
                                     }
                                     <Grid item xs={12} sm={12}>
-                                        <PostImage image={this.state.images}/>
+                                        {/*<div className={classes.imgContainer}>*/}
+                                            <PostImage image={this.state.images}/>
+                                        {/*</div>*/}
                                     </Grid>
                                     <Grid item xs={12} sm={8}/>
                                     <Grid item xs={12} sm={4}>

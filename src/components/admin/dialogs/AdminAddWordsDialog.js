@@ -42,7 +42,6 @@ export default class AdminAddWordsDialog extends React.Component {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "添加敏感词成功！", type: MessageType.SUCCESS});
                 PubSub.publish(MsgType.ADMIN.REFRESH_TABLE, null);
             }
-            this.setState({newWord:null,oldWord:null});
         })
     };
 

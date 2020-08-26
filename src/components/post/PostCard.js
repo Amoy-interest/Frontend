@@ -99,6 +99,7 @@ function getModalStyle() {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
+        maxHeight: 750
     };
 }
 
@@ -348,7 +349,7 @@ class PostCard extends React.Component {
                                     {post.topics_name.length===0 ? null:
                                         post.topics_name.map((item, index) => {
                                             return (
-                                                <Link key={index} style={{color: '#fff', marginRight: 15}} to={{
+                                                <Link key={index} style={{color: '#fff', marginRight: 5}} to={{
                                                     pathname: '/topic-discussion',
                                                     state:{topic_name: item}}}>
                                                     <Tag variant="body1">
@@ -357,18 +358,6 @@ class PostCard extends React.Component {
                                                 </Link>
                                             );})}
                                 </div>
-
-                                {/*<Typography variant="body1" color="primary">*/}
-                                {/*    {post.topics_name.length===0 ? null:*/}
-                                {/*        post.topics_name.map((item, index) => {*/}
-                                {/*            return (*/}
-                                {/*                <Link key={index} style={{color: '#fff'}} to={{*/}
-                                {/*                    pathname: '/topic-discussion',*/}
-                                {/*                    state:{topic_name: item}}}>*/}
-                                {/*                        {`#${item}#`}*/}
-                                {/*                </Link>*/}
-                                {/*            );})}*/}
-                                {/*</Typography>*/}
                                 <Link style={{color: '#fff'}} to={{
                                     pathname: '/post-detail',
                                     search: '?id=' + post.blog_id

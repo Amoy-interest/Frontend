@@ -74,11 +74,10 @@ const useStyles = makeStyles((theme) =>
 
 function App(props) {
     const classes = useStyles();
-    // const [keyword, setKeyword] = useState(null);
     const [message, setMessage] = React.useState({
         open: false,
-        text: '',
-        type: 'warning'
+        // text: '',
+        // type: 'warning'
     });
     PubSub.subscribe(MsgType.SET_MESSAGE, function (msg, data) {
         setMessage({
@@ -87,26 +86,6 @@ function App(props) {
             type: data.type
         });
     });
-
-    // const renderMergedProps = (component, ...rest) => {
-    //     const finalProps = Object.assign({}, ...rest);
-    //     return (
-    //         React.createElement(component, finalProps)
-    //     );
-    // };
-    //
-    // const PropsRoute = ({ component, ...rest }) => {
-    //     return (
-    //         <Route {...rest} render={routeProps => {
-    //             return renderMergedProps(component, routeProps, rest);
-    //         }}/>
-    //     );
-    // };
-    //
-    // const handleSearch = (keyword) => {
-    //     console.log(keyword);
-    //     setKeyword(keyword);
-    // };
 
     return (
         <div className="App">
@@ -158,7 +137,7 @@ function App(props) {
                 <Message
                     messageOpen={message.open}
                     autoHideDuration={1000}
-                    handleClose={() => setMessage({open: false, text: '', type: 'warning'})}
+                    handleClose={() => setMessage({open: false})}
                     type={message.type}
                     text={message.text}
                 />

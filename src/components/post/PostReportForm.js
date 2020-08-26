@@ -52,7 +52,7 @@ export default function PostReportForm(props){
                 {({ submitForm, isSubmitting }) => (
                     <Form>
                         <Grid container spacing={1}>
-                            <AITextField sm={9} name="report_reason" multiline label="举报内容"/>
+                            <AITextField sm={9} name="report_reason" multiline label="举报理由"/>
                             <Grid item xs sm={3}>
                                 <Button
                                     className={classes.submit_primary}

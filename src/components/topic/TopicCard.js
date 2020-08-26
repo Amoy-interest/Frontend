@@ -14,7 +14,7 @@ import PostForm from "../post/PostForm";
 import CreateIcon from '@material-ui/icons/Create';
 import Chip from "@material-ui/core/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {editTopicIntro, getTopic, editTopicLogo, reportTopic} from "../../service/TopicService";
+import {editTopic, getTopic, reportTopic} from "../../service/TopicService";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -172,36 +172,19 @@ class TopicCard extends React.Component {
         reportTopic(data,callback)
     };
 
-    submitEdit = (data) => {
-        console.log(data);
+    submitEdit = (info) => {
+        console.log(info);
 
-        const callback1 = (data) => {
+        editTopic(info, (data) => {
             console.log(data);
-            this.setState({topic: data.data, intro: data.data.topic_intro});
-            this.handleEditModalClose();
-        };
-
-        const callback2 = (data) => {
-            this.setState({topic: data.data, image: data.data.logo_path});
-            this.handleEditModalClose();
-        };
-
-        if (data.text !== this.state.introduction) {
-            let intro = {
-                topic_name: this.state.topic.name,
-                topic_intro: data.text
-            };
-            editTopicIntro(intro, callback1)
-        }
-
-        if (data.url.url !== this.state.image) {
-            let logo = {
-                topic_name: this.state.topic.name,
-                logo_path: data.url.url
-            };
-            editTopicLogo(logo, callback2)
-        }
-        if (!this.state.editModalOpen) this.handleEditModalClose();
+            if (data.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.ERROR, text: "修改话题信息失败！"});
+            else {
+                PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.SUCCESS, text: "修改话题信息成功！"});
+                this.setState({topic: data.data, intro: data.data.topic_intro, image: data.data.logo_path});
+                this.handleEditModalClose();
+            }
+        })
     };
 
     render() {
@@ -313,7 +296,7 @@ class TopicCard extends React.Component {
                     <Modal open={editModalOpen} onClose={this.handleEditModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.editModal}>
-                                <TopicEditForm closeModal={this.handleEditModalClose} text={introduction}
+                                <TopicEditForm text={introduction} topicName={this.state.topic.name}
                                                image={image} submit={this.submitEdit}/>
                             </Paper>
                         </div>

@@ -83,17 +83,17 @@ export const permitForbiddenUser = (data, callback) => {
 
 export const editSenseWord = (data, callback) => {
     const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
-    putRequest_json(url, null, data, callback);
+    putRequest_json(url, data, null, callback);
 };
 
 export const deleteSenseWord = (data, callback) => {
     const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
-    deleteRequest_json(url, null, data, callback);
+    deleteRequest_json(url, data, null, callback);
 };
 
 export const addSenseWord = (data, callback) => {
     const url = `${apiUrl}${APIModules.SENSITIVEWORD}`;
-    postRequest_json(url, null, data, callback);
+    postRequest_json(url, data, null, callback);
 };
 
 
