@@ -49,12 +49,13 @@ const PostType = {
 };
 
 const MsgType = {
-    ADD_POST: "addPost",
     SET_MESSAGE: "setMessage",
+    ADD_POST: "addPost",
     ADD_COMMENT:"addComment",
     DELETE_COMMENT:"deleteComment",
     CLEAR_UPLOAD: 'clearUpload',
     ERROR_UPLOAD: 'errorUpload',
+    REPORT_FINISHED: 'reportFinish',
     ADMIN: {
         REFRESH_TABLE: 'refreshTable',
         FORBID_USR: 'forbidUser',

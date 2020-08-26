@@ -150,10 +150,10 @@ class PostCardList extends Component {
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                        <PostCard size={657} post={item} index={value} type={PostCardType.LIST}
+                                        <PostCard key={item.blog_id} size={657} post={item} index={value} type={PostCardType.LIST}
                                                   belong={PostCardBelong.OTHERS} addPost={this.addPost}
                                                   delete={this.deletePost}/> :
-                                        <PostCard post={item} size={657} index={value} type={PostCardType.LIST}
+                                        <PostCard key={item.blog_id}post={item} size={657} index={value} type={PostCardType.LIST}
                                                   belong={PostCardBelong.PERSONAL} addPost={this.addPost}
                                                   delete={this.deletePost}/>}
                                 </ListItem>

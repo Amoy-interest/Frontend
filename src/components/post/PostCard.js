@@ -20,22 +20,22 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostImage from "./PostImage";
-import {cancelVote, reportPost, vote, deletePost, editPost} from "../../service/PostService";
+import {cancelVote, vote, deletePost, editPost} from "../../service/PostService";
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
-import Message from "../commen/Message";
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 import ForwardCard from "./ForwardCard";
 import Modal from "@material-ui/core/Modal";
 import PostForm from "./PostForm";
 import Paper from "@material-ui/core/Paper";
-import {MsgType, PostType, UserType} from "../../utils/constants";
+import {MessageType, MsgType, PostType, UserType} from "../../utils/constants";
 import MicOffIcon from '@material-ui/icons/MicOff';
 import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
+import PostReportForm from "./PostReportForm";
 
 const styles = (theme => ({
     expand: {
@@ -56,6 +56,10 @@ const styles = (theme => ({
     },
     editModal: {
         padding: theme.spacing(1),
+        width: 500
+    },
+    reportModal: {
+        padding: theme.spacing(3),
         width: 500
     },
     delete: {
@@ -135,22 +139,26 @@ class PostCard extends React.Component {
             post: this.props.post,
             anchorEl: null,
             expanded: false,
-            messageOpen: false,
             forwardModalOpen: false,
             editModalOpen: false,
-            reportMessageOpen: false
+            reportModalOpen: false,
         };
 
-        PubSub.subscribe(MsgType.ADD_COMMENT, (msg) => {
+        PubSub.subscribe(MsgType.ADD_COMMENT, () => {
             this.setState({commentCount: this.state.commentCount + 1});
         });
-        PubSub.subscribe(MsgType.DELETE_COMMENT, (msg) => {
+        PubSub.subscribe(MsgType.DELETE_COMMENT, () => {
             this.setState({commentCount: this.state.commentCount - 1});
+        });
+        PubSub.subscribe(MsgType.REPORT_FINISHED, () => {
+            this.handleMenuClose();
+            this.setState({reportModalOpen: false});
         });
     };
 
     handleVote = (post) => {
-        if (this.props.user.user === null) this.setState({messageOpen: true});
+        if (this.props.user.user === null)
+            PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.WARNING, text: "请先登陆！"});
         else {
             let param = {blog_id: post.blog_id, comment_id: 0};
             let count = this.state.voteCount;
@@ -234,32 +242,8 @@ class PostCard extends React.Component {
         else this.setState({expanded: !this.state.expanded});
     };
 
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        this.setState({messageOpen: false});
-    };
-
-    handleReportMessageClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        this.setState({reportMessageOpen: false});
-    };
-
-    handleReportPost = () => {
-        const callback = () => {
-            //console.log('report success');
-            this.handleMenuClose();
-            this.setState({reportMessageOpen: true})
-        };
-        reportPost(this.state.post.blog_id, callback);
-    };
-
     handleDeletePost = () => {
         const callback = () => {
-            //console.log('delete success');
             this.handleMenuClose();
             this.props.delete(this.props.index);
         };
@@ -267,7 +251,7 @@ class PostCard extends React.Component {
     };
 
     render() {
-        const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, messageOpen, reportMessageOpen, forwardModalOpen, editModalOpen} = this.state;
+        const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, reportModalOpen, forwardModalOpen, editModalOpen} = this.state;
         const {classes} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
@@ -284,7 +268,7 @@ class PostCard extends React.Component {
                         open={isMenuOpen}
                         onClose={this.handleMenuClose}
                     >
-                        <MenuItem onClick={this.handleReportPost}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+                        <MenuItem onClick={() => {this.setState({reportModalOpen: true})}}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
                     </Menu> :
                     <Menu
                         anchorEl={anchorEl}
@@ -343,28 +327,29 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
-                        <CardContent>
-                            {(post.topic_name === '' || post.topic_name === null) ? null :
+                            <CardContent>
+                                {post.topics_name.length===0?null:
+                                    post.topics_name.map((item, index) => {
+                                        return (
+                                            <Link key={index} style={{color: '#fff'}} to={{
+                                                pathname: '/topic-discussion',
+                                                state:{topic_name:post.topic_name}}}>
+                                                <Typography variant="body1" color="primary" component="p">
+                                                    {`#${item}#`}
+                                                </Typography>
+                                            </Link>
+                                        );})}
                                 <Link style={{color: '#fff'}} to={{
-                                    pathname: '/topic-discussion',
-                                    state: {topic_name: post.topic_name}
+                                    pathname: '/post-detail',
+                                    search: '?id=' + post.blog_id
                                 }}>
-                                    <Typography variant="body1" color="primary" component="p">
-                                        {`#${post.topic_name}#`}
+                                    <Typography variant="body1" color="textPrimary"
+                                                //component="p"
+                                    >
+                                        {text}
                                     </Typography>
                                 </Link>
-                            }
-                            <Link style={{color: '#fff'}} to={{
-                                pathname: '/post-detail',
-                                search: '?id=' + post.blog_id
-                            }}>
-                                <Typography variant="body1" color="textPrimary"
-                                    //component="p"
-                                >
-                                    {text}
-                                </Typography>
-                            </Link>
-                        </CardContent>
+                            </CardContent>
                         {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
@@ -451,9 +436,13 @@ class PostCard extends React.Component {
                             </Paper>
                         </div>
                     </Modal>
-                    <Message messageOpen={messageOpen} handleClose={this.handleClose} type={'warning'} text={"请先登陆"}/>
-                    <Message messageOpen={reportMessageOpen} handleClose={this.handleReportMessageClose}
-                             type={'success'} text={"举报成功"}/>
+                    <Modal open={reportModalOpen} onClose={() => {this.setState({reportModalOpen: false})}}>
+                        <div style={getModalStyle()} className={classes.paper}>
+                            <Paper className={classes.reportModal}>
+                                <PostReportForm id={this.state.post.blog_id}/>
+                            </Paper>
+                        </div>
+                    </Modal>
                 </div>
             );
         else return <div>Loading</div>;

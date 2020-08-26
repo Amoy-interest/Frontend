@@ -6,8 +6,7 @@ export const makePost = (text, images, tag, callback) => {
     const params = {
         text: text,
         images: images,
-        topic_id: 0,
-        topic_name: tag,
+        topic_name: [tag],
         user_id: 0
     };
     postRequest_json(url, null, params, callback);
@@ -42,9 +41,13 @@ export const editPost = (data, callback) => {
     putRequest_json(url, null, data, callback);
 };
 
-export const reportPost = (id, callback) => {
-    const url = `${apiUrl}${APIModules.BLOG}/report?blog_id=${id}`;
-    postRequest_json(url, null, null, callback);
+export const reportPost = (id, report_reason, callback) => {
+    const url = `${apiUrl}${APIModules.BLOG}/report`;
+    const data = {
+        blog_id: id,
+        report_reason: report_reason
+    }
+    postRequest_json(url, null, data, callback);
 };
 
 export const searchPosts = (params, callback) => {

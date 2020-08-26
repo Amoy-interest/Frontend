@@ -42,7 +42,7 @@ class HotSearchList extends React.Component {
 
     componentDidMount() {
         const callback = (data) => {
-            console.log("HotSearchList data", data);
+            // console.log("HotSearchList data", data);
             if(data.status !== 200) {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "获取热榜失败！", type: MessageType.ERROR});
                 this.setState({hasRequested: true});

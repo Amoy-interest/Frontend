@@ -67,6 +67,7 @@ const Request_json = (url, json, callback, method) => {
 
     fetch(url, opts)
         .then((response) => {
+            // console.log(response);
             let token = response.headers.get('Authorization');
             if (token) {
                 store.dispatch(setToken(token));
@@ -74,7 +75,8 @@ const Request_json = (url, json, callback, method) => {
             return response.json()
         })
         .then((data) => {
-            if (data.status === 401) {
+            // console.log(data);
+            if (data.status === 403) {
                 store.dispatch(removeToken());
                 store.dispatch(removeUser());
                 PubSub.publish(MsgType.SET_MESSAGE, {
