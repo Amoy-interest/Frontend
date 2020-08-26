@@ -37,7 +37,7 @@ class PostCardList extends Component {
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
-            key: 0
+            key: 50
         };
 
         this.loadMore = this.loadMore.bind(this);

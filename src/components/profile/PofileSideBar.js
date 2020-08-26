@@ -14,7 +14,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 const styles = ((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
         display: 'flex',
         marginTop:theme.spacing(1)
     },
