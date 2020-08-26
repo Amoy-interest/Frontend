@@ -23,7 +23,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {connect} from "react-redux";
 import MicNoneIcon from '@material-ui/icons/MicNone';
-import {MessageType, MsgType, UserType} from "../../utils/constants";
+import {defaultImgUrl, MessageType, MsgType, UserType} from "../../utils/constants";
 import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
@@ -110,7 +110,11 @@ class TopicCard extends React.Component {
 
     getTopicInfo(topic_name) {
         const callback = (data) => {
-            this.setState({topic: data.data, image: data.data.logo_path, introduction: data.data.topic_intro});
+            this.setState({
+                topic: data.data,
+                image: data.data.logo_path === null ? defaultImgUrl: data.data.logo_path,
+                introduction: data.data.topic_intro
+            });
         };
         getTopic(topic_name, callback);
     };

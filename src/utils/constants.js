@@ -1,9 +1,11 @@
 const devUrl = 'http://52.90.204.208:8080';
 // const devUrl2='http://120.55.194.144:8082/';
-const devUrl3='http://106.14.19.68/';
+const devUrl3='http://106.14.19.68';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
 const localUrl = 'http://localhost:8082';
 const apiUrl = devUrl3;
+
+const defaultImgUrl = "https://amoy-interest-oss.oss-cn-shenzhen.aliyuncs.com/amoy-interest/images/common/topic_logo.jpg";
 
 const UserActionType = {
     SET_USER: 'set user',
@@ -82,6 +84,6 @@ const MessageType = {
 export {apiUrl, mockUrl, devUrl, localUrl,
     UserActionType, TokenActionType, APIModules,
     UserType, AuthorityLevel,PostType,
-    MsgType, MessageType
+    MsgType, MessageType, defaultImgUrl
 };
 

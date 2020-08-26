@@ -121,7 +121,7 @@ class ProfileCard extends React.Component {
         this.update(this.props);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         this.update(nextProps);
     }
 
@@ -166,7 +166,7 @@ class ProfileCard extends React.Component {
             });
             //this.setState({userInfo:data.user,userCount:data.userCount})
         });
-    }
+    };
 
     handleFollow = () => {
         const callback = () => {

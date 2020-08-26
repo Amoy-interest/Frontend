@@ -73,7 +73,7 @@ class SideBarForProfile extends React.Component{
         this.setState({value:newValue})
     };
 
-    componentWillReceiveProps(nextProps, nextContext){
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
         this.setState({value:0})
     }
 

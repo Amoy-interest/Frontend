@@ -9,6 +9,7 @@ import {getTopicPosts} from "../../service/TopicService";
 import {PostType, MsgType} from "../../utils/constants";
 import PubSub from "pubsub-js";
 import AdminUserDialog from "../admin/dialogs/AdminUserDialog";
+import {randomNum} from "../../utils/methods";
 
 const styles = ((theme) => ({
     root: {
@@ -37,7 +38,7 @@ class PostCardList extends Component {
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
-            key: 50
+            key: randomNum(0, 100)
         };
 
         this.loadMore = this.loadMore.bind(this);
@@ -96,6 +97,7 @@ class PostCardList extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext){
+        console.log("UNSAFE_componentWillReceiveProps");
         this.setState({
             posts: [],
             hasMoreItems: true,
@@ -142,6 +144,7 @@ class PostCardList extends Component {
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                     key={this.state.key}
+                    initialLoad={false}
                 >
                     <List>
                         {this.state.posts.map((item, value) => {

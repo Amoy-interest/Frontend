@@ -4,6 +4,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {withStyles} from "@material-ui/styles";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../utils/constants";
+import {getBase64} from "../../utils/methods";
 
 const styles = ((theme) => ({
     root: {
@@ -27,16 +28,6 @@ const styles = ((theme) => ({
         height: 100,
     }
 }));
-
-function getBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
 
 @withStyles(styles)
 class Uploader extends Component {

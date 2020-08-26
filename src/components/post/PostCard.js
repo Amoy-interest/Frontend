@@ -36,6 +36,7 @@ import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
 import PostReportForm from "./PostReportForm";
+import { styled } from '@material-ui/core/styles';
 
 const styles = (theme => ({
     expand: {
@@ -73,8 +74,23 @@ const styles = (theme => ({
     },
     avatar: {
         backgroundColor: theme.palette.primary.main
+    },
+    tagContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginBottom: theme.spacing(1)
     }
 }));
+
+const Tag = styled(Typography)({
+    // background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    // border: 0,
+    // borderRadius: 3,
+    // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: amber[500],
+    // height: 48,
+    // padding: '0 30px',
+});
 
 function getModalStyle() {
     const top = 50;
@@ -84,7 +100,7 @@ function getModalStyle() {
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
     };
-};
+}
 
 function mapStateToProps(state) {
     return {
@@ -328,17 +344,31 @@ class PostCard extends React.Component {
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
                             <CardContent>
-                                {post.topics_name.length===0?null:
-                                    post.topics_name.map((item, index) => {
-                                        return (
-                                            <Link key={index} style={{color: '#fff'}} to={{
-                                                pathname: '/topic-discussion',
-                                                state:{topic_name:post.topic_name}}}>
-                                                <Typography variant="body1" color="primary" component="p">
-                                                    {`#${item}#`}
-                                                </Typography>
-                                            </Link>
-                                        );})}
+                                <div className={classes.tagContainer}>
+                                    {post.topics_name.length===0 ? null:
+                                        post.topics_name.map((item, index) => {
+                                            return (
+                                                <Link key={index} style={{color: '#fff', marginRight: 15}} to={{
+                                                    pathname: '/topic-discussion',
+                                                    state:{topic_name: item}}}>
+                                                    <Tag variant="body1">
+                                                        {`#${item}#`}
+                                                    </Tag>
+                                                </Link>
+                                            );})}
+                                </div>
+
+                                {/*<Typography variant="body1" color="primary">*/}
+                                {/*    {post.topics_name.length===0 ? null:*/}
+                                {/*        post.topics_name.map((item, index) => {*/}
+                                {/*            return (*/}
+                                {/*                <Link key={index} style={{color: '#fff'}} to={{*/}
+                                {/*                    pathname: '/topic-discussion',*/}
+                                {/*                    state:{topic_name: item}}}>*/}
+                                {/*                        {`#${item}#`}*/}
+                                {/*                </Link>*/}
+                                {/*            );})}*/}
+                                {/*</Typography>*/}
                                 <Link style={{color: '#fff'}} to={{
                                     pathname: '/post-detail',
                                     search: '?id=' + post.blog_id
