@@ -13,11 +13,7 @@ export const login = (data, callback) => {
 
 export const logout = () => {
     const url = `${apiUrl}${APIModules.USER}/logout`;
-    getRequest(url, null, (data) => {
-        if (data.status !== 200) {
-            PubSub.publish(MsgType.SET_MESSAGE, {text: "登出失败！", type: MessageType.ERROR});
-            return;
-        }
+    getRequest(url, null, () => {
         PubSub.publish(MsgType.SET_MESSAGE, { text: "登出成功！", type: MessageType.SUCCESS});
         store.dispatch(removeToken());
         store.dispatch(removeUser());
