@@ -1,4 +1,5 @@
 const devUrl = 'http://52.90.204.208:8080';
+const devUrl2='http://106.14.19.68';
 // const devUrl2='http://120.55.194.144:8082/';
 const devUrl3='http://106.14.19.68';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
@@ -26,6 +27,7 @@ const APIModules = {
     SENSITIVEWORD: '/keywords',
     ALI: '/aliyun',
     SEARCH: '/search',
+    SIM:'/sim',
 };
 
 const UserType = {
@@ -47,7 +49,8 @@ const PostType = {
     OWN: 3,
     FORWARD: 4,
     TOPIC:5,
-    SEARCH:6
+    SEARCH:6,
+    SIMILAR:7
 };
 
 const MsgType = {

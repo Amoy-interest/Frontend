@@ -117,7 +117,7 @@ class ProfileCard extends React.Component {
         const param = props.location.search.split('&');
         const user_id = param[0].substr(4);
         getUserInfo(user_id, (data) => {
-            //console.log(data);
+            console.log(data);
             this.setState({userInfo: data.data.user, followed: data.data.user._follow, userCount: data.data.userCount});
         });
     }

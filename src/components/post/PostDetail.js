@@ -34,27 +34,30 @@ class PostDetail extends Component {
         this.state = {
             post: null,
         };
-
-        //console.log("props", props);
-        //this.loadMore = this.loadMore.bind(this);
     }
 
-    componentDidMount() {
-        const arr = this.props.location.search.split('&');
+    getPost(props){
+        const arr = props.location.search.split('&');
         const blogId = arr[0].substr(4);
+        console.log(blogId);
         const callback=(data)=>{
             this.setState({post: data.data});
-            //console.log(data);
+            // this.props.history.go(0);
+            // window.location.reload();
+            console.log(this.state.post);
+            console.log(data);
         };
         getPost(blogId,callback);
     }
 
-    componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
-            return;
-        };
-    };
+    componentDidMount() {
+        this.getPost(this.props);
+    }
 
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
+        this.getPost(nextProps);
+        console.log("new Page");
+    };
 
     render() {
         const {classes} = this.props;
@@ -66,7 +69,8 @@ class PostDetail extends Component {
             <div className={classes.root}>
                 <div className={classes.content}>
                     {(this.props.user.user === null || this.props.user.user.nickname !== post.nickname) ?
-                        <PostCard post={post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS}/> : <PostCard post={post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
+                        <PostCard post={this.state.post}  type={PostCardType.DETAIL} belong={PostCardBelong.OTHERS} size={870}/> :
+                        <PostCard post={this.state.post} size={870} type={PostCardType.DETAIL} belong={PostCardBelong.PERSONAL}/>}
                 </div>
                 <CommentList post={this.state.post} type={CommentListType.PRIMARY}/>
                 <AdminUserDialog/>

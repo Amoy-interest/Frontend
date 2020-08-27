@@ -22,7 +22,7 @@ export default function PostImage(props) {
 
     const imageCount = props.image.length;
     return (
-        <div className={classes.root}>
+        <div className={classes.root} >
             <Grid container spacing={1} alignItems="stretch">
                 {props.image.map((item, value) => {
                     return (
@@ -31,7 +31,7 @@ export default function PostImage(props) {
                               (imageCount >= 2 && imageCount <= 4 && 6) ||
                               (imageCount >= 5 && imageCount <= 9 && 4)
                         }>
-                            <img className={classes.image} src={item} alt={''}/>
+                            <img className={classes.image} style={{maxHeight:props.height?props.height:600}} src={item} alt={''}/>
                         </Grid>
                     );
                 })}
