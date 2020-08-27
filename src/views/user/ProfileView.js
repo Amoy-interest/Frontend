@@ -4,6 +4,7 @@ import SideBarForProfile from "../../components/profile/PofileSideBar";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
 import withStyles from "@material-ui/core/styles/withStyles";
+import SimilarUsersList from "../../components/recommend/SimilarUsersList";
 
 const styles =((theme) => ({
     root: {
@@ -36,7 +37,8 @@ class ProfileView extends Component {
                         {/*    <PostCardList index={PostType.OWN} {...this.props}/>*/}
                         {/*</Grid>*/}
                         <Grid item xs>
-                            <HotSearchList/>
+                            {/*<HotSearchList/>*/}
+                            <SimilarUsersList {...this.props}/>
                         </Grid>
                     </Grid>
                 </Paper>

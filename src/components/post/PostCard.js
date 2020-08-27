@@ -224,9 +224,16 @@ class PostCard extends React.Component {
     };
 
     submitEdit = (text) => {
-        const callback = () => {
+        const callback = (data) => {
+            if (data.status !== 200) {
+                console.log(data);
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "编辑失败！", type: MessageType.ERROR});
+                return;
+            }
+            console.log(data);
             this.setState({text: text.text});
             this.handleEditModalClose();
+            this.handleMenuClose();
         };
         let data = {
             blog_id: this.state.post.blog_id,
@@ -326,7 +333,8 @@ class PostCard extends React.Component {
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: this.props.size === null ? '100%' : this.props.size}}
+                    <Card style={{width: this.props.size === null ? '100%' : this.props.size
+                    ,height:this.props.height === null ? '100%' : this.props.height}}
                           elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
@@ -370,7 +378,7 @@ class PostCard extends React.Component {
                                     </Typography>
                                 </Link>
                             </CardContent>
-                        {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
+                        {post.blog_type === 0 ? <PostImage image={post.blog_content.images} /> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
