@@ -71,6 +71,18 @@ export const forbidReportedUser = (data, callback) => {
     putRequest_json(url, null, data, callback);
 };
 
+export const unBanReportedUser = (id, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/unban`;
+    const param = {user_id: id};
+    putRequest_json(url, null, param, callback);
+};
+
+export const unForbidReportedUser = (id, callback) => {
+    const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/permit`;
+    const param = {user_id: id};
+    putRequest_json(url, null, param, callback);
+};
+
 export const permitBannedUser = (data, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/unban`;
     putRequest_json(url, null, data, callback);

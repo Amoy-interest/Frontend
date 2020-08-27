@@ -8,6 +8,7 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import {Link} from "react-router-dom";
 import AdminUserDialog from "../dialogs/AdminUserDialog";
 import Typography from "@material-ui/core/Typography";
+import AdminUserUnManageDialog from "../dialogs/AdminUserUnManageDialog";
 
 const styles = ((theme) => ({
     number: {
@@ -96,7 +97,7 @@ class AdminUnBanList extends React.Component{
             {
                 icon: RestoreIcon,
                 tooltip: '解除禁言',
-                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.FORBID_USR, rowData.user_id)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.UN_BAN_USR, rowData.user_id)
             },
             {
                 icon: 'refresh',
@@ -126,7 +127,7 @@ class AdminUnBanList extends React.Component{
                 {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <MaterialTable
-                    title="用户管理"
+                    title="用户解禁管理"
                     tableRef={tableRef}
                     columns={columns}
                     data={this.loadData}
@@ -134,7 +135,7 @@ class AdminUnBanList extends React.Component{
                     actions={actions}
                     options={options}
                 />
-                <AdminUserDialog/>
+                <AdminUserUnManageDialog/>
             </div>
 
         )

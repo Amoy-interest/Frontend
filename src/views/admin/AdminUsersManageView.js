@@ -4,6 +4,9 @@ import AdminSideBar from "../../components/admin/AdminSideBar";
 import AdminUserList from "../../components/admin/tables/AdminUserList";
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core";
+import {Route, Switch} from "react-router-dom";
+import AdminUnBanList from "../../components/admin/tables/AdminUnBanList";
+import AdminUnForbidList from "../../components/admin/tables/AdminUnForbidList";
 
 const styles = ((theme) => ({
     root: {
@@ -31,7 +34,18 @@ class AdminUsersManageView extends Component{
                                 <AdminSideBar index={0}/>
                             </Grid>
                             <Grid item xs>
-                                <AdminUserList/>
+                                {/*<AdminUserList/>*/}
+                                <Switch>
+                                    <Route
+                                        exact path="/users-manage/cancel_ban"
+                                        component={AdminUnBanList}
+                                    />
+                                    <Route
+                                        exact path="/users-manage/cancel_forbid"
+                                        component={AdminUnForbidList}
+                                    />
+                                    <Route component={AdminUserList}/>
+                                </Switch>
                             </Grid>
                         </Grid>
                     </Paper>

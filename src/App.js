@@ -30,6 +30,7 @@ import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
 import TestAliView from "./views/TestAliView";
 import TestComponentView from "./views/TestComponentView";
+import List from "@material-ui/core/List";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -103,7 +104,10 @@ function App(props) {
                             '/topics-manage',
                             '/sensWords-manage',
                             '/post-detail',
-                            '/search'
+                            '/search',
+                            '/users-manage/ban',
+                            '/users-manage/cancel_ban',
+                            '/users-manage/cancel_forbid'
                         ]}
                         component={
                             (props.role === UserType.VISITOR && HeaderPre) || HeaderAfterLogIn
@@ -125,6 +129,9 @@ function App(props) {
                                 <PrivateRoute path="/post-detail" component={PostDetailView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/search" component={PostSearchView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute exact path="/users-manage/ban" component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute exact path="/users-manage/cancel_ban" component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
+                                <PrivateRoute exact path="/users-manage/cancel_forbid" component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/posts-manage' component={AdminPostsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/topics-manage' component={AdminTopicsManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute path='/sensWords-manage' component={AdminSensWordsManageView} authority={AuthorityLevel.ADMIN}/>

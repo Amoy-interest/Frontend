@@ -61,8 +61,9 @@ const MsgType = {
     ADMIN: {
         REFRESH_TABLE: 'refreshTable',
         FORBID_USR: 'forbidUser',
+        UN_FORBID_USR: 'unForbidUser',
         BAN_USR: 'banUser',
-        UNBAN_USR:'unbanUser',
+        UN_BAN_USR: 'unBanUser',
         PERMIT_USR:'permitUser',
         DELETE_POST:'deletePost',
         PASS_POST:'passPost',

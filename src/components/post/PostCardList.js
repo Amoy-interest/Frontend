@@ -124,6 +124,7 @@ class PostCardList extends Component {
     };
 
     addPost = () => {
+        console.log("add post f")
         if (this.props.index === PostType.OWN) {
             const param = this.props.location.search.split('&');
             const user_id = param[0].substr(4);

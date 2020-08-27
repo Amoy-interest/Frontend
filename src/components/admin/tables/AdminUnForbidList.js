@@ -3,10 +3,10 @@ import MaterialTable from 'material-table';
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../../utils/constants";
 import {withStyles} from "@material-ui/styles";
-import {getBanUsers, getForbidUsers, searchBanUsers, searchForbidUsers} from "../../../service/AdminService";
+import {getForbidUsers, searchForbidUsers} from "../../../service/AdminService";
 import RestoreIcon from '@material-ui/icons/Restore';
 import {Link} from "react-router-dom";
-import AdminUserDialog from "../dialogs/AdminUserDialog";
+import AdminUserUnManageDialog from "../dialogs/AdminUserUnManageDialog";
 import Typography from "@material-ui/core/Typography";
 
 const styles = ((theme) => ({
@@ -85,18 +85,13 @@ class AdminUnForbidList extends React.Component{
                             {new Date(rowData.forbidden_time).Format("yyyy-MM-dd hh:mm:ss")}
                         </Typography>
                     )}
-            },
-            {
-                title: '封号原因（举报原因）',
-                align: 'left',
-                emptyValue: '低俗，暴力，色情'
-            },
+            }
         ];
         const actions = [
             {
                 icon: RestoreIcon,
                 tooltip: '解除封号',
-                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.FORBID_USR, rowData.user_id)
+                onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.UN_FORBID_USR, rowData.user_id)
             },
             {
                 icon: 'refresh',
@@ -126,7 +121,7 @@ class AdminUnForbidList extends React.Component{
                 {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <MaterialTable
-                    title="用户管理"
+                    title="用户解封管理"
                     tableRef={tableRef}
                     columns={columns}
                     data={this.loadData}
@@ -134,7 +129,7 @@ class AdminUnForbidList extends React.Component{
                     actions={actions}
                     options={options}
                 />
-                <AdminUserDialog/>
+                <AdminUserUnManageDialog/>
             </div>
 
         )
