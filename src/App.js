@@ -137,7 +137,7 @@ function App(props) {
                 <Message
                     messageOpen={message.open}
                     autoHideDuration={1000}
-                    handleClose={() => setMessage({open: false})}
+                    handleClose={() => setMessage({open: false, type: message.type})}
                     type={message.type}
                     text={message.text}
                 />

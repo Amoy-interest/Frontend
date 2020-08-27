@@ -7,7 +7,7 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Modal from '@material-ui/core/Modal';
 import LoginForm from "../signIn/LoginForm";
-import TestSearchBar from "./TestSearchBar";
+import SearchBar from "./SearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "./Logo";
 import {withStyles} from "@material-ui/styles";
@@ -113,7 +113,7 @@ class HeaderPre extends React.Component{
                 <AppBar position="static" className={classes.bar}>
                     <Toolbar>
                         <Logo title="Amoy Interest"/>
-                        <TestSearchBar history={this.props.history}/>
+                        <SearchBar history={this.props.history}/>
                         <div className={classes.blank}/>
                         <div className={classes.sectionDesktop}>
                             <Tooltip title="登陆">

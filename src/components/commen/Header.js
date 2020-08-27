@@ -9,13 +9,12 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import Tooltip from '@material-ui/core/Tooltip';
 import * as userService from "../../service/UserService";
 import Logo from "./Logo";
-import SearchBar from "./SearchBar";
 import {connect} from "react-redux";
 import {UserType} from "../../utils/constants";
 import TrackChangesIcon from "@material-ui/icons/TrackChanges";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {amber} from "@material-ui/core/colors";
-import TestSearchBar from "./TestSearchBar";
+import SearchBar from "./SearchBar";
 import {withStyles} from "@material-ui/styles";
 import Background from "../../assets/img/background6.png";
 
@@ -103,7 +102,7 @@ class Header extends React.Component{
                         {role === UserType.ADMIN?
                             <Logo title={'Amoy Interest Management'}/>:
                             <Logo title={'Amoy Interest'}/>}
-                            <TestSearchBar history={this.props.history}/>
+                            <SearchBar history={this.props.history}/>
                         <div className={classes.blank}/>
                         {role === UserType.CUSTOMER ?
                             <Tooltip title="发现">

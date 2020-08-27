@@ -1,7 +1,6 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -55,9 +54,13 @@ function LoginForm(props){
         userService.login(values, (data) => {
             console.log(data);
             if (data.status !== 200) {
-                console.log(data.msg);
-                PubSub.publish(MsgType.SET_MESSAGE, {
-                    text: "登陆失败！", type: MessageType.ERROR});
+                // console.log(data.msg);
+                if (data.status === 401)
+                    PubSub.publish(MsgType.SET_MESSAGE, {
+                        text: "账号或密码错误！", type: MessageType.ERROR});
+                else
+                    PubSub.publish(MsgType.SET_MESSAGE, {
+                        text: "登陆失败！", type: MessageType.ERROR});
                 return;
             }
             PubSub.publish(MsgType.SET_MESSAGE, {
