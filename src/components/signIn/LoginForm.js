@@ -57,7 +57,7 @@ function LoginForm(props){
                 // console.log(data.msg);
                 if (data.status === 401)
                     PubSub.publish(MsgType.SET_MESSAGE, {
-                        text: "账号或密码错误！", type: MessageType.ERROR});
+                        text: data.msg, type: MessageType.ERROR});
                 else
                     PubSub.publish(MsgType.SET_MESSAGE, {
                         text: "登陆失败！", type: MessageType.ERROR});

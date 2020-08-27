@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 import {getTopicPosts} from "../../service/TopicService";
-import {PostType, MsgType} from "../../utils/constants";
+import {PostType, MsgType, MessageType} from "../../utils/constants";
 import PubSub from "pubsub-js";
 import AdminUserDialog from "../admin/dialogs/AdminUserDialog";
 import {randomNum} from "../../utils/methods";
@@ -49,8 +49,7 @@ class PostCardList extends Component {
         const callback = (data) => {
             if (data.status !== 200) {
                 console.log(data);
-                PubSub.publish(MsgType.SET_MESSAGE, {
-                    open: true, text: data.msg, type: 'error'});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "获取博文失败！", type: MessageType.ERROR});
                 return;
             }
             this.setState({
@@ -63,6 +62,21 @@ class PostCardList extends Component {
         const params = {
             pageNum: this.state.nextHref,
             pageSize: this.state.pageSize
+        };
+
+        const callback_recommend = (data) => {
+            if (data.status !== 200) {
+                console.log(data);
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "获取推荐博文失败！", type: MessageType.ERROR});
+                return;
+            }
+            this.setState({
+                posts: [...this.state.posts, ...data.data],
+            })
+        };
+
+        const params_recommend = {
+            limit_count: 5
         };
 
         switch (this.props.index) {
@@ -88,7 +102,7 @@ class PostCardList extends Component {
                 searchPosts(params, callback);
                 break;
             case PostType.RANDOM: default:
-                getRandomPosts(params, callback);
+                getRandomPosts(params_recommend, callback_recommend);
                 break;
         }
     }

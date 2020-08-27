@@ -66,7 +66,11 @@ class PostForm extends React.Component{
         let urls = await oss.putObjects(this.state.fileList);
         makePost(values.content, urls, values.tag, (data) => {
             console.log("callback_own", data);
-            if (data.status !== 200) {
+            if (data.status === 402){
+                PubSub.publish(MsgType.SET_MESSAGE, {text: data.msg, type: MessageType.ERROR});
+                this.setState({isUploading: false});
+            }
+            else if (data.status !== 200) {
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "发博失败！", type: MessageType.ERROR});
                 this.setState({isUploading: false});
             }
@@ -90,7 +94,9 @@ class PostForm extends React.Component{
             // close modal
             this.props.closeModal();
 
-            if (data.status !== 200)
+            if (data.status === 402)
+                PubSub.publish(MsgType.SET_MESSAGE, {text: "该博文含有敏感词！发博失败！", type: MessageType.ERROR});
+            else if (data.status !== 200)
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "转发失败！", type: MessageType.ERROR});
             else {
                 // send messages and display new post

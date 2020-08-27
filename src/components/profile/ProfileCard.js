@@ -24,6 +24,8 @@ import Modal from "@material-ui/core/Modal";
 import ProfileEditForm from "./ProfileEditForm";
 import * as userService from "../../service/UserService";
 import PubSub from "pubsub-js";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import PostReportForm from "../commen/PostReportForm";
 
 const styles = ((theme) => ({
     background: {
@@ -98,12 +100,16 @@ function getModalStyle() {
 class ProfileCard extends React.Component {
     constructor(props) {
         super(props);
+        const param = props.location.search.split('&');
+        const user_id = param[0].substr(4);
+
         this.state = {
             userInfo: null,
             anchorEl: null,
             followed: false,
             userCount: null,
             editModalOpen: false,
+            reportModalOpen: false
         };
     }
 
@@ -117,8 +123,8 @@ class ProfileCard extends React.Component {
     }
 
     componentDidMount() {
-        //console.log("ProfileCard componentDidMount", this.props.history);
         this.update(this.props);
+        //console.log("ProfileCard componentDidMount", this.props.history);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
@@ -182,51 +188,30 @@ class ProfileCard extends React.Component {
         unfollow(this.state.userInfo.user_id, callback);
     };
 
+    handleReport = () => {
+
+    }
+
     render() {
         const {classes} = this.props;
-        const {anchorEl, userInfo, followed, userCount, editModalOpen} = this.state;
+        const {anchorEl, userInfo, followed, userCount, editModalOpen, reportModalOpen} = this.state;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'primary-search-account-menu';
-        const renderMenu = (
-            <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                id={menuId}
-                keepMounted
-                transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                open={isMenuOpen}
-                onClose={this.handleMenuClose}
-            >
-                {this.props.role === UserType.ADMIN ?
-                    <React.Fragment>
-                        <MenuItem onClick={() => {
-                            this.handleMenuClose();
-                            PubSub.publish(MsgType.ADMIN.BAN_USR, userInfo.user_id)
-                        }}><MicOffIcon
-                            color={"secondary"}/>禁言</MenuItem>
-                        <MenuItem onClick={() => {
-                            this.handleMenuClose();
-                            PubSub.publish(MsgType.ADMIN.FORBID_USR, userInfo.user_id)
-                        }}><BlockIcon
-                            color={"secondary"}/>封号</MenuItem>
-                    </React.Fragment>
-                    :
-                    <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>}
-            </Menu>
-        );
+
         if (this.state.userInfo === null) return <div>Loading...</div>;
         else {
             return (
                 <Card className={classes.root}>
                     <div className={classes.background}>
-                        {userInfo.user_id !== this.props.user.user.user_id && this.props.role !== UserType.ADMIN ? null :
+                        {/*{userInfo.user_id !== this.props.user.user.user_id && this.props.role !== UserType.ADMIN ? null :*/}
                             <CardHeader
                                 action={
                                     <IconButton onClick={this.handleProfileMenuOpen} aria-label="settings">
                                         <MoreVertIcon/>
                                     </IconButton>
                                 }
-                            />}
+                            />
+                        {/* } */}
                         <CardContent className={classes.content}>
                             <Grid container spacing={1}>
                                 <Grid item xs={4}>
@@ -253,7 +238,6 @@ class ProfileCard extends React.Component {
                                     <Grid container spacing={2}>
                                         <Grid item xs>
                                         </Grid>
-
                                         <Grid item xs>
                                             <Button variant="contained" color="primary"
                                                     onClick={followed ? this.handleUnFollow : this.handleFollow}>
@@ -269,13 +253,46 @@ class ProfileCard extends React.Component {
                                 </div>
                             }
                         </CardContent>
-                        {renderMenu}
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                            id={menuId}
+                            keepMounted
+                            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                            open={isMenuOpen}
+                            onClose={this.handleMenuClose}
+                        >
+                            {this.props.role === UserType.ADMIN ?
+                                <React.Fragment>
+                                    <MenuItem onClick={() => {
+                                        this.handleMenuClose();
+                                        console.log(userInfo)
+                                        PubSub.publish(MsgType.ADMIN.BAN_USR, userInfo.user_id)
+                                    }}>
+                                        <MicOffIcon color={"secondary"}/>禁言</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        this.handleMenuClose();
+                                        PubSub.publish(MsgType.ADMIN.FORBID_USR, userInfo.user_id)
+                                    }}>
+                                        <BlockIcon color={"secondary"}/>封号</MenuItem>
+                                </React.Fragment>
+                                : userInfo.user_id !== this.props.user.user.user_id ?
+                                    <MenuItem onClick={this.handleReport}><ErrorOutlineIcon color='primary'/>举报</MenuItem> :
+                                    <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>}
+                        </Menu>
                         <Modal open={editModalOpen} onClose={this.handleModalClose}>
                             <div style={getModalStyle()} className={classes.paper}>
                                 <Paper className={classes.editModal}>
                                     <ProfileEditForm user={userInfo} submit={this.handleSubmit}/>
                                 </Paper>
                             </div>
+                        </Modal>
+                        <Modal open={reportModalOpen} onClose={() => {this.setState({reportModalOpen: false})}}>
+                            {/*<div style={getModalStyle()} className={classes.paper}>*/}
+                            {/*    <Paper className={classes.reportModal}>*/}
+                            {/*        <PostReportForm type="user" id={this.state.post.blog_id}/>*/}
+                            {/*    </Paper>*/}
+                            {/*</div>*/}
                         </Modal>
                     </div>
                 </Card>

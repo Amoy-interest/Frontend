@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/styles";
 import AdminTopicDialog from "../dialogs/AdminTopicDialog";
 import {Link} from "react-router-dom";
+import AdminAddTopicDialog from "../dialogs/AdminAddTopicDialog";
 
 const styles = ((theme) => ({
     name: {
@@ -114,6 +115,12 @@ class AdminTopicList extends React.Component{
         ];
         const actions = [
             {
+                icon: 'add',
+                tooltip: '添加话题',
+                isFreeAction: true,
+                onClick: () => PubSub.publish(MsgType.ADMIN.ADD_TOPIC, null)
+            },
+            {
                 icon: DoubleArrowIcon,
                 tooltip: '通过话题',
                 onClick: (event, rowData) => PubSub.publish(MsgType.ADMIN.PASS_TOPIC, rowData.name)
@@ -160,6 +167,7 @@ class AdminTopicList extends React.Component{
                     options={options}
                 />
                 <AdminTopicDialog/>
+                <AdminAddTopicDialog/>
             </div>
         )
     }

@@ -13,11 +13,10 @@ export const login = (data, callback) => {
 
 export const logout = () => {
     const url = `${apiUrl}${APIModules.USER}/logout`;
-    getRequest(url, null, () => {
-        PubSub.publish(MsgType.SET_MESSAGE, { text: "登出成功！", type: MessageType.SUCCESS});
-        store.dispatch(removeToken());
-        store.dispatch(removeUser());
-    });
+    PubSub.publish(MsgType.SET_MESSAGE, { text: "登出成功！", type: MessageType.SUCCESS});
+    store.dispatch(removeToken());
+    store.dispatch(removeUser());
+    getRequest(url, null, () => {});
 };
 
 export const register = (data, callback) => {
@@ -66,5 +65,14 @@ export const getFollows = (params, callback) => {
 export const editProfile = (params, callback) => {
     const url = `${apiUrl}${APIModules.USER}`;
     putRequest_json(url, null,params, callback);
+};
+
+export const reportUsr = (id, report_reason, callback) => {
+    const url = `${apiUrl}${APIModules.USER}/report`;
+    const data = {
+        user_id: id,
+        report_reason: report_reason
+    }
+    postRequest_json(url, null, data, callback);
 };
 

@@ -96,6 +96,11 @@ export const addSenseWord = (data, callback) => {
     postRequest_json(url, data, null, callback);
 };
 
+export const addTopic = (data, callback) => {
+    const url = `${apiUrl}${APIModules.TOPIC}`;
+    postRequest_json(url, null, data, callback);
+};
+
 
 
 

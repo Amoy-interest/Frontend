@@ -67,6 +67,7 @@ const MsgType = {
         DELETE_POST:'deletePost',
         PASS_POST:'passPost',
         PASS_TOPIC:'passTopic',
+        ADD_TOPIC:'addTopic',
         DELETE_TOPIC:'deleteTopic',
         EDIT_SENSE_WORD:'editSenseWord',
         DELETE_SENSE_WORD:'deleteSenseWord',

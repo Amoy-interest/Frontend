@@ -55,9 +55,9 @@ export const searchPosts = (params, callback) => {
     getRequest(url, params, callback);
 };
 
-export const getRecommendPosts = (params, callback) => {
+export const getRecommendPosts = (param, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/recommend`;
-    getRequest(url, params, callback);
+    getRequest(url, param, callback);
 };
 
 export const getRandomPosts = (params, callback) => {

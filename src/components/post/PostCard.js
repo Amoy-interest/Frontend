@@ -35,7 +35,7 @@ import BlockIcon from "@material-ui/icons/Block";
 import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
-import PostReportForm from "./PostReportForm";
+import PostReportForm from "../commen/PostReportForm";
 import { styled } from '@material-ui/core/styles';
 
 const styles = (theme => ({
@@ -260,8 +260,9 @@ class PostCard extends React.Component {
     };
 
     handleDeletePost = () => {
-        const callback = () => {
+        const callback = (data) => {
             this.handleMenuClose();
+            console.log(data);
             this.props.delete(this.props.index);
         };
         deletePost(this.state.post.blog_id, callback);
@@ -458,7 +459,7 @@ class PostCard extends React.Component {
                     <Modal open={reportModalOpen} onClose={() => {this.setState({reportModalOpen: false})}}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.reportModal}>
-                                <PostReportForm id={this.state.post.blog_id}/>
+                                <PostReportForm type="post" id={this.state.post.blog_id}/>
                             </Paper>
                         </div>
                     </Modal>
