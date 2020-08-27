@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostDetail from "../../components/post/PostDetail";
+import SimilarPostsList from "../../components/recommend/SimilarPostsList";
 
 const styles = ((theme) => ({
     root: {
@@ -24,7 +25,8 @@ class PostDetailView extends Component {
                             <PostDetail {...this.props}/>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            <HotSearchList/>
+                            {/*<HotSearchList/>*/}
+                            <SimilarPostsList {...this.props}/>
                         </Grid>
                     </Grid>
                 </Paper>

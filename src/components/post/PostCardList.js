@@ -64,21 +64,6 @@ class PostCardList extends Component {
             pageSize: this.state.pageSize
         };
 
-        const callback_recommend = (data) => {
-            if (data.status !== 200) {
-                console.log(data);
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "获取推荐博文失败！", type: MessageType.ERROR});
-                return;
-            }
-            this.setState({
-                posts: [...this.state.posts, ...data.data],
-            })
-        };
-
-        const params_recommend = {
-            limit_count: 5
-        };
-
         switch (this.props.index) {
             case PostType.RECOMMEND:
                 getRecommendPosts(params, callback);
@@ -102,7 +87,7 @@ class PostCardList extends Component {
                 searchPosts(params, callback);
                 break;
             case PostType.RANDOM: default:
-                getRandomPosts(params_recommend, callback_recommend);
+                getRandomPosts(params, callback);
                 break;
         }
     }

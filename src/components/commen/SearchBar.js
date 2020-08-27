@@ -86,7 +86,7 @@ class SearchBar extends React.Component {
     handleChange = (event, newInputValue) => {
         this.setState({keyword: newInputValue, inputValue: newInputValue})
         const params = {
-            pageNum: 1,
+            pageNum: 0,
             pageSize: 4,
             keyword: newInputValue
         };

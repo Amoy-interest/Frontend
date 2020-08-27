@@ -15,7 +15,7 @@ const styles = ((theme) => ({
         display: 'inline',
     },
     button: {
-        marginLeft:theme.spacing(40)
+        marginLeft:theme.spacing(25)
     },
     item:{
         marginTop:theme.spacing(1)
@@ -34,7 +34,8 @@ class UserItem extends Component{
             userInfo: this.props.user,
             followed: this.props.user._follow
         }
-    }
+    };
+
     handleFollow = () => {
         const callback = () => {
             this.setState({followed: true});
