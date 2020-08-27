@@ -25,7 +25,7 @@ import ProfileEditForm from "./ProfileEditForm";
 import * as userService from "../../service/UserService";
 import PubSub from "pubsub-js";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import PostReportForm from "../commen/PostReportForm";
+import ReportForm from "../commen/ReportForm";
 
 const styles = ((theme) => ({
     background: {
@@ -70,7 +70,7 @@ const styles = ((theme) => ({
         marginLeft: theme.spacing(2),
         marginBottom: 10
     },
-    editModal: {
+    modal: {
         padding: theme.spacing(1),
         //width: 500
     },
@@ -100,9 +100,6 @@ function getModalStyle() {
 class ProfileCard extends React.Component {
     constructor(props) {
         super(props);
-        const param = props.location.search.split('&');
-        const user_id = param[0].substr(4);
-
         this.state = {
             userInfo: null,
             anchorEl: null,
@@ -111,6 +108,9 @@ class ProfileCard extends React.Component {
             editModalOpen: false,
             reportModalOpen: false
         };
+        PubSub.subscribe(MsgType.REPORT_FINISHED, () => {
+            this.setState({reportModalOpen: false});
+        });
     }
 
     update(props) {
@@ -189,8 +189,9 @@ class ProfileCard extends React.Component {
     };
 
     handleReport = () => {
-
-    }
+        this.handleMenuClose();
+        this.setState({reportModalOpen: true});
+    };
 
     render() {
         const {classes} = this.props;
@@ -203,15 +204,13 @@ class ProfileCard extends React.Component {
             return (
                 <Card className={classes.root}>
                     <div className={classes.background}>
-                        {/*{userInfo.user_id !== this.props.user.user.user_id && this.props.role !== UserType.ADMIN ? null :*/}
-                            <CardHeader
-                                action={
-                                    <IconButton onClick={this.handleProfileMenuOpen} aria-label="settings">
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                }
-                            />
-                        {/* } */}
+                        <CardHeader
+                            action={
+                                <IconButton onClick={this.handleProfileMenuOpen} aria-label="settings">
+                                    <MoreVertIcon/>
+                                </IconButton>
+                            }
+                        />
                         <CardContent className={classes.content}>
                             <Grid container spacing={1}>
                                 <Grid item xs={4}>
@@ -282,17 +281,17 @@ class ProfileCard extends React.Component {
                         </Menu>
                         <Modal open={editModalOpen} onClose={this.handleModalClose}>
                             <div style={getModalStyle()} className={classes.paper}>
-                                <Paper className={classes.editModal}>
+                                <Paper className={classes.modal}>
                                     <ProfileEditForm user={userInfo} submit={this.handleSubmit}/>
                                 </Paper>
                             </div>
                         </Modal>
                         <Modal open={reportModalOpen} onClose={() => {this.setState({reportModalOpen: false})}}>
-                            {/*<div style={getModalStyle()} className={classes.paper}>*/}
-                            {/*    <Paper className={classes.reportModal}>*/}
-                            {/*        <PostReportForm type="user" id={this.state.post.blog_id}/>*/}
-                            {/*    </Paper>*/}
-                            {/*</div>*/}
+                            <div style={getModalStyle()} className={classes.paper}>
+                                <Paper className={classes.modal}>
+                                    <ReportForm type="user" id={userInfo.user_id}/>
+                                </Paper>
+                            </div>
                         </Modal>
                     </div>
                 </Card>

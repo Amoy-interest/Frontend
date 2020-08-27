@@ -23,7 +23,7 @@ const Type = {
     USER: "user"
 };
 
-export default function PostReportForm(props){
+export default function ReportForm(props){
     const classes = useStyles();
 
     const callback = (data) => {

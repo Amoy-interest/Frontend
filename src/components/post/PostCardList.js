@@ -153,7 +153,7 @@ class PostCardList extends Component {
                     hasMore={this.state.hasMoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                     key={this.state.key}
-                    initialLoad={false}
+                    // initialLoad={false}
                 >
                     <List>
                         {this.state.posts.map((item, value) => {
