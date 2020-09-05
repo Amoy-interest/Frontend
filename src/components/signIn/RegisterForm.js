@@ -70,7 +70,7 @@ function RegisterForm(props){
             console.log(data);
             if (data.status !== 200){
                 PubSub.publish(MsgType.SET_MESSAGE, {
-                    text: "注册失败！", type: MessageType.ERROR});
+                    text: data.msg, type: MessageType.ERROR});
                 return;
             }
 
@@ -145,7 +145,7 @@ function RegisterForm(props){
                                 <AIPickerField sm={6} name="sex" label="性别" array={sex}/>
                                 <AITextField sm={12} name="email" label="邮箱" type="email"/>
                                 <AITextField sm={12} name="address" label="地址"/>
-                                <AICheckField sm={12} name="check" label="I would love to receive recommendation"/>
+                                {/*<AICheckField sm={12} name="check" label="I would love to receive recommendation"/>*/}
                             </Grid>
                             <Button
                                 variant="contained"

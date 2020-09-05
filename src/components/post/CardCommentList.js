@@ -6,6 +6,8 @@ import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {getComments, postComment} from "../../service/PostService";
 import {Divider, List} from "@material-ui/core";
+import PubSub from "pubsub-js";
+import {MessageType, MsgType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -61,11 +63,16 @@ class CardCommentList extends React.Component {
             root_comment_id: 0,
             text: text.comment
         };
+        console.log(param)
         const callback = (data) => {
-            let comment = data.data;
-            const newComments = [comment, ...this.state.comments];
-            this.setState({comments: newComments});
-            this.props.addComment();
+            if (data.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.ERROR, text: data.msg});
+            else {
+                let comment = data.data;
+                const newComments = [comment, ...this.state.comments];
+                this.setState({comments: newComments});
+                this.props.addComment();
+            }
         };
         postComment(param, callback);
     };

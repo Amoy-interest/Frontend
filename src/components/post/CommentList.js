@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import CommentForm from "./CommentForm";
 import CommentItem, {CommentItemType} from "./CommentItem";
 import PubSub from "pubsub-js";
-import {MsgType} from "../../utils/constants";
+import {MessageType, MsgType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     item: {
@@ -75,14 +75,18 @@ class CommentList extends Component {
     submitComment = (text) => {
         const callback = (data) => {
             console.log(data);
-            this.setState({
-                comments: [data.data, ...this.state.comments],
-                key: this.state.key + 1
-                // key: Math.random().toString(36).substr(2)
-            });
-            PubSub.publish(MsgType.ADD_COMMENT);
-            //console.log(this.state);
+            if (data.status !== 200)
+                PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.ERROR, text: data.msg});
+            else {
+                this.setState({
+                    comments: [data.data, ...this.state.comments],
+                    key: this.state.key + 1
+                    // key: Math.random().toString(36).substr(2)
+                });
+                PubSub.publish(MsgType.ADD_COMMENT);
+            }
         };
+
         if (this.props.type === CommentListType.PRIMARY) {
             let param = {
                 blog_id: this.props.post.blog_id,
@@ -90,6 +94,7 @@ class CommentList extends Component {
                 root_comment_id: 0,
                 text: text.comment
             };
+            console.log(param)
             postComment(param, callback);
         } else {
             let param = {

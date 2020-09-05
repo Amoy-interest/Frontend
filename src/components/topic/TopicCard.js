@@ -110,6 +110,7 @@ class TopicCard extends React.Component {
 
     getTopicInfo(topic_name) {
         const callback = (data) => {
+            console.log(data)
             this.setState({
                 topic: data.data,
                 image: data.data.logo_path === null ? defaultImgUrl: data.data.logo_path,

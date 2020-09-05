@@ -72,7 +72,7 @@ export const reportUsr = (id, report_reason, callback) => {
     const data = {
         user_id: id,
         report_reason: report_reason
-    }
+    };
     postRequest_json(url, null, data, callback);
 };
 
