@@ -8,6 +8,7 @@ import CommentForm from "./CommentForm";
 import CommentItem, {CommentItemType} from "./CommentItem";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../utils/constants";
+import {randomNum} from "../../utils/methods";
 
 const styles = ((theme) => ({
     item: {
@@ -54,8 +55,8 @@ class CommentList extends Component {
             comments: [],
             hasMoreItems: true,
             nextHref: 0,
-            pageSize: 2,
-            key: props.key ? props.key : 0
+            pageSize: 5,
+            key: randomNum(1, 500)
         };
 
         //console.log("props", props);
@@ -151,7 +152,17 @@ class CommentList extends Component {
         }
 
     }
-
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
+        console.log("new post",nextProps);
+        this.setState({
+                comments: [],
+                hasMoreItems: true,
+                nextHref: 0,
+                pageSize: 5,
+                key: randomNum(1, 500)
+            }
+        );
+    };
 
     render() {
         const {classes} = this.props;

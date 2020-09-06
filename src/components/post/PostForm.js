@@ -37,7 +37,6 @@ const styles = ((theme) => ({
     },
     imgContainer: {
         height: 100
-
     },
     buttons: {
         display: 'flex',
@@ -48,9 +47,13 @@ const styles = ((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: theme.spacing(1)
+    },
+    chip: {
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(1)
     }
-
-
 }));
 const oss = new OssApi();
 
@@ -122,7 +125,9 @@ class PostForm extends React.Component{
     };
 
     addTopic=(topic)=>{
-        this.setState({topics:[...this.state.topics,topic]})
+        if (this.state.topics.length === 5)
+            PubSub.publish(MsgType.SET_MESSAGE, {text: "标签不能大于5个！", type: MessageType.INFO});
+        else this.setState({topics:[...this.state.topics,topic]})
     };
 
     uploadFiles = (files, images) => {
@@ -175,22 +180,19 @@ class PostForm extends React.Component{
                                             : null
                                     }
                                     {this.state.topics.length===0?null:
-                                        //<Grid item xs={12}>
-                                            <List className={classes.topics}>
+                                        <div className={classes.topics}>
                                                 {this.state.topics.map((item, index) => {
                                                     return (
-                                                        <ListItem key={index}>
-                                                            <Chip
-                                                                className={classes.chip}
-                                                                label={item}
-                                                                color="primary"
-                                                                onDelete={()=>this.handleDelete(index)}
-                                                            />
-                                                        </ListItem>
+                                                        <Chip
+                                                            key={index}
+                                                            className={classes.chip}
+                                                            label={item}
+                                                            color="primary"
+                                                            onDelete={()=>this.handleDelete(index)}
+                                                        />
                                                     );
                                                 })}
-                                            </List>
-                                        //</Grid>
+                                        </div>
                                     }
                                     <Grid item xs={12} sm={12}>
                                         {/*<div className={classes.imgContainer}>*/}

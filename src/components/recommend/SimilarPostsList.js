@@ -37,7 +37,7 @@ class SimilarPostsList extends React.Component {
     getPosts(props) {
         const arr = props.location.search.split('&');
         const blogId = arr[0].substr(4);
-        let param = {blog_id: blogId,limit_count:8};
+        let param = {blog_id: blogId,limit_count:4};
         const callback = (data) => {
             if (data.status !== 200)
                 PubSub.publish(MsgType.SET_MESSAGE, {
