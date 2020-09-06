@@ -47,7 +47,7 @@ const styles = ((theme) => ({
         //paddingTop: 40,
     },
     media: {
-        height: 80,
+        height: 100,
         width: 120,
         marginLeft: 5
     },

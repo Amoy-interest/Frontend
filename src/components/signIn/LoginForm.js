@@ -54,13 +54,8 @@ function LoginForm(props){
         userService.login(values, (data) => {
             console.log(data);
             if (data.status !== 200) {
-                // console.log(data.msg);
-                if (data.status === 401)
-                    PubSub.publish(MsgType.SET_MESSAGE, {
-                        text: data.msg, type: MessageType.ERROR});
-                else
-                    PubSub.publish(MsgType.SET_MESSAGE, {
-                        text: "登陆失败！", type: MessageType.ERROR});
+                PubSub.publish(MsgType.SET_MESSAGE, {
+                    text: data.msg, type: MessageType.ERROR});
                 return;
             }
             PubSub.publish(MsgType.SET_MESSAGE, {

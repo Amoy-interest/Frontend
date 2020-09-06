@@ -31,7 +31,13 @@ export default function PostImage(props) {
                               (imageCount >= 2 && imageCount <= 4 && 6) ||
                               (imageCount >= 5 && imageCount <= 9 && 4)
                         }>
-                            <img className={classes.image} style={{maxHeight:props.height?props.height:600}} src={item} alt={''}/>
+                            <img
+                                referrer="no-referrer|origin|unsafe-url"
+                                className={classes.image}
+                                style={{maxHeight:props.height?props.height:600}}
+                                src={item}
+                                alt={''}
+                            />
                         </Grid>
                     );
                 })}

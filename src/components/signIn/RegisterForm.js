@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(4),
+        opacity: 0.9
         //width:'450px'
     },
     avatar: {
@@ -112,12 +113,12 @@ function RegisterForm(props){
 
     return (
         <Container component="main" maxWidth="xs">
-            <Paper elevation={3} className={classes.paper}>
+            <Paper elevation={0} className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    注册账号
+                    注册
                 </Typography>
                 <Formik
                     initialValues={{

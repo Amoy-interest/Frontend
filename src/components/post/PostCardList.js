@@ -40,7 +40,7 @@ class PostCardList extends Component {
             pageSize: 2,
             key: randomNum(0, 500)
         };
-        console.log(this.state.key)
+        window.scrollTo(0,0);
         this.loadMore = this.loadMore.bind(this);
         PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
             this.addPost(data);
@@ -51,7 +51,8 @@ class PostCardList extends Component {
         const callback = (data) => {
             if (data.status !== 200) {
                 console.log(data);
-                PubSub.publish(MsgType.SET_MESSAGE, {text: "获取博文失败！", type: MessageType.ERROR});
+                this.setState({hasMoreItems: false});
+                PubSub.publish(MsgType.SET_MESSAGE, {text: data.msg, type: MessageType.ERROR});
                 return;
             }
             this.setState({
@@ -98,6 +99,7 @@ class PostCardList extends Component {
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         console.log("UNSAFE_componentWillReceiveProps, key = ", this.state.key);
         console.log(nextProps, nextContext);
+        window.scrollTo(0,0);
         this.setState({
             posts: [],
             hasMoreItems: true,

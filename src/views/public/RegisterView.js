@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import RegisterForm from "../../components/signIn/RegisterForm";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Background from "../../assets/img/background5.png";
+import Background from "../../assets/img/background7.jpg";
 import {amber} from "@material-ui/core/colors";
 const styles = ((theme) => ({
     root: {

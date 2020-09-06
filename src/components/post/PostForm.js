@@ -62,7 +62,7 @@ class PostForm extends React.Component{
         this.state = {
             fileList: [],
             images: [],
-            topics:[],
+            topics: this.props.tag? [this.props.tag]:[],
             isUploading: false
         };
         PubSub.subscribe(MsgType.ERROR_UPLOAD, (msg, data) => {
@@ -87,7 +87,11 @@ class PostForm extends React.Component{
             else {
                 // clear form and upload
                 resetForm();
-                this.setState({fileList: [],images: []});
+                this.setState({
+                    fileList: [],
+                    images: [],
+                    topics: this.props.tag? [this.props.tag]:[]
+                });
                 PubSub.publish(MsgType.CLEAR_UPLOAD, null);
 
                 // send messages and display new post
@@ -137,7 +141,6 @@ class PostForm extends React.Component{
     render() {
         const classes = this.props.classes;
         const type = this.props.type ? this.props.type : PostType.OWN;
-        const tag = this.props.tag ? this.props.tag : '';
 
         return (
             <Container component="main" maxWidth="lg">
@@ -148,7 +151,6 @@ class PostForm extends React.Component{
                     <Formik
                         initialValues={{
                             content: '',
-                            tag: tag
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
