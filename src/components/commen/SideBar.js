@@ -49,9 +49,9 @@ class SideBar extends React.Component{
                     className={classes.tabs}
                 >
                     <Tab className={classes.tab} label="热门" />
-                    <Tab className={classes.tab} label="社会" />
+                    <Tab className={classes.tab} label="校园" />
                     <Tab className={classes.tab} label="明星" />
-                    <Tab className={classes.tab} label="搞笑" />
+                    <Tab className={classes.tab} label="宠物" />
                     <Tab className={classes.tab} label="读书" />
                     <Tab className={classes.tab} label="摄影"  />
                     <Tab className={classes.tab} label="体育" />

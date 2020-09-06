@@ -75,7 +75,7 @@ class SimilarPostCard extends React.Component {
                                     {post.blog_content.text}
                                 </Typography>
                             </CardContent>
-                            <PostImage image={post.blog_content.images} height={150}/>
+                            <PostImage image={post.blog_content.images} height={300}/>
                         </Link>
                     </Card>
                 </div>

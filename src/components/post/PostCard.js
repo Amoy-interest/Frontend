@@ -301,7 +301,7 @@ class PostCard extends React.Component {
 
     render() {
         const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, reportModalOpen, forwardModalOpen, editModalOpen} = this.state;
-        const {classes} = this.props;
+        const {classes,type} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
@@ -391,7 +391,9 @@ class PostCard extends React.Component {
                                                 </Link>
                                             );})}
                                 </div>
-                                <Link style={{color: '#fff'}} to={{
+                                <Link
+                                      style={{color: '#fff'}}
+                                      to={{
                                     pathname: '/post-detail',
                                     search: '?id=' + post.blog_id
                                 }}>
@@ -399,10 +401,12 @@ class PostCard extends React.Component {
                                                 //component="p"
                                     >
                                         {text}
+                                    {/*<span style={{color:'#FF5722'}}>中文</span>*/}
                                     </Typography>
                                 </Link>
                             </CardContent>
-                        {post.blog_type === 0 ? <PostImage image={post.blog_content.images} /> :
+                        {post.blog_type === 0 ? type===PostCardType.DETAIL?<PostImage image={post.blog_content.images} height={900} />:
+                            <PostImage image={post.blog_content.images} /> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
