@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import SideBarForProfile from "../../components/profile/PofileSideBar";
 import Paper from "@material-ui/core/Paper";
-import HotSearchList from "../../components/hot/HotSearchList";
 import withStyles from "@material-ui/core/styles/withStyles";
 import SimilarUsersList from "../../components/recommend/SimilarUsersList";
 
@@ -30,15 +29,10 @@ class ProfileView extends Component {
                 <Paper elevation={0}>
                     <Grid container spacing={1}>
                         <Grid item xs={9}>
-                            <SideBarForProfile {...this.props}/>
+                            <SideBarForProfile location={this.props.location}/>
                         </Grid>
-                        {/*<Grid item xs={7}>*/}
-                        {/*    <ProfileCard {...this.props}/>*/}
-                        {/*    <PostCardList index={PostType.OWN} {...this.props}/>*/}
-                        {/*</Grid>*/}
                         <Grid item xs>
-                            {/*<HotSearchList/>*/}
-                            <SimilarUsersList {...this.props}/>
+                            <SimilarUsersList location={this.props.location}/>
                         </Grid>
                     </Grid>
                 </Paper>

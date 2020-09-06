@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import HotSearchList from "../../components/hot/HotSearchList";
 import PostDetail from "../../components/post/PostDetail";
 import SimilarPostsList from "../../components/recommend/SimilarPostsList";
 
@@ -22,11 +21,10 @@ class PostDetailView extends Component {
                 <Paper elevation={0} className={this.props.classes.root}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={9}>
-                            <PostDetail {...this.props}/>
+                            <PostDetail location={this.props.location}/>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            {/*<HotSearchList/>*/}
-                            <SimilarPostsList {...this.props}/>
+                            <SimilarPostsList location={this.props.location}/>
                         </Grid>
                     </Grid>
                 </Paper>

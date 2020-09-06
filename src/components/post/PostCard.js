@@ -281,6 +281,24 @@ class PostCard extends React.Component {
         deletePost(this.state.post.blog_id, callback);
     };
 
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
+        console.log("new post",nextProps);
+        this.setState({
+            voted: nextProps.post._vote,
+            forward: false,
+            voteCount: nextProps.post.blog_count.vote_count,
+            commentCount: nextProps.post.blog_count.comment_count,
+            forwardCount: nextProps.post.blog_count.forward_count,
+            text: nextProps.post.blog_content.text,
+            post: nextProps.post,
+            anchorEl: null,
+            expanded: false,
+            forwardModalOpen: false,
+            editModalOpen: false,
+            reportModalOpen: false,
+        });
+    };
+
     render() {
         const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, reportModalOpen, forwardModalOpen, editModalOpen} = this.state;
         const {classes} = this.props;

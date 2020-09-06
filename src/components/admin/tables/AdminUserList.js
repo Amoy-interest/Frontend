@@ -76,8 +76,8 @@ class AdminUserList extends React.Component{
                     )}
             },
             {
-                title: '信用值',
-                field: 'credits',
+                title: '举报数',
+                field: 'report_count',
                 align: 'left',
                 type: 'numeric'
             },

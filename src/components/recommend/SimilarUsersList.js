@@ -1,19 +1,16 @@
 import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {withStyles} from "@material-ui/core/styles";
 import {getSimilarUsers} from "../../service/RecommendService";
-import {Divider, Grid, List} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {MessageType, MsgType} from "../../utils/constants";
 import PubSub from "pubsub-js";
 import Paper from "@material-ui/core/Paper";
-import SimilarPostCard from "./SimilarPostCard";
 import Avatar from "@material-ui/core/Avatar";
 import {Link} from "react-router-dom";
 import {amber} from "@material-ui/core/colors";
 import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 
 const styles = ((theme) => ({
     root: {
@@ -84,7 +81,7 @@ class SimilarUsersList extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {posts, users} = this.state;
+        const {users} = this.state;
 
         return (
             <Paper>

@@ -38,11 +38,13 @@ class PostCardList extends Component {
             hasMoreItems: true,
             nextHref: 0,
             pageSize: 2,
-            key: randomNum(0, 100)
+            key: randomNum(0, 500)
         };
-
+        console.log(this.state.key)
         this.loadMore = this.loadMore.bind(this);
-        PubSub.subscribe(MsgType.ADD_POST, () => {this.addPost();});
+        PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
+            this.addPost(data);
+        });
     }
 
     loadMore() {
@@ -86,19 +88,22 @@ class PostCardList extends Component {
                 params.keyword = this.props.location.state.keyword;
                 searchPosts(params, callback);
                 break;
-            case PostType.RANDOM: default:
+            case PostType.RANDOM:
+            default:
                 getRandomPosts(params, callback);
                 break;
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
-        console.log("UNSAFE_componentWillReceiveProps");
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+        console.log("UNSAFE_componentWillReceiveProps, key = ", this.state.key);
+        console.log(nextProps, nextContext);
         this.setState({
             posts: [],
             hasMoreItems: true,
             nextHref: 0,
-            key: this.state.key + 1
+            // key: this.state.key + 1
+            key: randomNum(1, 500)
         })
     }
 
@@ -108,19 +113,16 @@ class PostCardList extends Component {
         };
     };
 
-    addPost = () => {
-        console.log("add post f")
+    addPost = (post) => {
         if (this.props.index === PostType.OWN) {
             const param = this.props.location.search.split('&');
             const user_id = param[0].substr(4);
-            if (this.props.user.user.user_id === user_id) {
-                this.setState({
-                    key: this.state.key + 1
-                });
-            }
+            if (this.props.user.user.user_id !== user_id) return;
         }
-        else this.setState({
-            key: this.state.key + 1
+
+        this.setState({
+            posts: [post, ...this.state.posts],
+            key: randomNum(1, 500),
         });
     };
 
@@ -148,10 +150,12 @@ class PostCardList extends Component {
                             return (
                                 <ListItem className={this.props.classes.item} key={`postCard-${value}`}>
                                     {(this.props.user.user === null || this.props.user.user.nickname !== nickname) ?
-                                        <PostCard key={item.blog_id} size={657} post={item} index={value} type={PostCardType.LIST}
+                                        <PostCard key={item.blog_id} size={657} post={item} index={value}
+                                                  type={PostCardType.LIST}
                                                   belong={PostCardBelong.OTHERS} addPost={this.addPost}
                                                   delete={this.deletePost}/> :
-                                        <PostCard key={item.blog_id}post={item} size={657} index={value} type={PostCardType.LIST}
+                                        <PostCard key={item.blog_id} post={item} size={657} index={value}
+                                                  type={PostCardType.LIST}
                                                   belong={PostCardBelong.PERSONAL} addPost={this.addPost}
                                                   delete={this.deletePost}/>}
                                 </ListItem>

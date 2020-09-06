@@ -30,7 +30,6 @@ import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
 import TestAliView from "./views/TestAliView";
 import TestComponentView from "./views/TestComponentView";
-import List from "@material-ui/core/List";
 
 const theme_user = createMuiTheme({
     palette: {

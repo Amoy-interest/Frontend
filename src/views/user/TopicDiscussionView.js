@@ -26,8 +26,8 @@ class TopicDiscussionView extends Component{
                         <SideBar/>
                     </Grid>
                     <Grid item xs={7}>
-                        <TopicCard {...this.props}/>
-                        <PostCardList {...this.props} index={PostType.TOPIC}/>
+                        <TopicCard location={this.props.location}/>
+                        <PostCardList location={this.props.location} index={PostType.TOPIC}/>
                     </Grid>
                     <Grid item>
                         <HotSearchList/>

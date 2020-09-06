@@ -38,6 +38,12 @@ class SimilarPostCard extends React.Component {
         };
     };
 
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
+        this.setState({
+            post: nextProps.post
+        });
+    };
+
     render() {
         const {post} = this.state;
         const {classes} = this.props;
