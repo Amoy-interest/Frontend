@@ -46,12 +46,17 @@ export const reportPost = (id, report_reason, callback) => {
     const data = {
         blog_id: id,
         report_reason: report_reason
-    }
+    };
     postRequest_json(url, null, data, callback);
 };
 
 export const searchPosts = (params, callback) => {
     const url = `${apiUrl}${APIModules.BLOG}/search`;
+    getRequest(url, params, callback);
+};
+
+export const getGroupPosts = (params, callback) => {
+    const url = `${apiUrl}${APIModules.TOPIC}${APIModules.BLOG}/group`;
     getRequest(url, params, callback);
 };
 

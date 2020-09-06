@@ -1,7 +1,7 @@
 const devUrl = 'http://52.90.204.208:8080';
 // const devUrl2='http://106.14.19.68';
 // const devUrl2='http://120.55.194.144:8082/';
-const devUrl3='http://106.14.19.68';
+const devUrl3 = 'http://106.14.19.68';
 const mockUrl = 'http://47.98.185.162:7300/mock/5f0eb1a258dbdc84af53cdbb/Amoy';
 const localUrl = 'http://localhost:8082';
 const apiUrl = devUrl3;
@@ -23,11 +23,11 @@ const APIModules = {
     ADMIN: '/admins',
     BLOG: '/blogs',
     TOPIC: '/topics',
-    COMMENTS:'/comments',
+    COMMENTS: '/comments',
     SENSITIVEWORD: '/keywords',
     ALI: '/aliyun',
     SEARCH: '/search',
-    SIM:'/sim',
+    SIM: '/sim',
 };
 
 const UserType = {
@@ -48,16 +48,17 @@ const PostType = {
     FOLLOW: 2,
     OWN: 3,
     FORWARD: 4,
-    TOPIC:5,
-    SEARCH:6,
-    SIMILAR:7
+    TOPIC: 5,
+    SEARCH: 6,
+    SIMILAR: 7,
+    GROUP: 8
 };
 
 const MsgType = {
     SET_MESSAGE: "setMessage",
     ADD_POST: "addPost",
-    ADD_COMMENT:"addComment",
-    DELETE_COMMENT:"deleteComment",
+    ADD_COMMENT: "addComment",
+    DELETE_COMMENT: "deleteComment",
     CLEAR_UPLOAD: 'clearUpload',
     ERROR_UPLOAD: 'errorUpload',
     REPORT_FINISHED: 'reportFinish',
@@ -67,15 +68,15 @@ const MsgType = {
         UN_FORBID_USR: 'unForbidUser',
         BAN_USR: 'banUser',
         UN_BAN_USR: 'unBanUser',
-        PERMIT_USR:'permitUser',
-        DELETE_POST:'deletePost',
-        PASS_POST:'passPost',
-        PASS_TOPIC:'passTopic',
-        ADD_TOPIC:'addTopic',
-        DELETE_TOPIC:'deleteTopic',
-        EDIT_SENSE_WORD:'editSenseWord',
-        DELETE_SENSE_WORD:'deleteSenseWord',
-        ADD_SENSE_WORD:'addSenseWord'
+        PERMIT_USR: 'permitUser',
+        DELETE_POST: 'deletePost',
+        PASS_POST: 'passPost',
+        PASS_TOPIC: 'passTopic',
+        ADD_TOPIC: 'addTopic',
+        DELETE_TOPIC: 'deleteTopic',
+        EDIT_SENSE_WORD: 'editSenseWord',
+        DELETE_SENSE_WORD: 'deleteSenseWord',
+        ADD_SENSE_WORD: 'addSenseWord'
     }
 };
 
@@ -86,9 +87,10 @@ const MessageType = {
     INFO: 'info'
 };
 
-export {apiUrl, mockUrl, devUrl, localUrl,
+export {
+    apiUrl, mockUrl, devUrl, localUrl,
     UserActionType, TokenActionType, APIModules,
-    UserType, AuthorityLevel,PostType,
+    UserType, AuthorityLevel, PostType,
     MsgType, MessageType, defaultImgUrl
 };
 

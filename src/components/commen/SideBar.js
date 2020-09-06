@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import withStyles from "@material-ui/core/styles/withStyles";
+import PubSub from "pubsub-js";
+import {UserType, MsgType, MessageType} from "../../utils/constants";
+import {makeStyles} from "@material-ui/styles";
+import {connect} from "react-redux";
+import {useHistory} from "react-router";
 
-const styles = ((theme) => ({
+const classes = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         marginTop:theme.spacing(2),
@@ -20,46 +24,56 @@ const styles = ((theme) => ({
     }
 }));
 
-@withStyles(styles)
-class SideBar extends React.Component{
+const content = ["热门", "校园", "明星", "宠物", "读书", "摄影", "体育", "动漫"];
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value:0
-        }
-    }
-
-    handleChange = (event, newValue) => {
-        this.setState({value:newValue});
-    };
-
-    render() {
-        const {classes}=this.props;
-        const {value}=this.state;
-        return (
-            <div className={classes.root}>
-                <Tabs
-                    orientation="vertical"
-                    //variant="scrollable"
-                    value={value}
-                    onChange={this.handleChange}
-                    aria-label="Vertical tabs example"
-                    className={classes.tabs}
-                >
-                    <Tab className={classes.tab} label="热门" />
-                    <Tab className={classes.tab} label="校园" />
-                    <Tab className={classes.tab} label="明星" />
-                    <Tab className={classes.tab} label="宠物" />
-                    <Tab className={classes.tab} label="读书" />
-                    <Tab className={classes.tab} label="摄影"  />
-                    <Tab className={classes.tab} label="体育" />
-                    <Tab className={classes.tab}label="动漫" />
-                </Tabs>
-            </div>
-        );
+function mapStateToProps(state) {
+    return {
+        role: state.userReducer.role,
     }
 }
 
-export default SideBar;
+function SideBar (props){
+
+    const [value, setValue] = useState(0);
+    const history = useHistory();
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        goto(newValue);
+    };
+
+    const goto = (value) => {
+        if (props.role === UserType.VISITOR) {
+            PubSub.publish(MsgType.SET_MESSAGE, {text: "请先登陆", type: MessageType.WARNING});
+        }
+        else {
+            history.push({pathname: '/group', state: {group_name: content[value], index: value}});
+        }
+    };
+
+    return (
+        <div className={classes.root}>
+            <Tabs
+                orientation="vertical"
+                //variant="scrollable"
+                value={value}
+                onChange={handleChange}
+                aria-label="Vertical tabs example"
+                className={classes.tabs}
+            >
+                {
+                    content.map((item) => {
+                        return (
+                            <Tab className={classes.tab} label={item}/>
+                        )
+                    })
+                }
+            </Tabs>
+        </div>
+        );
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(SideBar)

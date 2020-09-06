@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import PostCard, {PostCardBelong, PostCardType} from "./PostCard";
-import {getFollowPosts, getOwnPosts, getRandomPosts, getRecommendPosts, searchPosts} from "../../service/PostService";
+import {
+    getFollowPosts,
+    getGroupPosts,
+    getOwnPosts,
+    getRandomPosts,
+    getRecommendPosts,
+    searchPosts
+} from "../../service/PostService";
 import {List, ListItem} from "@material-ui/core";
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles";
@@ -89,6 +96,9 @@ class PostCardList extends Component {
                 params.keyword = this.props.location.state.keyword;
                 searchPosts(params, callback);
                 break;
+            case PostType.GROUP:
+                params.group_name = this.props.location.state.group_name;
+                getGroupPosts(params, callback);
             case PostType.RANDOM:
             default:
                 getRandomPosts(params, callback);
@@ -121,6 +131,7 @@ class PostCardList extends Component {
             const user_id = param[0].substr(4);
             if (this.props.user.user.user_id !== user_id) return;
         }
+        else if (this.props.index === PostType.SEARCH || this.props.index === PostType.GROUP) return;
 
         this.setState({
             posts: [post, ...this.state.posts],
