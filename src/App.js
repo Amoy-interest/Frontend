@@ -30,6 +30,7 @@ import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
 import TestAliView from "./views/TestAliView";
 import TestComponentView from "./views/TestComponentView";
+import PostGroupView from "./views/user/PostGroupView";
 
 const theme_user = createMuiTheme({
     palette: {
@@ -97,6 +98,7 @@ function App(props) {
                             '/home',
                             '/personal-info',
                             '/posts',
+                            '/group',
                             '/topic-discussion',
                             '/users-manage',
                             '/posts-manage',
@@ -127,6 +129,7 @@ function App(props) {
                                 <PrivateRoute path='/topic-discussion' component={TopicDiscussionView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/post-detail" component={PostDetailView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path="/search" component={PostSearchView} authority={AuthorityLevel.CUSTOMER}/>
+                                <PrivateRoute path="/group" component={PostGroupView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/users-manage' component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute exact path="/users-manage/ban" component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>
                                 <PrivateRoute exact path="/users-manage/cancel_ban" component={AdminUsersManageView} authority={AuthorityLevel.ADMIN}/>

@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import {fade} from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {connect} from "react-redux";
-import {MsgType, UserType} from "../../utils/constants";
+import {MessageType, MsgType, UserType} from "../../utils/constants";
 import PubSub from "pubsub-js";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {getPreSearch} from "../../service/SearchService";
@@ -94,21 +94,19 @@ class SearchBar extends React.Component {
             console.log(data);
             this.setState({keywords: data.data.list});
             console.log(this.state.keywords);
-        }
+        };
         if (params.keyword !== '' && this.props.role !== UserType.VISITOR)
             getPreSearch(params, callback);
     };
 
     goto = () => {
         if (this.props.role === UserType.VISITOR) {
-            PubSub.publish(MsgType.SET_MESSAGE, {
-                open: true, text: "请先登陆", type: 'warning'
-            });
-            return;
-        } else if (this.state.keyword) {
+            PubSub.publish(MsgType.SET_MESSAGE, {text: "请先登陆", type: MessageType.WARNING});
+        }
+        else if (this.state.keyword) {
             console.log(this.props);
             this.props.history.push({pathname: '/search', state: {keyword: this.state.keyword}});
-            this.setState({inputValue: ''});
+            this.setState({inputValue: '', keyword: null});
         }
     };
 
