@@ -14,6 +14,9 @@ import OssApi from "../../service/OssService";
 import PostImage from "./PostImage";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TopicSearchBar from "./TopicSearchBar";
+import {List, ListItem} from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
 
 const styles = ((theme) => ({
     paper: {
@@ -40,7 +43,14 @@ const styles = ((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    topics:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     }
+
+
 }));
 const oss = new OssApi();
 
@@ -52,6 +62,7 @@ class PostForm extends React.Component{
         this.state = {
             fileList: [],
             images: [],
+            topics:[],
             isUploading: false
         };
         PubSub.subscribe(MsgType.ERROR_UPLOAD, (msg, data) => {
@@ -64,7 +75,7 @@ class PostForm extends React.Component{
         this.setState({isUploading: true});
 
         let urls = await oss.putObjects(this.state.fileList);
-        makePost(values.content, urls, values.tag, (data) => {
+        makePost(values.content, urls, this.state.topics, (data) => {
             console.log("callback_own", data);
             if (data.status === 402){
                 PubSub.publish(MsgType.SET_MESSAGE, {text: data.msg, type: MessageType.ERROR});
@@ -107,11 +118,21 @@ class PostForm extends React.Component{
         forwardPost(this.props.postId, values.content, callbackForward);
     };
 
+    addTopic=(topic)=>{
+        this.setState({topics:[...this.state.topics,topic]})
+    };
+
     uploadFiles = (files, images) => {
         this.setState({
             fileList: files,
             images: images
         });
+    };
+
+    handleDelete=(index)=>{
+        let arr = this.state.topics;
+        arr.splice(index, 1);
+        this.setState({topics: arr});
     };
 
     render() {
@@ -143,11 +164,32 @@ class PostForm extends React.Component{
                         {({ submitForm, isSubmitting, handleReset }) => (
                             <Form className={classes.form}>
                                 <Grid container spacing={2}>
-                                    <AITextField sm={type === PostType.OWN ? 9:12} name="content" label="博文内容" multiline/>
+                                    <AITextField sm={type === PostType.OWN ? 8:12} name="content" label="博文内容" multiline/>
                                     {
                                         type === PostType.OWN ?
-                                            <AITextField sm={3} name="tag" label="标签" multiline/>
+                                            //<AITextField sm={3} name="tag" label="标签" multiline/>
+                                            <Grid item xs={4}>
+                                                <TopicSearchBar add={this.addTopic}/>
+                                            </Grid>
                                             : null
+                                    }
+                                    {this.state.topics.length===0?null:
+                                        //<Grid item xs={12}>
+                                            <List className={classes.topics}>
+                                                {this.state.topics.map((item, index) => {
+                                                    return (
+                                                        <ListItem key={index}>
+                                                            <Chip
+                                                                className={classes.chip}
+                                                                label={item}
+                                                                color="primary"
+                                                                onDelete={()=>this.handleDelete(index)}
+                                                            />
+                                                        </ListItem>
+                                                    );
+                                                })}
+                                            </List>
+                                        //</Grid>
                                     }
                                     <Grid item xs={12} sm={12}>
                                         {/*<div className={classes.imgContainer}>*/}
