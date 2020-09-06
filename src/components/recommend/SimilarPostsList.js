@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {withStyles} from "@material-ui/core/styles";
 import {getSimilarPosts} from "../../service/RecommendService";
-import {Divider, List} from "@material-ui/core";
+import {List} from "@material-ui/core";
 import {MessageType, MsgType} from "../../utils/constants";
 import PubSub from "pubsub-js";
 import Paper from "@material-ui/core/Paper";

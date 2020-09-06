@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import SideBarForProfile from "../../components/profile/PofileSideBar";
 import Paper from "@material-ui/core/Paper";
-import HotSearchList from "../../components/hot/HotSearchList";
 import withStyles from "@material-ui/core/styles/withStyles";
 import SimilarUsersList from "../../components/recommend/SimilarUsersList";
 

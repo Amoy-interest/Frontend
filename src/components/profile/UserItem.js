@@ -15,10 +15,13 @@ const styles = ((theme) => ({
         display: 'inline',
     },
     button: {
-        marginLeft:theme.spacing(25)
+        marginLeft:theme.spacing(20)
     },
     item:{
         marginTop:theme.spacing(1)
+    },
+    text:{
+        width:350
     },
     avatar:{
         backgroundColor:theme.palette.primary.main
@@ -65,6 +68,7 @@ class UserItem extends Component{
                     </Link>
                 </ListItemAvatar>
                 <ListItemText
+                    className={classes.text}
                     primary={userInfo.nickname}
                     secondary={
                         <React.Fragment>
