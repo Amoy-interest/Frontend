@@ -4,11 +4,11 @@ import 'element-theme-default';
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import ChildrenImage from '../../assets/img/children.png';
-import AnimalImage from '../../assets/img/animal.png';
-import FunImage from '../../assets/img/fun.png';
-import YummyImage from '../../assets/img/yummy.png';
-import NewsImage from '../../assets/img/news.png';
+import ChildrenImage from '../../assets/img/carousel/children.png';
+import AnimalImage from '../../assets/img/carousel/animal.png';
+import FunImage from '../../assets/img/carousel/fun.png';
+import YummyImage from '../../assets/img/carousel/yummy.png';
+import NewsImage from '../../assets/img/carousel/news.png';
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = ((theme) => ({
