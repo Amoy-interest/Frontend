@@ -47,7 +47,7 @@ class PostCardList extends Component {
             pageSize: 2,
             key: randomNum(0, 500)
         };
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         this.loadMore = this.loadMore.bind(this);
         PubSub.subscribe(MsgType.ADD_POST, (msg, data) => {
             this.addPost(data);
@@ -97,8 +97,12 @@ class PostCardList extends Component {
                 searchPosts(params, callback);
                 break;
             case PostType.GROUP:
-                params.group_name = this.props.location.state.group_name;
-                getGroupPosts(params, callback);
+                let group_name = this.props.location.state.group_name;
+                if (group_name !== '热门') {
+                    params.group_name = this.props.location.state.group_name;
+                    getGroupPosts(params, callback);
+                    break;
+                }
             case PostType.RANDOM:
             default:
                 getRandomPosts(params, callback);
@@ -107,16 +111,14 @@ class PostCardList extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        console.log("UNSAFE_componentWillReceiveProps, key = ", this.state.key);
-        console.log(nextProps, nextContext);
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         this.setState({
             posts: [],
             hasMoreItems: true,
             nextHref: 0,
             // key: this.state.key + 1
             key: randomNum(1, 500)
-        })
+        });
     }
 
     componentWillUnmount = () => {
@@ -130,8 +132,7 @@ class PostCardList extends Component {
             const param = this.props.location.search.split('&');
             const user_id = param[0].substr(4);
             if (this.props.user.user.user_id !== user_id) return;
-        }
-        else if (this.props.index === PostType.SEARCH || this.props.index === PostType.GROUP) return;
+        } else if (this.props.index === PostType.SEARCH || this.props.index === PostType.GROUP) return;
 
         this.setState({
             posts: [post, ...this.state.posts],
