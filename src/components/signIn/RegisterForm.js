@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -15,6 +14,7 @@ import {connect} from "react-redux";
 import * as userService from "../../service/UserService";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../utils/constants";
+import LOGO from '../../assets/img/register.jpeg';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
         //width:'450px'
     },
     avatar: {
-        margin: theme.spacing(1),
+        width: theme.spacing(12),
+        height: theme.spacing(12),
+        margin: theme.spacing(2),
+
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -114,9 +117,7 @@ function RegisterForm(props){
     return (
         <Container component="main" maxWidth="xs">
             <Paper elevation={0} className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                <Avatar alt="logo" src={LOGO} className={classes.avatar}/>
                 <Typography component="h1" variant="h5">
                     注册
                 </Typography>
