@@ -6,8 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import {
-    permitBannedUser,
-    permitForbiddenUser
+    unBanReportedUser,unForbidReportedUser
 } from "../../../service/AdminService";
 import PubSub from "pubsub-js";
 import {MessageType, MsgType} from "../../../utils/constants";
@@ -47,7 +46,7 @@ export default class AdminPermitUserDialog extends React.Component {
     };
 
     unBanUser = (data) => {
-        permitBannedUser(data, ((res)=> {
+        unBanReportedUser(data, ((res)=> {
             console.log(res);
             if(res.status !== 200)
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "解禁失败！", type: MessageType.ERROR});
@@ -57,7 +56,7 @@ export default class AdminPermitUserDialog extends React.Component {
     };
 
     permitUser = (data) => {
-        permitForbiddenUser(data, ((res)=> {
+        unForbidReportedUser(data, ((res)=> {
             console.log(res);
             if(res.status !== 200)
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "解封失败！", type: MessageType.ERROR});
