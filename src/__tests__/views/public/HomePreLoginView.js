@@ -25,7 +25,11 @@ describe('actions', () => {
     jest.spyOn(window, 'scrollTo').mockReturnValue();
     it('renders without crashing', () => {
         const div = document.createElement('div');
-        ReactDOM.render(<Provider store={store}><HomePreLoginView/></Provider> , div);
+        ReactDOM.render(<Provider store={store}>
+            <ThemeProvider theme={theme_user}>
+                <HomePreLoginView/>
+            </ThemeProvider>
+        </Provider> , div);
     });
 
     //Contains Carousel
@@ -34,7 +38,7 @@ describe('actions', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <ThemeProvider theme={theme_user}>
-                    <HomeView/>
+                    <HomePreLoginView/>
                 </ThemeProvider>
             </Provider>
         );
