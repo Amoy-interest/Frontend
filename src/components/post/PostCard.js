@@ -130,13 +130,6 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 };
 
-
-// function stringToDom(txt) {
-//     let obj = document.createElement("div");
-//     obj.innerHTML = txt;
-//     return obj;
-// }
-
 export const PostCardBelong = {
     OTHERS: 0,
     PERSONAL: 1
@@ -177,6 +170,24 @@ class PostCard extends React.Component {
         PubSub.subscribe(MsgType.REPORT_FINISHED, () => {
             this.handleMenuClose();
             this.setState({reportModalOpen: false});
+        });
+    };
+
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+        console.log("new post", nextProps);
+        this.setState({
+            voted: nextProps.post._vote,
+            forward: false,
+            voteCount: nextProps.post.blog_count.vote_count,
+            commentCount: nextProps.post.blog_count.comment_count,
+            forwardCount: nextProps.post.blog_count.forward_count,
+            text: nextProps.post.blog_content.text,
+            post: nextProps.post,
+            anchorEl: null,
+            expanded: false,
+            forwardModalOpen: false,
+            editModalOpen: false,
+            reportModalOpen: false,
         });
     };
 
@@ -286,29 +297,6 @@ class PostCard extends React.Component {
         };
         deletePost(this.state.post.blog_id, callback);
     };
-
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        console.log("new post", nextProps);
-        this.setState({
-            voted: nextProps.post._vote,
-            forward: false,
-            voteCount: nextProps.post.blog_count.vote_count,
-            commentCount: nextProps.post.blog_count.comment_count,
-            forwardCount: nextProps.post.blog_count.forward_count,
-            text: nextProps.post.blog_content.text,
-            post: nextProps.post,
-            anchorEl: null,
-            expanded: false,
-            forwardModalOpen: false,
-            editModalOpen: false,
-            reportModalOpen: false,
-        });
-    };
-
-    // componentDidUpdate() {
-    //     console.log(this.state.text)
-    //     document.getElementById("text").innerHTML = this.state.text;
-    // }
 
     render() {
         const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, reportModalOpen, forwardModalOpen, editModalOpen} = this.state;

@@ -32,7 +32,7 @@ class PostGroupView extends Component{
                             <SideBar index={this.props.location.state.index}/>
                         </Grid>
                         <Grid item xs={7}>
-                            <PostCardList index={PostType.GROUP} location={this.props.location}/>
+                            <PostCardList index={PostType.GROUP} {...this.props}/>
                         </Grid>
                         <Grid item xs>
                             <HotSearchList/>
