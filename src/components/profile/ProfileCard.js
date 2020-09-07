@@ -261,8 +261,8 @@ class ProfileCard extends React.Component {
                             open={isMenuOpen}
                             onClose={this.handleMenuClose}
                         >
-                            {this.props.role === UserType.ADMIN ?
-                                <React.Fragment>
+                            {this.props.role === UserType.ADMIN && userInfo.user_id !== this.props.user.user.user_id?
+                                <div>
                                     <MenuItem onClick={() => {
                                         this.handleMenuClose();
                                         console.log(userInfo)
@@ -274,10 +274,10 @@ class ProfileCard extends React.Component {
                                         PubSub.publish(MsgType.ADMIN.FORBID_USR, userInfo.user_id)
                                     }}>
                                         <BlockIcon color={"secondary"}/>封号</MenuItem>
-                                </React.Fragment>
-                                : userInfo.user_id !== this.props.user.user.user_id ?
+                                </div>
+                                : (userInfo.user_id !== this.props.user.user.user_id ?
                                     <MenuItem onClick={this.handleReport}><ErrorOutlineIcon color='primary'/>举报</MenuItem> :
-                                    <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>}
+                                    <MenuItem onClick={this.handleEdit}><CreateIcon color='primary'/>编辑</MenuItem>)}
                         </Menu>
                         <Modal open={editModalOpen} onClose={this.handleModalClose}>
                             <div style={getModalStyle()} className={classes.paper}>

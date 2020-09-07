@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
-import AdminTimePickerForm from "../components/admin/AdminTimePickerForm";
+import Typography from "@material-ui/core/Typography";
+import {Link} from "react-router-dom";
 
+const html = "fsaf<span style=\"color:#FF5722;\">zzz</span>djsifjdiao";
 
 const style = ((theme) => ({
     container: {
@@ -9,6 +11,9 @@ const style = ((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    span: {
+        color:'#FF5722'
     }
 }));
 
@@ -45,7 +50,12 @@ class TestComponentView extends Component{
             <div className={classes.container}>
                 TestComponentView page!
                 <div>
-                    <AdminTimePickerForm submit={this.setTime}/>
+                    {/*<AdminTimePickerForm submit={this.setTime}/>*/}
+                    {/*<div dangerouslySetInnerHTML={{__html: html}}/>*/}
+                    <Link style={{color: '#fff'}} to={{pathname: '/test-ali'}}>
+                        <Typography variant="body1" color="textPrimary"
+                                    dangerouslySetInnerHTML={{__html: html}}                                />
+                    </Link>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <button onClick={this.handleGetState}>handleGetState</button>

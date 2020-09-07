@@ -36,7 +36,7 @@ import PostEditForm from "./PostEditForm";
 import PubSub from "pubsub-js";
 import grey from "@material-ui/core/colors/grey";
 import ReportForm from "../commen/ReportForm";
-import { styled } from '@material-ui/core/styles';
+import {styled} from '@material-ui/core/styles';
 
 const styles = (theme => ({
     expand: {
@@ -129,6 +129,13 @@ Date.prototype.Format = function (fmt) {
                 (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
+
+
+// function stringToDom(txt) {
+//     let obj = document.createElement("div");
+//     obj.innerHTML = txt;
+//     return obj;
+// }
 
 export const PostCardBelong = {
     OTHERS: 0,
@@ -273,16 +280,15 @@ class PostCard extends React.Component {
             if (data.status === 200) {
                 PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.SUCCESS, text: data.msg});
                 this.props.delete(this.props.index);
-            }
-            else {
+            } else {
                 PubSub.publish(MsgType.SET_MESSAGE, {type: MessageType.ERROR, text: data.msg});
             }
         };
         deletePost(this.state.post.blog_id, callback);
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext){
-        console.log("new post",nextProps);
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+        console.log("new post", nextProps);
         this.setState({
             voted: nextProps.post._vote,
             forward: false,
@@ -299,15 +305,69 @@ class PostCard extends React.Component {
         });
     };
 
+    // componentDidUpdate() {
+    //     console.log(this.state.text)
+    //     document.getElementById("text").innerHTML = this.state.text;
+    // }
+
     render() {
         const {post, voted, forward, text, voteCount, commentCount, forwardCount, anchorEl, expanded, reportModalOpen, forwardModalOpen, editModalOpen} = this.state;
-        const {classes,type} = this.props;
+        const {classes, type} = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const menuId = 'report-menu';
 
+        // const renderMenu = (
+        //     this.props.role === UserType.CUSTOMER ?
+        //         this.props.belong === PostCardBelong.OTHERS ?
+        //             <Menu
+        //                 anchorEl={anchorEl}
+        //                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+        //                 id={menuId}
+        //                 keepMounted
+        //                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
+        //                 open={isMenuOpen}
+        //                 onClose={this.handleMenuClose}
+        //             >
+        //                 <MenuItem onClick={() => {
+        //                     this.setState({reportModalOpen: true})
+        //                 }}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
+        //             </Menu> :
+        //             <Menu
+        //                 anchorEl={anchorEl}
+        //                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+        //                 id={menuId}
+        //                 keepMounted
+        //                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
+        //                 open={isMenuOpen}
+        //                 onClose={this.handleMenuClose}
+        //             >
+        //                 <MenuItem onClick={this.handleEditModalOpen}><EditIcon/>编辑</MenuItem>
+        //                 <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
+        //             </Menu> : this.props.role === UserType.ADMIN ?
+        //         <Menu
+        //             anchorEl={anchorEl}
+        //             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+        //             id={menuId}
+        //             keepMounted
+        //             transformOrigin={{vertical: 'top', horizontal: 'right'}}
+        //             open={isMenuOpen}
+        //             onClose={this.handleMenuClose}
+        //         >
+        //             <MenuItem onClick={() => {
+        //                 this.handleMenuClose();
+        //                 PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)
+        //             }}><MicOffIcon
+        //                 color={"secondary"}/>禁言</MenuItem>
+        //             <MenuItem onClick={() => {
+        //                 this.handleMenuClose();
+        //                 PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)
+        //             }}><BlockIcon
+        //                 color={"secondary"}/>封号</MenuItem>
+        //         </Menu> : null
+        //
+        // );
+
         const renderMenu = (
-            this.props.role === UserType.CUSTOMER ?
-                this.props.belong === PostCardBelong.OTHERS ?
                     <Menu
                         anchorEl={anchorEl}
                         anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -317,48 +377,47 @@ class PostCard extends React.Component {
                         open={isMenuOpen}
                         onClose={this.handleMenuClose}
                     >
-                        <MenuItem onClick={() => {this.setState({reportModalOpen: true})}}><ErrorOutlineIcon color={"secondary"}/>举报</MenuItem>
-                    </Menu> :
-                    <Menu
-                        anchorEl={anchorEl}
-                        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                        id={menuId}
-                        keepMounted
-                        transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                        open={isMenuOpen}
-                        onClose={this.handleMenuClose}
-                    >
-                        <MenuItem onClick={this.handleEditModalOpen}><EditIcon/>编辑</MenuItem>
-                        <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
-                    </Menu> : this.props.role === UserType.ADMIN ?
-                <Menu
-                    anchorEl={anchorEl}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    id={menuId}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={isMenuOpen}
-                    onClose={this.handleMenuClose}
-                >
-                    <MenuItem onClick={() => {
-                        this.handleMenuClose();
-                        PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)
-                    }}><MicOffIcon
-                        color={"secondary"}/>禁言</MenuItem>
-                    <MenuItem onClick={() => {
-                        this.handleMenuClose();
-                        PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)
-                    }}><BlockIcon
-                        color={"secondary"}/>封号</MenuItem>
-                </Menu> : null
+                        {
+                            this.props.role === UserType.CUSTOMER ?
+                                (this.props.belong === PostCardBelong.OTHERS ?
+                                    <MenuItem onClick={() => {this.setState({reportModalOpen: true})}}>
+                                        <ErrorOutlineIcon color={"secondary"}/>举报
+                                    </MenuItem>:
+                                    <div>
+                                        <MenuItem onClick={this.handleEditModalOpen}><EditIcon/>编辑</MenuItem>
+                                        <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
+                                    </div>):
+                                this.props.role === UserType.ADMIN ?
+                                    (this.props.belong === PostCardBelong.OTHERS ?
+                                            <div>
+                                                <MenuItem onClick={() => {
+                                                    this.handleMenuClose();
+                                                    PubSub.publish(MsgType.ADMIN.BAN_USR, post.user_id)
+                                                }}><MicOffIcon
+                                                    color={"secondary"}/>禁言</MenuItem>
+                                                <MenuItem onClick={() => {
+                                                    this.handleMenuClose();
+                                                    PubSub.publish(MsgType.ADMIN.FORBID_USR, post.user_id)
+                                                }}><BlockIcon
+                                                    color={"secondary"}/>封号</MenuItem>
+                                            </div>:
+                                            <div>
+                                                <MenuItem onClick={this.handleEditModalOpen}><EditIcon/>编辑</MenuItem>
+                                                <MenuItem onClick={this.handleDeletePost}><DeleteIcon/>删除</MenuItem>
+                                            </div>
+                                    ):null
+                        }
+                    </Menu>
 
         );
 
         if (this.state.post !== null)
             return (
                 <div>
-                    <Card style={{width: this.props.size === null ? '100%' : this.props.size
-                    ,height:this.props.height === null ? '100%' : this.props.height}}
+                    <Card style={{
+                        width: this.props.size === null ? '100%' : this.props.size
+                        , height: this.props.height === null ? '100%' : this.props.height
+                    }}
                           elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
@@ -377,36 +436,35 @@ class PostCard extends React.Component {
                             title={post.nickname}
                             subheader={new Date(post.blog_time).Format("yyyy-MM-dd hh:mm:ss")}
                         />
-                            <CardContent>
-                                <div className={classes.tagContainer}>
-                                    {post.topics_name.length===0 ? null:
-                                        post.topics_name.map((item, index) => {
-                                            return (
-                                                <Link key={index} style={{color: '#fff', marginRight: 5}} to={{
-                                                    pathname: '/topic-discussion',
-                                                    state:{topic_name: item}}}>
-                                                    <Tag variant="body1">
-                                                        {`#${item}#`}
-                                                    </Tag>
-                                                </Link>
-                                            );})}
-                                </div>
-                                <Link
-                                      style={{color: '#fff'}}
-                                      to={{
+                        <CardContent>
+                            <div className={classes.tagContainer}>
+                                {post.topics_name.length === 0 ? null :
+                                    post.topics_name.map((item, index) => {
+                                        return (
+                                            <Link key={index} style={{color: '#fff', marginRight: 5}} to={{
+                                                pathname: '/topic-discussion',
+                                                state: {topic_name: item}
+                                            }}>
+                                                <Tag variant="body1">
+                                                    {`#${item}#`}
+                                                </Tag>
+                                            </Link>
+                                        );
+                                    })}
+                            </div>
+                            <Link
+                                style={{color: '#fff'}}
+                                to={{
                                     pathname: '/post-detail',
                                     search: '?id=' + post.blog_id
                                 }}>
-                                    <Typography variant="body1" color="textPrimary"
-                                                //component="p"
-                                    >
-                                        {text}
-                                    {/*<span style={{color:'#FF5722'}}>中文</span>*/}
-                                    </Typography>
+                                <Typography variant="body1" color="textPrimary"
+                                            dangerouslySetInnerHTML={{__html: text}}                                />
                                 </Link>
-                            </CardContent>
-                        {post.blog_type === 0 ? type===PostCardType.DETAIL?<PostImage image={post.blog_content.images} height={900} />:
-                            <PostImage image={post.blog_content.images} /> :
+                        </CardContent>
+                        {post.blog_type === 0 ? type === PostCardType.DETAIL ?
+                            <PostImage image={post.blog_content.images} height={900}/> :
+                            <PostImage image={post.blog_content.images}/> :
                             post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
                                 <ForwardCard post={post.blog_child} size={'100%'}/>}
                         <CardActions disableSpacing>
@@ -461,7 +519,7 @@ class PostCard extends React.Component {
                             </Collapse>
                         }
                     </Card>
-                    {renderMenu}
+                    {this.props.role === UserType.VISITOR?null: renderMenu}
                     <Modal open={forwardModalOpen} onClose={this.handleModalClose}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.forwardModal}>
@@ -492,7 +550,9 @@ class PostCard extends React.Component {
                             </Paper>
                         </div>
                     </Modal>
-                    <Modal open={reportModalOpen} onClose={() => {this.setState({reportModalOpen: false})}}>
+                    <Modal open={reportModalOpen} onClose={() => {
+                        this.setState({reportModalOpen: false})
+                    }}>
                         <div style={getModalStyle()} className={classes.paper}>
                             <Paper className={classes.reportModal}>
                                 <ReportForm type="post" id={this.state.post.blog_id}/>
