@@ -5,7 +5,7 @@ import PostCardList from "../../components/post/PostCardList";
 import TopicCard from "../../components/topic/TopicCard";
 import HotSearchList from "../../components/hot/HotSearchList";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {PostType} from "../../utils/constants";
+import {PostType, ViewType} from "../../utils/constants";
 
 const styles = (theme) => ({
     root: {
@@ -23,14 +23,14 @@ class TopicDiscussionView extends Component{
             <div className={classes.root}>
                 <Grid container spacing={1}>
                     <Grid item xs={2}>
-                        <SideBar/>
+                        <SideBar viewType={ViewType.OTHERS}/>
                     </Grid>
                     <Grid item xs={7}>
                         <TopicCard location={this.props.location}/>
                         <PostCardList location={this.props.location} index={PostType.TOPIC}/>
                     </Grid>
                     <Grid item>
-                        <HotSearchList/>
+                        <HotSearchList viewType={ViewType.OTHERS}/>
                     </Grid>
                 </Grid>
             </div>

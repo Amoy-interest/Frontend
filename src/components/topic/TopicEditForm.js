@@ -109,7 +109,7 @@ class TopicEditForm extends React.Component{
                                     </Button>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <PostImage image={this.state.image}/>
+                                    <PostImage image={this.state.image} height={400}/>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Uploader uploadFiles={this.uploadFiles} limits={1}/>

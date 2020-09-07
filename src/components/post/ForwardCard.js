@@ -68,7 +68,7 @@ class ForwardCard extends React.Component {
                                     {post.blog_content.text}
                                 </Typography>
                             </CardContent>
-                            <PostImage image={post.blog_content.images}/>
+                            <PostImage image={post.blog_content.images} height={280}/>
                         </Link>
                     </Card>
                 </div>

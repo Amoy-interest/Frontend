@@ -5,7 +5,7 @@ import PostCardList from "../../components/post/PostCardList";
 import PostForm from "../../components/post/PostForm";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
-import {PostType} from "../../utils/constants";
+import {PostType, ViewType} from "../../utils/constants";
 import {withStyles} from "@material-ui/styles";
 
 const styles = ((theme) => ({
@@ -27,14 +27,14 @@ class PostsView extends Component{
                 <Paper elevation={0} className={classes.root}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            <SideBar/>
+                            <SideBar viewType={ViewType.OTHERS}/>
                         </Grid>
                         <Grid item xs={7}>
                             <PostForm/>
                             <PostCardList index={PostType.FOLLOW}/>
                         </Grid>
                         <Grid item xs>
-                            <HotSearchList/>
+                            <HotSearchList viewType={ViewType.OTHERS}/>
                         </Grid>
                     </Grid>
                 </Paper>

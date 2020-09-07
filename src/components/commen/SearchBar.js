@@ -198,7 +198,7 @@ class SearchBar extends React.Component {
 //     {title: '高考加油', type: '博文'},
 //     {title: 'test2', type: '博文'},
 // ];
-
+export const Search = SearchBar;
 export default connect(
     mapStateToProps,
     null

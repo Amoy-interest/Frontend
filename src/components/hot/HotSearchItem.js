@@ -37,7 +37,7 @@ export default function HotSearchItem(props) {
         history.push({pathname: '/topic-discussion', state: {topic_name: props.item.topic_name}});
     };
     return (
-            <ListItem button style={props.style} className={classes.root} onClick={goto.bind(this)}>
+            <ListItem button style={props.style} className={classes.root} onClick={goto.bind(this)} key={props.item.topic_name}>
                 <Typography className={classes.number} noWrap={true} variant={'h6'}
                 style={{color:props.index===0?'#ef5350':props.index===1?'#ef6c00':props.index===2?'#ffd54f':null}}>
                     <Box fontWeight="fontWeightBold" m={1}>

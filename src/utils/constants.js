@@ -54,6 +54,10 @@ const PostType = {
     GROUP: 8
 };
 
+const ViewType = {
+    HOME:'home',
+    OTHERS:'others'
+}
 const MsgType = {
     SET_MESSAGE: "setMessage",
     ADD_POST: "addPost",
@@ -91,6 +95,6 @@ export {
     apiUrl, mockUrl, devUrl, localUrl,
     UserActionType, TokenActionType, APIModules,
     UserType, AuthorityLevel, PostType,
-    MsgType, MessageType, defaultImgUrl
+    MsgType, MessageType, defaultImgUrl, ViewType
 };
 
