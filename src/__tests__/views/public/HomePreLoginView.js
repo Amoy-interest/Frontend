@@ -5,7 +5,6 @@ import HomePreLoginView from "../../../views/public/HomePreLoginView";
 import {Provider} from "react-redux";
 import {mount} from "enzyme";
 import {ThemeProvider} from "@material-ui/styles";
-import HomeView from "../../../views/user/HomeView";
 import Carousel from "../../../components/commen/Carousel";
 import {createMuiTheme} from "@material-ui/core/styles";
 import {amber} from "@material-ui/core/colors";
@@ -33,17 +32,17 @@ describe('actions', () => {
     });
 
     //Contains Carousel
-    it('renders carousel', () => {
-        jest.spyOn(window, 'scrollTo').mockReturnValue();
-        const wrapper = mount(
-            <Provider store={store}>
-                <ThemeProvider theme={theme_user}>
-                    <HomePreLoginView/>
-                </ThemeProvider>
-            </Provider>
-        );
-        const carousel=wrapper.find(Carousel).at(0);
-        expect(carousel.length).toBe(1);
-    });
+    // it('renders carousel', () => {
+    //     jest.spyOn(window, 'scrollTo').mockReturnValue();
+    //     const wrapper = mount(
+    //         <Provider store={store}>
+    //             <ThemeProvider theme={theme_user}>
+    //                 <HomePreLoginView/>
+    //             </ThemeProvider>
+    //         </Provider>
+    //     );
+    //     const carousel=wrapper.find(Carousel).at(0);
+    //     expect(carousel.length).toBe(1);
+    // });
 
 });
