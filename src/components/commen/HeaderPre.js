@@ -35,10 +35,6 @@ const styles = ((theme) => ({
         height:'8vh',
         display:'flex',
         justifyContent:'center',
-        //padding:theme.spacing(1)
-        //flexDirection:'row',
-        //opacity: 0.70,
-        //alignItems:'center'
     },
     blank: {
         flexGrow: 1,

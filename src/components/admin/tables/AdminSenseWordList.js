@@ -59,22 +59,23 @@ class AdminSenseWordList extends React.Component{
     refresh = () => tableRef.current && tableRef.current.onQueryChange();
 
     render() {
-        const {classes} = this.props;
+        // const {classes} = this.props;
         const columns = [
             {
                 title: '敏感词',
-                field: 'keyword'
+                field: 'keyword',
+                align: 'center',
             },
-            {
-                title: '敏感博文数量',
-                render: () => {
-                    return (
-                        <div className={classes.number}>
-                            <Typography variant="body1" color="textSecondary" component="p">
-                                100
-                            </Typography>
-                        </div>
-                    )}},
+            // {
+            //     title: '敏感博文数量',
+            //     render: () => {
+            //         return (
+            //             <div className={classes.number}>
+            //                 <Typography variant="body1" color="textSecondary" component="p">
+            //                     100
+            //                 </Typography>
+            //             </div>
+            //         )}},
         ];
         const actions = [
             {

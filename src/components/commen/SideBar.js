@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PubSub from "pubsub-js";
-import {UserType, MsgType, MessageType} from "../../utils/constants";
+import {UserType, MsgType, MessageType, ViewType} from "../../utils/constants";
 import {makeStyles} from "@material-ui/styles";
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
 
-const classes = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         marginTop:theme.spacing(2),
@@ -36,6 +36,7 @@ function SideBar (props){
 
     const [value, setValue] = useState(0);
     const history = useHistory();
+    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -60,11 +61,12 @@ function SideBar (props){
                 onChange={handleChange}
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
+                style={props.viewType===ViewType.HOME?{position:'absolute'}:{position:'fixed'}}
             >
                 {
                     content.map((item) => {
                         return (
-                            <Tab className={classes.tab} label={item}/>
+                            <Tab className={classes.tab} label={item} key={item}/>
                         )
                     })
                 }
@@ -73,7 +75,9 @@ function SideBar (props){
         );
 }
 
-export default connect(
+const SideBarCon = connect(
     mapStateToProps,
     null
 )(SideBar)
+
+export default SideBarCon;

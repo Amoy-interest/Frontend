@@ -4,7 +4,7 @@ import SideBar from "../../components/commen/SideBar";
 import PostCardList from "../../components/post/PostCardList";
 import Paper from "@material-ui/core/Paper";
 import HotSearchList from "../../components/hot/HotSearchList";
-import {PostType} from "../../utils/constants";
+import {PostType, ViewType} from "../../utils/constants";
 import {withStyles} from "@material-ui/styles";
 
 const styles = ((theme) => ({
@@ -29,13 +29,13 @@ class PostGroupView extends Component{
                 <Paper elevation={0} className={classes.root}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            <SideBar index={this.props.location.state.index}/>
+                            <SideBar index={this.props.location.state.index} viewType={ViewType.OTHERS}/>
                         </Grid>
                         <Grid item xs={7}>
-                            <PostCardList index={PostType.GROUP} {...this.props}/>
+                            <PostCardList index={PostType.GROUP} location={this.props.location} />
                         </Grid>
                         <Grid item xs>
-                            <HotSearchList/>
+                            <HotSearchList viewType={ViewType.OTHERS}/>
                         </Grid>
                     </Grid>
                 </Paper>

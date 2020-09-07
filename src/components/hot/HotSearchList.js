@@ -7,7 +7,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import title from '../../assets/img/title.png';
 import {getHotList} from "../../service/TopicService";
 import PubSub from "pubsub-js";
-import {MessageType, MsgType} from "../../utils/constants";
+import {MessageType, MsgType, ViewType} from "../../utils/constants";
 
 const styles = ((theme) => ({
     root: {
@@ -71,7 +71,7 @@ class HotSearchList extends React.Component {
         };
         if (hasRequested)
             return (
-                <Paper elevation={1} className={classes.root}>
+                <Paper elevation={1} className={classes.root} style={this.props.viewType===ViewType.HOME?{position:'absolute'}:{position:'fixed'}}>
                     <div className={classes.title}>
                         {/*<Typography variant="h5">*/}
                         {/*    <Box fontWeight="fontWeightBold" fontFamily="Monospace" m={1}>*/}

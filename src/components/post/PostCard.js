@@ -409,12 +409,14 @@ class PostCard extends React.Component {
                           elevation={this.props.type === PostCardType.DETAIL ? 0 : 1}>
                         <CardHeader
                             avatar={
-                                <Link style={{color: amber[200], fontSize: '18px'}} to={{
-                                    pathname: '/personal-info',
-                                    search: '?id=' + post.user_id,
-                                }}>
-                                    <Avatar className={classes.avatar} src={post.avatar_path}/>
-                                </Link>
+                                <div>
+                                    <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                        pathname: '/personal-info',
+                                        search: '?id=' + post.user_id,
+                                    }}>
+                                        <Avatar className={classes.avatar} src={post.avatar_path}/>
+                                    </Link>
+                                </div>
                             }
                             action={
                                 <IconButton onClick={this.handleMoreInfoClick} aria-label="settings">
@@ -429,26 +431,30 @@ class PostCard extends React.Component {
                                 {post.topics_name.length === 0 ? null :
                                     post.topics_name.map((item, index) => {
                                         return (
-                                            <Link key={index} style={{color: '#fff', marginRight: 5}} to={{
-                                                pathname: '/topic-discussion',
-                                                state: {topic_name: item}
-                                            }}>
-                                                <Tag variant="body1">
-                                                    {`#${item}#`}
-                                                </Tag>
-                                            </Link>
+                                            <div>
+                                                <Link key={index} style={{color: '#fff', marginRight: 5}} to={{
+                                                    pathname: '/topic-discussion',
+                                                    state: {topic_name: item}
+                                                }}>
+                                                    <Tag variant="body1">
+                                                        {`#${item}#`}
+                                                    </Tag>
+                                                </Link>
+                                            </div>
                                         );
                                     })}
                             </div>
-                            <Link
-                                style={{color: '#fff'}}
-                                to={{
-                                    pathname: '/post-detail',
-                                    search: '?id=' + post.blog_id
-                                }}>
-                                <Typography variant="body1" color="textPrimary"
-                                            dangerouslySetInnerHTML={{__html: text}}                                />
+                            <div>
+                                <Link
+                                    style={{color: '#fff'}}
+                                    to={{
+                                        pathname: '/post-detail',
+                                        search: '?id=' + post.blog_id
+                                    }}>
+                                    <Typography variant="body1" color="textPrimary"
+                                                dangerouslySetInnerHTML={{__html: text}}                                />
                                 </Link>
+                            </div>
                         </CardContent>
                         {post.blog_type === 0 ? type === PostCardType.DETAIL ?
                             <PostImage image={post.blog_content.images} height={900}/> :
@@ -494,12 +500,14 @@ class PostCard extends React.Component {
                                     <Grid container className={classes.link}>
                                         <Grid item xs={5}/>
                                         <Grid item xs>
-                                            <Link style={{color: amber[200], fontSize: '18px'}} to={{
-                                                pathname: '/post-detail',
-                                                search: '?id=' + post.blog_id,
-                                            }}
-                                            >Load More
-                                            </Link>
+                                            <div>
+                                                <Link style={{color: amber[200], fontSize: '18px'}} to={{
+                                                    pathname: '/post-detail',
+                                                    search: '?id=' + post.blog_id,
+                                                }}
+                                                >Load More
+                                                </Link>
+                                            </div>
                                         </Grid>
                                         <Grid item xs/>
                                     </Grid>
@@ -552,6 +560,6 @@ class PostCard extends React.Component {
         else return <div>Loading</div>;
     }
 }
-
+export const Post=PostCard;
 export default connect
 (mapStateToProps, null)(PostCard);

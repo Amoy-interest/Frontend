@@ -5,7 +5,7 @@ import SideBar from "../../components/commen/SideBar";
 import Carousel from "../../components/commen/Carousel";
 import HotSearchList from "../../components/hot/HotSearchList";
 import PostCardList from "../../components/post/PostCardList";
-import {PostType} from "../../utils/constants";
+import {PostType, ViewType} from "../../utils/constants";
 import {withStyles} from "@material-ui/styles";
 
 const styles = ((theme) => ({
@@ -30,13 +30,13 @@ class HomeView extends Component {
                     <Carousel/>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            <SideBar/>
+                            <SideBar viewType={ViewType.HOME}/>
                         </Grid>
                         <Grid item xs={7}>
                             <PostCardList index={PostType.RECOMMEND}/>
                         </Grid>
                         <Grid item xs>
-                            <HotSearchList/>
+                            <HotSearchList viewType={ViewType.HOME}/>
                         </Grid>
                     </Grid>
                 </Paper>
