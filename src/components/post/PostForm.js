@@ -75,10 +75,10 @@ class PostForm extends React.Component{
     }
 
     submitOwn = async (values, resetForm) => {
-        if (this.state.topics.length !== 5){
-            PubSub.publish(MsgType.SET_MESSAGE, {text: "每条博文需要佩有1-5个标签！", type: MessageType.WARNING});
-            return ;
-        }
+        // if (this.state.topics.length !== 5){
+        //     PubSub.publish(MsgType.SET_MESSAGE, {text: "每条博文需要配有1-5个标签！", type: MessageType.WARNING});
+        //     return ;
+        // }
 
         this.setState({isUploading: true});
 
