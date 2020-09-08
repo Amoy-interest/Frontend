@@ -234,13 +234,13 @@ class TopicCard extends React.Component {
                                         <div style={{marginTop: '10px', marginLeft: '40px'}}>
                                             <Typography variant="h5" color="textPrimary" align='left'>
                                                 #{topic.name}#
-                                                {topic.topic_heat > 10000 ?
+                                                {topic.topic_heat > 1000 ?
                                                     <Chip
                                                         className={classes.chip}
                                                         icon={<WhatshotIcon/>}
                                                         label='爆'
                                                         color="secondary"
-                                                    /> : topic.topic_heat > 1000 ?
+                                                    /> : topic.topic_heat > 100 ?
                                                         <Chip
                                                             className={classes.chip}
                                                             icon={<WhatshotIcon/>}

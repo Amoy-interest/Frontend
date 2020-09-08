@@ -30,7 +30,7 @@ class AdminTopicsManageView extends Component{
                             <AdminSideBar index={2}/>
                         </Grid>
                         <Grid item xs>
-                            <AdminTopicList history={this.props.history}/>
+                            <AdminTopicList history={this.props.history} />
                         </Grid>
                     </Grid>
                 </Paper>

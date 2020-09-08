@@ -50,13 +50,13 @@ export default function HotSearchItem(props) {
                 <Typography className={classes.secondaryText} noWrap={true} variant={'body2'}>
                     {props.item.heat}
                 </Typography>
-                {props.item.heat > 10000 ?
+                {props.item.heat > 1000 ?
                     <Chip
                         className={classes.chip}
                         icon={<WhatshotIcon/>}
                         label='爆'
                         color="secondary"
-                    /> : props.item.heat > 1000 ?
+                    /> : props.item.heat > 100 ?
                         <Chip
                             className={classes.chip}
                             icon={<WhatshotIcon/>}
