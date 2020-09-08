@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import AdminAddTopicDialog from "../../../../components/admin/dialogs/AdminAddTopicDialog";
-import {mount,shallow} from 'enzyme';
+import {shallow} from 'enzyme';
 import AdminUserDialog from "../../../../components/admin/dialogs/AdminUserDialog";
 describe('actions', () => {
     beforeAll(()=>{

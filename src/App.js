@@ -13,7 +13,6 @@ import AdminUsersManageView from "./views/admin/AdminUsersManageView";
 import AdminPostsManageView from "./views/admin/AdminPostsManageView";
 import AdminTopicsManageView from "./views/admin/AdminTopicsManageView";
 import AdminSensWordsManageView from './views/admin/AdminSensWordsManageView';
-import TestReduxView from "./views/TestReduxView";
 import {createMuiTheme, createStyles, makeStyles} from "@material-ui/core/styles";
 import {amber, blue} from "@material-ui/core/colors";
 import {connect} from "react-redux";
@@ -28,8 +27,6 @@ import PostDetailView from "./views/user/PostDetailView";
 import Message from "./components/commen/Message";
 import PubSub from "pubsub-js";
 import PostSearchView from "./views/user/PostSearchView";
-import TestAliView from "./views/TestAliView";
-import TestComponentView from "./views/TestComponentView";
 import PostGroupView from "./views/user/PostGroupView";
 
 const theme_user = createMuiTheme({
@@ -120,9 +117,6 @@ function App(props) {
                             <Switch>
                                 <Route exact path='/' component={HomePreLoginView}/>
                                 <Route path='/register' component={RegisterView}/>
-                                <Route path='/test-redux' component={TestReduxView}/>
-                                <Route path='/test-ali' component={TestAliView}/>
-                                <Route path='/test-com' component={TestComponentView}/>
                                 <PrivateRoute path='/home' component={HomeView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/personal-info' component={ProfileView} authority={AuthorityLevel.CUSTOMER}/>
                                 <PrivateRoute path='/posts' component={PostsView} authority={AuthorityLevel.CUSTOMER}/>

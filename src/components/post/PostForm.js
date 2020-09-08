@@ -118,7 +118,7 @@ class PostForm extends React.Component{
             else {
                 // send messages and display new post
                 PubSub.publish(MsgType.SET_MESSAGE, {text: "转发成功！", type: MessageType.SUCCESS});
-                PubSub.publish(MsgType.ADD_POST, null);
+                PubSub.publish(MsgType.ADD_POST, data.data);
             }
         };
         forwardPost(this.props.postId, values.content, callbackForward);

@@ -75,14 +75,14 @@ export const unBanReportedUser = (id, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/unban`;
     const param = {user_id: id};
     console.log(param);
-    putRequest_json(url, null, param, callback);
+    putRequest_json(url, param, null, callback);
 };
 
 export const unForbidReportedUser = (id, callback) => {
     const url = `${apiUrl}${APIModules.ADMIN}${APIModules.USER}/permit`;
     const param = {user_id: id};
     console.log(param);
-    putRequest_json(url, null, param, callback);
+    putRequest_json(url, param, null, callback);
 };
 
 export const editSenseWord = (data, callback) => {

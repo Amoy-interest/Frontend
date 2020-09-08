@@ -34,7 +34,7 @@ describe('actions', () => {
         //wrapper.instance().confirmAdd();
         wrapper.instance().confirm();
         wrapper.instance().unBan();
-        wrapper.instance().unForbid();e
+        wrapper.instance().unForbid();
         wrapper.instance().cancel();
         expect(spyFunction).toHaveBeenCalled();
         spyFunction.mockRestore();

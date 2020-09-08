@@ -13,7 +13,9 @@ const styles = ((theme) => ({
     number: {
         minWidth: 200,
     },
-
+    keyword: {
+        marginLeft: 50,
+    },
 }));
 const tableRef = React.createRef();
 
@@ -64,15 +66,15 @@ class AdminSenseWordList extends React.Component{
             {
                 title: '敏感词',
                 field: 'keyword',
-                align: 'center',
+                align: 'left',
             },
             // {
-            //     title: '敏感博文数量',
-            //     render: () => {
+            //     title: '敏感词',
+            //     render: (item) => {
             //         return (
-            //             <div className={classes.number}>
+            //             <div className={classes.keyword}>
             //                 <Typography variant="body1" color="textSecondary" component="p">
-            //                     100
+            //                     {item.keyword}
             //                 </Typography>
             //             </div>
             //         )}},
