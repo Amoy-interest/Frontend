@@ -23,7 +23,7 @@ describe('actions', () => {
         const div = document.createElement('Container');
         ReactDOM.render(
             <ThemeProvider theme={theme_user}>
-                < ReportForm/>
+                <ReportForm/>
             </ThemeProvider>
             ,
             div);
