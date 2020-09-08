@@ -24,14 +24,4 @@ describe('actions', () => {
         ReactDOM.render(< AdminAddTopicDialog/>, dialog);
     });
 
-    //call function
-    it('calls functions', () => { //在constructor使用bind来定义方法
-        const wrapper  = shallow(<AdminAddTopicDialog/>);
-        const spyFunction = jest.spyOn(wrapper.instance(),"cancel");
-        wrapper.setState({topic:"hi"});
-        wrapper.instance().confirmAdd();
-        wrapper.instance().cancel();
-        expect(spyFunction).toHaveBeenCalled();
-        spyFunction.mockRestore();
-    });
 });

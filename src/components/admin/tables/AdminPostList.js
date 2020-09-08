@@ -162,7 +162,7 @@ class AdminPostList extends React.Component{
                 {/*注意，这个标签必须在<MaterialTable>标签旁引用*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <MaterialTable
-                    title="用户管理"
+                    title="博文管理"
                     tableRef={tableRef}
                     columns={columns}
                     data={this.loadData}
