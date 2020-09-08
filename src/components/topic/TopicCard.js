@@ -306,6 +306,6 @@ class TopicCard extends React.Component {
         else return <div>Loading...</div>
     };
 };
-
+export const Topic=TopicCard;
 export default connect
 (mapStateToProps, null)(TopicCard);
