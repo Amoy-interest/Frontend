@@ -540,9 +540,9 @@ class PostCard extends React.Component {
                                               submit={this.submitEdit}
                                               post_content={post.blog_content.text}
                                 />
-                                {post.blog_type === 0 ? <PostImage image={post.blog_content.images}/> :
+                                {post.blog_type === 0 ? <PostImage image={post.blog_content.images} height={300}/> :
                                     post.blog_child === null ? <div className={classes.delete}>博文已经被删除</div> :
-                                        <PostImage image={post.blog_child.blog_content.images}/>}
+                                        <PostImage image={post.blog_child.blog_content.images} height={300}/>}
                             </Paper>
                         </div>
                     </Modal>
